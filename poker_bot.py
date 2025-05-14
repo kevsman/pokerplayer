@@ -3,13 +3,19 @@ import re
 import sys
 from hand_evaluator import HandEvaluator
 from html_parser import PokerPageParser
+from decision_engine import DecisionEngine # Added import
+
+# Action definitions
 
 class PokerBot:
-    def __init__(self, html_content):
+    def __init__(self, html_content, big_blind=0.02, small_blind=0.01):
         self.parser = PokerPageParser(html_content)
         self.hand_evaluator = HandEvaluator()
+        self.decision_engine = DecisionEngine(big_blind, small_blind) # Added DecisionEngine instance
         self.table_data = {}
         self.player_data = []
+        self.big_blind = big_blind
+        self.small_blind = small_blind
 
     def analyze_table(self):
         self.table_data = self.parser.analyze_table()
@@ -49,6 +55,19 @@ class PokerBot:
             'active_player': self.get_active_player()
         }
     
+    def get_suggested_action(self):
+        if not self.table_data or not self.player_data:
+            self.analyze() # Ensure data is up-to-date
+
+        my_player = self.get_my_player()
+
+        if not my_player:
+            return "Could not find my player data."
+        
+        # The DecisionEngine's make_decision expects: my_player, table_data, all_players_data
+        # It also internally checks if it's the player's turn.
+        return self.decision_engine.make_decision(my_player, self.table_data, self.player_data)
+
     def get_summary(self):
         if not self.table_data and not self.player_data: 
             self.analyze()
@@ -120,11 +139,32 @@ if __name__ == "__main__":
             with open(file_path, 'r', encoding='utf-8') as f:
                 html_content = f.read()
             print(f"Attempting to open and parse: {file_path}")
-            bot = PokerBot(html_content)
+            bot = PokerBot(html_content) # Default blinds will be used
             analysis_result = bot.analyze()
             
             print("\n---- Summary from PokerBot ----")
             print(bot.get_summary())
+
+            my_player_info = bot.get_my_player()
+            # Check for turn is now handled within get_suggested_action or make_decision
+            # but we can still check here to provide a clearer message if it's not our turn before calling.
+            if my_player_info and my_player_info.get('has_turn'):
+                decision = bot.get_suggested_action() # Changed from make_decision
+                if isinstance(decision, tuple):
+                    # Ensure amount is formatted nicely if it's a float
+                    action_amount = decision[1]
+                    if isinstance(action_amount, float):
+                        action_amount_str = f"{action_amount:.2f}"
+                    else:
+                        action_amount_str = str(action_amount)
+                    print(f"\n---- Suggested Action ----: {decision[0]} {action_amount_str}")
+                else:
+                    print(f"\n---- Suggested Action ----: {decision}")
+            elif my_player_info:
+                print("\nNot my turn to act.")
+            else:
+                print("\nCould not find my player information.")
+            
 
             # For detailed debugging, uncomment the following lines:
             # print("\n---- Raw Analysis Result (for debugging) ----")
