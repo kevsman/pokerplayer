@@ -186,8 +186,8 @@ class PokerPageParser:
             if player_info['is_my_player']:
                 cards_holder = player_element.find('div', class_='cards-holder-hero')
                 if cards_holder:
-                    # Find individual card divs. Regex now looks for class name starting with 'card' followed by optional digits.
-                    card_divs = cards_holder.find_all('div', class_=re.compile(r'^card\\d*$'))
+                    # Find individual card divs. Using a more robust regex for card classes.
+                    card_divs = cards_holder.find_all('div', class_=re.compile(r'\bcard\d*\b'))
                     processed_cards = set() # Use a set to store unique card strings to avoid duplicates
                     for card_div in card_divs:
                         if 'pt-visibility-hidden' in card_div.get('class', []): continue
