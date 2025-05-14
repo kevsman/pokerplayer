@@ -15,7 +15,7 @@ class HandEvaluator:
         
         if rank_str not in self.rank_map:
             return None 
-        
+       
         valid_suits = ['♠', '♥', '♦', '♣']
         if suit_char not in valid_suits:
             return None
@@ -142,7 +142,8 @@ class HandEvaluator:
             if conv_card:
                 processed_cards.append(conv_card)
         
-        if not community_cards: # Pre-flop
+        # Pre-flop: Return a basic evaluation (rank 0, description, sorted card ranks)
+        if not community_cards: 
             if len(hole_cards) == 2:
                 c1_str, c2_str = hole_cards[0], hole_cards[1]
                 c1 = self._convert_card_to_value(c1_str)
@@ -151,24 +152,36 @@ class HandEvaluator:
                     r1_val, s1 = c1
                     r2_val, s2 = c2
                     
+                    # Ensure r1_val is the higher rank for consistent tie-breaking/description
                     if r2_val > r1_val:
                         r1_val, r2_val = r2_val, r1_val
-                        s1, s2 = s2, s1 
-                    
+                        # s1 and s2 don't need to be swapped for rank list, but suit matters for description
+                        original_s1, original_s2 = s1, s2 # Keep original suits for description
+                        if hole_cards[0].startswith(self.rank_map_rev.get(r2_val)): # if c2_str was originally the higher card
+                             s1, s2 = original_s2, original_s1
+                        else:
+                             s1, s2 = original_s1, original_s2
+
+
                     r1_name = self.rank_map_rev.get(r1_val, str(r1_val))
                     r2_name = self.rank_map_rev.get(r2_val, str(r2_val))
-
+                    
+                    desc = ""
                     if r1_val == r2_val:
-                        return f"Pair of {r1_name}s"
+                        desc = f"Pair of {r1_name}s"
                     else:
                         suited_str = " suited" if s1 == s2 else " offsuit"
-                        return f"{r1_name}{r2_name}{suited_str}"
-            return "N/A (Pre-flop)"
+                        desc = f"{r1_name}{r2_name}{suited_str}"
+                    # For pre-flop, rank is 0 (less than any made hand), tie-breakers are card ranks
+                    return (0, desc, sorted([r1_val, r2_val], reverse=True)) 
+            return (0, "N/A (Pre-flop - invalid hole cards)", [])
 
         if len(processed_cards) < 5:
-            return "N/A (Not enough cards for 5-card hand)"
+            # Return rank 0, description, and sorted processed card ranks if available
+            current_ranks = sorted([card[0] for card in processed_cards], reverse=True)
+            return (0, "N/A (Not enough cards for 5-card hand)", current_ranks)
 
-        best_hand_rank_eval = (0, "High Card", []) 
+        best_hand_rank_eval = (0, "High Card", []) # Default to lowest possible if no combo found
 
         for five_card_combo_processed in combinations(processed_cards, 5):
             current_hand_eval = self._evaluate_five_card_hand(list(five_card_combo_processed))
@@ -179,4 +192,4 @@ class HandEvaluator:
                 if self._compare_tie_breakers(current_hand_eval[2], best_hand_rank_eval[2]) > 0:
                     best_hand_rank_eval = current_hand_eval
         
-        return best_hand_rank_eval[1]
+        return best_hand_rank_eval # Return the full tuple

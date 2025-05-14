@@ -26,11 +26,16 @@ class PokerBot:
         for player_info in self.player_data:
             if player_info.get('is_my_player') and player_info.get('cards'):
                 community_cards = self.table_data.get('community_cards', [])
-                player_info['hand_rank'] = self.hand_evaluator.calculate_best_hand(player_info['cards'], community_cards)
+                # Store the full evaluation tuple from HandEvaluator
+                player_info['hand_evaluation'] = self.hand_evaluator.calculate_best_hand(player_info['cards'], community_cards)
+                # Keep the string description for summary purposes if needed
+                player_info['hand_rank'] = player_info['hand_evaluation'][1] 
             elif not player_info.get('is_my_player') and player_info.get('has_hidden_cards'):
                 player_info['hand_rank'] = "N/A (Hidden Cards)"
+                player_info['hand_evaluation'] = (0, "N/A (Hidden Cards)", []) # Default eval for others
             else:
                 player_info['hand_rank'] = "N/A"
+                player_info['hand_evaluation'] = (0, "N/A", []) # Default eval for empty/no cards
 
 
     def get_active_player(self):
@@ -103,6 +108,7 @@ class PokerBot:
             status = []
             if player.get('is_my_player', False):
                 status.append("ME")
+                # hand_rank_str is already set from hand_evaluation[1] above
                 hand_rank_str = player.get('hand_rank', 'N/A') 
                 if hand_rank_str and hand_rank_str != 'N/A':
                     status.append(f"Hand: {hand_rank_str}")
