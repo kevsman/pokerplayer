@@ -181,11 +181,14 @@ class PokerPageParser:
             if player_info['is_my_player']:
                 cards_holder = player_element.find('div', class_='cards-holder-hero')
                 if cards_holder:
-                    card_divs = cards_holder.find_all('div', class_=re.compile(r'card\d*')) 
+                    # Find individual card divs. Regex now looks for class name starting with 'card' followed by optional digits.
+                    card_divs = cards_holder.find_all('div', class_=re.compile(r'^card\\d*$'))
+                    processed_cards = set() # Use a set to store unique card strings to avoid duplicates
                     for card_div in card_divs:
                         if 'pt-visibility-hidden' in card_div.get('class', []): continue
 
                         card_str = "N/A"
+                        # Try to get card from backup display first
                         card_backup = card_div.find('div', class_=re.compile(r'card-image-backup .*'))
                         if card_backup:
                             rank_el = card_backup.find('div', class_='card-rank')
@@ -193,27 +196,33 @@ class PokerPageParser:
                             if rank_el and rank_el.text.strip() and suit_el and suit_el.text.strip():
                                 card_str = rank_el.text.strip() + suit_el.text.strip()
                         
+                        # If not found in backup, try to get from image source
                         if card_str == "N/A": 
                             img_element = card_div.find('img', class_='card-image')
                             if img_element and img_element.get('src'):
                                 src = img_element.get('src', '')
+                                # Extract filename, remove extension: e.g., "hA.png" -> "hA"
                                 card_filename = src.split('/')[-1].split('.')[0]
-                                if len(card_filename) >= 1:
+                                
+                                if len(card_filename) >= 2: # Ensure filename is long enough for rank and suit
                                     suit_char = ''
                                     rank_char = ''
-                                    if card_filename[-1].isalpha() and not card_filename[-1].isdigit(): 
-                                        suit_char = card_filename[-1]
-                                        rank_char = card_filename[:-1]
-                                    elif card_filename[0].isalpha() and not card_filename[0].isdigit(): 
+                                    # Determine if suit is first or last character
+                                    if card_filename[0].isalpha() and not card_filename[0].isdigit(): # Suit first, e.g., 'hA'
                                         suit_char = card_filename[0]
                                         rank_char = card_filename[1:]
+                                    elif card_filename[-1].isalpha() and not card_filename[-1].isdigit(): # Rank first, e.g., 'Ah'
+                                        suit_char = card_filename[-1]
+                                        rank_char = card_filename[:-1]
                                     
                                     if suit_char and rank_char:
-                                        suit_map = {'s': '♠', 'h': '♥', 'd': '♦', 'c': '♣'}
-                                        card_str = rank_char.upper() + suit_map.get(suit_char.lower(), suit_char)
+                                        suit_map = {'s': '♠', 'h': '♥', 'd': '♦', 'c': '♣',
+                                                    'S': '♠', 'H': '♥', 'D': '♦', 'C': '♣'} # Added uppercase
+                                        card_str = rank_char.upper() + suit_map.get(suit_char, suit_char)
                         
-                        if card_str != "N/A":
+                        if card_str != "N/A" and card_str not in processed_cards:
                             player_info['cards'].append(card_str)
+                            processed_cards.add(card_str)
             else: 
                 cards_holder_other = player_element.find('div', class_='cards-holder-other-hidden')
                 if cards_holder_other:
