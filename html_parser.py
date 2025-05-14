@@ -123,8 +123,13 @@ class PokerPageParser:
                     editable_span = name_element.find('span', class_='editable')
                     if editable_span:
                          player_info['name'] = editable_span.text.strip()
+                    # Check for nameplate name if other methods fail, but exclude countdown timer text
                     elif name_element.text.strip() and name_element.text.strip().lower() != 'empty':
-                         player_info['name'] = name_element.text.strip()
+                        # If the name contains "Time:", it's likely part of a countdown timer, so ignore it or find a cleaner name.
+                        # This is a basic check; more robust parsing might be needed if "Time:" can legitimately be part of a name.
+                        current_name_text = name_element.text.strip()
+                        if "Time:" not in current_name_text: # Added check to avoid timer text
+                            player_info['name'] = current_name_text
 
             if player_info['is_my_player'] and player_info['name'] == 'N/A':
                 global_user_info = self.soup.find('div', class_='user-info')
