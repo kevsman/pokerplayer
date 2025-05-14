@@ -3,7 +3,7 @@ from itertools import combinations
 
 class HandEvaluator:
     def __init__(self):
-        self.rank_map = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
+        self.rank_map = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
         self.rank_map_rev = {v: k for k, v in self.rank_map.items()}
 
     def _convert_card_to_value(self, card_str):
