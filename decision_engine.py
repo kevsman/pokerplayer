@@ -157,7 +157,7 @@ class DecisionEngine:
         tie_breaker_ranks = hand_evaluation_tuple[2]
         my_hole_cards_str_list = my_player.get('cards', [])
 
-        pot_size_str = table_data.get('pot_size', "0").replace('$', '').replace(',', '')
+        pot_size_str = table_data.get('pot_size', "0").replace('$', '').replace(',', '').replace('€', '')
         try:
             pot_size = float(pot_size_str)
         except ValueError:
@@ -180,14 +180,15 @@ class DecisionEngine:
                 active_opponents_count += 1
             
             try:
-                player_bet = float(p.get('bet', '0').replace('$', '').replace(',', ''))
+                player_bet_str = p.get('bet', '0').replace('$', '').replace(',', '').replace('€', '')
+                player_bet = float(player_bet_str)
                 if player_bet > max_bet_on_table:
                     max_bet_on_table = player_bet
                     player_to_act_on = p.get('name') # Name of player who made the current highest bet
             except ValueError:
                 pass 
         
-        my_current_bet_str = my_player.get('bet', '0').replace('$', '').replace(',', '')
+        my_current_bet_str = my_player.get('bet', '0').replace('$', '').replace(',', '').replace('€', '')
         try:
             my_current_bet = float(my_current_bet_str)
         except ValueError:
@@ -197,7 +198,7 @@ class DecisionEngine:
         
         # Effective stack (simplified - vs largest stack if multiple opponents, or vs single opponent)
         # For now, just use our stack as a reference for bet sizing.
-        my_stack_str = my_player.get('stack', '0').replace('$', '').replace(',', '')
+        my_stack_str = my_player.get('stack', '0').replace('$', '').replace(',', '').replace('€', '')
         try:
             my_stack = float(my_stack_str)
         except ValueError:
