@@ -1,0 +1,26 @@
+{
+    "html_capture_point": {
+        "x": 1951,
+        "y": 291
+    },
+    "fold_button": {
+        "x": 862,
+        "y": 1231
+    },
+    "check_call_button": {
+        "x": 857,
+        "y": 1237
+    },
+    "raise_button": {
+        "x": 828,
+        "y": 1237
+    },
+    "raise_input_field": {
+        "x": 828,
+        "y": 1237
+    },
+    "confirm_raise_button": {
+        "x": 834,
+        "y": 1227
+    }
+}
