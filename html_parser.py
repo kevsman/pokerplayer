@@ -248,21 +248,42 @@ class PokerPageParser:
                                 # Extract filename, remove extension: e.g., "hA.png" -> "hA"
                                 card_filename = src.split('/')[-1].split('.')[0]
                                 
-                                if len(card_filename) >= 2: # Ensure filename is long enough for rank and suit
-                                    suit_char = ''
-                                    rank_char = ''
-                                    # Determine if suit is first or last character
-                                    if card_filename[0].isalpha() and not card_filename[0].isdigit(): # Suit first, e.g., 'hA'
-                                        suit_char = card_filename[0]
-                                        rank_char = card_filename[1:]
-                                    elif card_filename[-1].isalpha() and not card_filename[-1].isdigit(): # Rank first, e.g., 'Ah'
-                                        suit_char = card_filename[-1]
-                                        rank_char = card_filename[:-1]
-                                    
-                                    if suit_char and rank_char:
-                                        suit_map = {'s': '♠', 'h': '♥', 'd': '♦', 'c': '♣',
-                                                    'S': '♠', 'H': '♥', 'D': '♦', 'C': '♣'} # Added uppercase
-                                        card_str = rank_char.upper() + suit_map.get(suit_char, suit_char)
+                                # --- START OF REVISED CARD FILENAME PARSING ---
+                                cf = card_filename.upper()
+                                parsed_rank_val = None
+                                parsed_suit_char_val = None
+
+                                possible_ranks = {"A", "K", "Q", "J", "T", "2", "3", "4", "5", "6", "7", "8", "9", "10"}
+                                possible_suit_chars = {"H", "D", "C", "S"} # Uppercase suit characters
+                                suit_symbol_map = {'S': '♠', 'H': '♥', 'D': '♦', 'C': '♣'}
+
+                                if len(cf) == 2: # Expected format: RS or SR (e.g., AH, SA)
+                                    # Try Rank + Suit (e.g., AS, TD, 7C)
+                                    # Ensure rank part is not '1' (for '10' cases)
+                                    if cf[0] in possible_ranks and cf[0] != '1' and cf[1] in possible_suit_chars:
+                                        parsed_rank_val = cf[0]
+                                        parsed_suit_char_val = cf[1]
+                                    # Try Suit + Rank (e.g., SA, DT, C7)
+                                    # Ensure rank part is not '1'
+                                    elif cf[0] in possible_suit_chars and cf[1] in possible_ranks and cf[1] != '1':
+                                        parsed_rank_val = cf[1]
+                                        parsed_suit_char_val = cf[0]
+                                elif len(cf) == 3: # Expected format: RRS or SRR where RR is 10 (e.g., 10H, H10)
+                                    # Try Rank(10) + Suit (e.g., 10S)
+                                    if cf[:2] == "10" and cf[2] in possible_suit_chars:
+                                        parsed_rank_val = "10"
+                                        parsed_suit_char_val = cf[2]
+                                    # Try Suit + Rank(10) (e.g., S10)
+                                    elif cf[0] in possible_suit_chars and cf[1:] == "10":
+                                        parsed_rank_val = "10"
+                                        parsed_suit_char_val = cf[0]
+                                
+                                if parsed_rank_val and parsed_suit_char_val:
+                                    final_suit_symbol = suit_symbol_map.get(parsed_suit_char_val)
+                                    if final_suit_symbol:
+                                        card_str = parsed_rank_val + final_suit_symbol
+                                    # else card_str remains "N/A" if parsed_suit_char_val was not in suit_symbol_map (should not happen due to checks)
+                                # --- END OF REVISED CARD FILENAME PARSING ---
                         
                         if card_str != "N/A" and card_str not in processed_cards:
                             player_info['cards'].append(card_str)
