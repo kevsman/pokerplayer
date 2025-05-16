@@ -9,6 +9,17 @@ import time
 
 # Action definitions
 
+def parse_currency_string(value_str):
+    if isinstance(value_str, (int, float)):
+        return float(value_str)
+    if not isinstance(value_str, str):
+        return 0.0 # Or raise an error, depending on desired handling
+    cleaned_str = value_str.replace('€', '').replace('$', '').replace(',', '').strip()
+    try:
+        return float(cleaned_str)
+    except ValueError:
+        return 0.0 # Or raise an error
+
 class PokerBot:
     # html_content parameter removed from __init__ signature
     def __init__(self, big_blind=0.02, small_blind=0.01):
@@ -247,11 +258,8 @@ class PokerBot:
             if action == ACTION_FOLD:
                 self.ui_controller.action_fold()
             elif action == ACTION_CHECK or action == ACTION_CALL:
-                my_current_stack_str = my_player_data.get('stack', '0').replace('€', '').replace('$', '')
-                try:
-                    my_current_stack = float(my_current_stack_str)
-                except ValueError:
-                    my_current_stack = 0
+                my_current_stack_str = my_player_data.get('stack', '0') # Keep for debug if needed
+                my_current_stack = parse_currency_string(my_current_stack_str)
 
                 if action == ACTION_CALL and amount is not None and amount >= my_current_stack and my_player_data.get('is_all_in_call_available'):
                     print("Performing All-in Call action (simulated).")
@@ -259,11 +267,8 @@ class PokerBot:
                 else:
                     self.ui_controller.action_check_call()
             elif action == ACTION_RAISE:
-                my_current_stack_str = my_player_data.get('stack', '0').replace('€', '').replace('$', '')
-                try:
-                    my_current_stack = float(my_current_stack_str)
-                except ValueError:
-                    my_current_stack = 0
+                my_current_stack_str = my_player_data.get('stack', '0') # Keep for debug if needed
+                my_current_stack = parse_currency_string(my_current_stack_str)
 
                 if amount is not None and amount >= my_current_stack:
                     if 'all_in' in my_player_data.get('available_actions', []):
@@ -365,7 +370,9 @@ class PokerBot:
                         # If the action is CALL and it's an all-in situation, 
                         # and the decision was to call the all-in, we might need a specific button click.
                         # The decision engine now returns `my_stack` as amount for all-in calls.
-                        if action == ACTION_CALL and amount == my_player_data.get('stack') and my_player_data.get('is_all_in_call_available'):
+                        my_current_stack = parse_currency_string(my_player_data.get('stack', '0'))
+                        
+                        if action == ACTION_CALL and amount is not None and amount >= my_current_stack and my_player_data.get('is_all_in_call_available'):
                             print("Performing All-in Call action.")
                             self.ui_controller.action_all_in() # Assumes action_all_in handles this specific click
                         else:
@@ -373,7 +380,8 @@ class PokerBot:
                     elif action == ACTION_RAISE:
                         # If the raise amount is the player's entire stack, it's an all-in raise.
                         # The UI might have a dedicated all-in button for this instead of raise + amount.
-                        if amount is not None and float(my_player_data.get('stack')) <= amount: # Check if raise amount is effectively all-in
+                        my_current_stack = parse_currency_string(my_player_data.get('stack', '0'))
+                        if amount is not None and my_current_stack <= amount: # Check if raise amount is effectively all-in
                              # Check if a dedicated all-in button is available from parser info (optional)
                             if 'all_in' in my_player_data.get('available_actions', []):
                                 print("Performing All-in action (raise all-in).")

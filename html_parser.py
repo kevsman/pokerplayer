@@ -237,8 +237,18 @@ class PokerPageParser:
                 else:
                     print("Found actions area. Analyzing buttons...")
                     # elements_to_check = actions_area.find_all(lambda tag: tag.name == 'div' and 'action-button' in tag.get('class', []))
-                    elements_to_check = actions_area.find_all('div', class_=re.compile(r'action-button'))
+                    # Find only direct children that are action buttons to avoid double counting
+                    elements_to_check = actions_area.find_all('div', class_=re.compile(r'action-button'), recursive=False)
+                    if not elements_to_check: # If no direct children, try a broader search but be wary of duplicates
+                        elements_to_check = actions_area.find_all('div', class_=re.compile(r'action-button'))
+                        # This broader search might re-introduce duplicates if the HTML is complex.
+                        # A more robust solution would involve tracking processed elements or using more specific selectors.
+                        # For now, we'll proceed and rely on the available_actions set to prevent functional duplicates.
+
                     print(f"Found {len(elements_to_check)} potential action elements.")
+                    
+                    # Use a set to store unique actions to avoid duplicates from parsing
+                    unique_actions_found = set()
 
                     for el in elements_to_check:
                         el_classes = el.get('class', [])
@@ -333,20 +343,28 @@ class PokerPageParser:
                         if is_hidden or is_disabled:
                             continue
 
+                        action_identified = None
                         if 'call' in button_text_content:
-                            player_info['available_actions'].append('call')
+                            action_identified = 'call'
                         elif 'raise' in button_text_content:
-                            player_info['available_actions'].append('raise')
+                            action_identified = 'raise'
                         elif 'fold' in button_text_content:
-                            player_info['available_actions'].append('fold')
+                            action_identified = 'fold'
                         elif 'all in' in button_text_content:
-                            player_info['available_actions'].append('all_in')
+                            action_identified = 'all_in'
                         elif 'check' in button_text_content:
-                            player_info['available_actions'].append('check')
+                            action_identified = 'check'
                         elif 'bet' in button_text_content:
-                            player_info['available_actions'].append('bet')
+                            action_identified = 'bet'
                         else:
                             print(f"Unrecognized action button text: '{button_text_content}'")
+                        
+                        if action_identified and action_identified not in unique_actions_found:
+                            player_info['available_actions'].append(action_identified)
+                            unique_actions_found.add(action_identified)
+                        elif action_identified:
+                            print(f"Action '{action_identified}' already processed for this player. Text: '{button_text_content}'")
+
 
                 # After iterating through all buttons, determine is_all_in_call_available
                 if 'all_in' in player_info['available_actions']:

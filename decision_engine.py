@@ -204,14 +204,29 @@ class DecisionEngine:
             my_current_bet = 0.0
             
         bet_to_call = round(max(0, max_bet_on_table - my_current_bet), 2)
-        can_check = (bet_to_call == 0) # Define can_check
+        # can_check = (bet_to_call == 0) # Define can_check # Moved lower
 
-        print(f"DecisionEngine: Initial bet_to_call calculated: {bet_to_call} (max_bet_on_table: {max_bet_on_table}, my_current_bet: {my_current_bet})")
+        print(f"DecisionEngine: Initial bet_to_call calculated by engine: {bet_to_call} (max_bet_on_table: {max_bet_on_table}, my_current_bet: {my_current_bet})")
         
         parsed_bet_to_call_from_parser = my_player.get('bet_to_call', 0) # This is the value from the button text
         is_all_in_call_available_from_parser = my_player.get('is_all_in_call_available', False)
         print(f"DecisionEngine: From html_parser - player_info['bet_to_call']: {parsed_bet_to_call_from_parser}")
         print(f"DecisionEngine: From html_parser - player_info['is_all_in_call_available']: {is_all_in_call_available_from_parser}")
+
+        # Prioritize bet_to_call from parser if it's greater than 0, as it reflects button states.
+        # This is crucial if the buttons show a call amount but table scan didn't pick it up (e.g. complex bet scenarios)
+        # or if the parser correctly identifies a "Call X" amount that differs from simple calculation.
+        if parsed_bet_to_call_from_parser > 0:
+            if bet_to_call == 0: # Engine thought it was a check, but parser found a call button
+                print(f"DecisionEngine: Overriding engine's bet_to_call (0) with parser's value ({parsed_bet_to_call_from_parser}) as a call option was found.")
+                bet_to_call = parsed_bet_to_call_from_parser
+            elif parsed_bet_to_call_from_parser != bet_to_call:
+                 # This case means both engine and parser found a bet_to_call, but they differ.
+                 # Generally, the parser's value from the button should be more reliable for the immediate action.
+                 print(f"DecisionEngine: Discrepancy. Engine bet_to_call: {bet_to_call}, Parser bet_to_call: {parsed_bet_to_call_from_parser}. Using parser's value.")
+                 bet_to_call = parsed_bet_to_call_from_parser
+        
+        can_check = (bet_to_call == 0) # Now define can_check based on the potentially updated bet_to_call
 
         my_stack_str = my_player.get('stack', '0').replace('$', '').replace(',', '').replace('€', '')
         try:
