@@ -373,7 +373,7 @@ class PokerBot:
                     elif action == ACTION_RAISE:
                         # If the raise amount is the player's entire stack, it's an all-in raise.
                         # The UI might have a dedicated all-in button for this instead of raise + amount.
-                        if amount is not None and amount >= my_player_data.get('stack'): # Check if raise amount is effectively all-in
+                        if amount is not None and float(my_player_data.get('stack')) <= amount: # Check if raise amount is effectively all-in
                              # Check if a dedicated all-in button is available from parser info (optional)
                             if 'all_in' in my_player_data.get('available_actions', []):
                                 print("Performing All-in action (raise all-in).")
