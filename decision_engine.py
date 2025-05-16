@@ -438,22 +438,38 @@ class DecisionEngine:
                     return ACTION_FOLD, 0
             
             elif preflop_category == "Playable Broadway": # Single broadway card, not covered above
-                if bet_to_call == 0 and position in ['Late', 'Blinds'] and limpers < 2:
-                    raise_amount = preferred_raise_amount * 0.8 # Slightly smaller raise
-                    print(f"DecisionEngine: Playable Broadway ({hand_description}), late position open to {raise_amount}")
-                    return ACTION_RAISE, min(my_stack, raise_amount)
-                elif bet_to_call == 0 and limpers >=1 and position in ['Late', 'Blinds']: # Try to punish limpers
-                    raise_amount = max(min_raise_amount, round((2.5 + limpers) * self.big_blind * aggression_factor, 2))
-                    print(f"DecisionEngine: Playable Broadway ({hand_description}), raising limpers to {raise_amount}")
-                    return ACTION_RAISE, min(my_stack, raise_amount)
-                elif bet_to_call <= self.big_blind * 2 * aggression_factor and position in ['Blinds'] and pot_odds_to_call > 0.25: # Defend blinds vs small steal
-                    print(f"DecisionEngine: Playable Broadway ({hand_description}), defending blind vs small raise {bet_to_call}")
-                    return ACTION_CALL, bet_to_call
-                else:
-                    print(f"DecisionEngine: Playable Broadway ({hand_description}), folding.")
-                    return ACTION_CHECK if can_check else ACTION_FOLD, 0
-
-            else: # Weak hands
+                if bet_to_call == 0: # Unopened pot
+                    if position in ['Late', 'Blinds'] or limpers < 2: # Open from late, blinds, or vs few limpers
+                        raise_amount = preferred_raise_amount * 0.9 # Standard open size for these hands
+                        print(f"DecisionEngine: Playable Broadway ({hand_description}), opening to {raise_amount}")
+                        return ACTION_RAISE, min(my_stack, raise_amount)
+                    elif position == 'Middle' and limpers < 1: # Consider opening from middle if no limpers
+                        raise_amount = preferred_raise_amount * 0.8
+                        print(f"DecisionEngine: Playable Broadway ({hand_description}), Middle position open to {raise_amount}")
+                        return ACTION_RAISE, min(my_stack, raise_amount)
+                    else:
+                        print(f"DecisionEngine: Playable Broadway ({hand_description}) from {position} with {limpers} limpers, checking/folding.")
+                        return ACTION_CHECK if can_check else ACTION_FOLD, 0
+                # Facing a bet
+                elif bet_to_call <= self.big_blind * 3.5 * aggression_factor : # Call small to moderate raises
+                    # Consider position and pot odds more carefully
+                    if position in ['Blinds'] and pot_odds_to_call > 0.25: # Defend blinds more liberally
+                        print(f"DecisionEngine: Playable Broadway ({hand_description}), defending blind vs raise {bet_to_call}")
+                        return ACTION_CALL, bet_to_call
+                    elif position in ['Late', 'Middle'] and pot_odds_to_call > 0.20 and bet_to_call <= self.big_blind * 3 * aggression_factor :
+                         print(f"DecisionEngine: Playable Broadway ({hand_description}), calling raise {bet_to_call} in position with odds.")
+                         return ACTION_CALL, bet_to_call
+                    elif bet_to_call <= self.big_blind * 2 * aggression_factor: # Call very small raises generally
+                        print(f"DecisionEngine: Playable Broadway ({hand_description}), calling small raise {bet_to_call}")
+                        return ACTION_CALL, bet_to_call
+                    else:
+                        print(f"DecisionEngine: Playable Broadway ({hand_description}), folding to raise {bet_to_call} - conditions not met.")
+                        return ACTION_FOLD, 0
+                else: # Facing a larger bet
+                    print(f"DecisionEngine: Playable Broadway ({hand_description}), folding to larger raise of {bet_to_call}.")
+                    return ACTION_FOLD, 0
+            
+            elif preflop_category == "Weak": # Weak hands
                 if can_check:
                     print(f"DecisionEngine: Weak hand ({preflop_category} / {hand_description}), checking.")
                     return ACTION_CHECK, 0
@@ -465,103 +481,143 @@ class DecisionEngine:
                     print(f"DecisionEngine: Weak hand ({preflop_category} / {hand_description}), folding to bet {bet_to_call}.")
                     return ACTION_FOLD, 0
 
-        # --- Post-flop Strategy ---
-        # numerical_hand_rank: 1 (High Card) to 9 (Straight Flush)
-        
-        # Calculate pot odds
-        if bet_to_call > 0:
-            # Ensure denominator is not zero before division
-            denominator = pot_size + bet_to_call
-            if denominator > 0:
-                pot_odds_to_call = bet_to_call / denominator
-            else:
-                pot_odds_to_call = 0 # Or handle as an edge case, e.g., infinite if pot is 0 and facing a bet
-
-        # Continuation Bet (C-Bet) logic
-        # Need to know if I was the pre-flop aggressor. This state is missing.
-        # Assume for now, if it's checked to us on the flop, and we raised pre-flop, we can C-Bet.
-        can_cbet = False # Placeholder: (self.was_preflop_aggressor and game_stage == 'Flop' and bet_to_call == 0)
-        if can_cbet:
-            cbet_amount = round(pot_size * (0.4 if active_opponents_count > 1 else 0.6) ,2) # Smaller if multiway
-            cbet_amount = max(self.big_blind, cbet_amount) # At least 1 BB
-            # C-bet with strong hands, good draws, or as a bluff on certain board textures vs certain opponents
-            if numerical_hand_rank >= 3 or "Flush Draw" in hand_description or "Straight Draw" in hand_description: # Two Pair+ or good draw
-                return ACTION_RAISE, min(my_stack, cbet_amount) # ACTION_RAISE is used for betting
-            elif opponent_tendencies['fold_to_cbet_rate'] > 0.6 and active_opponents_count == 1: # Bluff C-bet vs one opponent who folds a lot
-                return ACTION_RAISE, min(my_stack, cbet_amount)
-            else:
-                return ACTION_CHECK # Check if not C-betting
-        
-        # Responding to bets post-flop
-        if numerical_hand_rank >= 7: # Full House or better - very strong
-            if bet_to_call == 0:
-                return ACTION_RAISE, min(my_stack, round(pot_size * 0.7, 2)) # Value bet strong
-            else: # Facing a bet, raise for value
-                # Raise sizing: 2.5-3x the bet, or more if pot is large
-                raise_value = round(max(min_raise_amount, bet_to_call * 2.5 + pot_size),2)
-                return ACTION_RAISE, min(my_stack, raise_value)
-        
         elif numerical_hand_rank >= 5: # Straight or Flush
             if bet_to_call == 0:
-                return ACTION_RAISE, min(my_stack, round(pot_size * 0.6, 2)) # Value bet
-            else: # Facing a bet
-                if bet_to_call < my_stack * 0.4: # Call if bet is not too large portion of stack
-                    return ACTION_CALL, bet_to_call
-                else: # If bet is very large, re-evaluate (could be vs stronger or a bluff)
-                    return ACTION_FOLD # Simplified: fold to huge overbets without nutted hand
-
-        elif numerical_hand_rank >= 3: # Two Pair or Three of a Kind
-            if bet_to_call == 0:
-                return ACTION_RAISE, min(my_stack, round(pot_size * 0.5, 2))
-            else:
-                # Consider opponent tendencies: call more vs aggressive, fold more vs passive if bet is large
-                if pot_odds_to_call > 0 and pot_odds_to_call < 0.35: # Decent pot odds
-                    return ACTION_CALL, bet_to_call
-                elif bet_to_call <= self.big_blind * 5: # Call moderately sized bets
-                    return ACTION_CALL, bet_to_call
+                value_bet_amount = round(pot_size * 0.7, 2) # Bet 70% of pot
+                value_bet_amount = max(self.big_blind, value_bet_amount)
+                value_bet_amount = min(value_bet_amount, my_stack)
+                if value_bet_amount > 0:
+                    print(f"DecisionEngine: Straight/Flush ({hand_description}), betting {value_bet_amount} for value.")
+                    return ACTION_RAISE, value_bet_amount
                 else:
-                    return ACTION_FOLD
+                    print(f"DecisionEngine: Straight/Flush ({hand_description}), pot/bet is 0, checking.")
+                    return ACTION_CHECK, 0
+            else: # Facing a bet
+                # With a made straight or flush, usually call or raise.
+                # This assumes not an all-in situation, which is handled earlier.
+                raise_amount = max(min_raise_amount, round(bet_to_call * 2.5 + pot_size, 2)) # Pot-sized raise over current pot + call
+                raise_amount = min(raise_amount, my_stack)
+
+                if bet_to_call < pot_size * 0.75 and raise_amount > bet_to_call and raise_amount > 0: # If facing a reasonable bet, consider raising
+                    print(f"DecisionEngine: Straight/Flush ({hand_description}), raising bet {bet_to_call} to {raise_amount}.")
+                    return ACTION_RAISE, raise_amount
+                elif bet_to_call < my_stack : # Call if bet is not an overbet all-in (that we didn't already decide to call)
+                    print(f"DecisionEngine: Straight/Flush ({hand_description}), calling bet {bet_to_call}.")
+                    return ACTION_CALL, bet_to_call
+                else: 
+                    # If is_facing_effective_all_in was true, it's handled. This is for large bets not quite all-in.
+                    print(f"DecisionEngine: Straight/Flush ({hand_description}), calling large bet {bet_to_call} (or was already handled by all-in).")
+                    return ACTION_CALL, bet_to_call # Default to call if very strong and not folding to all-in
+
+        elif numerical_hand_rank >= 3: # Two Pair or Three of a Kind (numerical_hand_rank 3 or 4)
+                                       # Assumes not an all-in situation we must call (handled by earlier is_facing_effective_all_in logic)
+            if bet_to_call == 0:
+                value_bet_amount = round(pot_size * 0.6, 2) # Bet 60% of pot
+                value_bet_amount = max(self.big_blind, value_bet_amount)
+                value_bet_amount = min(value_bet_amount, my_stack)
+                if value_bet_amount > 0:
+                    print(f"DecisionEngine: Two Pair/Three of a Kind ({hand_description}), betting {value_bet_amount} for value.")
+                    return ACTION_RAISE, value_bet_amount
+                else:
+                    print(f"DecisionEngine: Two Pair/Three of a Kind ({hand_description}), pot/bet is 0, checking.")
+                    return ACTION_CHECK, 0
+            else: # Facing a bet
+                raise_amount = max(min_raise_amount, round(bet_to_call * 2.5 + pot_size, 2))
+                raise_amount = min(raise_amount, my_stack)
+
+                if numerical_hand_rank == 4: # Three of a Kind
+                    # Trips are strong, usually raise or call. All-in calls handled earlier.
+                    if raise_amount > bet_to_call and bet_to_call < my_stack * 0.5 and raise_amount > 0 : # Don't raise into a huge bet if raise is small part of stack
+                        print(f"DecisionEngine: Three of a Kind ({hand_description}), raising bet {bet_to_call} to {raise_amount}.")
+                        return ACTION_RAISE, raise_amount
+                    else:
+                        print(f"DecisionEngine: Three of a Kind ({hand_description}), calling bet {bet_to_call}.")
+                        return ACTION_CALL, bet_to_call
+                else: # Two Pair (numerical_hand_rank == 3)
+                    if bet_to_call < pot_size * 0.5 and raise_amount > bet_to_call and raise_amount > 0: # Facing a smaller bet, raise
+                        print(f"DecisionEngine: Two Pair ({hand_description}), raising small bet {bet_to_call} to {raise_amount}.")
+                        return ACTION_RAISE, raise_amount
+                    elif pot_odds_to_call > 0.20 or bet_to_call <= pot_size * 0.75 : # Call reasonable bets
+                        print(f"DecisionEngine: Two Pair ({hand_description}), calling bet {bet_to_call} with pot odds {pot_odds_to_call:.2f}.")
+                        return ACTION_CALL, bet_to_call
+                    else:
+                        print(f"DecisionEngine: Two Pair ({hand_description}), folding to large bet {bet_to_call} with pot odds {pot_odds_to_call:.2f}.")
+                        return ACTION_FOLD, 0
 
         elif numerical_hand_rank == 2: # One Pair
-            # Need to assess kicker strength and if it's top/middle/bottom pair.
-            # This requires community card info and comparing tie_breaker_ranks[0] (pair rank) and tie_breaker_ranks[1] (kicker)
-            # For simplicity, assume any pair has some showdown value.
-            if bet_to_call == 0:
-                return ACTION_CHECK # Check, hope to see next card or showdown cheaply
-            else:
-                if pot_odds_to_call > 0 and pot_odds_to_call < 0.25 and active_opponents_count == 1: # Good odds vs one player
-                    return ACTION_CALL, bet_to_call
-                elif bet_to_call <= self.big_blind * 3: # Call small bets
-                    return ACTION_CALL, bet_to_call
-                else:
-                    return ACTION_FOLD
-        
-        else: # High Card or only a weak draw (draw logic needs specific identification)
-            # Bluffing considerations:
-            # - On scare cards (e.g., Ace on turn/river if we were aggressor)
-            # - Vs tight opponents who fold often (from opponent_tendencies)
-            # - If we have blockers to strong hands
-            # Semi-bluffing with draws:
-            # if "Flush Draw" in hand_description or "Straight Draw" in hand_description:
-            #     draw_outs = ... # Calculate outs
-            #     equity = draw_outs / (52 - len(my_hole_cards_str_list) - len(table_data.get('community_cards',[])))
-            #     if bet_to_call == 0:
-            #         return ACTION_RAISE, min(my_stack, round(pot_size * 0.4,2)) # Semi-bluff bet
-            #     elif pot_odds_to_call > equity: # Calling if direct odds are good
-            #         return ACTION_CALL, bet_to_call
-            #     # Consider implied odds for draws too
+            is_flush_draw = "Flush Draw" in hand_description
+            is_straight_draw = "Straight Draw" in hand_description 
+            has_significant_draw = (is_flush_draw or is_straight_draw) and game_stage != 'River'
 
-            if bet_to_call == 0:
-                return ACTION_CHECK
-            else:
-                # Fold to most bets if we have nothing
-                if game_stage == 'River' and bet_to_call > pot_size * 0.5 and opponent_tendencies['agg_factor'] < 1.5: 
-                    # Consider a hero call if opponent is passive and makes an uncharacteristic large bet (potential bluff)
-                    # This is risky and needs very good reads.
-                    pass # For now, stick to folding weak hands to bets.
-                
-                if bet_to_call <= self.small_blind * 2: # Call very small bets / probes
-                    return ACTION_CALL, bet_to_call
-                return ACTION_FOLD
+            if bet_to_call == 0: 
+                if game_stage in ['Turn', 'River'] and pot_size > 0:
+                    value_bet_amount = round(pot_size * 0.33, 2)
+                    value_bet_amount = max(self.big_blind, value_bet_amount)
+                    value_bet_amount = min(value_bet_amount, my_stack)
+                    if value_bet_amount > 0:
+                        print(f"DecisionEngine: One Pair ({hand_description}), betting {value_bet_amount} for value/protection on {game_stage}.")
+                        return ACTION_RAISE, value_bet_amount
+                    else:
+                        print(f"DecisionEngine: One Pair ({hand_description}), calculated bet 0, checking on {game_stage}.")
+                        return ACTION_CHECK, 0
+                else: 
+                    print(f"DecisionEngine: One Pair ({hand_description}), checking on {game_stage} when checked to.")
+                    return ACTION_CHECK, 0
+            else: # Facing a bet
+                if has_significant_draw:
+                    # Combined odds for pair + draw. Let's use a threshold like 22-25% pot odds.
+                    # A pair + 9-out flush draw has good equity.
+                    if pot_odds_to_call > 0.22: # Threshold for calling with pair + good draw
+                        print(f"DecisionEngine: One Pair with Draw ({hand_description}), calling bet {bet_to_call} with pot odds {pot_odds_to_call:.2f} (met >0.22).")
+                        return ACTION_CALL, bet_to_call
+                    else:
+                        print(f"DecisionEngine: One Pair with Draw ({hand_description}), folding bet {bet_to_call}. Pot odds {pot_odds_to_call:.2f} (needed >0.22).")
+                        return ACTION_FOLD, 0
+                else: # Just a pair
+                    if pot_odds_to_call > 0.25: 
+                        print(f"DecisionEngine: One Pair ({hand_description}), calling bet {bet_to_call} with pot odds {pot_odds_to_call:.2f} (met >0.25).")
+                        return ACTION_CALL, bet_to_call
+                    elif pot_odds_to_call > 0.20 and pot_size > 0 and bet_to_call < (pot_size / 3): # Call small bets with slightly worse odds
+                        print(f"DecisionEngine: One Pair ({hand_description}), calling small bet {bet_to_call} ({(bet_to_call/pot_size*100) if pot_size > 0 else 0:.0f}% of pot) with pot odds {pot_odds_to_call:.2f} (met >0.20).")
+                        return ACTION_CALL, bet_to_call
+                    else:
+                        print(f"DecisionEngine: One Pair ({hand_description}), folding bet {bet_to_call}. Pot odds {pot_odds_to_call:.2f} not sufficient.")
+                        return ACTION_FOLD, 0
+        
+        else: # High Card (rank 1) or No Made Hand (rank 0)
+            is_significant_draw = ("Flush Draw" in hand_description or "Straight Draw" in hand_description) and game_stage != 'River'
+            
+            if is_significant_draw:
+                if bet_to_call == 0: 
+                    if game_stage in ['Flop', 'Turn'] and pot_size > 0:
+                        semibluff_amount = round(pot_size * 0.5, 2) # Semi-bluff 1/2 pot
+                        semibluff_amount = max(self.big_blind, semibluff_amount)
+                        semibluff_amount = min(semibluff_amount, my_stack)
+                        if semibluff_amount > 0:
+                             print(f"DecisionEngine: Draw ({hand_description}), semi-bluffing {semibluff_amount} on {game_stage}.")
+                             return ACTION_RAISE, semibluff_amount
+                        else:
+                             print(f"DecisionEngine: Draw ({hand_description}), calculated semi-bluff 0, checking.")
+                             return ACTION_CHECK, 0
+                    else: 
+                        print(f"DecisionEngine: Draw ({hand_description}), checking on {game_stage}.")
+                        return ACTION_CHECK, 0
+                else: # Facing a bet with a draw
+                    required_odds_for_draw = 0.25 # Default, can be adjusted
+                    if "Flush Draw" in hand_description: required_odds_for_draw = 0.20 # ~9 outs
+                    elif "Straight Draw" in hand_description: required_odds_for_draw = 0.20 # ~8 outs OESD
+
+                    if pot_odds_to_call > required_odds_for_draw:
+                        print(f"DecisionEngine: Draw ({hand_description}), calling bet {bet_to_call} with pot odds {pot_odds_to_call:.2f} (req > {required_odds_for_draw:.2f}).")
+                        return ACTION_CALL, bet_to_call
+                    else:
+                        print(f"DecisionEngine: Draw ({hand_description}), folding bet {bet_to_call}, pot odds {pot_odds_to_call:.2f} (req > {required_odds_for_draw:.2f}).")
+                        return ACTION_FOLD, 0
+            elif can_check: 
+                print(f"DecisionEngine: High Card/No Hand ({hand_description}), checking.")
+                return ACTION_CHECK, 0
+            else: 
+                print(f"DecisionEngine: High Card/No Hand ({hand_description}), folding to bet {bet_to_call}.")
+                return ACTION_FOLD, 0
 
         return ACTION_FOLD # Default fallback action
