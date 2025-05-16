@@ -2,12 +2,47 @@ from bs4 import BeautifulSoup
 import re
 
 class PokerPageParser:
-    def __init__(self, html_content):
-        self.soup = BeautifulSoup(html_content, 'html.parser')
+    def __init__(self):
+        self.soup = None # Initialize soup as None, will be set in parse_html
         self.table_data = {}
         self.player_data = []
 
+    def parse_html(self, html_content):
+        if not html_content or not html_content.strip():
+            print("Error: HTML content is empty in PokerPageParser.parse_html")
+            # Return a structure indicating an error or empty state
+            return {
+                'table_data': {},
+                'all_players_data': [],
+                'my_player_data': None,
+                'error': "Empty or invalid HTML content received"
+            }
+
+        self.soup = BeautifulSoup(html_content, 'html.parser')
+        # Reset data for the current parse operation
+        self.table_data = {}
+        self.player_data = []
+
+        table_info = self.analyze_table()
+        players_info = self.analyze_players()
+
+        my_player_info = None
+        for p_info in players_info:
+            if p_info.get('is_my_player'):
+                my_player_info = p_info
+                break
+        
+        return {
+            'table_data': table_info,
+            'all_players_data': players_info,
+            'my_player_data': my_player_info
+        }
+
     def analyze_table(self):
+        # Ensure soup is available
+        if not self.soup:
+            print("Error: BeautifulSoup object (self.soup) not initialized before calling analyze_table.")
+            return {}
         # Extract Hand ID
         hand_id_element = self.soup.find('div', class_='hand-id')
         if hand_id_element:
@@ -85,6 +120,10 @@ class PokerPageParser:
         return self.table_data
 
     def analyze_players(self):
+        # Ensure soup is available
+        if not self.soup:
+            print("Error: BeautifulSoup object (self.soup) not initialized before calling analyze_players.")
+            return []
         self.player_data = [] 
         
         potential_player_elements = self.soup.find_all('div', class_='player-area')

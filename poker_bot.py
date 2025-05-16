@@ -10,8 +10,29 @@ import time
 # Action definitions
 
 class PokerBot:
-    def __init__(self, html_content=None, big_blind=0.02, small_blind=0.01):
-        self.parser = PokerPageParser(html_content) if html_content else None
+    # html_content parameter removed from __init__ signature
+    def __init__(self, big_blind=0.02, small_blind=0.01):
+        try:
+            self.parser = PokerPageParser() # Correctly instantiate with no arguments
+            if self.parser is None: # This check is less likely to fail now
+                print("CRITICAL ERROR: self.parser is None after PokerPageParser() instantiation.")
+                print("Please check the definition of the PokerPageParser class/function in html_parser.py.")
+                print("It might be returning None or not be a class constructor.")
+                raise RuntimeError("PokerPageParser could not be initialized properly.")
+            
+            if not hasattr(self.parser, 'parse_html'):
+                error_msg = (
+                    f"CRITICAL ERROR: self.parser (type: {type(self.parser)}) exists but does not have a 'parse_html' method. "
+                    f"Please check the PokerPageParser class definition in html_parser.py."
+                )
+                print(error_msg)
+                raise AttributeError(error_msg)
+
+        except Exception as e:
+            print(f"CRITICAL ERROR: Failed to instantiate or validate PokerPageParser during PokerBot initialization: {e}")
+            # Re-raise the exception to stop the bot if the parser is critical
+            raise
+
         self.hand_evaluator = HandEvaluator()
         self.decision_engine = DecisionEngine(big_blind, small_blind)
         self.ui_controller = UIController() # Added UIController instance
@@ -80,7 +101,11 @@ class PokerBot:
 
     def get_summary(self):
         if not self.table_data and not self.player_data: 
-            self.analyze()
+            # In the context of file-based execution, analyze() might need to be called explicitly first
+            # if parse_html was called on self.parser but analyze() on self (bot instance) wasn't.
+            # However, analyze() itself calls self.parser.analyze_table/players which use the soup
+            # set by the parser's parse_html method. So, if parser.parse_html was called, this should be fine.
+            pass # analyze() will be called if needed by other methods or if data is empty.
             
         summary = []
         summary.append(f"--- Table --- Hand ID: {self.table_data.get('hand_id', 'N/A')}")
@@ -141,9 +166,13 @@ class PokerBot:
 
         return "\n".join(summary)
 
+    # This method might need review based on its usage context.
+    # The main_loop calls self.parser.parse_html directly.
     def get_game_state_from_html(self, html_content):
-        self.parser = PokerPageParser(html_content)
-        self.analyze()
+        if self.parser:
+            self.parser.parse_html(html_content) # Use the parser instance's method
+            self.analyze() # This will use the soup set in the parser by the call above
+        # This method currently doesn't return a game_state dictionary.
 
     def run_calibration(self):
         print("Starting UI calibration...")
@@ -168,6 +197,10 @@ class PokerBot:
                 print("\n--- New Decision Cycle ---")
                 print("Attempting to retrieve game HTML from screen...")
                 current_html = self.ui_controller.get_html_from_screen()
+                if current_html:
+                    print(f"HTML length: {len(current_html)}") # Added print
+                else:
+                    print("HTML length: 0 (Failed to retrieve)") # Added print for failure case
 
                 if not current_html:
                     print("Failed to retrieve HTML. Retrying in 1 second...")
@@ -224,7 +257,7 @@ class PokerBot:
                     else:
                         print(f"Unknown action: {action}")
                     
-                    time.sleep(2) # Wait a bit after an action for game state to update on screen
+                    time.sleep(5) # Changed from 2 to 5 seconds
                 else:
                     if my_player_data: # Successfully parsed, but not our turn
                          print(f"Not my turn. My Hand: {my_player_data.get('cards')}. Waiting...")
@@ -243,9 +276,17 @@ if __name__ == "__main__":
         file_path = sys.argv[1]
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
-                html_content = f.read()
+                html_content_from_file = f.read()
             print(f"Attempting to open and parse: {file_path}")
-            bot = PokerBot(html_content) # Default blinds will be used
+            
+            bot = PokerBot() # Instantiate PokerBot (parser is created empty)
+            
+            # Use the bot's parser to parse the HTML from the file
+            # This will set up self.soup within the bot.parser instance.
+            game_state_dict = bot.parser.parse_html(html_content_from_file)
+            
+            # Call bot.analyze() to populate bot.table_data and bot.player_data
+            # using the bot.parser's internal state (which now has the soup from the file).
             analysis_result = bot.analyze()
             
             print("\n---- Summary from PokerBot ----")

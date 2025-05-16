@@ -50,18 +50,23 @@ class UIController:
             return None
         
         capture_pos = self.positions["html_capture_point"]
-        # Click for HTML capture remains exact, not using _click_position_randomized
         pyautogui.moveTo(capture_pos["x"], capture_pos["y"], duration=0.2)
-        pyautogui.click()
-        time.sleep(0.1) # Brief pause for focus
-        pyautogui.hotkey('ctrl', 'a') # Select all
-        time.sleep(0.1) # Brief pause
+        pyautogui.click() # Click to focus the target area/window
+        time.sleep(0.3) # Increased pause for focus to settle
+        
+        # pyautogui.hotkey('ctrl', 'a') # Select all
+        # time.sleep(0.2) # Increased pause after select all
+        
+        pyperclip.copy("") # Clear clipboard before attempting to copy
         pyautogui.hotkey('ctrl', 'c')
-        time.sleep(0.1) # Wait for clipboard to update
+        time.sleep(0.5) # Significantly increased pause for clipboard to update
+        
         html_content = pyperclip.paste()
-        if not html_content or not html_content.strip().startswith("<html"): # Basic check
-            print("Warning: Clipboard does not seem to contain valid HTML.")
-            # Potentially try again or log error
+        
+        # More lenient check for HTML-like content
+        if not html_content or not html_content.strip() or '<' not in html_content or '>' not in html_content:
+            print("Warning: Clipboard does not seem to contain valid HTML-like content.")
+            print(f"Clipboard content (first 200 chars): '{html_content[:200]}'") 
             return None
         return html_content
 
