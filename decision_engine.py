@@ -142,6 +142,14 @@ class DecisionEngine:
         if not my_player or not my_player.get('has_turn'):
             return "Not my turn or player data missing."
 
+        # --- Aggression Factor ---
+        # Higher value means more aggression. Base is 1.0.
+        # Values > 1.0 increase raise amounts and bluffing frequency.
+        # Values < 1.0 make the bot play tighter/more passively.
+        # This can be adjusted based on table dynamics or overall strategy.
+        aggression_factor = 1.2 # Default aggression factor (e.g., 1.0 for normal, 1.2 for more aggressive)
+
+
         # Note: Opponent modeling updates should ideally happen as actions are observed by PokerBot,
         # not just at the start of our decision. This is a placeholder for that process.
         # for p_data in all_players_data: # This loop needs actual last action data to be useful here
@@ -158,7 +166,7 @@ class DecisionEngine:
         tie_breaker_ranks = hand_evaluation_tuple[2]
         my_hole_cards_str_list = my_player.get('cards', [])
 
-        pot_size_str = table_data.get('pot_size', "0").replace('$', '').replace(',', '').replace('€', '')
+        pot_size_str = table_data.get('pot_size', "0").replace('$', '').replace(',', '').replace('€', '').replace('€', '') # Corrected euro symbol replacement
         try:
             pot_size = float(pot_size_str)
         except ValueError:
@@ -181,7 +189,7 @@ class DecisionEngine:
                 active_opponents_count += 1
             
             try:
-                player_bet_str = p.get('bet', '0').replace('$', '').replace(',', '').replace('€', '')
+                player_bet_str = p.get('bet', '0').replace('$', '').replace(',', '').replace('€', '').replace('€', '') # Corrected euro symbol replacement
                 player_bet = float(player_bet_str)
                 if player_bet > max_bet_on_table:
                     max_bet_on_table = player_bet
@@ -189,13 +197,15 @@ class DecisionEngine:
             except ValueError:
                 pass 
         
-        my_current_bet_str = my_player.get('bet', '0').replace('$', '').replace(',', '').replace('€', '')
+        my_current_bet_str = my_player.get('bet', '0').replace('$', '').replace(',', '').replace('€', '').replace('€', '') # Corrected euro symbol replacement
         try:
             my_current_bet = float(my_current_bet_str)
         except ValueError:
             my_current_bet = 0.0
             
         bet_to_call = round(max(0, max_bet_on_table - my_current_bet), 2)
+        can_check = (bet_to_call == 0) # Define can_check
+
         print(f"DecisionEngine: Initial bet_to_call calculated: {bet_to_call} (max_bet_on_table: {max_bet_on_table}, my_current_bet: {my_current_bet})")
         
         parsed_bet_to_call_from_parser = my_player.get('bet_to_call', 0) # This is the value from the button text
@@ -261,7 +271,52 @@ class DecisionEngine:
             # This needs more state (tracking last raise size). For now, bet_to_call + BBs.
             min_raise_amount = max_bet_on_table + self.big_blind * 2 # Simplified: raise to current max bet + 2BB
 
-        game_stage = table_data.get('game_stage')
+        game_stage = table_data.get('game_stage', 'Preflop')
+        position = my_player.get('position_category', 'Late') # Early, Middle, Late, Blinds
+
+        # --- Pre-flop Adjustments for Aggression ---
+        limpers = 0
+        if game_stage == 'Preflop':
+            for p_data in all_players_data:
+                if p_data.get('name') == my_player.get('name') or p_data.get('is_empty'):
+                    continue
+                p_bet_str = p_data.get('bet', '0').replace('$', '').replace('€', '')
+                try:
+                    p_bet = float(p_bet_str)
+                    # A limper is someone who called the big blind but hasn't raised.
+                    # This condition assumes max_bet_on_table is currently the big blind if there are limpers.
+                    if p_bet == self.big_blind and p_data.get('actions_in_street', 0) == 1: # Simplified: first action was a call
+                        limpers += 1
+                except ValueError:
+                    pass
+            print(f"DecisionEngine: Detected {limpers} limper(s).")
+
+
+        # --- Basic Bet Sizing ---
+        # Standard raise: 2.5-3.5 BB. Adjust based on position, limpers, etc.
+        # Add 1 BB for each limper.
+        # Increase if out of position.
+        standard_raise_bb = 3 * aggression_factor # Base raise in BBs
+        if limpers > 0:
+            standard_raise_bb += limpers * aggression_factor # Add 1 BB per limper, scaled by aggression
+
+        if position in ['Early', 'Middle'] and game_stage == 'Preflop':
+            standard_raise_bb += 0.5 * aggression_factor # Raise slightly more from earlier positions
+
+        min_raise_amount = bet_to_call + self.big_blind # Minimum legal raise
+        preferred_raise_amount = max(min_raise_amount, round(standard_raise_bb * self.big_blind, 2))
+        
+        # Ensure raise amount is not more than stack (will be capped later if it is)
+        my_stack_str = my_player.get('stack', '0').replace('$', '').replace('€', '')
+        try:
+            my_stack = float(my_stack_str)
+        except ValueError:
+            my_stack = 0.0
+        
+        preferred_raise_amount = min(preferred_raise_amount, my_stack)
+
+
+        # --- Pre-flop Decision Logic ---
         opponent_tendencies = self.get_opponent_tendencies(player_to_act_on) if player_to_act_on else self.get_opponent_tendencies(None) # Get default if no specific opponent
 
         # --- Pre-flop Strategy ---
@@ -273,50 +328,127 @@ class DecisionEngine:
             open_raise_size = round(self.big_blind * (2.5 + max(0, active_opponents_count -1) ),2) # Basic sizing
             open_raise_size = max(self.big_blind * 2, open_raise_size) # Ensure at least 2BB
 
+            # Adjust pre-flop strategy based on hand category and limpers
             if preflop_category == "Premium Pair": # AA, KK, QQ
-                # Always raise or re-raise
-                raise_amount = round(self.big_blind * (3 + active_opponents_count), 2)
-                raise_amount = max(min_raise_amount, raise_amount) 
-                if bet_to_call == 0:
-                    return ACTION_RAISE, min(my_stack, raise_amount) # Don't bet more than stack
-                elif bet_to_call < raise_amount * 1.5 : # Re-raise if facing a smaller bet
-                    # 3-bet sizing: 3x original raise if IP, 4x if OOP. Pot size if multiway.
-                    # Simplified: pot-sized raise or 3x the bet_to_call
-                    three_bet_size = round(max(pot_size, bet_to_call * 3),2)
-                    return ACTION_RAISE, min(my_stack, max(min_raise_amount, three_bet_size)) 
-                else: # Facing a large 3-bet or 4-bet
-                    # Consider stack sizes, pot odds for calling all-in. For now, call up to a certain % of stack.
-                    if bet_to_call < my_stack * 0.33: 
+                # Always raise, size depends on limpers/prior raises
+                if bet_to_call == 0: # No prior raise, we are opening
+                    # Strong open, especially with limpers
+                    raise_amount = preferred_raise_amount 
+                    if limpers > 0:
+                         raise_amount = max(min_raise_amount, round((3 + limpers * 1.5) * self.big_blind * aggression_factor, 2))
+                    print(f"DecisionEngine: Premium Pair, opening raise to {raise_amount}")
+                    return ACTION_RAISE, min(my_stack, raise_amount)
+                elif bet_to_call > 0: # Facing a raise
+                    # 3-bet strong. Size: 3x the previous raise usually.
+                    # If previous raise was small, make it at least preferred_raise_amount
+                    three_bet_size = max(preferred_raise_amount, round(bet_to_call * 3 * aggression_factor, 2))
+                    print(f"DecisionEngine: Premium Pair, 3-betting to {three_bet_size}")
+                    return ACTION_RAISE, min(my_stack, three_bet_size)
+            
+            elif preflop_category == "Strong Pair": # JJ, TT
+                if bet_to_call == 0: # Open raise
+                    raise_amount = preferred_raise_amount
+                    if limpers > 1: # Be more aggressive against multiple limpers
+                        raise_amount = max(min_raise_amount, round((3 + limpers * 1.2) * self.big_blind * aggression_factor, 2))
+                    print(f"DecisionEngine: Strong Pair, opening raise to {raise_amount}")
+                    return ACTION_RAISE, min(my_stack, raise_amount)
+                elif bet_to_call <= self.big_blind * 4 * aggression_factor: # Call smaller raises, consider 3-betting vs very small raises
+                    # If facing a small raise and there were limpers, consider a squeeze play
+                    if limpers > 0 and bet_to_call < self.big_blind * 3:
+                         squeeze_raise = max(min_raise_amount, round((bet_to_call + (3 + limpers) * self.big_blind) * aggression_factor,2))
+                         print(f"DecisionEngine: Strong Pair, squeeze raising limpers and small raiser to {squeeze_raise}")
+                         return ACTION_RAISE, min(my_stack, squeeze_raise)
+                    print(f"DecisionEngine: Strong Pair, calling raise of {bet_to_call}")
+                    return ACTION_CALL, bet_to_call 
+                else: # Facing a larger raise
+                    print(f"DecisionEngine: Strong Pair, folding to large raise of {bet_to_call}")
+                    return ACTION_FOLD, 0
+
+            elif preflop_category == "Suited Connector" or preflop_category == "Suited Ace":
+                if bet_to_call == 0: # Open raise, especially from late position or if many limpers
+                    if position in ['Late', 'Blinds'] or limpers >= 1:
+                        raise_amount = preferred_raise_amount
+                        print(f"DecisionEngine: {preflop_category}, opening raise to {raise_amount}")
+                        return ACTION_RAISE, min(my_stack, raise_amount)
+                    else: # More cautious from early/mid if no limpers
+                        print(f"DecisionEngine: {preflop_category} from {position}, checking/folding if option not available.")
+                        return ACTION_CHECK if can_check else ACTION_FOLD, 0
+                elif bet_to_call <= self.big_blind * 3 * aggression_factor and pot_odds_to_call > 0.2: # Call small raises if odds are good
+                    print(f"DecisionEngine: {preflop_category}, calling raise of {bet_to_call} with pot odds {pot_odds_to_call:.2f}")
+                    return ACTION_CALL, bet_to_call
+                else:
+                    print(f"DecisionEngine: {preflop_category}, folding to raise of {bet_to_call}")
+                    return ACTION_FOLD, 0
+            
+            elif preflop_category == "Offsuit Broadway": # AKo, KQo, etc.
+                if bet_to_call == 0: # Open raise, more likely with fewer players or late position
+                    if active_opponents_count <= 4 or position in ['Late', 'Blinds'] or limpers > 0:
+                        raise_amount = preferred_raise_amount
+                        print(f"DecisionEngine: {preflop_category}, opening raise to {raise_amount}")
+                        return ACTION_RAISE, min(my_stack, raise_amount)
+                    else:
+                        print(f"DecisionEngine: {preflop_category} from {position} with many players, checking/folding.")
+                        return ACTION_CHECK if can_check else ACTION_FOLD, 0
+                elif bet_to_call <= self.big_blind * 3.5 * aggression_factor : # Call moderate raises
+                    print(f"DecisionEngine: {preflop_category}, calling raise of {bet_to_call}")
+                    return ACTION_CALL, bet_to_call
+                else: # Fold to larger 3-bets unless very strong Broadway (AK)
+                    if hand_description in ["AK offsuit", "AK suited"] and bet_to_call < my_stack * 0.2: # AK can sometimes call more
+                        print(f"DecisionEngine: {hand_description}, calling larger raise of {bet_to_call}")
                         return ACTION_CALL, bet_to_call
-                    else: # If too large, might be all-in or fold (AA might go all-in)
-                        return ACTION_RAISE, my_stack # Shove with AA/KK vs huge bet
-            
-            elif preflop_category == "Strong Pair" or preflop_category == "Suited Ace" or preflop_category == "Offsuit Broadway": # JJ,TT, AKs, AQs, AJs, KQs, AKo, AQo
-                if bet_to_call == 0:
-                    return ACTION_RAISE, min(my_stack, open_raise_size)
-                elif bet_to_call <= self.big_blind * 4: # Call smaller 3-bets
-                    return ACTION_CALL, bet_to_call
-                else: # Fold to large 3-bets
-                    return ACTION_FOLD
-            
-            elif preflop_category == "Medium Pair" or preflop_category == "Suited Connector": # 99-77, T9s, etc.
-                # Playable, especially for set mining or if suited and can hit draws
-                if bet_to_call == 0: # Open limp or small raise in late position
-                    # Positional awareness is key here. For now, simple call.
-                    return ACTION_CALL, self.big_blind # Limp
-                elif bet_to_call <= self.big_blind * 3 and (pot_size / bet_to_call > 10 if bet_to_call > 0 else True): # Set mining odds
+                    print(f"DecisionEngine: {preflop_category}, folding to large raise of {bet_to_call}")
+                    return ACTION_FOLD, 0
+
+            elif preflop_category == "Medium Pair": # 99-77
+                if bet_to_call == 0: # Open raise if few limpers or late position
+                    if limpers <= 1 or position in ['Late', 'Blinds']:
+                        raise_amount = preferred_raise_amount
+                        print(f"DecisionEngine: Medium Pair, opening raise to {raise_amount}")
+                        return ACTION_RAISE, min(my_stack, raise_amount)
+                    else: # Limp or fold if many limpers and early position (Set mining)
+                        # For now, we avoid limping as per user request to be aggressive
+                        # If we want to set-mine, we might call here.
+                        # Let's try raising small to isolate one limper if there's exactly one.
+                        if limpers == 1 and position not in ['Early']:
+                             raise_amount = max(min_raise_amount, round( (2.5 + limpers) * self.big_blind * aggression_factor, 2))
+                             print(f"DecisionEngine: Medium Pair, small isolation raise vs 1 limper to {raise_amount}")
+                             return ACTION_RAISE, min(my_stack, raise_amount)
+                        print(f"DecisionEngine: Medium Pair, too many limpers or bad position, folding.")
+                        return ACTION_FOLD, 0
+                elif bet_to_call <= self.big_blind * 4 * aggression_factor and pot_odds_to_call > 0.2: # Call small raises for set value
+                    print(f"DecisionEngine: Medium Pair, calling raise of {bet_to_call} for set value.")
                     return ACTION_CALL, bet_to_call
                 else:
-                    return ACTION_FOLD
+                    print(f"DecisionEngine: Medium Pair, folding to raise of {bet_to_call}")
+                    return ACTION_FOLD, 0
+            
+            elif preflop_category == "Playable Broadway": # Single broadway card, not covered above
+                if bet_to_call == 0 and position in ['Late', 'Blinds'] and limpers < 2:
+                    raise_amount = preferred_raise_amount * 0.8 # Slightly smaller raise
+                    print(f"DecisionEngine: Playable Broadway ({hand_description}), late position open to {raise_amount}")
+                    return ACTION_RAISE, min(my_stack, raise_amount)
+                elif bet_to_call == 0 and limpers >=1 and position in ['Late', 'Blinds']: # Try to punish limpers
+                    raise_amount = max(min_raise_amount, round((2.5 + limpers) * self.big_blind * aggression_factor, 2))
+                    print(f"DecisionEngine: Playable Broadway ({hand_description}), raising limpers to {raise_amount}")
+                    return ACTION_RAISE, min(my_stack, raise_amount)
+                elif bet_to_call <= self.big_blind * 2 * aggression_factor and position in ['Blinds'] and pot_odds_to_call > 0.25: # Defend blinds vs small steal
+                    print(f"DecisionEngine: Playable Broadway ({hand_description}), defending blind vs small raise {bet_to_call}")
+                    return ACTION_CALL, bet_to_call
+                else:
+                    print(f"DecisionEngine: Playable Broadway ({hand_description}), folding.")
+                    return ACTION_CHECK if can_check else ACTION_FOLD, 0
+
             else: # Weak hands
-                if bet_to_call == 0: # Can check if in big blind and no raise
-                    # This needs to know if I AM the big blind. Assume if bet_to_call is 0, it's a checkable spot.
-                    return ACTION_CHECK
-                # Fold to any raise unless it's just completing the SB
-                elif my_current_bet == self.small_blind and bet_to_call == self.small_blind:
-                    return ACTION_CALL, bet_to_call # Complete SB
-                else:
-                    return ACTION_FOLD
+                if can_check:
+                    print(f"DecisionEngine: Weak hand ({preflop_category} / {hand_description}), checking.")
+                    return ACTION_CHECK, 0
+                else: # Must call or fold
+                    # If facing a very small bet (e.g. min bet from SB when BB) and pot odds are huge, might call.
+                    if bet_to_call <= self.big_blind * 0.5 and pot_odds_to_call > 0.33 and position == 'Big Blind': # Simplified check for BB defense vs min-raise
+                        print(f"DecisionEngine: Weak hand, but good pot odds in BB to call tiny bet {bet_to_call}")
+                        return ACTION_CALL, bet_to_call
+                    print(f"DecisionEngine: Weak hand ({preflop_category} / {hand_description}), folding to bet {bet_to_call}.")
+                    return ACTION_FOLD, 0
 
         # --- Post-flop Strategy ---
         # numerical_hand_rank: 1 (High Card) to 9 (Straight Flush)
