@@ -39,6 +39,7 @@ class UIController:
         self.calibrate_position("html_capture_point") # Point to click for copying HTML
         self.calibrate_position("fold_button")
         self.calibrate_position("check_call_button") # Assumes check and call are the same button
+        self.calibrate_position("all_in_button") # Added for the all-in scenario
         self.calibrate_position("raise_button") # This might be the button that opens the raise input
         self.calibrate_position("raise_input_field") # The actual input field for the amount
         self.calibrate_position("confirm_raise_button") # The button to confirm the raise after typing amount
@@ -95,6 +96,23 @@ class UIController:
 
     def action_check_call(self):
         return self._click_position("check_call_button", randomize=True)
+
+    def action_all_in(self): # New method for clicking all-in
+        # This could be the same as check_call if the button text changes to "Call All-in"
+        # Or it could be a separate button that appears.
+        # If it's a distinct button, use "all_in_button". 
+        # If the "check_call_button" becomes an "All-in Call" button, then that can be used.
+        # For now, assuming a dedicated "all_in_button" might appear or the existing call button handles it.
+        # The parser should ideally tell us which button to press (e.g. by identifying the specific all-in call button)
+        # Let's assume for now there's a specific all_in_button if the action is a direct all-in bet/call.
+        # If the decision is to CALL an all-in, action_check_call might be sufficient if that button handles it.
+        # This method is more for when the bot decides to GO all-in itself, or if there's a specific button for calling an all-in.
+        if self._click_position("all_in_button", randomize=True): # Try dedicated all_in_button first
+            return True
+        # Fallback to check_call_button if a dedicated all_in_button isn't found or fails,
+        # as the call button might dynamically change to reflect an all-in call.
+        print("All-in button not found or click failed, attempting check/call button for all-in call.")
+        return self.action_check_call()
 
     def action_raise(self, amount=None):
         if not amount:

@@ -179,6 +179,110 @@ class PokerBot:
         self.ui_controller.calibrate_all()
         print("Calibration finished. Positions saved in config.json")
 
+    def run_test_file(self, file_path):
+        print(f"--- Running Test with File: {file_path} ---")
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                current_html = f.read()
+            print(f"HTML length: {len(current_html)}")
+        except FileNotFoundError:
+            print(f"Error: Test HTML file not found at {file_path}")
+            return
+        except Exception as e:
+            print(f"Error reading test HTML file: {e}")
+            return
+
+        if not current_html:
+            print("Test HTML file is empty.")
+            return
+
+        # 1. Parse HTML to get game state
+        game_state = self.parser.parse_html(current_html)
+        if not game_state or game_state.get('error'):
+            print(f"Failed to parse HTML from test file: {game_state.get('error', 'Unknown parsing error')}")
+            return
+
+        # 2. Process the parsed HTML data
+        self.analyze() # Populates self.table_data, self.player_data
+
+        my_player_data = self.get_my_player()
+        table_data = self.table_data
+        all_players_data = self.player_data
+
+        if not my_player_data or not table_data:
+            print("Essential game data missing after self.analyze() from test file.")
+            return
+
+        print("\n--- Game Summary from Test File ---")
+        print(self.get_summary())
+        print("--- End Game Summary ---")
+
+        if my_player_data.get('has_turn'):
+            hand_rank_description = my_player_data.get('hand_evaluation', (0, "N/A"))[1]
+            print(f"My turn. Hand: {my_player_data.get('cards')}, Rank: {hand_rank_description}, Stack: {my_player_data.get('stack')}")
+            print(f"Pot: {table_data.get('pot_size')}, Community Cards: {table_data.get('community_cards')}")
+            
+            # Print available actions detected by the parser for diagnosis
+            if 'available_actions' in my_player_data:
+                print(f"Detected available actions: {my_player_data['available_actions']}")
+            if my_player_data.get('is_all_in_call_available'):
+                print("Parser detected: All-in call is available.")
+
+
+            action_tuple = self.decision_engine.make_decision(my_player_data, table_data, all_players_data)
+            
+            action = ""
+            amount = None
+            if isinstance(action_tuple, tuple) and len(action_tuple) == 2:
+                action, amount = action_tuple
+            elif isinstance(action_tuple, str):
+                action = action_tuple
+            else:
+                print(f"Warning: Unknown action format from decision engine: {action_tuple}")
+                action = ACTION_FOLD
+
+            print(f"Decision: {action}" + (f" Amount: {amount}" if amount is not None else ""))
+
+            # Simulate UI actions (they will print what they do)
+            if action == ACTION_FOLD:
+                self.ui_controller.action_fold()
+            elif action == ACTION_CHECK or action == ACTION_CALL:
+                my_current_stack_str = my_player_data.get('stack', '0').replace('€', '').replace('$', '')
+                try:
+                    my_current_stack = float(my_current_stack_str)
+                except ValueError:
+                    my_current_stack = 0
+
+                if action == ACTION_CALL and amount is not None and amount >= my_current_stack and my_player_data.get('is_all_in_call_available'):
+                    print("Performing All-in Call action (simulated).")
+                    self.ui_controller.action_all_in()
+                else:
+                    self.ui_controller.action_check_call()
+            elif action == ACTION_RAISE:
+                my_current_stack_str = my_player_data.get('stack', '0').replace('€', '').replace('$', '')
+                try:
+                    my_current_stack = float(my_current_stack_str)
+                except ValueError:
+                    my_current_stack = 0
+
+                if amount is not None and amount >= my_current_stack:
+                    if 'all_in' in my_player_data.get('available_actions', []):
+                        print("Performing All-in action (raise all-in) (simulated).")
+                        self.ui_controller.action_all_in()
+                    else:
+                        print("Performing Raise action (for all-in amount) (simulated).")
+                        self.ui_controller.action_raise(amount=amount)
+                else:
+                    self.ui_controller.action_raise(amount=amount)
+            else:
+                print(f"Unknown action: {action}")
+        else:
+            if my_player_data:
+                 print(f"Not my turn. My Hand: {my_player_data.get('cards')}. Stack: {my_player_data.get('stack')}. Waiting...")
+            else:
+                 print("Player data not found or not my turn. Waiting...")
+        print("--- Test File Run Finished ---")
+
     def main_loop(self):
         self.running = True
         print("PokerBot started. Press Ctrl+C to stop.")
@@ -217,21 +321,28 @@ class PokerBot:
                 # or None/throws error on failure.
                 game_state = self.parser.parse_html(current_html)
                 if not game_state:
-                    print("Failed to parse HTML or critical data missing. Retrying in 1 second...")
+                    print("Failed to parse HTML or critical data missing (parser.parse_html). Retrying in 1 second...")
                     time.sleep(1)
                     continue
 
-                my_player_data = game_state.get('my_player_data')
-                table_data = game_state.get('table_data')
-                all_players_data = game_state.get('all_players_data')
+                # Process the parsed HTML data using PokerBot's analyze method.
+                # This populates self.table_data and self.player_data (which includes hand_evaluation).
+                self.analyze()
 
-                if not my_player_data or not table_data or not all_players_data:
-                    print("Essential game data missing after parsing. Retrying in 1 second...")
+                # Get data from PokerBot's attributes after analysis
+                my_player_data = self.get_my_player()
+                table_data = self.table_data
+                all_players_data = self.player_data # self.player_data is the list of all player dicts
+
+                # Check if essential data is present after analysis
+                if not my_player_data or not table_data: # all_players_data is self.player_data
+                    print("Essential game data missing after self.analyze(). Retrying in 1 second...")
                     time.sleep(1)
                     continue
 
                 if my_player_data and my_player_data.get('has_turn'):
-                    print(f"My turn. Hand: {my_player_data.get('cards')}, Stack: {my_player_data.get('stack')}")
+                    hand_rank_description = my_player_data.get('hand_evaluation', (0, "N/A"))[1]
+                    print(f"My turn. Hand: {my_player_data.get('cards')}, Rank: {hand_rank_description}, Stack: {my_player_data.get('stack')}")
                     print(f"Pot: {table_data.get('pot_size')}, Community Cards: {table_data.get('community_cards')}")
 
                     action_tuple = self.decision_engine.make_decision(my_player_data, table_data, all_players_data)
@@ -251,9 +362,27 @@ class PokerBot:
                     if action == ACTION_FOLD:
                         self.ui_controller.action_fold()
                     elif action == ACTION_CHECK or action == ACTION_CALL:
-                        self.ui_controller.action_check_call()
+                        # If the action is CALL and it's an all-in situation, 
+                        # and the decision was to call the all-in, we might need a specific button click.
+                        # The decision engine now returns `my_stack` as amount for all-in calls.
+                        if action == ACTION_CALL and amount == my_player_data.get('stack') and my_player_data.get('is_all_in_call_available'):
+                            print("Performing All-in Call action.")
+                            self.ui_controller.action_all_in() # Assumes action_all_in handles this specific click
+                        else:
+                            self.ui_controller.action_check_call()
                     elif action == ACTION_RAISE:
-                        self.ui_controller.action_raise(amount=amount)
+                        # If the raise amount is the player's entire stack, it's an all-in raise.
+                        # The UI might have a dedicated all-in button for this instead of raise + amount.
+                        if amount is not None and amount >= my_player_data.get('stack'): # Check if raise amount is effectively all-in
+                             # Check if a dedicated all-in button is available from parser info (optional)
+                            if 'all_in' in my_player_data.get('available_actions', []):
+                                print("Performing All-in action (raise all-in).")
+                                self.ui_controller.action_all_in()
+                            else:
+                                print("Performing Raise action (for all-in amount).")
+                                self.ui_controller.action_raise(amount=amount) # Standard raise if no specific all-in button identified for this path
+                        else:
+                            self.ui_controller.action_raise(amount=amount)
                     else:
                         print(f"Unknown action: {action}")
                     
@@ -274,56 +403,23 @@ class PokerBot:
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         file_path = sys.argv[1]
-        try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                html_content_from_file = f.read()
-            print(f"Attempting to open and parse: {file_path}")
-            
-            bot = PokerBot() # Instantiate PokerBot (parser is created empty)
-            
-            # Use the bot's parser to parse the HTML from the file
-            # This will set up self.soup within the bot.parser instance.
-            game_state_dict = bot.parser.parse_html(html_content_from_file)
-            
-            # Call bot.analyze() to populate bot.table_data and bot.player_data
-            # using the bot.parser's internal state (which now has the soup from the file).
-            analysis_result = bot.analyze()
-            
-            print("\n---- Summary from PokerBot ----")
-            print(bot.get_summary())
-
-            my_player_info = bot.get_my_player()
-            # Check for turn is now handled within get_suggested_action or make_decision
-            # but we can still check here to provide a clearer message if it's not our turn before calling.
-            if my_player_info and my_player_info.get('has_turn'):
-                decision = bot.get_suggested_action() # Changed from make_decision
-                if isinstance(decision, tuple):
-                    # Ensure amount is formatted nicely if it's a float
-                    action_amount = decision[1]
-                    if isinstance(action_amount, float):
-                        action_amount_str = f"{action_amount:.2f}"
-                    else:
-                        action_amount_str = str(action_amount)
-                    print(f"\n---- Suggested Action ----: {decision[0]} {action_amount_str}")
-                else:
-                    print(f"\n---- Suggested Action ----: {decision}")
-            elif my_player_info:
-                print("\nNot my turn to act.")
-            else:
-                print("\nCould not find my player information.")
-            
-
-            # For detailed debugging, uncomment the following lines:
-            # print("\n---- Raw Analysis Result (for debugging) ----")
-            # import json
-            # print(json.dumps(analysis_result, indent=2))
-
-        except FileNotFoundError:
-            print(f"Error: File not found at {file_path}")
-        except Exception as e:
-            print(f"An error occurred: {e}")
+        bot = PokerBot()
+        bot.run_test_file(file_path)
     else:
         bot = PokerBot()
-        # bot.run_calibration() # Uncomment this line and run `python poker_bot.py` once to calibrate
+        # Check if calibration is needed before starting the main loop for live play
+        if not bot.ui_controller.positions:
+            print("UI positions not calibrated. Please run calibration first or ensure config.json exists.")
+            choice = input("Would you like to run calibration now? (yes/no): ").strip().lower()
+            if choice == 'yes':
+                bot.run_calibration()
+            else:
+                print("Exiting. Please calibrate UI positions before running the bot.")
+                sys.exit()
+        
+        if not bot.ui_controller.positions.get("html_capture_point"): # Basic check
+            print("HTML capture point not calibrated. Run calibration.")
+            sys.exit()
+            
         bot.main_loop()
 

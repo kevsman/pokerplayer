@@ -138,6 +138,7 @@ class DecisionEngine:
         }
 
     def make_decision(self, my_player, table_data, all_players_data):
+        pot_odds_to_call = 0.0 # Initialize pot_odds_to_call at the beginning
         if not my_player or not my_player.get('has_turn'):
             return "Not my turn or player data missing."
 
@@ -195,14 +196,63 @@ class DecisionEngine:
             my_current_bet = 0.0
             
         bet_to_call = round(max(0, max_bet_on_table - my_current_bet), 2)
+        print(f"DecisionEngine: Initial bet_to_call calculated: {bet_to_call} (max_bet_on_table: {max_bet_on_table}, my_current_bet: {my_current_bet})")
         
-        # Effective stack (simplified - vs largest stack if multiple opponents, or vs single opponent)
-        # For now, just use our stack as a reference for bet sizing.
+        parsed_bet_to_call_from_parser = my_player.get('bet_to_call', 0) # This is the value from the button text
+        is_all_in_call_available_from_parser = my_player.get('is_all_in_call_available', False)
+        print(f"DecisionEngine: From html_parser - player_info['bet_to_call']: {parsed_bet_to_call_from_parser}")
+        print(f"DecisionEngine: From html_parser - player_info['is_all_in_call_available']: {is_all_in_call_available_from_parser}")
+
         my_stack_str = my_player.get('stack', '0').replace('$', '').replace(',', '').replace('€', '')
         try:
             my_stack = float(my_stack_str)
         except ValueError:
-            my_stack = self.big_blind * 100 # Default if stack parsing fails
+            my_stack = self.big_blind * 100 
+        print(f"DecisionEngine: My stack: {my_stack}")
+
+        # Determine if we are facing an all-in situation based on calculated bet_to_call vs our stack
+        is_facing_effective_all_in = (bet_to_call > 0 and bet_to_call >= my_stack)
+        print(f"DecisionEngine: Calculated is_facing_effective_all_in (bet_to_call ({bet_to_call}) >= my_stack ({my_stack})): {is_facing_effective_all_in}")
+
+        # If the parser specifically identified an "All In" button with an amount, 
+        # and that amount is what we need to call (i.e., it's our remaining stack or less if opponent is shorter),
+        # this implies the `bet_to_call` should align with `parsed_bet_to_call_from_parser` if it's an all-in call for us.
+        # The `is_all_in_call_available_from_parser` flag is crucial here.
+
+        # If the parser says an all-in call is available, and the amount on that button is our stack,
+        # it means the actual bet to call IS our stack.
+        if is_all_in_call_available_from_parser and parsed_bet_to_call_from_parser == my_stack:
+            print(f"DecisionEngine: Parser indicates all-in call matching my stack. Overriding bet_to_call to {my_stack}")
+            bet_to_call = my_stack 
+            is_facing_effective_all_in = True # Reinforce this, as it's an explicit all-in call
+            print(f"DecisionEngine: Updated is_facing_effective_all_in: {is_facing_effective_all_in}")
+
+        # Calculate pot odds using the potentially updated bet_to_call
+        if bet_to_call > 0:
+            # Denominator: current pot size + the amount we need to call.
+            # pot_size should represent the money already in the middle from previous streets and current street up to the last action.
+            # bet_to_call is the additional amount we must contribute to match the current bet.
+            denominator = pot_size + bet_to_call 
+            if denominator > 0:
+                pot_odds_to_call = bet_to_call / denominator
+            else:
+                pot_odds_to_call = 0 # Should not happen if bet_to_call > 0
+        else:
+            pot_odds_to_call = 0 # No bet to call, so pot odds are not directly applicable for calling
+        print(f"DecisionEngine: Pot odds to call: {pot_odds_to_call} (bet_to_call: {bet_to_call}, pot_size: {pot_size}, denominator: {denominator if bet_to_call > 0 else 'N/A'})")
+
+        # If facing an all-in bet from opponent that covers my stack
+        if is_facing_effective_all_in:
+            print(f"DecisionEngine: Evaluating ALL-IN call. My hand rank: {numerical_hand_rank}, Pot odds: {pot_odds_to_call}")
+            # Decision to call all-in: based on hand strength and pot odds
+            if numerical_hand_rank >= 4: # Three of a Kind or better
+                return ACTION_CALL, my_stack # Call the all-in (amount will be my remaining stack)
+            elif numerical_hand_rank >= 2 and pot_odds_to_call > 0.33: # One Pair with good pot odds
+                return ACTION_CALL, my_stack
+            elif ("Flush Draw" in hand_description or "Straight Draw" in hand_description) and pot_odds_to_call > 0.25:
+                return ACTION_CALL, my_stack # Call with good draws if odds are there
+            else:
+                return ACTION_FOLD
 
         min_raise_amount = bet_to_call + self.big_blind # Simplified: current bet + 1 BB, or just 2BB if opening
         if bet_to_call == 0: # If opening
@@ -272,9 +322,13 @@ class DecisionEngine:
         # numerical_hand_rank: 1 (High Card) to 9 (Straight Flush)
         
         # Calculate pot odds
-        pot_odds_to_call = 0.0
         if bet_to_call > 0:
-            pot_odds_to_call = bet_to_call / (pot_size + bet_to_call + my_current_bet)
+            # Ensure denominator is not zero before division
+            denominator = pot_size + bet_to_call
+            if denominator > 0:
+                pot_odds_to_call = bet_to_call / denominator
+            else:
+                pot_odds_to_call = 0 # Or handle as an edge case, e.g., infinite if pot is 0 and facing a bet
 
         # Continuation Bet (C-Bet) logic
         # Need to know if I was the pre-flop aggressor. This state is missing.
