@@ -1,4 +1,7 @@
 # filepath: c:\\GitRepositories\\pokerplayer\\decision_engine.py
+from equity_calculator import EquityCalculator
+import math
+
 # Action definitions
 ACTION_FOLD = "FOLD"
 ACTION_CHECK = "CHECK"
@@ -9,6 +12,7 @@ class DecisionEngine:
     def __init__(self, big_blind=0.02, small_blind=0.01):
         self.big_blind = big_blind
         self.small_blind = small_blind
+        self.equity_calculator = EquityCalculator()
         # Opponent modeling data structure (example: by player name or seat)
         self.opponent_models = {} 
         # Hand rank values (higher is better) - from HandEvaluator's first element of tuple
@@ -19,19 +23,115 @@ class DecisionEngine:
             "Four of a Kind": 8,
             "Full House": 7,
             "Flush": 6,
-            "Straight": 5,
-            "Three of a Kind": 4,
+            "Straight": 5,            "Three of a Kind": 4,
             "Two Pair": 3,
             "One Pair": 2,
             "High Card": 1,
             "N/A": 0 # Default for pre-flop or unknown
         }
+          # Moderately aggressive - increased from 0.8 for slightly more aggression
+        self.base_aggression_factor = 0.95  # Increased from 0.8 for balanced aggression
 
     def _get_hand_strength_value(self, hand_evaluation_tuple):
         if not hand_evaluation_tuple or not isinstance(hand_evaluation_tuple, tuple) or len(hand_evaluation_tuple) < 1:
             return 0
         # The first element of the tuple is the numerical rank from HandEvaluator
         return hand_evaluation_tuple[0]
+
+    def calculate_expected_value(self, action, amount, pot_size, win_probability, bet_to_call=0):
+        """
+        Calculate Expected Value (EV) for a given action
+        Returns the EV in chips/currency units
+        """
+        if action == ACTION_FOLD:
+            return 0.0  # No gain or loss from folding
+            
+        elif action == ACTION_CHECK:
+            # EV of checking = probability of winning * current pot
+            return win_probability * pot_size
+            
+        elif action == ACTION_CALL:
+            # EV of calling = (win_prob * (pot + bet_to_call)) - bet_to_call
+            return (win_probability * (pot_size + bet_to_call)) - bet_to_call
+            
+        elif action == ACTION_RAISE:
+            # Simplified EV for raising - assumes opponent folds fold_equity% of time
+            # and calls (1-fold_equity)% of time
+            fold_equity = self._estimate_fold_equity(amount, pot_size)
+            
+            # If opponent folds: we win the current pot immediately
+            ev_if_fold = fold_equity * pot_size
+            
+            # If opponent calls: we need to win at showdown
+            # Pot becomes pot_size + amount + opponent_call_amount
+            opponent_call_amount = amount  # Simplified assumption
+            new_pot = pot_size + amount + opponent_call_amount
+            ev_if_call = (1 - fold_equity) * ((win_probability * new_pot) - amount)
+            
+            return ev_if_fold + ev_if_call
+            
+        return 0.0
+    
+    def _estimate_fold_equity(self, bet_size, pot_size):
+        """
+        Estimate the probability that opponents will fold to our bet
+        Based on bet size relative to pot
+        """
+        if pot_size <= 0:
+            return 0.1  # Conservative estimate
+            
+        bet_to_pot_ratio = bet_size / pot_size
+        
+        # Rough estimates based on common poker theory
+        if bet_to_pot_ratio <= 0.3:
+            return 0.1  # Small bets rarely make opponents fold
+        elif bet_to_pot_ratio <= 0.5:
+            return 0.2
+        elif bet_to_pot_ratio <= 0.75:
+            return 0.3
+        elif bet_to_pot_ratio <= 1.0:
+            return 0.4
+        elif bet_to_pot_ratio <= 1.5:
+            return 0.5
+        else:
+            return 0.6  # Large overbets have higher fold equity
+    
+    def calculate_stack_to_pot_ratio(self, stack_size, pot_size):
+        """Calculate Stack-to-Pot Ratio (SPR) - important for post-flop decisions"""
+        if pot_size <= 0:
+            return float('inf')
+        return stack_size / pot_size
+    
+    def get_optimal_bet_size(self, hand_strength, pot_size, stack_size, game_stage, bluff=False):
+        """
+        Calculate optimal bet size based on hand strength and situation
+        Returns bet size as a fraction of pot
+        """
+        if bluff:
+            # Bluff sizes are typically 50-75% of pot
+            return min(pot_size * 0.6, stack_size)
+            
+        # Value betting sizes based on hand strength
+        if hand_strength >= 0.85:  # Very strong hands
+            return min(pot_size * 0.75, stack_size)  # Large value bet
+        elif hand_strength >= 0.7:  # Strong hands  
+            return min(pot_size * 0.6, stack_size)  # Medium value bet
+        elif hand_strength >= 0.6:  # Medium hands
+            return min(pot_size * 0.4, stack_size)  # Small value bet
+        else:
+            # Weak hands - check or small bet for protection
+            return min(pot_size * 0.3, stack_size)
+    
+    def should_bluff(self, fold_equity, pot_size, bet_size):
+        """
+        Determine if bluffing is profitable
+        A bluff is profitable if: fold_equity > bet_size / (pot_size + bet_size)
+        """
+        if pot_size + bet_size <= 0:
+            return False
+        
+        required_fold_equity = bet_size / (pot_size + bet_size)
+        return fold_equity > required_fold_equity
 
     def _get_preflop_hand_category(self, hand_evaluation_tuple, hole_cards_str):
         # hole_cards_str is a list like ['As', 'Kd']
@@ -138,16 +238,259 @@ class DecisionEngine:
         }
 
     def make_decision(self, my_player, table_data, all_players_data):
-        pot_odds_to_call = 0.0 # Initialize pot_odds_to_call at the beginning
+        """
+        Enhanced decision making with EV calculations, win probability, and proper pot odds
+        """
+        pot_odds_to_call = 0.0
         if not my_player or not my_player.get('has_turn'):
             return "Not my turn or player data missing."
 
-        # --- Aggression Factor ---
-        # Higher value means more aggression. Base is 1.0.
-        # Values > 1.0 increase raise amounts and bluffing frequency.
-        # Values < 1.0 make the bot play tighter/more passively.
-        # This can be adjusted based on table dynamics or overall strategy.
-        aggression_factor = 1.2 # Default aggression factor (e.g., 1.0 for normal, 1.2 for more aggressive)
+        # Use more conservative aggression factor by default
+        aggression_factor = self.base_aggression_factor
+
+        hand_evaluation_tuple = my_player.get('hand_evaluation') 
+        if not hand_evaluation_tuple or not isinstance(hand_evaluation_tuple, tuple) or len(hand_evaluation_tuple) < 3:
+            return ACTION_FOLD
+
+        numerical_hand_rank = self._get_hand_strength_value(hand_evaluation_tuple)
+        hand_description = hand_evaluation_tuple[1]
+        my_hole_cards_str_list = my_player.get('cards', [])
+
+        # Parse pot size and stack information
+        pot_size_str = table_data.get('pot_size', "0").replace('$', '').replace(',', '').replace('€', '')
+        try:
+            pot_size = float(pot_size_str)
+        except ValueError:
+            pot_size = 0.0
+        
+        my_stack_str = my_player.get('stack', '0').replace('$', '').replace(',', '').replace('€', '')
+        try:
+            my_stack = float(my_stack_str)
+        except ValueError:
+            my_stack = self.big_blind * 100
+
+        # Calculate opponents and betting information
+        active_opponents_count = 0
+        max_bet_on_table = 0.0
+        
+        for p in all_players_data:
+            if p.get('is_empty', False) or p.get('name') == my_player.get('name'):
+                continue
+            if p.get('bet', '0') != 'folded':
+                active_opponents_count += 1
+            try:
+                player_bet_str = p.get('bet', '0').replace('$', '').replace(',', '').replace('€', '')
+                player_bet = float(player_bet_str)
+                max_bet_on_table = max(max_bet_on_table, player_bet)
+            except ValueError:
+                pass 
+
+        my_current_bet_str = my_player.get('bet', '0').replace('$', '').replace(',', '').replace('€', '')
+        try:
+            my_current_bet = float(my_current_bet_str)
+        except ValueError:
+            my_current_bet = 0.0
+            
+        bet_to_call = round(max(0, max_bet_on_table - my_current_bet), 2)
+        
+        # Prioritize parser's bet_to_call if available
+        parsed_bet_to_call = my_player.get('bet_to_call', 0)
+        if parsed_bet_to_call > 0:
+            bet_to_call = parsed_bet_to_call
+
+        can_check = (bet_to_call == 0)
+        game_stage = table_data.get('game_stage', 'Preflop')
+        community_cards = table_data.get('community_cards', [])
+
+        # Calculate win probability using equity calculator
+        win_probability = 0.0
+        if my_hole_cards_str_list and len(my_hole_cards_str_list) == 2:
+            win_prob, tie_prob, ev_multiplier = self.equity_calculator.calculate_equity_monte_carlo(
+                my_hole_cards_str_list, community_cards, active_opponents_count, simulations=500
+            )
+            win_probability = win_prob
+            print(f"DecisionEngine: Win probability: {win_probability:.3f}, Tie probability: {tie_prob:.3f}")
+
+        # Calculate pot odds
+        if bet_to_call > 0:
+            pot_odds_to_call = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 0
+        else:
+            pot_odds_to_call = 0
+
+        print(f"DecisionEngine: Pot odds: {pot_odds_to_call:.3f}, Bet to call: {bet_to_call}, Pot size: {pot_size}")
+
+        # Calculate SPR (Stack-to-Pot Ratio)
+        spr = self.calculate_stack_to_pot_ratio(my_stack, pot_size)
+        print(f"DecisionEngine: SPR: {spr:.2f}")
+
+        # Handle all-in situations with proper EV analysis
+        is_facing_all_in = (bet_to_call >= my_stack * 0.9)  # Consider it all-in if calling most of our stack
+        
+        if is_facing_all_in:
+            print(f"DecisionEngine: Facing all-in situation. Hand rank: {numerical_hand_rank}, Win prob: {win_probability:.3f}")
+            
+            # Calculate EV for calling all-in
+            ev_call = self.calculate_expected_value(ACTION_CALL, bet_to_call, pot_size, win_probability, bet_to_call)
+            ev_fold = 0.0  # EV of folding is always 0
+            
+            print(f"DecisionEngine: EV of calling all-in: {ev_call:.2f}, EV of folding: {ev_fold:.2f}")
+            
+            # Call if EV is positive and we have reasonable equity
+            if ev_call > ev_fold and win_probability > 0.3:  # Need at least 30% equity for all-in calls
+                return ACTION_CALL, min(bet_to_call, my_stack)
+            else:
+                return ACTION_FOLD
+
+        # Pre-flop decision making with enhanced logic
+        if game_stage == 'Preflop':
+            return self._make_preflop_decision(
+                my_player, hand_evaluation_tuple, my_hole_cards_str_list, bet_to_call, 
+                can_check, pot_size, my_stack, active_opponents_count, win_probability, pot_odds_to_call
+            )
+
+        # Post-flop decision making with EV calculations
+        return self._make_postflop_decision(
+            numerical_hand_rank, hand_description, bet_to_call, can_check, 
+            pot_size, my_stack, win_probability, pot_odds_to_call, game_stage, spr
+        )
+
+    def _make_preflop_decision(self, my_player, hand_evaluation_tuple, my_hole_cards_str_list, 
+                              bet_to_call, can_check, pot_size, my_stack, active_opponents_count, 
+                              win_probability, pot_odds_to_call):
+        """Enhanced pre-flop decision making"""
+        preflop_category = self._get_preflop_hand_category(hand_evaluation_tuple, my_hole_cards_str_list)
+        
+        # Conservative raise sizing
+        base_raise_size = max(self.big_blind * 2.5, bet_to_call + self.big_blind)
+        raise_amount = min(base_raise_size * self.base_aggression_factor, my_stack)
+
+        print(f"DecisionEngine: Preflop category: {preflop_category}, Win prob: {win_probability:.3f}")
+
+        if preflop_category == "Premium Pair":  # AA, KK, QQ
+            if bet_to_call == 0:
+                return ACTION_RAISE, min(raise_amount * 1.2, my_stack)
+            elif bet_to_call <= my_stack * 0.3:  # Don't commit too much with premium pairs
+                ev_call = self.calculate_expected_value(ACTION_CALL, bet_to_call, pot_size, win_probability, bet_to_call)
+                ev_raise = self.calculate_expected_value(ACTION_RAISE, raise_amount, pot_size, win_probability)
+                
+                if ev_raise > ev_call and raise_amount < my_stack:
+                    return ACTION_RAISE, min(raise_amount * 1.5, my_stack)
+                else:
+                    return ACTION_CALL, bet_to_call
+            else:
+                return ACTION_FOLD  # Don't commit too much even with premium pairs
+
+        elif preflop_category in ["Strong Pair", "Suited Ace", "Offsuit Broadway"]:
+            if bet_to_call == 0 and win_probability > 0.55:
+                return ACTION_RAISE, raise_amount
+            elif bet_to_call > 0 and pot_odds_to_call < 0.25 and win_probability > 0.5:
+                return ACTION_CALL, bet_to_call
+            elif can_check:
+                return ACTION_CHECK, 0
+            else:
+                return ACTION_FOLD
+
+        elif preflop_category in ["Medium Pair", "Suited Connector"]:
+            # Play more cautiously with speculative hands
+            if bet_to_call == 0 and active_opponents_count <= 3:
+                return ACTION_RAISE, raise_amount * 0.8
+            elif bet_to_call > 0 and pot_odds_to_call < 0.2 and win_probability > 0.45:
+                return ACTION_CALL, bet_to_call
+            elif can_check:
+                return ACTION_CHECK, 0
+            else:
+                return ACTION_FOLD
+
+        else:  # Weak hands
+            if can_check:
+                return ACTION_CHECK, 0
+            elif bet_to_call <= self.big_blind * 0.5 and pot_odds_to_call > 0.33:
+                return ACTION_CALL, bet_to_call  # Defend with good odds
+            else:
+                return ACTION_FOLD
+
+    def _make_postflop_decision(self, numerical_hand_rank, hand_description, bet_to_call, 
+                               can_check, pot_size, my_stack, win_probability, pot_odds_to_call, 
+                               game_stage, spr):
+        """Enhanced post-flop decision making with proper EV calculations"""
+        
+        # Calculate different action EVs
+        ev_fold = 0.0
+        ev_check = win_probability * pot_size if can_check else float('-inf')
+        ev_call = self.calculate_expected_value(ACTION_CALL, bet_to_call, pot_size, win_probability, bet_to_call) if bet_to_call > 0 else float('-inf')
+        
+        # Determine optimal bet size for value betting or bluffing
+        optimal_bet = self.get_optimal_bet_size(win_probability, pot_size, my_stack, game_stage)
+        ev_raise = self.calculate_expected_value(ACTION_RAISE, optimal_bet, pot_size, win_probability) if optimal_bet > 0 else float('-inf')
+
+        print(f"DecisionEngine: Hand rank: {numerical_hand_rank}, Win prob: {win_probability:.3f}")
+        print(f"DecisionEngine: EV - Fold: {ev_fold:.2f}, Check: {ev_check:.2f}, Call: {ev_call:.2f}, Raise: {ev_raise:.2f}")
+
+        # Strong hands (Straight or better)
+        if numerical_hand_rank >= 5:
+            if bet_to_call == 0:
+                return ACTION_RAISE, min(optimal_bet, my_stack)
+            elif ev_raise > ev_call and optimal_bet < my_stack * 0.8:
+                return ACTION_RAISE, min(optimal_bet, my_stack)
+            else:
+                return ACTION_CALL, bet_to_call
+
+        # Medium strength hands (Two Pair, Three of a Kind)  
+        elif numerical_hand_rank >= 3:
+            if bet_to_call == 0 and win_probability > 0.7:
+                return ACTION_RAISE, min(optimal_bet * 0.8, my_stack)
+            elif bet_to_call > 0:
+                if pot_odds_to_call < win_probability * 0.8:  # Need better than fair odds
+                    return ACTION_CALL, bet_to_call
+                else:
+                    return ACTION_FOLD
+            else:
+                return ACTION_CHECK, 0
+
+        # One pair
+        elif numerical_hand_rank == 2:
+            has_draw = "Draw" in hand_description
+            
+            if bet_to_call == 0:
+                if win_probability > 0.6:
+                    return ACTION_RAISE, min(optimal_bet * 0.6, my_stack)
+                else:
+                    return ACTION_CHECK, 0
+            elif has_draw and pot_odds_to_call < 0.25:  # Good odds for draws
+                return ACTION_CALL, bet_to_call
+            elif not has_draw and pot_odds_to_call < 0.3 and win_probability > 0.5:
+                return ACTION_CALL, bet_to_call
+            else:
+                return ACTION_FOLD
+
+        # Draws and weak hands
+        else:
+            has_draw = "Draw" in hand_description
+            
+            if has_draw and bet_to_call == 0 and game_stage != 'River':
+                # Semi-bluff with draws
+                bluff_profitable = self.should_bluff(0.3, pot_size, optimal_bet * 0.5)
+                if bluff_profitable:
+                    return ACTION_RAISE, min(optimal_bet * 0.5, my_stack)
+                else:
+                    return ACTION_CHECK, 0
+            elif has_draw and bet_to_call > 0 and pot_odds_to_call < 0.25:
+                return ACTION_CALL, bet_to_call
+            elif can_check:
+                return ACTION_CHECK, 0
+            else:
+                return ACTION_FOLD
+
+        # Default to most profitable action
+        best_ev = max(ev_fold, ev_check, ev_call, ev_raise)
+        if best_ev == ev_raise and optimal_bet > 0:
+            return ACTION_RAISE, min(optimal_bet, my_stack)
+        elif best_ev == ev_call and bet_to_call > 0:
+            return ACTION_CALL, bet_to_call
+        elif best_ev == ev_check and can_check:
+            return ACTION_CHECK, 0
+        else:
+            return ACTION_FOLD
 
 
         # Note: Opponent modeling updates should ideally happen as actions are observed by PokerBot,
