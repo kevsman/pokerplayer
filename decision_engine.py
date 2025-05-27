@@ -22,15 +22,15 @@ class DecisionEngine:
             "Straight Flush": 9,
             "Four of a Kind": 8,
             "Full House": 7,
-            "Flush": 6,
-            "Straight": 5,            "Three of a Kind": 4,
+            "Flush": 6,            "Straight": 5,
+            "Three of a Kind": 4,
             "Two Pair": 3,
             "One Pair": 2,
             "High Card": 1,
             "N/A": 0 # Default for pre-flop or unknown
         }
-          # Moderately aggressive - increased from 0.8 for slightly more aggression
-        self.base_aggression_factor = 0.95  # Increased from 0.8 for balanced aggression
+        # More aggressive - increased for better suited hand calling
+        self.base_aggression_factor = 1.3  # Increased from 0.95 to make bot more aggressive with suited hands
 
     def _get_hand_strength_value(self, hand_evaluation_tuple):
         if not hand_evaluation_tuple or not isinstance(hand_evaluation_tuple, tuple) or len(hand_evaluation_tuple) < 1:
@@ -155,9 +155,8 @@ class DecisionEngine:
             return "Strong Pair"
         # Suited Connectors (e.g., T9s, 87s) - simplified
         if is_suited and abs(rank1_val - rank2_val) == 1 and (rank1_val >= 8 or rank2_val >=8): # e.g. 87s+
-            return "Suited Connector" 
-        # Suited Aces (e.g., A9s, ATs) - simplified
-        if is_suited and rank1_val == 14 and rank2_val >= 9: # A9s+
+            return "Suited Connector"        # Suited Aces (e.g., A5s+) - simplified
+        if is_suited and rank1_val == 14 and rank2_val >= 5: # A5s+
             return "Suited Ace"
         # Offsuit Broadway (e.g., AKo, KQo) - simplified
         if not is_suited and rank1_val >= 10 and rank2_val >= 10: # Both cards T+
@@ -379,11 +378,11 @@ class DecisionEngine:
                     return ACTION_CALL, bet_to_call
             else:
                 return ACTION_FOLD  # Don't commit too much even with premium pairs
-
-        elif preflop_category in ["Strong Pair", "Suited Ace", "Offsuit Broadway"]:
-            if bet_to_call == 0 and win_probability > 0.55:
+        
+        elif preflop_category in ["Strong Pair", "Suited Ace", "Offsuit Broadway", "Playable Broadway"]:
+            if bet_to_call == 0 and win_probability > 0.4:  # More reasonable threshold
                 return ACTION_RAISE, raise_amount
-            elif bet_to_call > 0 and pot_odds_to_call < 0.25 and win_probability > 0.5:
+            elif bet_to_call > 0 and (pot_odds_to_call < 0.25 or win_probability > 0.25):  # More aggressive calling conditions - lowered from 0.35
                 return ACTION_CALL, bet_to_call
             elif can_check:
                 return ACTION_CHECK, 0
@@ -391,10 +390,10 @@ class DecisionEngine:
                 return ACTION_FOLD
 
         elif preflop_category in ["Medium Pair", "Suited Connector"]:
-            # Play more cautiously with speculative hands
-            if bet_to_call == 0 and active_opponents_count <= 3:
-                return ACTION_RAISE, raise_amount * 0.8
-            elif bet_to_call > 0 and pot_odds_to_call < 0.2 and win_probability > 0.45:
+            # Play more aggressively with speculative hands
+            if bet_to_call == 0 and active_opponents_count <= 4:  # Increased from 3 to be more aggressive
+                return ACTION_RAISE, raise_amount * 0.9  # Increased from 0.8
+            elif bet_to_call > 0 and (pot_odds_to_call < 0.25 or win_probability > 0.25):  # More aggressive - lowered from 0.3
                 return ACTION_CALL, bet_to_call
             elif can_check:
                 return ACTION_CHECK, 0
@@ -730,8 +729,8 @@ class DecisionEngine:
                         return ACTION_RAISE, min(my_stack, raise_amount)
                     else: # More cautious from early/mid if no limpers
                         print(f"DecisionEngine: {preflop_category} from {position}, checking/folding if option not available.")
-                        return ACTION_CHECK if can_check else ACTION_FOLD, 0
-                elif bet_to_call <= self.big_blind * 3 * aggression_factor and pot_odds_to_call > 0.2: # Call small raises if odds are good
+                        return (ACTION_CHECK, 0) if can_check else (ACTION_FOLD, 0)
+                elif bet_to_call <= self.big_blind * 4 * aggression_factor and (pot_odds_to_call < 0.25 or win_probability > 0.25): # Call raises with good odds or win probability
                     print(f"DecisionEngine: {preflop_category}, calling raise of {bet_to_call} with pot odds {pot_odds_to_call:.2f}")
                     return ACTION_CALL, bet_to_call
                 else:
@@ -773,7 +772,7 @@ class DecisionEngine:
                              return ACTION_RAISE, min(my_stack, raise_amount)
                         print(f"DecisionEngine: Medium Pair, too many limpers or bad position, folding.")
                         return ACTION_FOLD, 0
-                elif bet_to_call <= self.big_blind * 4 * aggression_factor and pot_odds_to_call > 0.2: # Call small raises for set value
+                elif bet_to_call <= self.big_blind * 4 * aggression_factor and (pot_odds_to_call < 0.25 or win_probability > 0.25): # Call raises for set value with good odds
                     print(f"DecisionEngine: Medium Pair, calling raise of {bet_to_call} for set value.")
                     return ACTION_CALL, bet_to_call
                 else:
