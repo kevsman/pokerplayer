@@ -354,7 +354,7 @@ class DecisionEngine:
             return self._make_preflop_decision(
                 my_player, hand_evaluation_tuple, my_hole_cards_str_list, bet_to_call, 
                 can_check, pot_size, my_stack, active_opponents_count, win_probability, pot_odds_to_call,
-                max_bet_on_table, game_stage # Pass max_bet_on_table and game_stage
+                max_bet_on_table, game_stage, hand_description # Pass hand_description
             )
 
         # Post-flop decision making with EV calculations
@@ -365,7 +365,7 @@ class DecisionEngine:
 
     def _make_preflop_decision(self, my_player, hand_evaluation_tuple, my_hole_cards_str_list, 
                               bet_to_call, can_check, pot_size, my_stack, active_opponents_count, 
-                              win_probability, pot_odds_to_call, max_bet_on_table, game_stage):
+                              win_probability, pot_odds_to_call, max_bet_on_table, game_stage, hand_description):
         """Enhanced pre-flop decision making"""
         preflop_category = self._get_preflop_hand_category(hand_evaluation_tuple, my_hole_cards_str_list)
         
@@ -466,9 +466,20 @@ class DecisionEngine:
         
         elif preflop_category in ["Strong Pair", "Suited Ace", "Offsuit Broadway"]:
             # AK, AQs, AJs, KQs, JJ, TT
-            if bet_to_call == 0 and win_probability > 0.33:  # Lowered from 0.35
+            # Specific boost for AJ offsuit and KQ offsuit
+            is_aj_offsuit = "AJ offsuit" in hand_description
+            is_kq_offsuit = "KQ offsuit" in hand_description
+
+            win_prob_threshold_open = 0.33
+            win_prob_threshold_call = 0.28
+            
+            if is_aj_offsuit or is_kq_offsuit:
+                win_prob_threshold_open = 0.30 # Be more willing to open AJ/KQo
+                win_prob_threshold_call = 0.25 # Be more willing to call with AJ/KQo
+
+            if bet_to_call == 0 and win_probability > win_prob_threshold_open:
                 return ACTION_RAISE, raise_amount
-            elif bet_to_call > 0 and (win_probability > pot_odds_to_call or win_probability > 0.28):  # Lowered from 0.30
+            elif bet_to_call > 0 and (win_probability > pot_odds_to_call or win_probability > win_prob_threshold_call):
                 # Consider a light 3-bet if facing a small raise and we have position or good equity
                 if bet_to_call <= self.big_blind * 4 and win_probability > 0.40 and raise_amount > bet_to_call and raise_amount < my_stack * 0.5:
                     ev_call = self.calculate_expected_value(ACTION_CALL, bet_to_call, pot_size, win_probability, bet_to_call)
@@ -510,199 +521,161 @@ class DecisionEngine:
             else:
                 return ACTION_FOLD
 
-    def _make_postflop_decision(self, numerical_hand_rank, hand_description, bet_to_call, 
-                               can_check, pot_size, my_stack, win_probability, pot_odds_to_call, 
-                               game_stage, spr):
-        """Enhanced post-flop decision making with proper EV calculations"""
+    def _make_postflop_decision(self, numerical_hand_rank, hand_description, bet_to_call, can_check, 
+                               pot_size, my_stack, win_probability, pot_odds_to_call, game_stage, spr):
+        """Post-flop decision making with EV calculations"""
         
-        ev_fold = 0.0
-        ev_check = win_probability * pot_size if can_check else float('-inf') # EV of check is winning current pot * win_prob
-        ev_call = self.calculate_expected_value(ACTION_CALL, bet_to_call, pot_size, win_probability, bet_to_call) if bet_to_call > 0 else float('-inf')
+        # Calculate optimal bet size for value betting
+        # We use a slightly more aggressive bet sizing for stronger hands post-flop
+        value_bet_size = self.get_optimal_bet_size(win_probability, pot_size, my_stack, game_stage, bluff=False)
         
-        optimal_value_bet = self.get_optimal_bet_size(win_probability, pot_size, my_stack, game_stage, bluff=False)
-        optimal_bluff_bet = self.get_optimal_bet_size(win_probability, pot_size, my_stack, game_stage, bluff=True)
-        
-        min_bet_postflop = max(self.big_blind, round(pot_size * 0.25, 2))
-        optimal_value_bet = max(optimal_value_bet, min_bet_postflop if optimal_value_bet > 0 else 0)
-        optimal_bluff_bet = max(optimal_bluff_bet, min_bet_postflop if optimal_bluff_bet > 0 else 0)
-        optimal_value_bet = round(optimal_value_bet, 2)
-        optimal_bluff_bet = round(optimal_bluff_bet, 2)
+        # Bluffing considerations
+        fold_equity_estimate = self._estimate_fold_equity(value_bet_size, pot_size) # Use value_bet_size as potential bluff size
+        can_bluff = self.should_bluff(fold_equity_estimate, pot_size, value_bet_size)
 
-        ev_raise_value = self.calculate_expected_value(ACTION_RAISE, optimal_value_bet, pot_size, win_probability) if optimal_value_bet > 0 else float('-inf')
-        estimated_fold_equity_for_bluff = self._estimate_fold_equity(optimal_bluff_bet, pot_size) 
-        ev_raise_bluff = (estimated_fold_equity_for_bluff * pot_size) - ((1 - estimated_fold_equity_for_bluff) * optimal_bluff_bet) if optimal_bluff_bet > 0 else float('-inf')
-        
-        ev_semi_bluff_raise = float('-inf')
-        if optimal_bluff_bet > 0: # Consider semi-bluff only if a bluff bet is calculated
-            pot_if_bluff_called = pot_size + optimal_bluff_bet + optimal_bluff_bet # Opponent calls our bluff bet
-            equity_if_bluff_called = win_probability * pot_if_bluff_called
-            ev_if_bluff_called = equity_if_bluff_called - optimal_bluff_bet
-            ev_semi_bluff_raise = (estimated_fold_equity_for_bluff * pot_size) + ((1 - estimated_fold_equity_for_bluff) * ev_if_bluff_called)
+        print(f"DecisionEngine Postflop: Rank: {numerical_hand_rank} ({hand_description}), WinP: {win_probability:.3f}, PotOdds: {pot_odds_to_call:.3f}, BetToCall: {bet_to_call}, SPR: {spr:.2f}, ValueBet: {value_bet_size}")
 
+        # --- Decision Logic based on Hand Strength ---
 
-        print(f"DecisionEngine Postflop: HandRank:{numerical_hand_rank}, WinP:{win_probability:.3f}, SPR:{spr:.2f}, B2Call:{bet_to_call}, Pot:{pot_size}, Stack:{my_stack}")
-        print(f"EVs: Fold:{ev_fold:.2f}, Check:{ev_check:.2f}, Call:{ev_call:.2f}")
-        print(f"ValueBet:{optimal_value_bet}(EV:{ev_raise_value:.2f}), BluffBet:{optimal_bluff_bet}(EV_Pure:{ev_raise_bluff:.2f}, EV_Semi:{ev_semi_bluff_raise:.2f})")
-
-        # Determine the actual amount for a raise if we decide to raise for value
-        # A raise must be at least the size of the last bet plus the amount of the last bet again (min re-raise)
-        min_reraise_increment = bet_to_call if bet_to_call > 0 else self.big_blind
-        actual_value_raise_amount = optimal_value_bet
-        actual_bluff_raise_amount = optimal_bluff_bet
-
-        if bet_to_call > 0: # If facing a bet, our raise is a re-raise
-            actual_value_raise_amount = max(optimal_value_bet, bet_to_call + min_reraise_increment)
-            actual_bluff_raise_amount = max(optimal_bluff_bet, bet_to_call + min_reraise_increment)
-        
-        actual_value_raise_amount = round(min(actual_value_raise_amount, my_stack),2)
-        actual_bluff_raise_amount = round(min(actual_bluff_raise_amount, my_stack),2)
-
-        # Re-calculate EV for these specific raise amounts if they changed
-        if actual_value_raise_amount != optimal_value_bet:
-            ev_raise_value = self.calculate_expected_value(ACTION_RAISE, actual_value_raise_amount, pot_size, win_probability) if actual_value_raise_amount > 0 else float('-inf')
-        if actual_bluff_raise_amount != optimal_bluff_bet: # For semi-bluff, recalculate if bluff sizing changed
-            pot_if_bluff_called = pot_size + actual_bluff_raise_amount + actual_bluff_raise_amount
-            equity_if_bluff_called = win_probability * pot_if_bluff_called
-            ev_if_bluff_called = equity_if_bluff_called - actual_bluff_raise_amount
-            ev_semi_bluff_raise = (estimated_fold_equity_for_bluff * pot_size) + ((1 - estimated_fold_equity_for_bluff) * ev_if_bluff_called) if actual_bluff_raise_amount > 0 else float('-inf')
-            ev_raise_bluff = (estimated_fold_equity_for_bluff * pot_size) - ((1 - estimated_fold_equity_for_bluff) * actual_bluff_raise_amount) if actual_bluff_raise_amount > 0 else float('-inf')
-
-
-        # Strong hands (Full House or better, or strong Flush/Straight with high win_prob)
-        if numerical_hand_rank >= self.HAND_RANK_STRENGTH["Full House"] or \
-           (numerical_hand_rank >= self.HAND_RANK_STRENGTH["Flush"] and win_probability > 0.75): # Adj from 0.80
-            print("Postflop Strategy: Strong Hand")
-            if bet_to_call == 0: 
-                bet_amount = actual_value_raise_amount
-                if spr < 2.5 and win_probability > 0.85: # Adj SPR from 3, win_prob from 0.9
-                    bet_amount = min(pot_size * 1.75, my_stack) if my_stack > pot_size * 1.75 else my_stack # Incr overbet from 1.5
-                return ACTION_RAISE, min(bet_amount, my_stack)
-            elif ev_raise_value > ev_call and actual_value_raise_amount > 0 and actual_value_raise_amount < my_stack * 0.90: # Adj commit from 0.85
-                return ACTION_RAISE, actual_value_raise_amount
-            elif win_probability > pot_odds_to_call or win_probability > 0.33: # Adj from 0.35
-                return ACTION_CALL, bet_to_call
-            else: 
-                return ACTION_FOLD
-
-        # Good Made Hands (Two Pair+, or strong One Pair with high win_prob)
-        elif (numerical_hand_rank >= self.HAND_RANK_STRENGTH["Two Pair"] and win_probability > 0.40) or \
-             (numerical_hand_rank == self.HAND_RANK_STRENGTH["One Pair"] and win_probability > 0.65): # Adj from 0.45 for TP, added strong OP condition
-            print("Postflop Strategy: Good Made Hand")
-            if bet_to_call == 0: 
-                if win_probability > 0.55: # Adj from 0.6
-                     return ACTION_RAISE, actual_value_raise_amount
-                elif win_probability > 0.40 : # Adj from 0.45
-                     return ACTION_RAISE, min(actual_value_raise_amount * 0.8, my_stack) 
+        # Strongest hands (Full House or better)
+        if numerical_hand_rank >= self.HAND_RANK_STRENGTH["Full House"]:
+            if can_check:
+                # Slow play very strong hands sometimes, or bet for value
+                if spr < 3 and win_probability > 0.85: # If SPR is low, more likely to get stacks in
+                     return ACTION_RAISE, min(value_bet_size * 1.2, my_stack) # Bet/Raise larger
+                return ACTION_RAISE, value_bet_size # Standard value bet
+            else: # Facing a bet
+                # If SPR is low, and we have a monster, re-raise or call to trap
+                if spr < 4 and win_probability > 0.9:
+                    # Consider if raising is better than calling
+                    # If opponent bet small, raise. If large, consider smooth call.
+                    if bet_to_call < pot_size * 0.5 :
+                         return ACTION_RAISE, min(bet_to_call * 3, my_stack) # Re-raise
+                    else:
+                         return ACTION_CALL, bet_to_call # Call a large bet
+                elif win_probability > pot_odds_to_call or win_probability > 0.7: # High confidence
+                    return ACTION_RAISE, min(bet_to_call * 2.5, my_stack) # Standard re-raise
+                elif win_probability > pot_odds_to_call or win_probability > 0.6: # Still good confidence
+                    return ACTION_CALL, bet_to_call
                 else:
-                    return ACTION_CHECK,0
-            elif win_probability > pot_odds_to_call or win_probability > 0.28: # Adj from 0.30
-                if bet_to_call < pot_size * 0.45 and win_probability > 0.60 and actual_value_raise_amount > 0: # Adj from 0.4 pot, 0.65 winP
-                     if ev_raise_value > ev_call and actual_value_raise_amount < my_stack * 0.8: # Adj from 0.75 commit
-                        return ACTION_RAISE, actual_value_raise_amount
-                return ACTION_CALL, bet_to_call
-            else:
-                return ACTION_FOLD
+                    return ACTION_FOLD # Should be rare with such strong hands unless board is terrifying
 
-        # Marginal Made Hands (One Pair, weaker Two Pair)
-        elif numerical_hand_rank == self.HAND_RANK_STRENGTH["One Pair"] or \
-             (numerical_hand_rank == self.HAND_RANK_STRENGTH["Two Pair"] and win_probability <= 0.40): # Adj from 0.45
-            print("Postflop Strategy: Marginal Made Hand")
-            has_strong_draw = ("Flush Draw" in hand_description and "Flush" not in hand_description and hand_description.count('Card') >=4) or \
-                              ("Straight Draw" in hand_description and "Straight" not in hand_description and hand_description.count('Card') >=4)
-            is_top_pair_good_kicker = "Top Pair" in hand_description and ("Ace Kicker" in hand_description or "King Kicker" in hand_description or "Queen Kicker" in hand_description)
+        # Flush or Straight
+        elif numerical_hand_rank >= self.HAND_RANK_STRENGTH["Straight"]:
+            if can_check:
+                return ACTION_RAISE, value_bet_size
+            else: # Facing a bet
+                if win_probability > pot_odds_to_call or win_probability > 0.55: # Good confidence for Straight/Flush
+                    # If facing a small bet, consider raising
+                    if bet_to_call < pot_size * 0.4 and win_probability > 0.65:
+                        return ACTION_RAISE, min(bet_to_call * 2.5, my_stack)
+                    return ACTION_CALL, bet_to_call
+                else: # Not confident enough, or pot odds not good
+                    return ACTION_FOLD
 
-            if bet_to_call == 0: 
-                if (win_probability > 0.45 or is_top_pair_good_kicker) and actual_value_raise_amount > 0: # Adj from 0.50
-                    return ACTION_RAISE, min(actual_value_raise_amount * 0.75, my_stack) # Adj from 0.7
-                elif has_strong_draw and game_stage != 'River' and actual_bluff_raise_amount > 0: 
-                    if ev_semi_bluff_raise > ev_check:
-                         return ACTION_RAISE, actual_bluff_raise_amount
-                return ACTION_CHECK, 0
-            elif (has_strong_draw and (pot_odds_to_call < 0.35 or win_probability > 0.20) ):  # Adj from 0.33 / 0.22
-                return ACTION_CALL, bet_to_call
-            elif (is_top_pair_good_kicker and (pot_odds_to_call < 0.40 or win_probability > 0.25)): # Adj from 0.38 / 0.28
-                return ACTION_CALL, bet_to_call
-            elif (numerical_hand_rank == self.HAND_RANK_STRENGTH["One Pair"] and \
-                  (win_probability > pot_odds_to_call or win_probability > 0.18) and \
-                  bet_to_call < pot_size * 0.35): # Adj from 0.20 winP, 0.4 pot
-                 return ACTION_CALL, bet_to_call
-            else:
-                return ACTION_FOLD
-
-        # Draws and Weak Hands (High Card, weaker draws)
-        else:
-            print("Postflop Strategy: Draw/Weak Hand")
-            has_strong_draw = (("Flush Draw" in hand_description and "Flush" not in hand_description and hand_description.count('Card') >=4) or \
-                              ("Straight Draw" in hand_description and "Straight" not in hand_description and hand_description.count('Card') >=4)) and "Gutshot" not in hand_description
-            has_nut_draw = "Nut Flush Draw" in hand_description or "Nut Straight Draw" in hand_description or \
-                           ("Open-Ended Straight Flush Draw" in hand_description)
-
-
-            if bet_to_call == 0 and game_stage != 'River': 
-                if (has_nut_draw and win_probability > 0.18 and actual_bluff_raise_amount > 0): # Adj from 0.20
-                    if ev_semi_bluff_raise > ev_check:
-                        return ACTION_RAISE, actual_bluff_raise_amount
-                elif (has_strong_draw and win_probability > 0.13 and actual_bluff_raise_amount > 0): # Adj from 0.15
-                    if ev_semi_bluff_raise > ev_check: 
-                        return ACTION_RAISE, min(actual_bluff_raise_amount * 0.85, my_stack) # Adj from 0.8
-                elif actual_bluff_raise_amount > 0 and ev_raise_bluff > ev_check and estimated_fold_equity_for_bluff > 0.30: # Adj from 0.35 FE
-                    return ACTION_RAISE, actual_bluff_raise_amount
-                return ACTION_CHECK, 0
-            elif (has_nut_draw and (pot_odds_to_call < 0.38 or win_probability > 0.18)): # Adj from 0.35 / 0.20
-                return ACTION_CALL, bet_to_call
-            elif (has_strong_draw and (pot_odds_to_call < 0.33 or win_probability > 0.15)):  # Adj from 0.30 / 0.18
-                return ACTION_CALL, bet_to_call
-            elif can_check: 
-                return ACTION_CHECK, 0
-            else:
-                return ACTION_FOLD
-
-        # Fallback logic based on EV - This should ideally be hit less often with refined category logic
-        print("Postflop Strategy: Fallback EV Decision")
+        # Three of a Kind
+        elif numerical_hand_rank == self.HAND_RANK_STRENGTH["Three of a Kind"]:
+            if can_check:
+                return ACTION_RAISE, value_bet_size
+            else: # Facing a bet
+                if win_probability > pot_odds_to_call or win_probability > 0.45: # Decent confidence for Trips
+                     # If facing a small bet, consider raising
+                    if bet_to_call < pot_size * 0.4 and win_probability > 0.55:
+                        return ACTION_RAISE, min(bet_to_call * 2.5, my_stack)
+                    return ACTION_CALL, bet_to_call
+                else:
+                    return ACTION_FOLD
         
-        best_ev = ev_fold
-        best_action = ACTION_FOLD
-        best_amount = 0
+        # Two Pair
+        elif numerical_hand_rank == self.HAND_RANK_STRENGTH["Two Pair"]:
+            if can_check:
+                return ACTION_RAISE, value_bet_size
+            else: # Facing a bet
+                # Be more willing to call with two pair, especially against smaller bets.
+                required_equity_to_call = pot_odds_to_call * 0.9 # Be slightly more liberal than direct pot odds
+                if game_stage == 'River' and bet_to_call <= pot_size * 0.40 and win_probability > 0.30: # Call small river bets
+                    print(f"DecisionEngine: Two Pair on River, facing small bet ({bet_to_call} into {pot_size}), calling with winP {win_probability}")
+                    return ACTION_CALL, bet_to_call
+                if win_probability > required_equity_to_call or win_probability > 0.35: # Adjusted from 0.40
+                    # If facing a very small bet and decent equity, call
+                    if bet_to_call <= pot_size * 0.25 and win_probability > 0.30:
+                         return ACTION_CALL, bet_to_call
+                    # If facing a moderate bet, and good equity, call.
+                    if bet_to_call <= pot_size * 0.6 and win_probability > 0.45:
+                         return ACTION_CALL, bet_to_call
+                    # If equity is strong enough, call even larger bets
+                    if win_probability > 0.50:
+                         return ACTION_CALL, bet_to_call
+                    # If pot odds are clearly good, call
+                    if win_probability > pot_odds_to_call:
+                        return ACTION_CALL, bet_to_call
+                    # Default to fold if conditions not met for calling a significant bet
+                    if bet_to_call > pot_size * 0.1: # Avoid folding to tiny bets if some equity
+                        return ACTION_FOLD
+                    else: # Call tiny bets
+                        return ACTION_CALL, bet_to_call 
+                elif can_check: # This case should not be hit if bet_to_call > 0
+                    return ACTION_CHECK, 0
+                else:
+                    return ACTION_FOLD
 
-        if can_check and ev_check >= best_ev:
-            best_ev = ev_check
-            best_action = ACTION_CHECK
-            best_amount = 0
-
-        if bet_to_call > 0 and ev_call >= best_ev:
-            # Ensure calling is not a massive overpay compared to equity
-            if win_probability > (pot_odds_to_call * 0.8) or win_probability > 0.1: # Basic check for some chance
-                best_ev = ev_call
-                best_action = ACTION_CALL
-                best_amount = bet_to_call
-            elif best_action == ACTION_FOLD: # If still fold, but call was considered
-                 print(f"Fallback: Considered call (EV {ev_call:.2f}) but pot odds too bad (WinP {win_probability:.3f} vs PotOdds {pot_odds_to_call:.3f})")
-
-        # Consider value raise if its EV is best
-        if actual_value_raise_amount > 0 and ev_raise_value >= best_ev:
-            best_ev = ev_raise_value
-            best_action = ACTION_RAISE
-            best_amount = actual_value_raise_amount
-        
-        # Consider semi-bluff raise if its EV is best (and better than value raise if both considered)
-        if game_stage != 'River' and actual_bluff_raise_amount > 0 and ev_semi_bluff_raise >= best_ev:
-            best_ev = ev_semi_bluff_raise
-            best_action = ACTION_RAISE 
-            best_amount = actual_bluff_raise_amount
-        
-        # Consider pure bluff if opening action and its EV is best
-        if bet_to_call == 0 and game_stage != 'River' and actual_bluff_raise_amount > 0 and ev_raise_bluff >= best_ev:
-             if win_probability < 0.20 and estimated_fold_equity_for_bluff > 0.25: # Conditions for pure bluff
-                best_ev = ev_raise_bluff
-                best_action = ACTION_RAISE
-                best_amount = actual_bluff_raise_amount
-
-        print(f"Fallback Decision: {best_action}, Amount: {best_amount}, EV: {best_ev:.2f}")
-        if best_action == ACTION_RAISE and best_amount == 0: # Safety check for raise amount
-            if can_check: return ACTION_CHECK, 0
-            return ACTION_FOLD # Should not happen
+        # One Pair
+        elif numerical_hand_rank == self.HAND_RANK_STRENGTH["One Pair"]:
+            # Check if it's top pair or a strong pair based on description (simplification)
+            is_top_pair = "Top Pair" in hand_description or "Overpair" in hand_description
+            is_strong_kicker = "Ace kicker" in hand_description or "King kicker" in hand_description
             
-        return best_action, best_amount
+            if can_check:
+                if is_top_pair and win_probability > 0.5:
+                    return ACTION_RAISE, value_bet_size # Bet top pair for value
+                elif win_probability > 0.3 and can_bluff: # Semi-bluff with some pairs
+                    return ACTION_RAISE, min(value_bet_size * 0.8, my_stack) # Smaller bluff bet
+                return ACTION_CHECK, 0 # Check otherwise
+            else: # Facing a bet
+                required_equity_to_call = pot_odds_to_call * 0.95 # Slightly more liberal for one pair
+
+                # River specific logic for calling with one pair vs small bets
+                if game_stage == 'River':
+                    if is_top_pair and bet_to_call <= pot_size * 0.35 and (win_probability > 0.28 or win_probability > pot_odds_to_call): # Call small river bets with top pair
+                        print(f"DecisionEngine: Top Pair on River, facing small bet ({bet_to_call} into {pot_size}), calling with winP {win_probability}")
+                        return ACTION_CALL, bet_to_call
+                    elif bet_to_call <= pot_size * 0.25 and (win_probability > 0.20 or win_probability > pot_odds_to_call): # Call tiny river bets with any pair
+                         print(f"DecisionEngine: One Pair on River, facing tiny bet ({bet_to_call} into {pot_size}), calling with winP {win_probability}")
+                         return ACTION_CALL, bet_to_call
 
 
-        # Note: Opponent modeling updates should ideally happen as actions are observed by PokerBot,
+                if is_top_pair and (win_probability > required_equity_to_call or win_probability > 0.30): # Need less equity for top pair
+                    return ACTION_CALL, bet_to_call
+                elif not is_top_pair and (win_probability > required_equity_to_call or win_probability > 0.25): # Middle/bottom pair needs better odds or higher win_prob
+                    if bet_to_call < pot_size * 0.3: # Only call small bets with weaker pairs
+                        return ACTION_CALL, bet_to_call
+                    else:
+                        return ACTION_FOLD
+                elif can_check: # Should not be hit
+                     return ACTION_CHECK, 0
+                else:
+                    return ACTION_FOLD
+        
+        # High Card (includes draws)
+        elif numerical_hand_rank <= self.HAND_RANK_STRENGTH["High Card"]: # Includes draws if not made yet
+            is_strong_draw = "Flush Draw" in hand_description or "Straight Draw" in hand_description or "Open Ended" in hand_description
+            
+            if can_check:
+                if is_strong_draw and win_probability > 0.25 and can_bluff: # Semi-bluff strong draws
+                    return ACTION_RAISE, min(value_bet_size * 0.9, my_stack) # Semi-bluff sizing
+                return ACTION_CHECK, 0
+            else: # Facing a bet
+                if is_strong_draw and (win_probability > pot_odds_to_call or win_probability > 0.20): # Call with strong draws if odds are decent
+                    return ACTION_CALL, bet_to_call
+                # Consider bluff-catching with Ace high if opponent bet is small and win_prob is not terrible
+                if "Ace High" in hand_description and bet_to_call <= pot_size * 0.25 and win_probability > 0.15 and game_stage == 'River':
+                    print(f"DecisionEngine: Ace High on River, facing small bet ({bet_to_call} into {pot_size}), bluff catching with winP {win_probability}")
+                    return ACTION_CALL, bet_to_call
+                return ACTION_FOLD
+        
+        # Fallback (should ideally not be reached if logic above is comprehensive)
+        if can_check:
+            return ACTION_CHECK, 0
+        
+        # Default to fold if no other action is determined and facing a bet
+        return ACTION_FOLD
