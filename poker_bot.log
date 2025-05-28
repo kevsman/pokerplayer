@@ -1,0 +1,197 @@
+2025-05-28 16:44:57,817 - __main__ - INFO - PokerBot started. Press Ctrl+C to stop.
+2025-05-28 16:44:57,818 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:44:57,818 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:44:59,199 - __main__ - DEBUG - HTML length: 17692
+2025-05-28 16:44:59,237 - __main__ - INFO - Pot: €0.03, Community Cards: []
+2025-05-28 16:44:59,328 - __main__ - INFO - Decision: CALL Amount: 0.01
+2025-05-28 16:45:05,798 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:45:05,799 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:45:07,183 - __main__ - DEBUG - HTML length: 89
+2025-05-28 16:45:07,185 - __main__ - WARNING - Essential game data missing after self.analyze(). Retrying in 1 second...
+2025-05-28 16:45:08,186 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:45:08,186 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:45:09,558 - __main__ - DEBUG - HTML length: 89
+2025-05-28 16:45:09,560 - __main__ - WARNING - Essential game data missing after self.analyze(). Retrying in 1 second...
+2025-05-28 16:45:10,561 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:45:10,563 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:45:11,943 - __main__ - DEBUG - HTML length: 89
+2025-05-28 16:45:11,945 - __main__ - WARNING - Essential game data missing after self.analyze(). Retrying in 1 second...
+2025-05-28 16:45:12,946 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:45:12,948 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:45:14,328 - __main__ - DEBUG - HTML length: 89
+2025-05-28 16:45:14,332 - __main__ - WARNING - Essential game data missing after self.analyze(). Retrying in 1 second...
+2025-05-28 16:45:15,333 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:45:15,334 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:45:16,711 - __main__ - DEBUG - HTML length: 89
+2025-05-28 16:45:16,713 - __main__ - WARNING - Essential game data missing after self.analyze(). Retrying in 1 second...
+2025-05-28 16:45:17,715 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:45:17,716 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:45:19,095 - __main__ - DEBUG - HTML length: 89
+2025-05-28 16:45:19,096 - __main__ - WARNING - Essential game data missing after self.analyze(). Retrying in 1 second...
+2025-05-28 16:45:20,097 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:45:20,098 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:45:21,472 - __main__ - DEBUG - HTML length: 18438
+2025-05-28 16:45:21,640 - __main__ - INFO - Decision: RAISE Amount: 0.0096
+2025-05-28 16:45:30,550 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:45:30,550 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:45:31,924 - __main__ - WARNING - HTML length: 0 (Failed to retrieve)
+2025-05-28 16:45:31,924 - __main__ - WARNING - Failed to retrieve HTML. Retrying in 1 second...
+2025-05-28 16:45:32,925 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:45:32,925 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:45:34,306 - __main__ - DEBUG - HTML length: 89
+2025-05-28 16:45:34,307 - __main__ - WARNING - Essential game data missing after self.analyze(). Retrying in 1 second...
+2025-05-28 16:45:35,308 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:45:35,309 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:45:36,693 - __main__ - DEBUG - HTML length: 89
+2025-05-28 16:45:36,694 - __main__ - WARNING - Essential game data missing after self.analyze(). Retrying in 1 second...
+2025-05-28 16:45:37,695 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:45:37,696 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:45:39,074 - __main__ - DEBUG - HTML length: 18871
+2025-05-28 16:45:39,369 - __main__ - INFO - Decision: RAISE Amount: 0.0192
+2025-05-28 16:45:44,540 - __main__ - INFO - PokerBot stopped by user.
+2025-05-28 16:46:07,276 - __main__ - INFO - PokerBot started. Press Ctrl+C to stop.
+2025-05-28 16:46:07,276 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:46:07,277 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:46:08,660 - __main__ - DEBUG - HTML length: 89
+2025-05-28 16:46:08,662 - __main__ - WARNING - Essential game data missing after self.analyze(). Retrying in 1 second...
+2025-05-28 16:46:09,663 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:46:09,665 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:46:11,044 - __main__ - WARNING - HTML length: 0 (Failed to retrieve)
+2025-05-28 16:46:11,045 - __main__ - WARNING - Failed to retrieve HTML. Retrying in 1 second...
+2025-05-28 16:46:12,045 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:46:12,046 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:46:13,434 - __main__ - DEBUG - HTML length: 89
+2025-05-28 16:46:13,435 - __main__ - WARNING - Essential game data missing after self.analyze(). Retrying in 1 second...
+2025-05-28 16:46:13,923 - __main__ - INFO - PokerBot stopped by user.
+2025-05-28 16:48:10,593 - __main__ - WARNING - UI positions not calibrated. Please run calibration first or ensure config.json exists.
+2025-05-28 16:48:20,628 - __main__ - INFO - Starting UI calibration...
+2025-05-28 16:49:47,644 - __main__ - INFO - Calibration finished. Positions saved in config.json
+2025-05-28 16:49:47,645 - __main__ - INFO - PokerBot started. Press Ctrl+C to stop.
+2025-05-28 16:49:47,645 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:49:47,646 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:49:49,021 - __main__ - DEBUG - HTML length: 27958
+2025-05-28 16:49:49,054 - __main__ - INFO - Pot: €0.14, Community Cards: []
+2025-05-28 16:49:49,297 - __main__ - INFO - Decision: FOLD
+2025-05-28 16:49:55,773 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:49:55,774 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:49:57,148 - __main__ - DEBUG - HTML length: 25694
+2025-05-28 16:49:58,182 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:49:58,183 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:49:59,549 - __main__ - DEBUG - HTML length: 25689
+2025-05-28 16:50:00,577 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:00,578 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:01,947 - __main__ - DEBUG - HTML length: 26049
+2025-05-28 16:50:02,979 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:02,980 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:04,349 - __main__ - DEBUG - HTML length: 25585
+2025-05-28 16:50:05,373 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:05,374 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:06,747 - __main__ - DEBUG - HTML length: 25585
+2025-05-28 16:50:07,772 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:07,776 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:09,146 - __main__ - DEBUG - HTML length: 25597
+2025-05-28 16:50:10,170 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:10,171 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:11,553 - __main__ - DEBUG - HTML length: 25597
+2025-05-28 16:50:12,580 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:12,580 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:13,950 - __main__ - DEBUG - HTML length: 26008
+2025-05-28 16:50:14,984 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:14,985 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:16,366 - __main__ - DEBUG - HTML length: 26005
+2025-05-28 16:50:17,392 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:17,393 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:18,764 - __main__ - DEBUG - HTML length: 25921
+2025-05-28 16:50:19,784 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:19,785 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:21,164 - __main__ - DEBUG - HTML length: 26215
+2025-05-28 16:50:22,198 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:22,199 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:23,569 - __main__ - DEBUG - HTML length: 26323
+2025-05-28 16:50:24,600 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:24,601 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:25,982 - __main__ - DEBUG - HTML length: 26161
+2025-05-28 16:50:27,012 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:27,013 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:28,386 - __main__ - DEBUG - HTML length: 25864
+2025-05-28 16:50:29,450 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:29,451 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:30,817 - __main__ - DEBUG - HTML length: 25805
+2025-05-28 16:50:31,847 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:31,847 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:33,216 - __main__ - DEBUG - HTML length: 25801
+2025-05-28 16:50:34,253 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:34,255 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:35,633 - __main__ - DEBUG - HTML length: 27969
+2025-05-28 16:50:35,665 - __main__ - INFO - Pot: €0.03, Community Cards: []
+2025-05-28 16:50:35,967 - __main__ - INFO - Decision: FOLD
+2025-05-28 16:50:42,441 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:42,442 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:43,821 - __main__ - DEBUG - HTML length: 25654
+2025-05-28 16:50:44,848 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:44,849 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:46,217 - __main__ - DEBUG - HTML length: 25666
+2025-05-28 16:50:47,253 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:47,254 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:48,637 - __main__ - DEBUG - HTML length: 25666
+2025-05-28 16:50:49,682 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:49,683 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:51,052 - __main__ - DEBUG - HTML length: 25666
+2025-05-28 16:50:52,083 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:52,083 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:53,447 - __main__ - DEBUG - HTML length: 25666
+2025-05-28 16:50:54,473 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:54,473 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:55,851 - __main__ - DEBUG - HTML length: 25684
+2025-05-28 16:50:56,879 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:56,880 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:50:58,250 - __main__ - DEBUG - HTML length: 25684
+2025-05-28 16:50:59,281 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:50:59,282 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:51:00,651 - __main__ - DEBUG - HTML length: 25684
+2025-05-28 16:51:01,683 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-28 16:51:01,683 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-28 16:51:03,049 - __main__ - DEBUG - HTML length: 49835
+2025-05-28 16:51:03,944 - __main__ - INFO - PokerBot stopped by user.
