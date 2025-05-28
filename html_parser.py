@@ -6,19 +6,34 @@ class PokerPageParser:
         self.soup = None # Initialize soup as None, will be set in parse_html
         self.table_data = {}
         self.player_data = []
+        self.parsing_warnings = [] # Added for collecting warnings
 
     def parse_html(self, html_content):
+        self.parsing_warnings = [] # Reset warnings for each parse
         if not html_content or not html_content.strip():
             print("Error: HTML content is empty in PokerPageParser.parse_html")
-            # Return a structure indicating an error or empty state
+            self.parsing_warnings.append("HTML content is empty or invalid.")
             return {
                 'table_data': {},
                 'all_players_data': [],
                 'my_player_data': None,
-                'error': "Empty or invalid HTML content received"
+                'error': "Empty or invalid HTML content received",
+                'warnings': self.parsing_warnings
             }
 
-        self.soup = BeautifulSoup(html_content, 'html.parser')
+        try:
+            self.soup = BeautifulSoup(html_content, 'html.parser')
+        except Exception as e:
+            print(f"Error: BeautifulSoup failed to parse HTML: {e}")
+            self.parsing_warnings.append(f"BeautifulSoup parsing error: {e}")
+            return {
+                'table_data': {},
+                'all_players_data': [],
+                'my_player_data': None,
+                'error': f"BeautifulSoup parsing error: {e}",
+                'warnings': self.parsing_warnings
+            }
+            
         # Reset data for the current parse operation
         self.table_data = {}
         self.player_data = []
@@ -27,21 +42,39 @@ class PokerPageParser:
         players_info = self.analyze_players()
 
         my_player_info = None
+        found_my_player = False
         for p_info in players_info:
             if p_info.get('is_my_player'):
                 my_player_info = p_info
+                found_my_player = True
                 break
         
+        if not found_my_player:
+            self.parsing_warnings.append("Critical: My player data not found.")
+            # Consider if this should be an error
+        
+        final_error = None
+        if not table_info.get('pot_size') or table_info.get('pot_size') == "N/A":
+            self.parsing_warnings.append("Critical: Pot size not found or N/A in table_data.")
+            final_error = "Pot size missing." # Example of escalating to an error
+        if not players_info:
+            self.parsing_warnings.append("Critical: No player data could be parsed.")
+            final_error = final_error or "No player data parsed."
+
+
         return {
             'table_data': table_info,
             'all_players_data': players_info,
-            'my_player_data': my_player_info
+            'my_player_data': my_player_info,
+            'error': final_error, # Populate error if critical info is missing
+            'warnings': self.parsing_warnings
         }
 
     def analyze_table(self):
         # Ensure soup is available
         if not self.soup:
             print("Error: BeautifulSoup object (self.soup) not initialized before calling analyze_table.")
+            self.parsing_warnings.append("Soup not initialized in analyze_table.")
             return {}
         # Extract Hand ID
         hand_id_element = self.soup.find('div', class_='hand-id')
@@ -49,6 +82,7 @@ class PokerPageParser:
             self.table_data['hand_id'] = hand_id_element.text.strip().replace('#', '')
         else:
             self.table_data['hand_id'] = "N/A"
+            self.parsing_warnings.append("Hand ID element not found.")
 
         # Extract pot size
         pot_element = self.soup.find('span', class_='total-pot-amount')
@@ -57,6 +91,7 @@ class PokerPageParser:
             self.table_data['pot_size'] = pot_text
         else:
             self.table_data['pot_size'] = "N/A"
+            self.parsing_warnings.append("Pot size element ('span.total-pot-amount') not found.")
 
         # Extract community cards
         self.table_data['community_cards'] = []
@@ -65,7 +100,7 @@ class PokerPageParser:
             cardset_community = community_cards_container.find('div', class_='cardset-community')
             if cardset_community:
                 card_elements = cardset_community.find_all('div', class_='card', recursive=False)
-                for card_element in card_elements:
+                for i, card_element in enumerate(card_elements):
                     if 'pt-visibility-hidden' in card_element.get('class', []):
                         continue
 
@@ -76,6 +111,8 @@ class PokerPageParser:
                         suit_element = card_backup.find('div', class_='card-suit')
                         if rank_element and rank_element.text.strip() and suit_element and suit_element.text.strip():
                             card_str = rank_element.text.strip() + suit_element.text.strip()
+                        else:
+                            self.parsing_warnings.append(f"Community card {i+1}: Found backup div but rank/suit missing.")
                     
                     if card_str == "N/A":
                         img_element = card_element.find('img', class_='card-image')
@@ -85,12 +122,21 @@ class PokerPageParser:
                             if len(card_filename) >= 1:
                                 suit_char = card_filename[0]
                                 rank_char = card_filename[1:]
-                                # Basic extraction, might need refinement based on actual filename patterns
                                 suit_map = {'s': '♠', 'h': '♥', 'd': '♦', 'c': '♣'}
                                 card_str = rank_char.upper() + suit_map.get(suit_char.lower(), suit_char)
+                            else:
+                                self.parsing_warnings.append(f"Community card {i+1}: Img found, but card filename '{card_filename}' too short.")
+                        else:
+                            self.parsing_warnings.append(f"Community card {i+1}: Neither backup div nor img src found.")
                                 
                     if card_str != "N/A":
                          self.table_data['community_cards'].append(card_str)
+                    else:
+                        self.parsing_warnings.append(f"Community card {i+1}: Failed to parse.")
+            else:
+                self.parsing_warnings.append("Community cards: 'div.cardset-community' not found within 'div.community-cards'.")
+        else:
+            self.parsing_warnings.append("Community cards container ('div.community-cards') not found.")
         
         num_cards = len(self.table_data['community_cards'])
         if num_cards == 0:
@@ -105,7 +151,8 @@ class PokerPageParser:
             self.table_data['game_stage'] = 'Unknown'
             
         self.table_data['dealer_position'] = "N/A"
-        dealer_buttons = self.soup.find_all('div', class_='dealer', id=re.compile(r'dealer-seat-\d+$'))
+        dealer_buttons = self.soup.find_all('div', class_='dealer', id=re.compile(r'dealer-seat-\\d+$'))
+        found_dealer = False
         for btn in dealer_buttons:
             parent_game_pos = btn.find_parent('div', class_=re.compile(r'game-position-'))
             is_hidden = 'pt-visibility-hidden' in btn.get('class', [])
@@ -116,23 +163,31 @@ class PokerPageParser:
                 dealer_id = btn.get('id', '')
                 if 'dealer-seat-' in dealer_id:
                     self.table_data['dealer_position'] = dealer_id.split('-')[-1]
+                    found_dealer = True
                     break 
+        if not found_dealer:
+            self.parsing_warnings.append("Dealer position button not found or not visible.")
         return self.table_data
 
     def analyze_players(self):
         # Ensure soup is available
         if not self.soup:
             print("Error: BeautifulSoup object (self.soup) not initialized before calling analyze_players.")
+            self.parsing_warnings.append("Soup not initialized in analyze_players.")
             return []
         self.player_data = [] 
         
         potential_player_elements = self.soup.find_all('div', class_='player-area')
         player_elements = []
         for el in potential_player_elements:
-            if any(re.match(r'player-seat-\d+', c) for c in el.get('class', [])):
+            if any(re.match(r'player-seat-\\d+', c) for c in el.get('class', [])):
                 player_elements.append(el)
         
-        for player_element in player_elements:
+        if not player_elements:
+            self.parsing_warnings.append("No player elements ('div.player-area' with 'player-seat-X' class) found.")
+            return []
+
+        for player_idx, player_element in enumerate(player_elements):
             player_info = {
                 'seat': None, 'name': 'N/A', 'stack': 'N/A', 'bet': '0', 
                 'is_my_player': False, 'is_empty': False, 'cards': [], 
@@ -143,6 +198,8 @@ class PokerPageParser:
             seat_class = next((cls for cls in player_element.get('class', []) if cls.startswith('player-seat-')), None)
             if seat_class:
                 player_info['seat'] = seat_class.split('-')[-1]
+            else:
+                self.parsing_warnings.append(f"Player {player_idx}: Seat class not found.")
 
             if 'my-player' in player_element.get('class', []):
                 player_info['is_my_player'] = True
@@ -169,6 +226,13 @@ class PokerPageParser:
                         current_name_text = name_element.text.strip()
                         if "Time:" not in current_name_text: # Added check to avoid timer text
                             player_info['name'] = current_name_text
+                        # else: name remains N/A if only timer text found
+            else:
+                self.parsing_warnings.append(f"Player {player_idx} (Seat {player_info.get('seat', 'N/A')}): Name element ('div.text-block nickname') not found.")
+            
+            if player_info['name'] == 'N/A' and not player_info['is_empty']:
+                 self.parsing_warnings.append(f"Player {player_idx} (Seat {player_info.get('seat', 'N/A')}): Name could not be parsed.")
+
 
             if player_info['is_my_player'] and player_info['name'] == 'N/A':
                 global_user_info = self.soup.find('div', class_='user-info')
@@ -176,17 +240,28 @@ class PokerPageParser:
                     editable_name_span = global_user_info.find('span', class_='editable')
                     if editable_name_span and editable_name_span.text.strip():
                         player_info['name'] = editable_name_span.text.strip()
+                    else:
+                        self.parsing_warnings.append(f"My Player (Seat {player_info.get('seat', 'N/A')}): Global user info found, but no editable name span.")
+                else:
+                    self.parsing_warnings.append(f"My Player (Seat {player_info.get('seat', 'N/A')}): Name still N/A, global user info ('div.user-info') not found.")
             
             stack_element = player_element.find('div', class_='text-block amount')
             if stack_element:
                 player_info['stack'] = stack_element.text.strip()
+                if not player_info['stack']:
+                     self.parsing_warnings.append(f"Player {player_idx} (Seat {player_info.get('seat', 'N/A')}): Stack element found but text is empty.")
+            else:
+                player_info['stack'] = '0' # Default to 0 if not found, can be problematic
+                self.parsing_warnings.append(f"Player {player_idx} (Seat {player_info.get('seat', 'N/A')}): Stack element ('div.text-block amount') not found. Defaulting stack to '0'.")
             
             bet_container = player_element.find('div', class_='player-bet')
             if bet_container:
                 bet_amount_element = bet_container.find('div', class_='amount')
                 if bet_amount_element and bet_amount_element.text.strip():
                     player_info['bet'] = bet_amount_element.text.strip()
-            
+                # else: bet remains '0'
+            # else: bet remains '0' if no bet_container
+
             player_info['has_turn'] = False
             table_player_div = player_element.find('div', class_='table-player')
             if table_player_div and 'player-active' in table_player_div.get('class', []):
@@ -234,6 +309,7 @@ class PokerPageParser:
                 
                 if not actions_area:
                     print("Could not find actions area ('div.actions-area' inside 'div.table-actions-wrapper'). No actions will be parsed.")
+                    self.parsing_warnings.append(f"My Player (Seat {player_info.get('seat', 'N/A')}): Actions area not found.")
                 else:
                     print("Found actions area. Analyzing buttons...")
                     # elements_to_check = actions_area.find_all(lambda tag: tag.name == 'div' and 'action-button' in tag.get('class', []))
@@ -244,6 +320,9 @@ class PokerPageParser:
                         # This broader search might re-introduce duplicates if the HTML is complex.
                         # A more robust solution would involve tracking processed elements or using more specific selectors.
                         # For now, we'll proceed and rely on the available_actions set to prevent functional duplicates.
+                        if not elements_to_check:
+                             self.parsing_warnings.append(f"My Player (Seat {player_info.get('seat', 'N/A')}): No action button elements found in actions area.")
+
 
                     print(f"Found {len(elements_to_check)} potential action elements.")
                     
@@ -358,6 +437,7 @@ class PokerPageParser:
                             action_identified = 'bet'
                         else:
                             print(f"Unrecognized action button text: '{button_text_content}'")
+                            self.parsing_warnings.append(f"My Player (Seat {player_info.get('seat', 'N/A')}): Unrecognized action button text: '{button_text_content}'.")
                         
                         if action_identified and action_identified not in unique_actions_found:
                             player_info['available_actions'].append(action_identified)
@@ -388,9 +468,12 @@ class PokerPageParser:
 
                 cards_holder = player_element.find('div', class_='cards-holder-hero')
                 if cards_holder:
-                    card_divs = cards_holder.find_all('div', class_=re.compile(r'\bcard\d*\b'))
+                    card_divs = cards_holder.find_all('div', class_=re.compile(r'\\bcard\\d*\\b'))
                     processed_cards = set()
-                    for card_div in card_divs:
+                    if not card_divs and player_info['is_my_player']: # Check only if it's my player and no cards found
+                        self.parsing_warnings.append(f"My Player (Seat {player_info.get('seat', 'N/A')}): 'cards-holder-hero' found, but no card divs within it.")
+
+                    for card_idx, card_div in enumerate(card_divs):
                         if 'pt-visibility-hidden' in card_div.get('class', []): continue
 
                         card_str = "N/A"
@@ -400,6 +483,8 @@ class PokerPageParser:
                             suit_el = card_backup.find('div', class_='card-suit')
                             if rank_el and rank_el.text.strip() and suit_el and suit_el.text.strip():
                                 card_str = rank_el.text.strip() + suit_el.text.strip()
+                            else:
+                                self.parsing_warnings.append(f"Player {player_idx} (Seat {player_info.get('seat', 'N/A')}) Card {card_idx+1}: Backup div found but rank/suit missing.")
                         
                         if card_str == "N/A": 
                             img_element = card_div.find('img', class_='card-image')
@@ -434,10 +519,21 @@ class PokerPageParser:
                                     final_suit_symbol = suit_symbol_map.get(parsed_suit_char_val)
                                     if final_suit_symbol:
                                         card_str = parsed_rank_val + final_suit_symbol
+                                    else:
+                                        self.parsing_warnings.append(f"Player {player_idx} (Seat {player_info.get('seat', 'N/A')}) Card {card_idx+1}: Img parsed, but suit symbol unknown for '{parsed_suit_char_val}'. Filename: '{card_filename}'.")
+                                else:
+                                    self.parsing_warnings.append(f"Player {player_idx} (Seat {player_info.get('seat', 'N/A')}) Card {card_idx+1}: Img found, but failed to parse rank/suit from filename '{card_filename}'.")
+                            else:
+                                self.parsing_warnings.append(f"Player {player_idx} (Seat {player_info.get('seat', 'N/A')}) Card {card_idx+1}: Neither backup div nor img src found for card.")
                         
                         if card_str != "N/A" and card_str not in processed_cards:
                             player_info['cards'].append(card_str)
                             processed_cards.add(card_str)
+                        elif card_str == "N/A":
+                             self.parsing_warnings.append(f"Player {player_idx} (Seat {player_info.get('seat', 'N/A')}) Card {card_idx+1}: Failed to parse card.")
+                elif player_info['is_my_player']: # If it's my player and no cards_holder_hero
+                     self.parsing_warnings.append(f"My Player (Seat {player_info.get('seat', 'N/A')}): 'cards-holder-hero' not found.")
+
             else: 
                 cards_holder_other = player_element.find('div', class_='cards-holder-other-hidden')
                 if cards_holder_other:

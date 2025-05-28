@@ -227,13 +227,20 @@ class PokerBot:
             return
 
         # 1. Parse HTML to get game state
-        game_state = self.parser.parse_html(current_html)
-        if not game_state or game_state.get('error'):
-            self.logger.error(f"Failed to parse HTML from test file: {game_state.get('error', 'Unknown parsing error')}")
+        parsed_state = self.parser.parse_html(current_html)
+        if not parsed_state or parsed_state.get('error'):
+            self.logger.error(f"Failed to parse HTML from test file: {parsed_state.get('error', 'Unknown parsing error')}")
+            if parsed_state and parsed_state.get('warnings'):
+                for warning in parsed_state['warnings']:
+                    self.logger.warning(f"Parser Warning: {warning}")
             return
+        
+        if parsed_state.get('warnings'):
+            for warning in parsed_state['warnings']:
+                self.logger.warning(f"Parser Warning: {warning}")
 
         # 2. Process the parsed HTML data
-        self.analyze() # Populates self.table_data, self.player_data
+        self.analyze() # Populates self.table_data, self.player_data using the soup set by parser
 
         my_player_data = self.get_my_player()
         table_data = self.table_data
@@ -343,9 +350,14 @@ class PokerBot:
                 # Assuming self.parser.parse_html(current_html) returns a dict 
                 # like game_state = {'my_player_data': ..., 'table_data': ..., 'all_players_data': ...}
                 # or None/throws error on failure.
-                game_state = self.parser.parse_html(current_html)
-                if not game_state:
-                    self.logger.warning("Failed to parse HTML or critical data missing (parser.parse_html). Retrying in 1 second...")
+                parsed_state = self.parser.parse_html(current_html)
+                
+                if parsed_state and parsed_state.get('warnings'):
+                    for warning in parsed_state['warnings']:
+                        self.logger.warning(f"Parser Warning: {warning}")
+
+                if not parsed_state or parsed_state.get('error'): # Check for error from parser
+                    self.logger.error(f"Failed to parse HTML or critical data missing: {parsed_state.get('error', 'Unknown parsing error') if parsed_state else 'Parser returned None'}. Retrying in 1 second...")
                     time.sleep(1)
                     continue
 
