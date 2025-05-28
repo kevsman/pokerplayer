@@ -28,10 +28,10 @@ class PokerBot:
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG) # Set to DEBUG to capture all levels of messages
         # Create file handler
-        fh = logging.FileHandler('poker_bot.log', mode='a') # Append mode
+        fh = logging.FileHandler('poker_bot.log', mode='a', encoding='utf-8') # Append mode, UTF-8 encoding
         fh.setLevel(logging.DEBUG)
         # Create console handler with a higher log level (optional, for cleaner console output)
-        ch = logging.StreamHandler()
+        ch = logging.StreamHandler(sys.stdout) # Explicitly use sys.stdout
         ch.setLevel(logging.INFO)
         # Create formatter and add it to the handlers
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -429,7 +429,12 @@ class PokerBot:
 
 if __name__ == "__main__":
     # Basic logging setup for the __main__ block, PokerBot will set up its own logger instance
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    # Ensure the root logger also handles UTF-8 for any prints that might go through it,
+    # though PokerBot class uses its own configured logger.
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', handlers=[
+        logging.FileHandler("poker_bot_main.log", mode='a', encoding='utf-8'), # Log main block to a separate file or same with different logger name
+        logging.StreamHandler(sys.stdout) # Ensure console output from basicConfig also attempts to use sys.stdout
+    ])
     logger = logging.getLogger(__name__) # Get a logger for the main block
 
     if len(sys.argv) > 1:
