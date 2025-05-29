@@ -23,11 +23,10 @@ class DecisionEngine:
         self.HAND_RANK_STRENGTH = {
             "Royal Flush": 10, "Straight Flush": 9, "Four of a Kind": 8,
             "Full House": 7, "Flush": 6, "Straight": 5,
-            "Three of a Kind": 4, "Two Pair": 3, "One Pair": 2,
-            "High Card": 1, "N/A": 0
+            "Three of a Kind": 4, "Two Pair": 3, "One Pair": 2,            "High Card": 1, "N/A": 0
         }
-        self.base_aggression_factor = 1.3
-        self.base_aggression_factor_postflop = 0.8
+        self.base_aggression_factor = 1.4  # Increased from 1.3
+        self.base_aggression_factor_postflop = 1.0  # Increased from 0.8
 
     # Wrapper methods to call the imported functions, maintaining the class structure if needed
     # or directly use the imported functions in make_decision, _make_preflop_decision, etc.
@@ -137,7 +136,14 @@ class DecisionEngine:
             
             print(f"DecisionEngine: EV of calling all-in: {ev_call:.2f}, EV of folding: {ev_fold:.2f}")
             
-            if ev_call > ev_fold and win_probability > 0.3:
+            # More aggressive all-in calling, especially with pairs and good aces
+            min_win_prob_allin = 0.25  # Reduced from 0.3
+            if numerical_hand_rank >= 2:  # Any pair
+                min_win_prob_allin = 0.22  # Even more aggressive with pairs
+            elif "A" in str(my_hole_cards_str_list):  # Ace high
+                min_win_prob_allin = 0.28
+            
+            if ev_call > ev_fold and win_probability > min_win_prob_allin:
                 return ACTION_CALL, min(my_stack, bet_to_call)
             else:
                 return ACTION_FOLD, 0

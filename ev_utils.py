@@ -72,9 +72,38 @@ def calculate_expected_value(action, amount, pot_size, win_probability,
         
     return 0.0
 
-def should_bluff(fold_equity, pot_size, bet_size):
+def should_bluff(pot_size, stack_size, win_probability, game_stage="Flop"):
     """
-    Determine if bluffing is profitable
+    Enhanced bluffing logic considering multiple factors
+    Returns True if conditions are favorable for bluffing
+    """
+    # Don't bluff if we have a decent hand
+    if win_probability > 0.35:
+        return False
+    
+    # Don't bluff if pot is too small (not worth the risk)
+    if pot_size < stack_size * 0.05:
+        return False
+    
+    # Don't bluff if we're short-stacked (preserve chips)
+    if stack_size < pot_size * 3:
+        return False
+    
+    # River bluffs should be more selective
+    if game_stage == "River":
+        return pot_size > stack_size * 0.1 and win_probability < 0.15
+    
+    # Turn bluffs with some equity (semi-bluffs)
+    elif game_stage == "Turn":
+        return win_probability > 0.15 and win_probability < 0.25
+    
+    # Flop bluffs - more liberal with drawing potential
+    else:
+        return win_probability > 0.10 and win_probability < 0.30
+
+def should_bluff_old(fold_equity, pot_size, bet_size):
+    """
+    Original bluffing function - determine if bluffing is profitable
     A bluff is profitable if: fold_equity > bet_size / (pot_size + bet_size)
     """
     if pot_size + bet_size <= 0:

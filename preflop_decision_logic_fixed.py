@@ -69,9 +69,10 @@ def make_preflop_decision(
 
     if preflop_category == "Premium Pair":
         if bet_to_call == 0:
-            return action_raise_const, min(raise_amount * 1.2, my_stack)  # More aggressive with premium        elif bet_to_call <= my_stack * 0.5:  # Increased from 0.45
-            ev_call = calculate_expected_value_func(action_call_const, bet_to_call, pot_size, win_probability, bet_to_call)
-            ev_raise = calculate_expected_value_func(action_raise_const, raise_amount, pot_size, win_probability)
+            return action_raise_const, min(raise_amount * 1.2, my_stack)  # More aggressive with premium
+        elif bet_to_call <= my_stack * 0.5:  # Increased from 0.45
+            ev_call = calculate_expected_value_func(action_call_const, bet_to_call, pot_size, win_probability, action_fold_const, action_check_const, action_call_const, action_raise_const, bet_to_call)
+            ev_raise = calculate_expected_value_func(action_raise_const, raise_amount, pot_size, win_probability, action_fold_const, action_check_const, action_call_const, action_raise_const)
             if ev_raise > ev_call and raise_amount < my_stack * 0.9 :  # Increased willingness to raise
                 return action_raise_const, raise_amount
             elif win_probability > pot_odds_to_call or win_probability > 0.35:  # Lowered threshold
