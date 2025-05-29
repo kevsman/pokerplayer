@@ -41,12 +41,34 @@ def calculate_expected_value(action, amount, pot_size, win_probability,
         return (win_probability * (pot_size + bet_to_call)) - bet_to_call
         
     elif action == action_raise_const:
+        # amount is the total size of our bet for this round
+        # pot_size is the current pot, including opponent's bet (bet_to_call)
+        # bet_to_call is the opponent's bet we need to call to stay in / raise over
+
         fold_equity = _estimate_fold_equity(amount, pot_size)
-        ev_if_fold = fold_equity * pot_size
-        opponent_call_amount = amount
-        new_pot = pot_size + amount + opponent_call_amount
-        ev_if_call = (1 - fold_equity) * ((win_probability * new_pot) - amount)
-        return ev_if_fold + ev_if_call
+        
+        # 1. If opponent folds: we win the current pot_size
+        ev_if_opponent_folds = fold_equity * pot_size
+        
+        # 2. If opponent calls our raise:
+        # Opponent needs to add (amount - bet_to_call) to the pot.
+        # Our investment for this specific action is 'amount'.
+        # The pot, if opponent calls, will be: pot_size (current pot) + (amount - bet_to_call) (opponent's addition)
+        # Ensure amount is greater than bet_to_call for a valid raise scenario leading to this calculation.
+        # If amount <= bet_to_call, this branch implies a misunderstanding of 'raise' or game state.
+        # However, standard EV calc for raise assumes amount > bet_to_call.
+        opponent_chips_to_add = amount - bet_to_call
+        if opponent_chips_to_add < 0: # Should not happen if 'amount' is a valid total raise amount
+            opponent_chips_to_add = 0 # Or handle as an error/invalid state
+
+        pot_if_opponent_calls = pot_size + opponent_chips_to_add
+        
+        # EV when opponent calls = (win_prob * total_pot_if_they_call) - our_investment
+        ev_when_opponent_calls = (win_probability * pot_if_opponent_calls) - amount
+        
+        ev_if_opponent_does_not_fold = (1 - fold_equity) * ev_when_opponent_calls
+        
+        return ev_if_opponent_folds + ev_if_opponent_does_not_fold
         
     return 0.0
 
