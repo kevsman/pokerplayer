@@ -23,8 +23,7 @@ def make_postflop_decision(
     is_strong = numerical_hand_rank >= 4  # Three of a kind+
     is_medium = numerical_hand_rank >= 2  # Pair+
     is_draw = "Straight" in hand_description or "Flush" in hand_description
-    
-    # Position and aggression adjustments
+      # Position and aggression adjustments
     aggression_multiplier = base_aggression_factor_postflop
     if spr <= 3:  # Short stack situations - be more aggressive
         aggression_multiplier *= 1.3
@@ -34,21 +33,21 @@ def make_postflop_decision(
     if can_check:  # We can check - no bet to call
         # Value betting logic
         if is_very_strong or (is_strong and win_probability > 0.7):
-            bet_amount = get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, game_stage, big_blind, False)
+            bet_amount = get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, game_stage, False)
             bet_amount = min(bet_amount * aggression_multiplier, my_stack)
-            bet_amount = max(bet_amount, big_blind)  # Minimum bet size
+            bet_amount = max(bet_amount, decision_engine_instance.big_blind)  # Minimum bet size
             return action_raise_const, round(bet_amount, 2)
-          # Medium strength - bet for value if we have decent equity
+        # Medium strength - bet for value if we have decent equity
         elif is_medium and win_probability > 0.45:  # Lowered from 0.55
             bet_amount = pot_size * 0.5  # Smaller value bet
             bet_amount = min(bet_amount * aggression_multiplier, my_stack)
-            bet_amount = max(bet_amount, big_blind)
+            bet_amount = max(bet_amount, decision_engine_instance.big_blind)
             return action_raise_const, round(bet_amount, 2)
-          # River-specific logic for pairs - be more aggressive
+        # River-specific logic for pairs - be more aggressive
         elif is_medium and game_stage == "River" and win_probability > 0.30:  # Very aggressive on river with pairs
             bet_amount = pot_size * 0.4  # Small value bet on river
             bet_amount = min(bet_amount * aggression_multiplier, my_stack)
-            bet_amount = max(bet_amount, big_blind)
+            bet_amount = max(bet_amount, decision_engine_instance.big_blind)
             return action_raise_const, round(bet_amount, 2)
         
         # Bluffing opportunities
@@ -61,12 +60,13 @@ def make_postflop_decision(
         
         return action_check_const, 0
 
-    else:  # Facing a bet        # Calculate EVs
+    else:  # Facing a bet
+        # Calculate EVs
         ev_call = calculate_expected_value_func(action_call_const, bet_to_call, pot_size, win_probability, bet_to_call)
         ev_fold = 0.0
-          # Very strong hands - consider raising
+        # Very strong hands - consider raising
         if is_very_strong:
-            raise_amount = get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, game_stage, big_blind, False)
+            raise_amount = get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, game_stage, False)
             raise_amount = max(raise_amount, bet_to_call * 2.5)  # Minimum 2.5x raise
             raise_amount = min(raise_amount, my_stack)
             
