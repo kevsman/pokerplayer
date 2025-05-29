@@ -269,18 +269,30 @@ class PokerBot:
             action_tuple = self.decision_engine.make_decision(my_player_data, table_data, all_players_data)
             
             action = ""
-            amount = None
+            amount = 0 # Default amount to 0
+
             if isinstance(action_tuple, tuple) and len(action_tuple) == 2:
                 action, amount = action_tuple
-            elif isinstance(action_tuple, str):
+                if amount is None: # Ensure amount has a default if make_decision returns None for it
+                    amount = 0
+            elif isinstance(action_tuple, str): # Should ideally not happen if make_decision is standardized
                 action = action_tuple
+                # If only action string is returned, it implies no specific amount (e.g. FOLD, CHECK)
+                # For CALL/RAISE, this path would be problematic if amount isn't part of a tuple.
+                # However, make_decision is expected to return (ACTION, amount)
             else:
-                self.logger.warning(f"Unknown action format from decision engine: {action_tuple}")
+                self.logger.warning(f"Warning: Unknown action format from decision engine: {action_tuple}")
                 action = ACTION_FOLD
+                amount = 0 # Ensure amount is 0 for FOLD
 
-            self.logger.info(f"Decision: {action}" + (f" Amount: {amount}" if amount is not None else ""))
+            # Enhanced logging for decision
+            decision_log_message = f"Decision: {action}"
+            if amount is not None:
+                decision_log_message += f" Amount: {amount:.2f}" # Log amount with 2 decimal places
+            # Log the bet_to_call again here if it was a factor in a CALL decision, or just rely on the turn log.
+            # For RAISE and CALL, the 'amount' is the key part of the decision.
+            self.logger.info(decision_log_message)
 
-            # Simulate UI actions (they will print what they do)
             if action == ACTION_FOLD:
                 self.ui_controller.action_fold()
             elif action == ACTION_CHECK or action == ACTION_CALL:
@@ -378,22 +390,42 @@ class PokerBot:
 
                 if my_player_data and my_player_data.get('has_turn'):
                     hand_rank_description = my_player_data.get('hand_evaluation', (0, "N/A"))[1]
-                    self.logger.info(f"My turn. Hand: {my_player_data.get('cards')}, Rank: {hand_rank_description}, Stack: {my_player_data.get('stack')}")
+                    # Enhanced logging for player's turn
+                    bet_to_call_str = my_player_data.get('bet_to_call', '0') # Get bet_to_call from player data
+                    bet_to_call_val = parse_currency_string(bet_to_call_str)
+                    log_message = (
+                        f"My turn. Hand: {my_player_data.get('cards')}, Rank: {hand_rank_description}, " 
+                        f"Stack: {my_player_data.get('stack')}, Bet to call: {bet_to_call_val:.2f}"
+                    )
+                    self.logger.info(log_message)
                     self.logger.info(f"Pot: {table_data.get('pot_size')}, Community Cards: {table_data.get('community_cards')}")
 
                     action_tuple = self.decision_engine.make_decision(my_player_data, table_data, all_players_data)
                     
                     action = ""
-                    amount = None
+                    amount = 0 # Default amount to 0
+
                     if isinstance(action_tuple, tuple) and len(action_tuple) == 2:
                         action, amount = action_tuple
-                    elif isinstance(action_tuple, str):
+                        if amount is None: # Ensure amount has a default if make_decision returns None for it
+                            amount = 0
+                    elif isinstance(action_tuple, str): # Should ideally not happen if make_decision is standardized
                         action = action_tuple
+                        # If only action string is returned, it implies no specific amount (e.g. FOLD, CHECK)
+                        # For CALL/RAISE, this path would be problematic if amount isn't part of a tuple.
+                        # However, make_decision is expected to return (ACTION, amount)
                     else:
                         self.logger.warning(f"Warning: Unknown action format from decision engine: {action_tuple}")
                         action = ACTION_FOLD
+                        amount = 0 # Ensure amount is 0 for FOLD
 
-                    self.logger.info(f"Decision: {action}" + (f" Amount: {amount}" if amount is not None else ""))
+                    # Enhanced logging for decision
+                    decision_log_message = f"Decision: {action}"
+                    if amount is not None:
+                        decision_log_message += f" Amount: {amount:.2f}" # Log amount with 2 decimal places
+                    # Log the bet_to_call again here if it was a factor in a CALL decision, or just rely on the turn log.
+                    # For RAISE and CALL, the 'amount' is the key part of the decision.
+                    self.logger.info(decision_log_message)
 
                     if action == ACTION_FOLD:
                         self.ui_controller.action_fold()
@@ -412,7 +444,8 @@ class PokerBot:
                         # If the raise amount is the player's entire stack, it's an all-in raise.
                         # The UI might have a dedicated all-in button for this instead of raise + amount.
                         my_current_stack = parse_currency_string(my_player_data.get('stack', '0'))
-                        if amount is not None and my_current_stack <= amount: # Check if raise amount is effectively all-in
+                        # Ensure amount is not None and is a number before comparison
+                        if amount is not None and isinstance(amount, (int, float)) and my_current_stack <= amount: 
                              # Check if a dedicated all-in button is available from parser info (optional)
                             if 'all_in' in my_player_data.get('available_actions', []):
                                 self.logger.info("Performing All-in action (raise all-in).")
@@ -432,7 +465,7 @@ class PokerBot:
                     else: # Should not happen if parsing check above is robust
                          self.logger.warning("Player data not found or not my turn. Waiting...")
                 
-                time.sleep(1) # Main loop delay to aim for ~1 second cycle + processing time
+                time.sleep(self.ui_controller.get_delay('main_loop_general_delay')) # Use configured delay
 
         except KeyboardInterrupt:
             self.logger.info("PokerBot stopped by user.")
@@ -449,7 +482,10 @@ if __name__ == "__main__":
     ])
     logger = logging.getLogger(__name__) # Get a logger for the main block
 
-    if len(sys.argv) > 1:
+    if len(sys.argv) > 1 and sys.argv[1] == 'calibrate': # Added calibrate command
+        bot = PokerBot()
+        bot.run_calibration()
+    elif len(sys.argv) > 1:
         file_path = sys.argv[1]
         bot = PokerBot()
         bot.run_test_file(file_path)

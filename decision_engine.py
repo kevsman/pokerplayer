@@ -258,7 +258,7 @@ class DecisionEngine:
 
         hand_evaluation_tuple = my_player.get('hand_evaluation') 
         if not hand_evaluation_tuple or not isinstance(hand_evaluation_tuple, tuple) or len(hand_evaluation_tuple) < 3:
-            return ACTION_FOLD
+            return ACTION_FOLD, 0
 
         numerical_hand_rank = self._get_hand_strength_value(hand_evaluation_tuple)
         hand_description = hand_evaluation_tuple[1]
@@ -345,9 +345,9 @@ class DecisionEngine:
             
             # Call if EV is positive and we have reasonable equity
             if ev_call > ev_fold and win_probability > 0.3:  # Need at least 30% equity for all-in calls
-                return ACTION_CALL, min(bet_to_call, my_stack)
+                return ACTION_CALL, min(my_stack, bet_to_call)
             else:
-                return ACTION_FOLD
+                return ACTION_FOLD, 0
 
         # Pre-flop decision making with enhanced logic
         if game_stage == 'Preflop':
@@ -411,7 +411,7 @@ class DecisionEngine:
             # Standard 3-bet sizing: 3x the previous bet/raise size.
             # If opponent raised to X (max_bet_on_table), we want our total bet to be 3X.
             # The amount to add is 3X - my_current_bet.
-            # If my_current_bet is 0, then raise_amount_to_add is 3X.
+            # If my_current_bet is 0, then raise_amount_to_add = 3X.
             # If I posted BB (my_current_bet = BB) and opponent raised to 3BB (max_bet_on_table = 3BB),
             # I need to call 2BB. A 3x raise (to 9BB) means I add 8BB.
             # So, raise_amount = (3 * max_bet_on_table) - my_investment_this_round
@@ -481,11 +481,12 @@ class DecisionEngine:
                 return ACTION_RAISE, raise_amount
             elif bet_to_call > 0 and (win_probability > pot_odds_to_call or win_probability > win_prob_threshold_call):
                 # Consider a light 3-bet if facing a small raise and we have position or good equity
-                if bet_to_call <= self.big_blind * 4 and win_probability > 0.40 and raise_amount > bet_to_call and raise_amount < my_stack * 0.5:
+                # Adjusted win_probability from 0.40 to 0.37 for 3-bet consideration
+                if bet_to_call <= self.big_blind * 4 and win_probability > 0.37 and raise_amount > bet_to_call and raise_amount < my_stack * 0.5:
                     ev_call = self.calculate_expected_value(ACTION_CALL, bet_to_call, pot_size, win_probability, bet_to_call)
                     ev_raise = self.calculate_expected_value(ACTION_RAISE, raise_amount, pot_size, win_probability)
                     if ev_raise > ev_call:
-                        return ACTION_RAISE, raise_amount
+                        return ACTION_RAISE, raise_amount # Ensure 3-bet is returned
                 return ACTION_CALL, bet_to_call
             elif can_check:
                 return ACTION_CHECK, 0
@@ -495,14 +496,17 @@ class DecisionEngine:
         elif preflop_category in ["Playable Broadway", "Medium Pair", "Suited Connector"]:
             # KJs, QJs, JTs, Axs (smaller suited aces), 99-77, T9s, 98s, 87s
             position_factor = 1.0 # Placeholder
-            if bet_to_call == 0 and win_probability > (0.20 / position_factor) and active_opponents_count <= 4:  # Adj from 0.22, opp from 3
-                return ACTION_RAISE, raise_amount * 0.95 # Slightly smaller raise, adj from 0.9
-            elif bet_to_call > 0 and (win_probability > pot_odds_to_call or win_probability > 0.18):  # Lowered from 0.20
+            # Adjusted win_probability from 0.20 to 0.18 for opening, and raise_amount from *0.95 to full amount
+            if bet_to_call == 0 and win_probability > (0.18 / position_factor) and active_opponents_count <= 4:
+                return ACTION_RAISE, raise_amount
+            # Adjusted win_probability from 0.18 to 0.16 for calling
+            elif bet_to_call > 0 and (win_probability > pot_odds_to_call or win_probability > 0.16):
+                # Ensure re-raise logic correctly returns action and amount
                 if bet_to_call <= self.big_blind * 3.5 and win_probability > 0.28 and active_opponents_count <= 2 and raise_amount > bet_to_call and raise_amount < my_stack * 0.4:
                     ev_call = self.calculate_expected_value(ACTION_CALL, bet_to_call, pot_size, win_probability, bet_to_call)
                     ev_raise = self.calculate_expected_value(ACTION_RAISE, raise_amount, pot_size, win_probability)
                     if ev_raise > ev_call:
-                        return ACTION_RAISE, raise_amount
+                        return ACTION_RAISE, raise_amount # Ensure re-raise is returned
                 return ACTION_CALL, bet_to_call
             elif can_check:
                 return ACTION_CHECK, 0
@@ -526,156 +530,96 @@ class DecisionEngine:
         """Post-flop decision making with EV calculations"""
         
         # Calculate optimal bet size for value betting
-        # We use a slightly more aggressive bet sizing for stronger hands post-flop
         value_bet_size = self.get_optimal_bet_size(win_probability, pot_size, my_stack, game_stage, bluff=False)
-        
-        # Bluffing considerations
-        fold_equity_estimate = self._estimate_fold_equity(value_bet_size, pot_size) # Use value_bet_size as potential bluff size
+
+        # Post-flop decision logic
+        # numerical_hand_rank = self.HAND_RANK_STRENGTH.get(hand_description.split(' ')[0], 0) # e.g. "Two Pair" -> 2
+        # if 'High Card' in hand_description: numerical_hand_rank = self.HAND_RANK_STRENGTH['High Card']
+        # elif 'Pair' in hand_description and 'Two Pair' not in hand_description : numerical_hand_rank = self.HAND_RANK_STRENGTH['One Pair']
+
+        # Calculate pot odds
+        pot_odds_to_call = 0
+        if pot_size + bet_to_call > 0: # Avoid division by zero
+            pot_odds_to_call = bet_to_call / (pot_size + bet_to_call)
+
+        # Estimate fold equity
+        # Using opponent models if available
+        rates = [m['fold_to_cbet_count']/m['fold_to_cbet_opportunities'] for m in self.opponent_models.values() if m.get('fold_to_cbet_opportunities',0)>0]
+        if rates:
+            fold_equity_estimate = sum(rates)/len(rates)
+        else:
+            fold_equity_estimate = self._estimate_fold_equity(value_bet_size, pot_size)
         can_bluff = self.should_bluff(fold_equity_estimate, pot_size, value_bet_size)
 
-        print(f"DecisionEngine Postflop: Rank: {numerical_hand_rank} ({hand_description}), WinP: {win_probability:.3f}, PotOdds: {pot_odds_to_call:.3f}, BetToCall: {bet_to_call}, SPR: {spr:.2f}, ValueBet: {value_bet_size}")
+        is_draw = any(x in hand_description for x in ("Flush Draw","Straight Draw","Open Ended"))
 
-        # --- Decision Logic based on Hand Strength ---
+        # Semi-bluff with strong draws
+        if can_check and is_draw and win_probability > 0.30:
+            bluff_bet = self.get_optimal_bet_size(win_probability, pot_size, my_stack, game_stage, bluff=True)
+            # Ensure bluff_bet is not None and is a valid amount
+            if bluff_bet and bluff_bet > 0:
+                return ACTION_RAISE, bluff_bet
 
-        # Strongest hands (Full House or better)
-        if numerical_hand_rank >= self.HAND_RANK_STRENGTH["Full House"]:
+        # Value bet Two Pair or better on Turn/River
+        if game_stage in ['Turn','River'] and numerical_hand_rank >= self.HAND_RANK_STRENGTH['Two Pair']:
             if can_check:
-                # Slow play very strong hands sometimes, or bet for value
-                if spr < 3 and win_probability > 0.85: # If SPR is low, more likely to get stacks in
-                     return ACTION_RAISE, min(value_bet_size * 1.2, my_stack) # Bet/Raise larger
-                return ACTION_RAISE, value_bet_size # Standard value bet
-            else: # Facing a bet
-                # If SPR is low, and we have a monster, re-raise or call to trap
-                if spr < 4 and win_probability > 0.9:
-                    # Consider if raising is better than calling
-                    # If opponent bet small, raise. If large, consider smooth call.
-                    if bet_to_call < pot_size * 0.5 :
-                         return ACTION_RAISE, min(bet_to_call * 3, my_stack) # Re-raise
+                return ACTION_RAISE, value_bet_size
+            if bet_to_call > 0:
+                # If facing a bet, call if we have a strong hand, consider raising if very strong or opponent is likely to fold to a re-raise
+                # For now, simple call for Two Pair+
+                return ACTION_CALL, bet_to_call 
+            return ACTION_CHECK, 0 # Should not happen if can_check is false and bet_to_call is 0
+
+        # Logic for One Pair hands, especially Top Pair
+        if 'Pair' in hand_description and 'Two Pair' not in hand_description:
+            is_top_pair = 'Top Pair' in hand_description # Assuming hand_description includes this detail
+            
+            if is_top_pair:
+                if can_check: # If checked to us
+                    if win_probability > 0.5:
+                        return ACTION_RAISE, value_bet_size 
                     else:
-                         return ACTION_CALL, bet_to_call # Call a large bet
-                elif win_probability > pot_odds_to_call or win_probability > 0.7: # High confidence
-                    return ACTION_RAISE, min(bet_to_call * 2.5, my_stack) # Standard re-raise
-                elif win_probability > pot_odds_to_call or win_probability > 0.6: # Still good confidence
-                    return ACTION_CALL, bet_to_call
-                else:
-                    return ACTION_FOLD # Should be rare with such strong hands unless board is terrifying
-
-        # Flush or Straight
-        elif numerical_hand_rank >= self.HAND_RANK_STRENGTH["Straight"]:
-            if can_check:
-                return ACTION_RAISE, value_bet_size
-            else: # Facing a bet
-                if win_probability > pot_odds_to_call or win_probability > 0.55: # Good confidence for Straight/Flush
-                    # If facing a small bet, consider raising
-                    if bet_to_call < pot_size * 0.4 and win_probability > 0.65:
-                        return ACTION_RAISE, min(bet_to_call * 2.5, my_stack)
-                    return ACTION_CALL, bet_to_call
-                else: # Not confident enough, or pot odds not good
-                    return ACTION_FOLD
-
-        # Three of a Kind
-        elif numerical_hand_rank == self.HAND_RANK_STRENGTH["Three of a Kind"]:
-            if can_check:
-                return ACTION_RAISE, value_bet_size
-            else: # Facing a bet
-                if win_probability > pot_odds_to_call or win_probability > 0.45: # Decent confidence for Trips
-                     # If facing a small bet, consider raising
-                    if bet_to_call < pot_size * 0.4 and win_probability > 0.55:
-                        return ACTION_RAISE, min(bet_to_call * 2.5, my_stack)
-                    return ACTION_CALL, bet_to_call
-                else:
-                    return ACTION_FOLD
-        
-        # Two Pair
-        elif numerical_hand_rank == self.HAND_RANK_STRENGTH["Two Pair"]:
-            if can_check:
-                return ACTION_RAISE, value_bet_size
-            else: # Facing a bet
-                # Be more willing to call with two pair, especially against smaller bets.
-                required_equity_to_call = pot_odds_to_call * 0.9 # Be slightly more liberal than direct pot odds
-                if game_stage == 'River' and bet_to_call <= pot_size * 0.40 and win_probability > 0.30: # Call small river bets
-                    print(f"DecisionEngine: Two Pair on River, facing small bet ({bet_to_call} into {pot_size}), calling with winP {win_probability}")
-                    return ACTION_CALL, bet_to_call
-                if win_probability > required_equity_to_call or win_probability > 0.35: # Adjusted from 0.40
-                    # If facing a very small bet and decent equity, call
-                    if bet_to_call <= pot_size * 0.25 and win_probability > 0.30:
-                         return ACTION_CALL, bet_to_call
-                    # If facing a moderate bet, and good equity, call.
-                    if bet_to_call <= pot_size * 0.6 and win_probability > 0.45:
-                         return ACTION_CALL, bet_to_call
-                    # If equity is strong enough, call even larger bets
-                    if win_probability > 0.50:
-                         return ACTION_CALL, bet_to_call
-                    # If pot odds are clearly good, call
-                    if win_probability > pot_odds_to_call:
+                        return ACTION_CHECK, 0
+                elif bet_to_call > 0: # If facing a bet
+                    required_equity = 0
+                    if pot_size + bet_to_call + bet_to_call > 0: # Avoid division by zero for required_equity
+                        required_equity = bet_to_call / (pot_size + bet_to_call + bet_to_call)
+                    
+                    if win_probability > required_equity + 0.10: # Adding a margin
                         return ACTION_CALL, bet_to_call
-                    # Default to fold if conditions not met for calling a significant bet
-                    if bet_to_call > pot_size * 0.1: # Avoid folding to tiny bets if some equity
-                        return ACTION_FOLD
-                    else: # Call tiny bets
-                        return ACTION_CALL, bet_to_call 
-                elif can_check: # This case should not be hit if bet_to_call > 0
+                    elif bet_to_call <= pot_size * 0.5 and win_probability > 0.35: # Call smaller bets with reasonable equity
+                        return ACTION_CALL, bet_to_call
+                    elif win_probability < 0.25 and bet_to_call > pot_size * 0.75: # Fold if win probability is too low and bet is significant
+                        return ACTION_FOLD, 0
+                    # Fallback logic if none of the above specific conditions were met:
+                    # Be a bit more sticky if the bet isn't too large and we have some showdown value.
+                    elif bet_to_call <= pot_size * 0.66 and win_probability > 0.30: # Call medium bets if equity is not terrible
+                         return ACTION_CALL, bet_to_call
+                    else: # Default to fold if facing a bet and conditions aren't met
+                        return ACTION_FOLD, 0
+                else: # No bet to call, not checked to us (should not happen in standard poker flow if it's our turn)
                     return ACTION_CHECK, 0
-                else:
-                    return ACTION_FOLD
 
-        # One Pair
-        elif numerical_hand_rank == self.HAND_RANK_STRENGTH["One Pair"]:
-            # Check if it's top pair or a strong pair based on description (simplification)
-            is_top_pair = "Top Pair" in hand_description or "Overpair" in hand_description
-            is_strong_kicker = "Ace kicker" in hand_description or "King kicker" in hand_description
-            
-            if can_check:
-                if is_top_pair and win_probability > 0.5:
-                    return ACTION_RAISE, value_bet_size # Bet top pair for value
-                elif win_probability > 0.3 and can_bluff: # Semi-bluff with some pairs
-                    return ACTION_RAISE, min(value_bet_size * 0.8, my_stack) # Smaller bluff bet
-                return ACTION_CHECK, 0 # Check otherwise
-            else: # Facing a bet
-                required_equity_to_call = pot_odds_to_call * 0.95 # Slightly more liberal for one pair
-
-                # River specific logic for calling with one pair vs small bets
-                if game_stage == 'River':
-                    if is_top_pair and bet_to_call <= pot_size * 0.35 and (win_probability > 0.28 or win_probability > pot_odds_to_call): # Call small river bets with top pair
-                        print(f"DecisionEngine: Top Pair on River, facing small bet ({bet_to_call} into {pot_size}), calling with winP {win_probability}")
+            # Logic for other pairs (Middle Pair, Bottom Pair)
+            else: # Not Top Pair
+                if can_check:
+                    return ACTION_CHECK, 0 # Generally check with weaker pairs if checked to
+                elif bet_to_call > 0:
+                    required_equity = 0
+                    if pot_size + bet_to_call + bet_to_call > 0: # Avoid division by zero
+                        required_equity = bet_to_call / (pot_size + bet_to_call + bet_to_call)
+                    if win_probability > required_equity + 0.15 and bet_to_call < pot_size * 0.34: # Call small bets with good odds
                         return ACTION_CALL, bet_to_call
-                    elif bet_to_call <= pot_size * 0.25 and (win_probability > 0.20 or win_probability > pot_odds_to_call): # Call tiny river bets with any pair
-                         print(f"DecisionEngine: One Pair on River, facing tiny bet ({bet_to_call} into {pot_size}), calling with winP {win_probability}")
-                         return ACTION_CALL, bet_to_call
-
-
-                if is_top_pair and (win_probability > required_equity_to_call or win_probability > 0.30): # Need less equity for top pair
-                    return ACTION_CALL, bet_to_call
-                elif not is_top_pair and (win_probability > required_equity_to_call or win_probability > 0.25): # Middle/bottom pair needs better odds or higher win_prob
-                    if bet_to_call < pot_size * 0.3: # Only call small bets with weaker pairs
-                        return ACTION_CALL, bet_to_call
-                    else:
-                        return ACTION_FOLD
-                elif can_check: # Should not be hit
-                     return ACTION_CHECK, 0
+                    return ACTION_FOLD, 0
                 else:
-                    return ACTION_FOLD
-        
-        # High Card (includes draws)
-        elif numerical_hand_rank <= self.HAND_RANK_STRENGTH["High Card"]: # Includes draws if not made yet
-            is_strong_draw = "Flush Draw" in hand_description or "Straight Draw" in hand_description or "Open Ended" in hand_description
-            
-            if can_check:
-                if is_strong_draw and win_probability > 0.25 and can_bluff: # Semi-bluff strong draws
-                    return ACTION_RAISE, min(value_bet_size * 0.9, my_stack) # Semi-bluff sizing
-                return ACTION_CHECK, 0
-            else: # Facing a bet
-                if is_strong_draw and (win_probability > pot_odds_to_call or win_probability > 0.20): # Call with strong draws if odds are decent
-                    return ACTION_CALL, bet_to_call
-                # Consider bluff-catching with Ace high if opponent bet is small and win_prob is not terrible
-                if "Ace High" in hand_description and bet_to_call <= pot_size * 0.25 and win_probability > 0.15 and game_stage == 'River':
-                    print(f"DecisionEngine: Ace High on River, facing small bet ({bet_to_call} into {pot_size}), bluff catching with winP {win_probability}")
-                    return ACTION_CALL, bet_to_call
-                return ACTION_FOLD
-        
-        # Fallback (should ideally not be reached if logic above is comprehensive)
+                    return ACTION_CHECK, 0
+
+        # Fallback for hands not covered by specific logic above (e.g., High Card, weak draws not meeting semi-bluff criteria)
         if can_check:
+            print(f"DecisionEngine Postflop: Fallback to CHECK for hand: {hand_description}, WinP: {win_probability:.3f}")
             return ACTION_CHECK, 0
-        
-        # Default to fold if no other action is determined and facing a bet
-        return ACTION_FOLD
+        else:
+            # If facing a bet and the hand is very weak (e.g., High Card not caught by other logic)
+            # and no other decision was made (call/raise for a draw or made hand)
+            print(f"DecisionEngine Postflop: Fallback to FOLD for hand: {hand_description}, WinP: {win_probability:.3f}, BetToCall: {bet_to_call}")
+            return ACTION_FOLD, 0

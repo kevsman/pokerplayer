@@ -1,30 +1,40 @@
 {
-    "html_capture_point": {
-        "x": 1578,
-        "y": 545
+    "positions": {
+        "positions": {},
+        "html_capture_point": {
+            "x": 1588,
+            "y": 543
+        },
+        "fold_button": {
+            "x": 871,
+            "y": 1421
+        },
+        "check_call_button": {
+            "x": 999,
+            "y": 1422
+        },
+        "all_in_button": {
+            "x": 1172,
+            "y": 1424
+        },
+        "raise_button": {
+            "x": 829,
+            "y": 1359
+        },
+        "raise_input_field": {
+            "x": 829,
+            "y": 1359
+        },
+        "confirm_raise_button": {
+            "x": 1200,
+            "y": 1416
+        }
     },
-    "fold_button": {
-        "x": 885,
-        "y": 1426
-    },
-    "check_call_button": {
-        "x": 1036,
-        "y": 1418
-    },
-    "all_in_button": {
-        "x": 1214,
-        "y": 1437
-    },
-    "raise_button": {
-        "x": 824,
-        "y": 1359
-    },
-    "raise_input_field": {
-        "x": 824,
-        "y": 1359
-    },
-    "confirm_raise_button": {
-        "x": 1144,
-        "y": 1408
+    "delays": {
+        "main_loop_general_delay": 1.0,
+        "after_action_delay": 5.0,
+        "short_pause": 0.5,
+        "medium_pause": 1.0,
+        "long_pause": 2.0
     }
 }

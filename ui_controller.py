@@ -8,31 +8,56 @@ import json
 import random # Added for click randomization
 
 CONFIG_FILE = "config.json"
+DEFAULT_DELAYS = {
+    "main_loop_general_delay": 1.0, # seconds
+    "after_action_delay": 5.0, # seconds
+    "short_pause": 0.5, # seconds
+    "medium_pause": 1.0, # seconds
+    "long_pause": 2.0 # seconds
+}
 
 class UIController:
     def __init__(self):
         self.positions = {}
-        self.load_positions()
+        self.delays = DEFAULT_DELAYS.copy() # Initialize with defaults
+        self.load_config()
 
-    def load_positions(self):
+    def load_config(self):
         try:
             with open(CONFIG_FILE, 'r') as f:
-                self.positions = json.load(f)
+                config_data = json.load(f)
+                self.positions = config_data.get("positions", {})
+                # Load delays, merging with defaults to ensure all keys are present
+                loaded_delays = config_data.get("delays", {})
+                for key, value in loaded_delays.items():
+                    if key in self.delays: # Only update if key is a recognized delay setting
+                        self.delays[key] = value
         except FileNotFoundError:
-            print(f"Info: {CONFIG_FILE} not found. Calibration needed.")
+            print(f"Info: {CONFIG_FILE} not found. Using default positions and delays. Calibration needed.")
             self.positions = {}
+            self.delays = DEFAULT_DELAYS.copy()
+        except json.JSONDecodeError:
+            print(f"Error: Could not decode {CONFIG_FILE}. Using default positions and delays.")
+            self.positions = {}
+            self.delays = DEFAULT_DELAYS.copy()
 
-    def save_positions(self):
+    def save_config(self):
+        config_data = {
+            "positions": self.positions,
+            "delays": self.delays
+        }
         with open(CONFIG_FILE, 'w') as f:
-            json.dump(self.positions, f, indent=4)
-        print(f"Positions saved to {CONFIG_FILE}")
+            json.dump(config_data, f, indent=4)
+        print(f"Configuration (positions and delays) saved to {CONFIG_FILE}")
 
     def calibrate_position(self, name):
         input(f"Move mouse to '{name}' and press Enter...")
         x, y = pyautogui.position()
+        if "positions" not in self.positions: # Ensure positions dict exists
+            self.positions["positions"] = {}
         self.positions[name] = {"x": x, "y": y}
         print(f"Position '{name}' calibrated at ({x}, {y})")
-        self.save_positions()
+        self.save_config() # Save entire config (positions and delays)
 
     def calibrate_all(self):
         print("Starting UI calibration process...")
@@ -43,7 +68,10 @@ class UIController:
         self.calibrate_position("raise_button") # This might be the button that opens the raise input
         self.calibrate_position("raise_input_field") # The actual input field for the amount
         self.calibrate_position("confirm_raise_button") # The button to confirm the raise after typing amount
-        print("Calibration complete.")
+        print("Calibration complete. Positions saved.")
+        # Optionally, prompt for delay configuration or inform about defaults
+        print(f"Current delays (loaded from config or default): {self.delays}")
+        print(f"You can manually edit '{CONFIG_FILE}' to change delay values if needed.")
 
     def get_html_from_screen(self):
         if "html_capture_point" not in self.positions:
@@ -51,16 +79,16 @@ class UIController:
             return None
         
         capture_pos = self.positions["html_capture_point"]
-        pyautogui.moveTo(capture_pos["x"], capture_pos["y"], duration=0.2)
+        pyautogui.moveTo(capture_pos["x"], capture_pos["y"], duration=self.get_delay("short_pause"))
         pyautogui.click() # Click to focus the target area/window
-        time.sleep(0.3) # Increased pause for focus to settle
+        time.sleep(self.get_delay("short_pause")) # Increased pause for focus to settle
         
         # pyautogui.hotkey('ctrl', 'a') # Select all
         # time.sleep(0.2) # Increased pause after select all
         
         pyperclip.copy("") # Clear clipboard before attempting to copy
         pyautogui.hotkey('ctrl', 'c')
-        time.sleep(0.5) # Significantly increased pause for clipboard to update
+        time.sleep(self.get_delay("medium_pause")) # Significantly increased pause for clipboard to update
         
         html_content = pyperclip.paste()
         
@@ -123,7 +151,7 @@ class UIController:
         if not self._click_position("raise_button", randomize=True):
             print("Failed to click initial raise button.")
             return False
-        time.sleep(0.3) # Brief pause for UI to update (e.g., input field to appear/be ready)
+        time.sleep(self.get_delay("short_pause")) # Brief pause for UI to update (e.g., input field to appear/be ready)
 
         # 2. Click the raise input field
         if "raise_input_field" not in self.positions:
@@ -139,12 +167,12 @@ class UIController:
         # 3. Clear the input field (optional, but good practice) and type the amount
         # Select all (Ctrl+A) and delete, handles existing values
         pyautogui.hotkey('ctrl', 'a')
-        time.sleep(0.1)
+        time.sleep(self.get_delay("short_pause"))
         pyautogui.press('delete') # or 'backspace'
-        time.sleep(0.1)
+        time.sleep(self.get_delay("short_pause"))
         pyautogui.typewrite(str(amount), interval=0.05)
         print(f"Typed raise amount: {amount}")
-        time.sleep(0.2)
+        time.sleep(self.get_delay("short_pause"))
 
         # 4. Click the confirm raise button
         if not self._click_position("confirm_raise_button", randomize=True):
@@ -153,6 +181,10 @@ class UIController:
         
         print(f"Raise action for amount '{amount}' completed.")
         return True
+
+    def get_delay(self, delay_name):
+        """Retrieve a delay value by name from the loaded configuration or defaults."""
+        return self.delays.get(delay_name, 1.0) # Default to 1.0 second if not found
 
 if __name__ == '__main__':
     ui = UIController()
