@@ -15,7 +15,7 @@ class DecisionEngine:
         self.equity_calculator = EquityCalculator()
         # Opponent modeling data structure (example: by player name or seat)
         self.opponent_models = {} 
-        # Hand rank values (higher is better) - from HandEvaluator's first element of tuple
+        # Hand rank values (higher is better) - from HandEvaluator\'s first element of tuple
         # 0: Pre-flop/Invalid, 1: High Card, ..., 9: Straight Flush (Royal Flush is a type of Straight Flush)
         self.HAND_RANK_STRENGTH = {
             "Royal Flush": 10,
@@ -31,6 +31,7 @@ class DecisionEngine:
         }
         # More aggressive - increased for better suited hand calling
         self.base_aggression_factor = 1.3  # Increased from 0.95 to make bot more aggressive with suited hands
+        self.base_aggression_factor_postflop = 0.8 # Factor for post-flop calling decisions
 
     def _get_hand_strength_value(self, hand_evaluation_tuple):
         if not hand_evaluation_tuple or not isinstance(hand_evaluation_tuple, tuple) or len(hand_evaluation_tuple) < 1:
@@ -470,19 +471,19 @@ class DecisionEngine:
             is_aj_offsuit = "AJ offsuit" in hand_description
             is_kq_offsuit = "KQ offsuit" in hand_description
 
-            win_prob_threshold_open = 0.33
-            win_prob_threshold_call = 0.28
+            win_prob_threshold_open = 0.25 # Lowered from 0.33
+            win_prob_threshold_call = 0.23 # Lowered from 0.28
             
             if is_aj_offsuit or is_kq_offsuit:
-                win_prob_threshold_open = 0.30 # Be more willing to open AJ/KQo
-                win_prob_threshold_call = 0.25 # Be more willing to call with AJ/KQo
+                win_prob_threshold_open = 0.22 # Further lowered for AJ/KQo open (was 0.30)
+                win_prob_threshold_call = 0.20 # Further lowered for AJ/KQo call (was 0.25)
 
             if bet_to_call == 0 and win_probability > win_prob_threshold_open:
                 return ACTION_RAISE, raise_amount
             elif bet_to_call > 0 and (win_probability > pot_odds_to_call or win_probability > win_prob_threshold_call):
                 # Consider a light 3-bet if facing a small raise and we have position or good equity
                 # Adjusted win_probability from 0.40 to 0.37 for 3-bet consideration
-                if bet_to_call <= self.big_blind * 4 and win_probability > 0.37 and raise_amount > bet_to_call and raise_amount < my_stack * 0.5:
+                if bet_to_call <= self.big_blind * 4 and win_probability > 0.30 and raise_amount > bet_to_call and raise_amount < my_stack * 0.5: # Adjusted 3-bet win_prob from 0.37
                     ev_call = self.calculate_expected_value(ACTION_CALL, bet_to_call, pot_size, win_probability, bet_to_call)
                     ev_raise = self.calculate_expected_value(ACTION_RAISE, raise_amount, pot_size, win_probability)
                     if ev_raise > ev_call:
