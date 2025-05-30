@@ -1,6 +1,9 @@
 import random
 from itertools import combinations
 from hand_evaluator import HandEvaluator
+import logging
+
+logger = logging.getLogger(__name__)
 
 class EquityCalculator:
     SUIT_MAP = {
@@ -56,99 +59,101 @@ class EquityCalculator:
         """Get cards that are not in the known cards list"""
         return [card for card in self.all_cards if card not in known_cards]
     
-    def calculate_equity_monte_carlo(self, hero_cards, community_cards, num_opponents=1, simulations=1000):
-        """
-        Calculate equity using Monte Carlo simulation
-        Returns: (win_probability, tie_probability, expected_value_multiplier)
-        """
-        hero_cards_norm = self._normalize_card_list(hero_cards)
-        community_cards_norm = self._normalize_card_list(community_cards)
+    def calculate_equity_monte_carlo(self, hole_cards_str_list, community_cards_str_list, opponent_range_str_list, num_simulations):
+        # Expects normalized card strings, e.g., [['Ah', 'Qh']], ['Kh', 'Jd', '2c']
+        logger.debug(
+            f"Enter calculate_equity_monte_carlo. Hole Cards: {hole_cards_str_list}, "
+            f"Community Cards: {community_cards_str_list}, Opponent Range: {opponent_range_str_list}, "
+            f"Simulations: {num_simulations}"
+        )
 
-        if hero_cards_norm is None or len(hero_cards_norm) != 2:
-            return 0.0, 0.0, 0.0
-        
-        # If community_cards was non-empty and normalization failed, community_cards_norm will be None
-        if community_cards and community_cards_norm is None:
-            return 0.0, 0.0, 0.0
-        
-        # If community_cards was empty or None, community_cards_norm is [].
-        # If community_cards_norm is None here, it implies input was non-empty and failed normalization.
-        # This check is slightly redundant if the one above is comprehensive but good for clarity.
-        if community_cards_norm is None: # Should only be None if input was non-empty and failed.
-             community_cards_norm = [] # Default to empty if there was an issue but allow simulation to proceed (might be too lenient)
-                                       # A stricter approach would return 0.0,0.0,0.0 as above.
-                                       # For now, let's ensure it's a list for the next step.
-                                       # The check `if community_cards and community_cards_norm is None:` already handles critical failure.
-                                       # So if it's None here, it means community_cards was None/empty initially, and _normalize_card_list returned [].
-                                       # This logic needs to be careful.
-                                       # Corrected logic: community_cards_norm will be [] if input was [] or None.
-                                       # It will be None if input was non-empty and failed normalization.
-                                       # The `if community_cards and community_cards_norm is None:` handles the failure.
-                                       # So, if community_cards_norm is not None, it's either a valid list or [].
+        if not hole_cards_str_list or not hole_cards_str_list[0]:
+            logger.error("Player hole cards are missing. Cannot calculate equity.")
+            return 0.0, 0.0, 0.0 # Win, Tie, Equity
 
-        # Use normalized cards from here on
-        known_cards = hero_cards_norm + (community_cards_norm if community_cards_norm is not None else [])
-        unknown_cards = self._get_unknown_cards(known_cards)
-        
-        wins = 0
+        player_wins = 0
         ties = 0
-        total_simulations = 0
+        total_simulations_count = 0 # Counts successful simulations
+
+        # Assuming hole_cards_str_list contains one list of cards for the player
+        player_hole_cards_str = hole_cards_str_list[0]
         
-        for _ in range(simulations):
-            # Shuffle unknown cards
-            random.shuffle(unknown_cards)
-            
-            # Deal remaining community cards if needed
-            cards_needed = 5 - len(community_cards_norm if community_cards_norm is not None else [])
-            sim_community = (community_cards_norm if community_cards_norm is not None else []) + unknown_cards[:cards_needed]
-            remaining_unknown = unknown_cards[cards_needed:]
-            
-            # Deal opponent cards
-            opponent_hands = []
-            for i in range(num_opponents):
-                if len(remaining_unknown) >= 2:
-                    opp_cards = remaining_unknown[i*2:(i+1)*2]
-                    opponent_hands.append(opp_cards)
-                    
-            if len(opponent_hands) != num_opponents:
-                continue  # Skip if not enough cards
-                
-            # Evaluate all hands
-            hero_hand = self.hand_evaluator.calculate_best_hand(hero_cards_norm, sim_community)
-            opponent_evaluations = []
-            for opp_cards in opponent_hands:
-                opp_eval = self.hand_evaluator.calculate_best_hand(opp_cards, sim_community)
-                opponent_evaluations.append(opp_eval)
-            
-            # Compare hands
-            hero_wins = True
-            is_tie = False
-            
-            for opp_eval in opponent_evaluations:
-                comparison = self._compare_hands(hero_hand, opp_eval)
-                if comparison < 0:  # Hero loses
-                    hero_wins = False
-                    break
-                elif comparison == 0:  # Tie
-                    is_tie = True
-            
-            if hero_wins and not is_tie:
-                wins += 1
-            elif hero_wins and is_tie:
-                ties += 1
-                
-            total_simulations += 1
-        
-        if total_simulations == 0:
+        try:
+            player_hole_cards_obj = self.hand_evaluator.card_strings_to_objects(player_hole_cards_str)
+            community_cards_obj = self.hand_evaluator.card_strings_to_objects(community_cards_str_list)
+        except Exception as e:
+            logger.error(f"Failed to convert initial player/community cards: {e}", exc_info=True)
             return 0.0, 0.0, 0.0
+
+        deck = self.hand_evaluator.create_deck()
+        deck = [c for c in deck if c not in player_hole_cards_obj and c not in community_cards_obj]
+
+        for i in range(num_simulations):
+            current_deck = list(deck) # Make a copy for this simulation
             
-        win_prob = wins / total_simulations
-        tie_prob = ties / total_simulations
+            try:
+                # Determine how many more board cards are needed
+                num_board_cards_needed = 5 - len(community_cards_obj)
+                
+                # Deal opponent hand (assuming one opponent for now, using 'random' range)
+                # This part needs to be robust for different ranges. For 'random', deal 2 cards.
+                if len(current_deck) < 2 + num_board_cards_needed:
+                    logger.warning(f"Not enough cards in deck ({len(current_deck)}) to deal opponent hand and remaining board. Skipping simulation {i}.")
+                    continue
+
+                opponent_hole_cards_sim_obj = self.hand_evaluator.deal_random_cards(current_deck, 2)
+                
+                # Deal remaining board cards
+                additional_board_cards_obj = []
+                if num_board_cards_needed > 0:
+                    if len(current_deck) < num_board_cards_needed:
+                        logger.warning(f"Not enough cards in deck ({len(current_deck)}) to deal remaining board cards. Skipping simulation {i}.")
+                        continue
+                    additional_board_cards_obj = self.hand_evaluator.deal_random_cards(current_deck, num_board_cards_needed)
+                
+                current_board_sim_obj = community_cards_obj + additional_board_cards_obj
+
+                # Log cards before evaluation
+                # logger.debug(f"Sim {i}: Player: {player_hole_cards_str}, Opponent: {self.hand_evaluator.cards_to_strings(opponent_hole_cards_sim_obj)}, Board: {self.hand_evaluator.cards_to_strings(current_board_sim_obj)}")
+
+                player_eval = self.hand_evaluator.evaluate_hand(player_hole_cards_obj, current_board_sim_obj)
+                opponent_eval = self.hand_evaluator.evaluate_hand(opponent_hole_cards_sim_obj, current_board_sim_obj)
+
+                # logger.debug(f"Sim {i}: Player Eval: {player_eval}, Opponent Eval: {opponent_eval}")
+
+                if player_eval > opponent_eval:
+                    player_wins += 1
+                elif player_eval == opponent_eval:
+                    ties += 1
+                # else: loss, no increment needed for losses count here
+
+                total_simulations_count += 1 # Increment for a successful simulation run
+
+            except Exception as e:
+                logger.error(f"Error during simulation run #{i}: {e}", exc_info=True)
+                # Continue to next simulation attempt
+                continue
         
-        # Expected value multiplier: full pot for win, half pot for tie
-        ev_multiplier = win_prob + (tie_prob * 0.5)
+        if total_simulations_count == 0:
+            logger.warning(
+                f"Total successful simulations was 0 for hole_cards: {player_hole_cards_str}, "
+                f"community: {community_cards_str_list}. Returning 0 equity."
+            )
+            return 0.0, 0.0, 0.0 # Win prob, Tie prob, Equity (EV)
+
+        win_probability = player_wins / total_simulations_count
+        tie_probability = ties / total_simulations_count
         
-        return win_prob, tie_prob, ev_multiplier
+        # Equity is typically win_prob + (tie_prob / 2) if splitting pot on tie.
+        # Or, more generally, related to pot share. For now, let's use a simple definition.
+        equity = win_probability # Simplified, often (win_prob + tie_prob / num_opponents_sharing_tie)
+
+        logger.info(
+            f"Equity calculation complete for {player_hole_cards_str} vs random. "
+            f"WinP: {win_probability:.3f}, TieP: {tie_probability:.3f}, Equity: {equity:.3f} "
+            f"(Total Sims: {total_simulations_count}, Requested: {num_simulations})"
+        )
+        return win_probability, tie_probability, equity
     
     def _compare_hands(self, hand1, hand2):
         """

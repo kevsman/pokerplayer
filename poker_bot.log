@@ -1031,3 +1031,55 @@
 2025-05-29 22:06:13,391 - __main__ - INFO - Pot: €0.09, Community Cards: []
 2025-05-29 22:06:13,551 - __main__ - INFO - Decision: raise Amount: 0.25
 2025-05-29 22:06:16,012 - __main__ - INFO - PokerBot stopped by user.
+2025-05-30 13:27:51,187 - __main__ - INFO - PokerBot started. Press Ctrl+C to stop.
+2025-05-30 13:27:51,190 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-30 13:27:51,191 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-30 13:27:53,602 - __main__ - DEBUG - HTML length: 24216
+2025-05-30 13:27:53,628 - __main__ - INFO - My turn. Hand: ['Q♥', 'J♣'], Rank: High Card, Q, Stack: €0.78, Bet to call: 0.12
+2025-05-30 13:27:53,629 - __main__ - INFO - Pot: €0.17, Community Cards: ['6♠', '5♦', '10♥', '7♥']
+2025-05-30 13:27:53,629 - __main__ - INFO - Decision: fold Amount: 0.00
+2025-05-30 13:28:00,106 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-30 13:28:00,108 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-30 13:28:02,502 - __main__ - DEBUG - HTML length: 23749
+2025-05-30 13:28:02,539 - __main__ - INFO - Not my turn. My Hand: ['Q♥', 'A♥']. Waiting...
+2025-05-30 13:28:03,540 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-30 13:28:03,541 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-30 13:28:05,920 - __main__ - DEBUG - HTML length: 23747
+2025-05-30 13:28:05,962 - __main__ - INFO - Not my turn. My Hand: ['Q♥', 'A♥']. Waiting...
+2025-05-30 13:28:06,963 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-30 13:28:06,964 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-30 13:28:09,356 - __main__ - DEBUG - HTML length: 23104
+2025-05-30 13:28:09,384 - __main__ - INFO - Not my turn. My Hand: ['Q♥', 'A♥']. Waiting...
+2025-05-30 13:28:10,385 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-30 13:28:10,387 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-30 13:28:12,777 - __main__ - DEBUG - HTML length: 23204
+2025-05-30 13:28:12,811 - __main__ - INFO - My turn. Hand: ['Q♥', 'A♥'], Rank: AQ suited, Stack: €0.76, Bet to call: 0.00
+2025-05-30 13:28:12,812 - __main__ - INFO - Pot: €0.05, Community Cards: []
+2025-05-30 13:28:12,813 - __main__ - INFO - Decision: check Amount: 0.00
+2025-05-30 13:28:19,291 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-30 13:28:19,292 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-30 13:28:21,687 - __main__ - DEBUG - HTML length: 23902
+2025-05-30 13:28:21,716 - __main__ - INFO - My turn. Hand: ['Q♥', 'A♥'], Rank: One Pair, Qs, Stack: €0.76, Bet to call: 0.00
+2025-05-30 13:28:21,717 - __main__ - INFO - Pot: €0.05, Community Cards: ['Q♦', '2♥', '7♠']
+2025-05-30 13:28:21,719 - __main__ - INFO - Decision: check Amount: 0.00
+2025-05-30 13:28:28,190 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-30 13:28:28,192 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-30 13:28:30,568 - __main__ - DEBUG - HTML length: 24206
+2025-05-30 13:28:30,595 - __main__ - INFO - My turn. Hand: ['Q♥', 'A♥'], Rank: One Pair, Qs, Stack: €0.76, Bet to call: 0.00
+2025-05-30 13:28:30,595 - __main__ - INFO - Pot: €0.05, Community Cards: ['Q♦', '2♥', '7♠', '5♠']
+2025-05-30 13:28:30,596 - __main__ - INFO - Decision: check Amount: 0.00
+2025-05-30 13:28:37,073 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-05-30 13:28:37,075 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-30 13:28:39,468 - __main__ - DEBUG - HTML length: 26871
+2025-05-30 13:28:39,515 - __main__ - INFO - My turn. Hand: ['Q♥', 'A♥'], Rank: Three of a Kind, Qs, Stack: €0.76, Bet to call: 0.00
+2025-05-30 13:28:39,516 - __main__ - INFO - Pot: €0.05, Community Cards: ['Q♦', '2♥', '7♠', '5♠', 'Q♣']
+2025-05-30 13:28:39,517 - __main__ - INFO - Decision: check Amount: 0.00
+2025-05-30 13:28:39,727 - __main__ - INFO - PokerBot stopped by user.

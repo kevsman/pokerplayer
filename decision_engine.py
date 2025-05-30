@@ -4,15 +4,18 @@ from equity_calculator import EquityCalculator
 from ev_utils import calculate_expected_value, should_bluff, _estimate_fold_equity
 from bet_utils import get_optimal_bet_size
 from opponent_model_utils import update_opponent_model, get_opponent_tendencies
-from hand_utils import get_hand_strength_value, calculate_stack_to_pot_ratio, get_preflop_hand_category
+from hand_utils import get_hand_strength_value, calculate_stack_to_pot_ratio, get_preflop_hand_category, normalize_card_list
 from preflop_decision_logic import make_preflop_decision
 from postflop_decision_logic import make_postflop_decision
+import logging
 
 # Define action constants (if not already defined globally or imported)
 ACTION_FOLD = "fold"
 ACTION_CHECK = "check"
 ACTION_CALL = "call"
 ACTION_RAISE = "raise"
+
+logger = logging.getLogger(__name__)
 
 class DecisionEngine:
     def __init__(self, big_blind=0.02, small_blind=0.01):
@@ -137,6 +140,14 @@ class DecisionEngine:
         spr = calculate_stack_to_pot_ratio(my_stack, pot_size) # from hand_utils
         print(f"DecisionEngine: SPR: {spr:.2f}")
 
+        # << NEW SECTION: Apply potential overrides from table_data to my_player >>
+        # This assumes a convention where table_data might hold overrides for the current player.
+        # The key 'player_context_overrides' is hypothetical.
+        if 'player_context_overrides' in table_data and isinstance(table_data['player_context_overrides'], dict):
+            print(f"DecisionEngine: Applying player_context_overrides from table_data: {table_data['player_context_overrides']}") # Debug
+            my_player.update(table_data['player_context_overrides'])
+        # << END NEW SECTION >>
+
         is_facing_all_in = (bet_to_call >= my_stack * 0.9)
         
         if is_facing_all_in:
@@ -182,3 +193,19 @@ class DecisionEngine:
             should_bluff, # Pass function from ev_utils
             my_player # Pass my_player data for context like hand_notes
         )
+
+    def _get_player_info(self, player_id, game_state):
+        """
+        Extract and normalize player information from the game state.
+        """
+        player_info = game_state.get('players', {}).get(player_id, {})
+        if not player_info:
+            return None
+
+        # Normalize hole_cards using the imported function
+        if 'hole_cards' in player_info and player_info['hole_cards']:
+            original_hole_cards = player_info['hole_cards']
+            player_info['hole_cards'] = normalize_card_list(player_info['hole_cards'])
+            logger.debug(f"Normalized hole_cards for {player_id}: {original_hole_cards} -> {player_info['hole_cards']}")
+        
+        return player_info
