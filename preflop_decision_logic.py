@@ -59,10 +59,10 @@ def make_preflop_decision(
         if my_player.get('is_bb') and my_investment_this_round < big_blind:
                 my_investment_this_round = big_blind
 
-    if bet_to_call == 0 or (my_player.get('is_bb') and bet_to_call == 0):
+    if bet_to_call == 0 or (my_player.get('is_bb', False) and bet_to_call == 0 and max_bet_on_table <= big_blind):
         if max_bet_on_table <= big_blind: 
             excess_in_pot = pot_size - (small_blind + big_blind)
-            if not my_player.get('is_sb') and not my_player.get('is_bb'):
+            if not my_player.get('is_sb', False) and not my_player.get('is_bb', False):
                 excess_in_pot -= my_investment_this_round
             if excess_in_pot > 0:
                 num_limpers = int(round(excess_in_pot / big_blind))
@@ -79,27 +79,27 @@ def make_preflop_decision(
     else: 
         base_raise_size = big_blind * 3
 
-    raise_amount = min(base_raise_size * base_aggression_factor, my_stack) 
-    raise_amount = round(max(raise_amount, big_blind * 2), 2) 
+    raise_amount_calculated = min(base_raise_size * base_aggression_factor, my_stack) 
+    raise_amount_calculated = round(max(raise_amount_calculated, big_blind * 2), 2) 
     
     if bet_to_call > 0:
         min_total_after_raise = max_bet_on_table + max_bet_on_table 
         if my_investment_this_round > 0: 
             min_total_after_raise = max_bet_on_table + (max_bet_on_table - my_investment_this_round) 
         min_total_after_raise = max(min_total_after_raise, max_bet_on_table + big_blind)
-        raise_amount = max(raise_amount, min_total_after_raise)
-    raise_amount = round(min(raise_amount, my_stack), 2)
+        raise_amount_calculated = max(raise_amount_calculated, min_total_after_raise)
+    raise_amount_calculated = round(min(raise_amount_calculated, my_stack), 2)
 
     # This print was moved down, after set mining logic and raise_amount calculation
-    print(f"Preflop Logic: Category: {preflop_category}, WinP: {win_probability:.3f}, BetToCall: {bet_to_call}, CalcRaise: {raise_amount}, MyStack: {my_stack}")
+    print(f"Preflop Logic: Cat: {preflop_category}, WinP: {win_probability:.3f}, B2Call: {bet_to_call}, CalcRaise: {raise_amount_calculated}, MyStack: {my_stack}, MyInv: {my_investment_this_round}, MaxBet: {max_bet_on_table}, Pot: {pot_size}, Opps: {active_opponents_count}, BB: {my_player.get('is_bb', False)}")
 
     if preflop_category == "Premium Pair":
         if bet_to_call == 0:
-            return action_raise_const, min(raise_amount * 1.25, my_stack)  # Increased aggression
+            return action_raise_const, min(raise_amount_calculated * 1.25, my_stack)  # Increased aggression
         elif bet_to_call <= my_stack * 0.6: # Increased threshold for considering a raise/call vs all-in
             # If facing a bet, always re-raise with premium pairs if not too much of stack
             # Ensure raise_amount is a significant re-raise
-            reraise_amount = max(raise_amount, bet_to_call * 3) # Standard 3x reraise
+            reraise_amount = max(raise_amount_calculated, bet_to_call * 3) # Standard 3x reraise
             reraise_amount = min(reraise_amount, my_stack)
 
             if reraise_amount > bet_to_call and reraise_amount < my_stack * 0.85: # Ensure it's a valid raise and not committing too much
@@ -117,14 +117,64 @@ def make_preflop_decision(
     elif preflop_category in ["Strong Pair", "Suited Ace", "Offsuit Broadway"]:
         is_aj_offsuit = "AJ offsuit" in hand_description
         is_kq_offsuit = "KQ offsuit" in hand_description
-        win_prob_threshold_open = 0.18 if (is_aj_offsuit or is_kq_offsuit) else 0.22  # Lowered thresholds
-        win_prob_threshold_call = 0.16 if (is_aj_offsuit or is_kq_offsuit) else 0.20  # Lowered thresholds
+        # Scenario 28: Preflop all-in short stack (AJs, 10BB)
+        # Hand description for AJs is 'Suited Ace-Jack'
+        is_premium_suited_ace_for_shove = ("Suited Ace-Jack" in hand_description or "Suited Ace-Queen" in hand_description or "Suited Ace-King" in hand_description)
+        is_short_stack_for_shove = (my_stack <= big_blind * 12) # 10-12BB is typical short stack for shove/fold
+
+        win_prob_threshold_open = 0.18 if (is_aj_offsuit or is_kq_offsuit) else 0.22
+        win_prob_threshold_call = 0.16 if (is_aj_offsuit or is_kq_offsuit) else 0.20
+
+        if is_premium_suited_ace_for_shove and is_short_stack_for_shove and bet_to_call > 0 and max_bet_on_table > 0:
+            # Facing a raise, short stacked with premium suited Ace -> Shove
+            shove_amount = my_stack
+            # Ensure shove is a valid raise over the current max_bet_on_table
+            # Min raise = current bet + (current bet - previous bet for this player)
+            # If I have already invested, min raise is max_bet_on_table + (max_bet_on_table - my_investment_this_round)
+            # If I have not invested (e.g. I am BB and it was raised to me), min raise is max_bet_on_table * 2 (roughly)
+            min_reraise_to_make = max_bet_on_table + (max_bet_on_table - my_investment_this_round) if my_investment_this_round < max_bet_on_table else max_bet_on_table + big_blind
+            min_reraise_to_make = max(min_reraise_to_make, max_bet_on_table + big_blind) # Absolute minimum raise
+            
+            # The amount to raise is the total amount we want our bet to be.
+            # So, if we shove for `my_stack`, this must be >= min_reraise_to_make.
+            if shove_amount >= min_reraise_to_make:
+                 print(f"Preflop Logic: Short stack ({my_stack/big_blind:.1f}BB) premium suited Ace ({hand_description}) SHOVE. ShoveAmt: {shove_amount}, MinRaiseTotal: {min_reraise_to_make}, MaxBet: {max_bet_on_table}, MyInv: {my_investment_this_round}")
+                 return action_raise_const, shove_amount
+            elif win_probability > pot_odds_to_call or win_probability > 0.3: 
+                print(f"Preflop Logic: Short stack ({my_stack/big_blind:.1f}BB) premium suited Ace ({hand_description}) CALL (shove not valid raise). BetToCall: {bet_to_call}")
+                return action_call_const, min(my_stack, bet_to_call)
+            else:
+                print(f"Preflop Logic: Short stack ({my_stack/big_blind:.1f}BB) premium suited Ace ({hand_description}) FOLD (shove not valid, call not good odds).")
+                return action_fold_const, 0
 
         if bet_to_call == 0 and win_probability > win_prob_threshold_open:
-            return action_raise_const, raise_amount
+            return action_raise_const, raise_amount_calculated
         elif bet_to_call > 0 and (win_probability > pot_odds_to_call or win_probability > win_prob_threshold_call):
-            if win_probability > win_prob_threshold_open + 0.03 and raise_amount < my_stack * 0.6:  # More willing to 3-bet
-                return action_raise_const, raise_amount
+            is_bb_player = my_player.get('is_bb', False)
+            is_facing_small_steal_raise = (max_bet_on_table > 0 and max_bet_on_table <= big_blind * 2.5) # max_bet_on_table is the raise size we are facing
+            is_kto_like = ("KTo" in hand_description or ("King" in hand_description and "Ten" in hand_description and "Offsuit" in hand_description))
+
+            # Scenario 20: BB defense vs steal with KTo (Offsuit Broadway)
+            # We are in BB, facing a small steal raise (e.g. min-raise from BTN/SB)
+            # Hand is KTo (or similar like QTo, JTo if we extend)
+            should_prefer_call_bb_defense = (is_bb_player and 
+                                             is_facing_small_steal_raise and
+                                             preflop_category == "Offsuit Broadway" and
+                                             is_kto_like and
+                                             bet_to_call <= big_blind * 1.5) # Call if the amount to call is small (e.g. completing SB for BB, or calling a min-raise)
+            
+            print(f"Preflop S20 Check: is_bb_player={is_bb_player}, is_facing_small_steal_raise={is_facing_small_steal_raise} (max_bet_on_table={max_bet_on_table}), is_kto_like={is_kto_like}, bet_to_call={bet_to_call}, big_blind={big_blind}")
+
+            if should_prefer_call_bb_defense:
+                print(f"Preflop Logic: Scenario 20 (KTo BB defense) - Preferring CALL. BetToCall: {bet_to_call}")
+                return action_call_const, bet_to_call
+            
+            # Standard raise/call logic if not the specific BB defense scenario
+            if (win_probability > (win_prob_threshold_open + 0.03) and
+                raise_amount_calculated < my_stack * 0.6 and
+                raise_amount_calculated > bet_to_call): 
+                return action_raise_const, raise_amount_calculated
+            
             return action_call_const, bet_to_call
         elif can_check:
             return action_check_const, 0
@@ -134,22 +184,15 @@ def make_preflop_decision(
     elif preflop_category in ["Playable Broadway", "Medium Pair", "Suited Connector"]:
         win_prob_open_playable = 0.18 
         win_prob_call_playable = 0.15
-        # Fold to 3-bets or large bets unless very good odds or very high win_probability
-        # Check if it's a 3-bet: current bet_to_call is significantly larger than a standard open, 
-        # and there was a previous raise (max_bet_on_table reflects the size of that raise).
-        # A simple check for 3-bet: if bet_to_call suggests a re-raise over an initial raise.
-        # An initial raise is often ~3BB. A 3-bet is often ~3x the initial raise.
         is_facing_3bet_or_more = False
-        if max_bet_on_table > big_blind * 4 and bet_to_call > max_bet_on_table: # Heuristic: initial raise was > 4BB, and current bet_to_call is even more
+        if max_bet_on_table > big_blind * 4 and bet_to_call > max_bet_on_table: 
             is_facing_3bet_or_more = True
-        elif bet_to_call > big_blind * 8: # Heuristic: any bet to call > 8BB preflop is likely a 3bet or more
+        elif bet_to_call > big_blind * 8: 
             is_facing_3bet_or_more = True
 
         if is_facing_3bet_or_more:
-            # Tighter criteria for calling a 3-bet with these hands
             if preflop_category == "Suited Connector" and win_probability > 0.28 and win_probability > pot_odds_to_call and bet_to_call < my_stack * 0.20:
                  return action_call_const, bet_to_call
-            # For other playable hands, be even tighter or fold
             elif win_probability > 0.30 and win_probability > pot_odds_to_call and bet_to_call < my_stack * 0.15:
                  return action_call_const, bet_to_call
             if can_check: 
@@ -157,7 +200,7 @@ def make_preflop_decision(
             return action_fold_const, 0
 
         if bet_to_call == 0 and win_probability > win_prob_open_playable:
-            return action_raise_const, raise_amount 
+            return action_raise_const, raise_amount_calculated 
         elif bet_to_call > 0 and bet_to_call <= pot_size * 0.5 and \
              (win_probability > pot_odds_to_call or win_probability > win_prob_call_playable):
             return action_call_const, bet_to_call
