@@ -1,10 +1,40 @@
 \
 from itertools import combinations
+import random # Add this import
 
 class HandEvaluator:
     def __init__(self):
-        self.rank_map = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
+        self.rank_map = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14} # Added 'T': 10
         self.rank_map_rev = {v: k for k, v in self.rank_map.items()}
+        # Sklansky-Malmuth hand groups (simplified)
+        self.sklansky_groups = {
+            1: ["AA", "KK", "QQ", "JJ", "AKs"],
+            2: ["TT", "AQs", "AJs", "KQs", "AKo"],
+            3: ["99", "ATs", "KJs", "QJs", "JTs", "AQo"],
+            4: ["88", "KTs", "QTs", "J9s", "T9s", "98s", "AJo", "KQo"],
+            5: ["77", "A9s", "A8s", "A7s", "A6s", "A5s", "A4s", "A3s", "A2s", "K9s", "KJo", "QJo", "JTo"],
+            6: ["66", "55", "K8s", "K7s", "K6s", "K5s", "K4s", "K3s", "K2s", "Q9s", "J8s", "T8s", "97s", "87s", "76s", "65s", "ATo", "KTo"],
+            7: ["44", "33", "22", "Q8s", "T7s", "96s", "86s", "75s", "64s", "54s", "A9o", "K9o", "QTo", "J9o", "T9o", "98o"],
+            8: ["A8o", "A7o", "A6o", "A5o", "A4o", "A3o", "A2o", "K8o", "K7o", "K6o", "K5o", "K4o", "K3o", "K2o", "Q9o", "J8o", "T8o", "97o", "87o", "76o", "65o", "54o"]
+        }
+
+    def deal_random_cards(self, deck_of_strings, num_cards):
+        """
+        Deals a specified number of random cards (strings) from the deck.
+        Modifies the deck_of_strings in place by removing the dealt cards.
+        Returns the list of dealt card strings.
+        """
+        if not isinstance(deck_of_strings, list):
+            raise TypeError("Deck must be a list of card strings.")
+        if len(deck_of_strings) < num_cards:
+            raise ValueError(f"Not enough cards in deck ({len(deck_of_strings)}) to deal {num_cards} cards.")
+
+        dealt_cards = random.sample(deck_of_strings, num_cards)
+        
+        for card in dealt_cards:
+            deck_of_strings.remove(card) 
+            
+        return dealt_cards
 
     def _convert_card_to_value(self, card_str):
         if not card_str or len(card_str) < 2:
@@ -16,11 +46,19 @@ class HandEvaluator:
         if rank_str not in self.rank_map:
             return None 
        
-        valid_suits = ['♠', '♥', '♦', '♣']
-        if suit_char not in valid_suits:
+        # Allow both Unicode and simple char suits
+        valid_suits_unicode = ['♠', '♥', '♦', '♣']
+        valid_suits_char = ['s', 'h', 'd', 'c']
+        
+        standardized_suit = suit_char
+        if suit_char in valid_suits_char:
+            # Standardize to Unicode for internal representation, or choose one standard
+            suit_map = {'s': '♠', 'h': '♥', 'd': '♦', 'c': '♣'}
+            standardized_suit = suit_map[suit_char]
+        elif suit_char not in valid_suits_unicode:
             return None
             
-        return (self.rank_map[rank_str], suit_char)
+        return (self.rank_map[rank_str], standardized_suit)
 
     def _compare_tie_breakers(self, eval1_tie_breakers, eval2_tie_breakers):
         for r1, r2 in zip(eval1_tie_breakers, eval2_tie_breakers):
@@ -193,3 +231,83 @@ class HandEvaluator:
                     best_hand_rank_eval = current_hand_eval
         
         return best_hand_rank_eval # Return the full tuple
+
+    def _get_hand_notation(self, card1_rank, card1_suit, card2_rank, card2_suit):
+        r1 = self.rank_map_rev.get(card1_rank, str(card1_rank))
+        r2 = self.rank_map_rev.get(card2_rank, str(card2_rank))
+        
+        # Order ranks: highest first
+        if card1_rank < card2_rank:
+            r1, r2 = r2, r1
+            s1, s2 = card2_suit, card1_suit # Keep suits aligned with original cards for suitedness check
+        else:
+            s1, s2 = card1_suit, card2_suit
+
+        if r1 == r2: # Pair
+            return f"{r1}{r2}"
+        else:
+            suited_char = 's' if s1 == s2 else 'o'
+            return f"{r1}{r2}{suited_char}"
+
+    def evaluate_preflop_strength(self, hole_cards_str_list):
+        if not hole_cards_str_list or len(hole_cards_str_list) != 2:
+            return 0.0 # Invalid input
+
+        card1_val = self._convert_card_to_value(hole_cards_str_list[0])
+        card2_val = self._convert_card_to_value(hole_cards_str_list[1])
+
+        if not card1_val or not card2_val:
+            return 0.0 # Invalid card format
+
+        hand_notation = self._get_hand_notation(card1_val[0], card1_val[1], card2_val[0], card2_val[1])
+        
+        for group_num, hands_in_group in self.sklansky_groups.items():
+            if hand_notation in hands_in_group:
+                # Higher group number means weaker hand, so invert for strength (e.g., 1 is strongest)
+                # Max group is 8. Strength = (MaxGroup + 1 - GroupNum) / MaxGroup
+                return (9 - group_num) / 8.0 
+        
+        return 0.1 # Default for very weak hands not in groups (should be rare with comprehensive groups)
+
+    def evaluate_hand(self, hole_cards, community_cards):
+        """Alias for calculate_best_hand to be used by DecisionEngine.
+           Returns a dictionary including 'rank_category' and other details.
+        """
+        # calculate_best_hand returns a tuple: (rank_value, description, tie_breaker_ranks)
+        # We need to adapt this to return a dictionary as expected by some parts of DecisionEngine
+        # For now, let's assume DecisionEngine can handle the tuple or we adjust it there.
+        # However, the error specifically mentions 'rank_category' from hand_strength_info.
+        # So, we should return a dict.
+        best_hand_tuple = self.calculate_best_hand(hole_cards, community_cards)
+        if best_hand_tuple:
+            # Example: ("Two Pair, Aces and Kings", [14, 13, 10])
+            # The description string like "Two Pair, Aces and Kings" needs to be parsed or 
+            # calculate_best_hand needs to return a more structured rank category.
+            # For now, let's extract the primary rank category from the description.
+            description = best_hand_tuple[1]
+            rank_category = "N/A"
+            if "Royal Flush" in description: rank_category = "Royal Flush"
+            elif "Straight Flush" in description: rank_category = "Straight Flush"
+            elif "Four of a Kind" in description: rank_category = "Four of a Kind"
+            elif "Full House" in description: rank_category = "Full House"
+            elif "Flush" in description: rank_category = "Flush"
+            elif "Straight" in description: rank_category = "Straight"
+            elif "Three of a Kind" in description: rank_category = "Three of a Kind"
+            elif "Two Pair" in description: rank_category = "Two Pair"
+            elif "One Pair" in description: rank_category = "One Pair"
+            elif "High Card" in description: rank_category = "High Card"
+            
+            return {
+                'rank_value': best_hand_tuple[0],
+                'description': description,
+                'tie_breakers': best_hand_tuple[2],
+                'rank_category': rank_category, # This is what DecisionEngine expects
+                'has_draw': False # Placeholder, add draw detection logic later
+            }
+        return {
+            'rank_value': 0,
+            'description': "N/A",
+            'tie_breakers': [],
+            'rank_category': "N/A",
+            'has_draw': False
+        }

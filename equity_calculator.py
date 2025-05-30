@@ -76,16 +76,41 @@ class EquityCalculator:
         total_simulations_count = 0 # Counts successful simulations
 
         # Assuming hole_cards_str_list contains one list of cards for the player
-        player_hole_cards_str = hole_cards_str_list[0]
+        raw_player_cards_input = hole_cards_str_list[0]
         
+        player_hole_cards_str_list_for_conversion = []
+        if isinstance(raw_player_cards_input, str):
+            # If "Ah", treat as a single card string in a list
+            player_hole_cards_str_list_for_conversion = [raw_player_cards_input]
+        elif isinstance(raw_player_cards_input, list):
+            # If [\'Ah\', \'Kh\'] or [\'Ah\'], it\'s already in the correct list format
+            player_hole_cards_str_list_for_conversion = raw_player_cards_input
+        else:
+            logger.error(f"Unexpected type for player hole cards input: {type(raw_player_cards_input)}. Value: {raw_player_cards_input}")
+            # Fallback to empty list, which will lead to an error return shortly
+            player_hole_cards_str_list_for_conversion = []
+
         try:
-            player_hole_cards_obj = self.hand_evaluator.card_strings_to_objects(player_hole_cards_str)
-            community_cards_obj = self.hand_evaluator.card_strings_to_objects(community_cards_str_list)
+            player_hole_cards_obj = [self.hand_evaluator._convert_card_to_value(c) for c in player_hole_cards_str_list_for_conversion]
+            community_cards_obj = [self.hand_evaluator._convert_card_to_value(c) for c in community_cards_str_list]
+            
+            player_hole_cards_obj = [c for c in player_hole_cards_obj if c is not None]
+            community_cards_obj = [c for c in community_cards_obj if c is not None]
+
+            # Critical check: if player\'s hole cards couldn\'t be converted, equity calculation is not meaningful.
+            if len(player_hole_cards_obj) != len(player_hole_cards_str_list_for_conversion):
+                logger.error(f"Failed to convert all player hole cards. Input: {player_hole_cards_str_list_for_conversion} -> Converted: {player_hole_cards_obj}")
+                return 0.0, 0.0, 0.0
+            
+            # Log if community cards failed conversion, but proceed if player cards are okay.
+            if len(community_cards_obj) != len(community_cards_str_list):
+                logger.warning(f"Failed to convert some community cards. Input: {community_cards_str_list} -> Converted: {community_cards_obj}")
+
         except Exception as e:
-            logger.error(f"Failed to convert initial player/community cards: {e}", exc_info=True)
+            logger.error(f"Error during card conversion: {e}", exc_info=True)
             return 0.0, 0.0, 0.0
 
-        deck = self.hand_evaluator.create_deck()
+        deck = self._generate_deck() # Changed from self.hand_evaluator.create_deck()
         deck = [c for c in deck if c not in player_hole_cards_obj and c not in community_cards_obj]
 
         for i in range(num_simulations):
@@ -136,11 +161,12 @@ class EquityCalculator:
         
         if total_simulations_count == 0:
             logger.warning(
-                f"Total successful simulations was 0 for hole_cards: {player_hole_cards_str}, "
-                f"community: {community_cards_str_list}. Returning 0 equity."
+                f"Total successful simulations was 0 for hole_cards: {player_hole_cards_str_list_for_conversion}, "
+                f"community_cards: {community_cards_str_list}, opponent_range: {opponent_range_str_list}. "
+                "This might indicate an issue with deck generation or simulation logic if cards were valid."
             )
-            return 0.0, 0.0, 0.0 # Win prob, Tie prob, Equity (EV)
-
+            return 0.0, 0.0, 0.0 
+        
         win_probability = player_wins / total_simulations_count
         tie_probability = ties / total_simulations_count
         
@@ -149,9 +175,9 @@ class EquityCalculator:
         equity = win_probability # Simplified, often (win_prob + tie_prob / num_opponents_sharing_tie)
 
         logger.info(
-            f"Equity calculation complete for {player_hole_cards_str} vs random. "
-            f"WinP: {win_probability:.3f}, TieP: {tie_probability:.3f}, Equity: {equity:.3f} "
-            f"(Total Sims: {total_simulations_count}, Requested: {num_simulations})"
+            f"Equity calculation complete for {player_hole_cards_str_list_for_conversion} vs random. "
+            f"Win: {win_probability:.2f}%, Tie: {tie_probability:.2f}%, Equity: {equity:.2f}% "
+            f"({total_simulations_count} simulations)"
         )
         return win_probability, tie_probability, equity
     

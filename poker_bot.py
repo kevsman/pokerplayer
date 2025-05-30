@@ -64,7 +64,9 @@ class PokerBot:
             raise
 
         self.hand_evaluator = HandEvaluator()
-        self.decision_engine = DecisionEngine(big_blind, small_blind)
+        # self.decision_engine = DecisionEngine(big_blind, small_blind) # Old incorrect instantiation
+        decision_engine_config = {'big_blind': big_blind, 'small_blind': small_blind}
+        self.decision_engine = DecisionEngine(self.hand_evaluator, config=decision_engine_config)
         self.ui_controller = UIController() # Added UIController instance
         self.table_data = {}
         self.player_data = []
@@ -248,9 +250,9 @@ class PokerBot:
 
         if not my_player_data or not table_data:
             self.logger.error("Essential game data missing after self.analyze() from test file.")
-            return
+            return None, None # Ensure tuple is returned
 
-        self.logger.info("\n--- Game Summary from Test File ---")
+        self.logger.info("\\n--- Game Summary from Test File ---")
         self.logger.info(self.get_summary())
         self.logger.info("--- End Game Summary ---")
 
@@ -319,12 +321,18 @@ class PokerBot:
                     self.ui_controller.action_raise(amount=amount)
             else:
                 self.logger.warning(f"Unknown action: {action}")
+            return action, amount # Return the action and amount
         else:
             if my_player_data:
                  self.logger.info(f"Not my turn. My Hand: {my_player_data.get('cards')}. Stack: {my_player_data.get('stack')}. Waiting...")
             else:
                  self.logger.info("Player data not found or not my turn. Waiting...")
-        self.logger.info("--- Test File Run Finished ---")
+            return None, None # Return None, None if not bot's turn
+        # Ensure a return statement exists if the execution reaches here without returning inside the 'if my_player_data.get('has_turn')' block
+        # This case should ideally not be reached if the logic above is complete.
+        # However, to be safe and prevent implicit None return:
+        self.logger.info("--- Test File Run Finished (No action taken path) ---")
+        return None, None
 
     def main_loop(self):
         self.running = True
