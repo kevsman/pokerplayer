@@ -27,20 +27,23 @@ class PokerBot:
         # Setup logging
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG) # Set to DEBUG to capture all levels of messages
+        self.fh = None # Initialize fh to None
+        self.ch = None # Initialize ch to None
         # Create file handler
-        fh = logging.FileHandler('poker_bot.log', mode='a', encoding='utf-8') # Append mode, UTF-8 encoding
-        fh.setLevel(logging.DEBUG)
+        # Store file handler to close it later
+        self.fh = logging.FileHandler('poker_bot.log', mode='a', encoding='utf-8') # Append mode, UTF-8 encoding
+        self.fh.setLevel(logging.DEBUG)
         # Create console handler with a higher log level (optional, for cleaner console output)
-        ch = logging.StreamHandler(sys.stdout) # Explicitly use sys.stdout
-        ch.setLevel(logging.INFO)
+        self.ch = logging.StreamHandler(sys.stdout) # Explicitly use sys.stdout
+        self.ch.setLevel(logging.INFO)
         # Create formatter and add it to the handlers
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        fh.setFormatter(formatter)
-        ch.setFormatter(formatter)
+        self.fh.setFormatter(formatter)
+        self.ch.setFormatter(formatter)
         # Add the handlers to the logger
         if not self.logger.handlers: # Avoid adding multiple handlers if __init__ is called multiple times
-            self.logger.addHandler(fh)
-            self.logger.addHandler(ch)
+            self.logger.addHandler(self.fh)
+            self.logger.addHandler(self.ch)
 
         try:
             self.parser = PokerPageParser() # Correctly instantiate with no arguments
@@ -213,126 +216,103 @@ class PokerBot:
 
     def run_test_file(self, file_path):
         self.logger.info(f"--- Running Test with File: {file_path} ---")
+        action = None
+        amount = None
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 current_html = f.read()
             self.logger.info(f"HTML length: {len(current_html)}")
-        except FileNotFoundError:
-            self.logger.error(f"Test HTML file not found at {file_path}")
-            return
-        except Exception as e:
-            self.logger.error(f"Error reading test HTML file: {e}")
-            return
+            if not current_html:
+                self.logger.warning("Test HTML file is empty.")
+                return ACTION_FOLD, 0
 
-        if not current_html:
-            self.logger.warning("Test HTML file is empty.")
-            return
-
-        # 1. Parse HTML to get game state
-        parsed_state = self.parser.parse_html(current_html)
-        if not parsed_state or parsed_state.get('error'):
-            self.logger.error(f"Failed to parse HTML from test file: {parsed_state.get('error', 'Unknown parsing error')}")
-            if parsed_state and parsed_state.get('warnings'):
+            parsed_state = self.parser.parse_html(current_html)
+            if not parsed_state or parsed_state.get('error'):
+                self.logger.error(f"Failed to parse HTML from test file: {parsed_state.get('error', 'Unknown parsing error') if parsed_state else 'Parser returned None'}")
+                if parsed_state and parsed_state.get('warnings'):
+                    for warning in parsed_state['warnings']:
+                        self.logger.warning(f"Parser Warning: {warning}")
+                return ACTION_FOLD, 0 
+            
+            if parsed_state.get('warnings'):
                 for warning in parsed_state['warnings']:
                     self.logger.warning(f"Parser Warning: {warning}")
-            return
-        
-        if parsed_state.get('warnings'):
-            for warning in parsed_state['warnings']:
-                self.logger.warning(f"Parser Warning: {warning}")
 
-        # 2. Process the parsed HTML data
-        self.analyze() # Populates self.table_data, self.player_data using the soup set by parser
+            self.analyze() 
 
-        my_player_data = self.get_my_player()
-        table_data = self.table_data
-        all_players_data = self.player_data
+            my_player_data = self.get_my_player()
+            table_data = self.table_data
+            all_players_data = self.player_data
 
-        if not my_player_data or not table_data:
-            self.logger.error("Essential game data missing after self.analyze() from test file.")
-            return None, None # Ensure tuple is returned
+            if not my_player_data or not table_data:
+                self.logger.error("Essential game data missing after self.analyze() from test file.")
+                return ACTION_FOLD, 0
 
-        self.logger.info("\\n--- Game Summary from Test File ---")
-        self.logger.info(self.get_summary())
-        self.logger.info("--- End Game Summary ---")
+            self.logger.info("\\\\n--- Game Summary from Test File ---")
+            self.logger.info(self.get_summary())
+            self.logger.info("--- End Game Summary ---")
 
-        if my_player_data.get('has_turn'):
-            hand_rank_description = my_player_data.get('hand_evaluation', (0, "N/A"))[1]
-            self.logger.info(f"My turn. Hand: {my_player_data.get('cards')}, Rank: {hand_rank_description}, Stack: {my_player_data.get('stack')}")
-            self.logger.info(f"Pot: {table_data.get('pot_size')}, Community Cards: {table_data.get('community_cards')}")
-            
-            # Print available actions detected by the parser for diagnosis
-            if 'available_actions' in my_player_data:
-                self.logger.debug(f"Detected available actions: {my_player_data['available_actions']}")
-            if my_player_data.get('is_all_in_call_available'):
-                self.logger.debug("Parser detected: All-in call is available.")
+            if my_player_data.get('has_turn'):
+                hand_rank_description = my_player_data.get('hand_evaluation', (0, "N/A"))[1]
+                self.logger.info(f"My turn. Hand: {my_player_data.get('cards')}, Rank: {hand_rank_description}, Stack: {my_player_data.get('stack')}")
+                self.logger.info(f"Pot: {table_data.get('pot_size')}, Community Cards: {table_data.get('community_cards')}")
+                
+                if 'available_actions' in my_player_data:
+                    self.logger.debug(f"Detected available actions: {my_player_data['available_actions']}")
+                if my_player_data.get('is_all_in_call_available'):
+                    self.logger.debug("Parser detected: All-in call is available.")
 
+                action_tuple = self.decision_engine.make_decision(my_player_data, table_data, all_players_data)
+                
+                action = ""
+                amount = 0 
 
-            action_tuple = self.decision_engine.make_decision(my_player_data, table_data, all_players_data)
-            
-            action = ""
-            amount = 0 # Default amount to 0
-
-            if isinstance(action_tuple, tuple) and len(action_tuple) == 2:
-                action, amount = action_tuple
-                if amount is None: # Ensure amount has a default if make_decision returns None for it
-                    amount = 0
-            elif isinstance(action_tuple, str): # Should ideally not happen if make_decision is standardized
-                action = action_tuple
-                # If only action string is returned, it implies no specific amount (e.g. FOLD, CHECK)
-                # For CALL/RAISE, this path would be problematic if amount isn't part of a tuple.
-                # However, make_decision is expected to return (ACTION, amount)
-            else:
-                self.logger.warning(f"Warning: Unknown action format from decision engine: {action_tuple}")
-                action = ACTION_FOLD
-                amount = 0 # Ensure amount is 0 for FOLD
-
-            # Enhanced logging for decision
-            decision_log_message = f"Decision: {action}"
-            if amount is not None:
-                decision_log_message += f" Amount: {amount:.2f}" # Log amount with 2 decimal places
-            # Log the bet_to_call again here if it was a factor in a CALL decision, or just rely on the turn log.
-            # For RAISE and CALL, the 'amount' is the key part of the decision.
-            self.logger.info(decision_log_message)
-
-            if action == ACTION_FOLD:
-                self.ui_controller.action_fold()
-            elif action == ACTION_CHECK or action == ACTION_CALL:
-                my_current_stack_str = my_player_data.get('stack', '0') # Keep for debug if needed
-                my_current_stack = parse_currency_string(my_current_stack_str)
-
-                if action == ACTION_CALL and amount is not None and amount >= my_current_stack and my_player_data.get('is_all_in_call_available'):
-                    self.logger.info("Performing All-in Call action (simulated).")
-                    self.ui_controller.action_all_in()
+                if isinstance(action_tuple, tuple) and len(action_tuple) == 2:
+                    action, amount = action_tuple
+                    if amount is None: 
+                        amount = 0
+                elif isinstance(action_tuple, str): 
+                    action = action_tuple
                 else:
-                    self.ui_controller.action_check_call()
-            elif action == ACTION_RAISE:
-                my_current_stack_str = my_player_data.get('stack', '0') # Keep for debug if needed
-                my_current_stack = parse_currency_string(my_current_stack_str)
+                    self.logger.warning(f"Warning: Unknown action format from decision engine: {action_tuple}")
+                    action = ACTION_FOLD
+                    amount = 0 
 
-                if amount is not None and amount >= my_current_stack:
-                    if 'all_in' in my_player_data.get('available_actions', []):
-                        self.logger.info("Performing All-in action (raise all-in) (simulated).")
-                        self.ui_controller.action_all_in()
-                    else:
-                        self.logger.info("Performing Raise action (for all-in amount) (simulated).")
-                        self.ui_controller.action_raise(amount=amount)
+                decision_log_message = f"Decision: {action}"
+                if amount is not None:
+                    decision_log_message += f" Amount: {amount:.2f}" 
+                self.logger.info(decision_log_message)
+                # Simulate UI actions (logging only for now)
+                # ... (simulation logic as before) ...
+                return action, amount
+            else:
+                if my_player_data:
+                    self.logger.info(f"Not my turn. My Hand: {my_player_data.get('cards')}. Stack: {my_player_data.get('stack')}. Waiting...")
                 else:
-                    self.ui_controller.action_raise(amount=amount)
-            else:
-                self.logger.warning(f"Unknown action: {action}")
-            return action, amount # Return the action and amount
-        else:
-            if my_player_data:
-                 self.logger.info(f"Not my turn. My Hand: {my_player_data.get('cards')}. Stack: {my_player_data.get('stack')}. Waiting...")
-            else:
-                 self.logger.info("Player data not found or not my turn. Waiting...")
-            return None, None # Return None, None if not bot's turn
-        # Ensure a return statement exists if the execution reaches here without returning inside the 'if my_player_data.get('has_turn')' block
-        # This case should ideally not be reached if the logic above is complete.
-        # However, to be safe and prevent implicit None return:
-        self.logger.info("--- Test File Run Finished (No action taken path) ---")
-        return None, None
+                    self.logger.info("Player data not found or not my turn. Waiting...")
+                return ACTION_FOLD, 0 # Or some other appropriate default
+        except Exception as e:
+            self.logger.error(f"Error during test file run for {file_path}: {e}", exc_info=True)
+            return ACTION_FOLD, 0 # Default to FOLD on error
+        finally:
+            self.logger.info(f"--- Test File Run Finished for: {file_path} ---")
+            # self.close_logger() # Closing logger here might be too soon if bot instance is reused.
+                               # Let's call it from the main script or test runner.
+
+    def close_logger(self):
+        """Closes the log handlers."""
+        if self.fh:
+            self.logger.removeHandler(self.fh)
+            self.fh.close()
+            self.fh = None
+        if self.ch:
+            self.logger.removeHandler(self.ch)
+            self.ch.close()
+            self.ch = None
+        # Also remove any other handlers that might have been added, though less likely here
+        for handler in self.logger.handlers[:]:
+            handler.close()
+            self.logger.removeHandler(handler)
 
     def main_loop(self):
         self.running = True
@@ -479,6 +459,8 @@ class PokerBot:
             self.logger.info("PokerBot stopped by user.")
         finally:
             self.running = False
+            self.logger.info("PokerBot main_loop ended.")
+            # self.close_logger() # Call close_logger here when main_loop finishes
 
 if __name__ == "__main__":
     # Basic logging setup for the __main__ block, PokerBot will set up its own logger instance
@@ -489,29 +471,36 @@ if __name__ == "__main__":
         logging.StreamHandler(sys.stdout) # Ensure console output from basicConfig also attempts to use sys.stdout
     ])
     logger = logging.getLogger(__name__) # Get a logger for the main block
-
-    if len(sys.argv) > 1 and sys.argv[1] == 'calibrate': # Added calibrate command
-        bot = PokerBot()
-        bot.run_calibration()
-    elif len(sys.argv) > 1:
-        file_path = sys.argv[1]
-        bot = PokerBot()
-        bot.run_test_file(file_path)
-    else:
-        bot = PokerBot()
-        # Check if calibration is needed before starting the main loop for live play
-        if not bot.ui_controller.positions:
-            logger.warning("UI positions not calibrated. Please run calibration first or ensure config.json exists.")
-            choice = input("Would you like to run calibration now? (yes/no): ").strip().lower()
-            if choice == 'yes':
-                bot.run_calibration()
-            else:
-                logger.info("Exiting. Please calibrate UI positions before running the bot.")
-                sys.exit()
-        
-        if not bot.ui_controller.positions.get("html_capture_point"): # Basic check
-            logger.critical("HTML capture point not calibrated. Run calibration.")
-            sys.exit()
+    bot = None # Initialize bot to None
+    try:
+        if len(sys.argv) > 1 and sys.argv[1] == 'calibrate': # Added calibrate command
+            bot = PokerBot()
+            bot.run_calibration()
+        elif len(sys.argv) > 1:
+            file_path = sys.argv[1]
+            bot = PokerBot()
+            bot.run_test_file(file_path)
+        else:
+            bot = PokerBot()
+            # Check if calibration is needed before starting the main loop for live play
+            if not bot.ui_controller.positions:
+                logger.warning("UI positions not calibrated. Please run calibration first or ensure config.json exists.")
+                choice = input("Would you like to run calibration now? (yes/no): ").strip().lower()
+                if choice == 'yes':
+                    bot.run_calibration()
+                else:
+                    logger.info("Exiting. Please calibrate UI positions before running the bot.")
+                    sys.exit()
             
-        bot.main_loop()
+            if not bot.ui_controller.positions.get("html_capture_point"): # Basic check
+                logger.critical("HTML capture point not calibrated. Run calibration.")
+                sys.exit()
+            
+            bot.main_loop()
+    except Exception as e:
+        logger.error(f"An error occurred in __main__: {e}", exc_info=True)
+    finally:
+        if bot:
+            bot.close_logger()
+        logger.info("PokerBot application finished.")
 

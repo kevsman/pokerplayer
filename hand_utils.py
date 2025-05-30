@@ -46,45 +46,54 @@ def calculate_stack_to_pot_ratio(stack_size, pot_size):
         return float('inf')
     return stack_size / pot_size
 
-def get_preflop_hand_category(hand_evaluation_tuple, hole_cards_str):
-    # Expects hole_cards_str to be already normalized, e.g., ['Ah', 'Qh']
-    logger.debug(f"Enter get_preflop_hand_category with hole_cards_str: {hole_cards_str}, hand_evaluation_tuple: {hand_evaluation_tuple}")
+RANK_TO_VALUE = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
 
-    if not hand_evaluation_tuple or not isinstance(hand_evaluation_tuple, tuple) or len(hand_evaluation_tuple) < 3:
-        logger.warning(f"Invalid hand_evaluation_tuple (1): {hand_evaluation_tuple}. Returning 'Weak'.")
+def _get_rank_value(card_str):
+    """Helper to get numerical rank from a card string like 'Ah' or 'Td'."""
+    if not card_str or len(card_str) < 1:
+        return 0
+    # Correctly handle '10' rank
+    rank_char = card_str[:-1] if len(card_str) > 1 and card_str[-1].lower() in 'hdsc' else card_str
+    if rank_char == '10': 
+        return 10
+    return RANK_TO_VALUE.get(rank_char[0].upper(), 0)
+
+
+def get_preflop_hand_category(hole_cards, position): # Renamed parameters for clarity
+    logger.debug(f"Enter get_preflop_hand_category with hole_cards: {hole_cards}, position: {position}")
+
+    if not isinstance(hole_cards, list) or len(hole_cards) != 2:
+        logger.error(f"Invalid hole_cards (expected list of 2 cards): {hole_cards}. Returning 'Weak'.")
         return "Weak"
     
-    if not isinstance(hand_evaluation_tuple[2], tuple) or len(hand_evaluation_tuple[2]) != 2:
-        logger.warning(f"Invalid hand_evaluation_tuple[2] structure: {hand_evaluation_tuple[2]}. Returning 'Weak'.")
+    # Ensure cards in hole_cards are strings before trying to get rank/suit
+    if not all(isinstance(c, str) and len(c) >= 2 for c in hole_cards):
+        logger.error(f"Elements in hole_cards are not valid card strings: {hole_cards}. Returning 'Weak'.")
         return "Weak"
+
+    cards_to_process = hole_cards # Use the direct parameter
+    
+    logger.debug(f"Cards being processed for rank extraction: {cards_to_process}")
 
     try:
-        rank1_raw, rank2_raw = hand_evaluation_tuple[2][0], hand_evaluation_tuple[2][1]
-        rank1_val, rank2_val = int(rank1_raw), int(rank2_raw)
-    except (ValueError, TypeError, IndexError) as e:
-        logger.error(f"Ranks in hand_evaluation_tuple[2] are invalid: {hand_evaluation_tuple[2]}. Error: {e}. Returning 'Weak'.")
+        rank1_val = _get_rank_value(cards_to_process[0])
+        rank2_val = _get_rank_value(cards_to_process[1])
+        if rank1_val == 0 or rank2_val == 0: 
+            logger.error(f"Failed to get valid rank values from cards: {cards_to_process}. Ranks: {rank1_val}, {rank2_val}. Returning 'Weak'.")
+            return "Weak"
+    except Exception as e:
+        logger.error(f"Error extracting ranks from cards_to_process: {cards_to_process}. Error: {e}. Returning 'Weak'.")
         return "Weak"
 
-    # Sort ranks: rank1_val should be the higher rank
     if rank1_val < rank2_val:
         rank1_val, rank2_val = rank2_val, rank1_val
     logger.debug(f"Normalized ranks: rank1_val={rank1_val}, rank2_val={rank2_val}")
 
     is_pair = (rank1_val == rank2_val)
-    is_suited = False
-    
-    valid_hole_cards_for_suit_check = False
-    if isinstance(hole_cards_str, list) and len(hole_cards_str) == 2 and \
-       isinstance(hole_cards_str[0], str) and len(hole_cards_str[0]) > 1 and \
-       isinstance(hole_cards_str[1], str) and len(hole_cards_str[1]) > 1:
-        valid_hole_cards_for_suit_check = True
-        is_suited = (hole_cards_str[0][-1] == hole_cards_str[1][-1])
-    
-    if not valid_hole_cards_for_suit_check:
-        logger.warning(f"hole_cards_str is not in expected format for suit check: {hole_cards_str}. Assuming not suited.")
-        # is_suited remains False
+    # Suit check directly from hole_cards
+    is_suited = (cards_to_process[0][-1].lower() == cards_to_process[1][-1].lower())
 
-    logger.debug(f"Calculated is_pair: {is_pair}, is_suited: {is_suited} (from hole_cards_str: {hole_cards_str})")
+    logger.debug(f"Calculated is_pair: {is_pair}, is_suited: {is_suited} (from hole_cards: {cards_to_process})")
 
     # Premium hands - AA, KK, QQ, AK suited
     if is_pair and rank1_val >= 12: # QQ, KK, AA (Q=12, K=13, A=14)
@@ -121,13 +130,48 @@ def get_preflop_hand_category(hand_evaluation_tuple, hole_cards_str):
     if is_pair and rank1_val >= 6 and rank1_val <= 7: # 66, 77
         return "Medium Pair"
         
-    # Playable Broadway (catch-all for hands with at least one broadway card not yet categorized)
-    # This includes suited hands like K9s, Q8s etc. if not connectors/aces, and offsuit like A9o, K8o.
-    if rank1_val >= 10: 
-        return "Playable Broadway" 
-    
-    # Other Suited Playable hands (e.g., K8s, Q7s, 96s if not fitting above categories)
-    if is_suited and rank1_val >= 9:
-        return "Playable Broadway" # Or "Suited Playable"
+    # Suited Playable hands (e.g. K9s, Q8s, J7s, T7s etc. that are not connectors/Aces)
+    # These are hands with a high card and a decent suited kicker, not strong enough to be "Suited Ace"
+    # and not connected enough to be "Suited Connector".
+    if is_suited:
+        # Axs is "Suited Ace"
+        # Kxs (KQs, KJs are connectors)
+        if rank1_val == 13 and rank2_val <= 11 and not (rank1_val - rank2_val <= 2): # KTs down to K2s, excluding connectors
+            if rank2_val >= 5: return "Suited Playable" # K5s+ (K2s-K4s are weak)
+        # Qxs (QJs, QTs are connectors)
+        elif rank1_val == 12 and rank2_val <= 10 and not (rank1_val - rank2_val <= 2): # Q9s down to Q2s
+            if rank2_val >= 5: return "Suited Playable" # Q5s+
+        # Jxs (JTs, J9s are connectors/gappers)
+        elif rank1_val == 11 and rank2_val <= 9 and not (rank1_val - rank2_val <= 2): # J8s down to J2s
+            if rank2_val >= 4: return "Suited Playable" # J4s+
+        # Txs (T9s, T8s are connectors/gappers)
+        elif rank1_val == 10 and rank2_val <= 8 and not (rank1_val - rank2_val <= 2): # T7s down to T2s
+            if rank2_val >= 4: return "Suited Playable" # T4s+ (T3s should be weak by falling through)
+        # 9xs (98s, 97s are connectors/gappers)
+        elif rank1_val == 9 and rank2_val <= 7 and not (rank1_val - rank2_val <= 2): # 96s down to 92s
+            if rank2_val >= 4: return "Suited Playable" # 94s+
+            
+    # Offsuit Playable hands (e.g. A9o, KTo, QTo, JTo, T9o that are not "Offsuit Broadway")
+    # These are hands with a high card and a decent offsuit kicker.
+    if not is_suited:
+        # Axs (AKo, AQo are "Strong Pair")
+        if rank1_val == 14 and rank2_val <= 11: # AJo, ATo, A9o...A2o
+            if rank2_val >= 7: return "Offsuit Playable" # A7o+
+        # Kxs (KQo, KJo, KTo are "Offsuit Broadway")
+        elif rank1_val == 13 and rank2_val <= 9: # K9o...K2o
+            if rank2_val >= 7: return "Offsuit Playable" # K7o+
+        # Qxs (QJo, QTo are "Offsuit Broadway")
+        elif rank1_val == 12 and rank2_val <= 9: # Q9o...Q2o (QTo is Offsuit Broadway)
+            if rank2_val >= 6: return "Offsuit Playable" # Q6o+
+        # Jxs (JTo is "Offsuit Broadway")
+        elif rank1_val == 11 and rank2_val <= 8: # J9o...J2o
+            if rank2_val >= 6: return "Offsuit Playable" # J6o+
+        # Txs
+        elif rank1_val == 10 and rank2_val <= 7: # T9o is often played, T8o, T7o
+            if rank2_val >= 6: return "Offsuit Playable" # T6o+
+
+    # Small Pairs (22-55)
+    if is_pair and rank1_val <= 5:
+        return "Small Pair"
     
     return "Weak"
