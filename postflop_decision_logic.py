@@ -124,6 +124,12 @@ def make_postflop_decision(
         
         # Drawing hands and weak hands
         else:
+            # Scenario 14: River, missed all draws, opponent bets large - should fold.
+            # If it's river, hand is weak (not medium or strong), and win_probability is low, and facing a significant bet.
+            if game_stage == "River" and not is_medium and not is_strong and win_probability < 0.15 and bet_to_call >= pot_size * 0.5:
+                print(f"Postflop Logic: Folding missed draw on river. WinP: {win_probability}, Bet: {bet_to_call}, Pot: {pot_size}")
+                return action_fold_const, 0
+
             # Call with good pot odds or strong draws
             if (win_probability > pot_odds_to_call * 1.05) or \
                (is_draw and win_probability > 0.20 and bet_to_call < pot_size * 0.55): # Adjusted thresholds for draws

@@ -7,19 +7,44 @@ import math # For round
 def make_preflop_decision(
     decision_engine_instance, my_player, hand_evaluation_tuple, my_hole_cards_str_list, 
     bet_to_call, can_check, pot_size, my_stack, active_opponents_count, 
-    win_probability, pot_odds_to_call, max_bet_on_table, game_stage, hand_description,
+    win_probability, pot_odds_to_call, max_bet_on_table, game_stage, hand_description, # hand_description is from hand_evaluation_tuple[1]
     action_fold_const, action_check_const, action_call_const, action_raise_const,
     get_preflop_hand_category_func, 
     calculate_expected_value_func
     ):
     """Enhanced pre-flop decision making"""
     
+    # Debug: Print entry and key initial values
+    # print(f"--- ENTERING make_preflop_decision ---")
+    # print(f"Hole Cards: {my_hole_cards_str_list}, Hand Eval: {hand_evaluation_tuple}, Hand Desc: {hand_description}")
+    # print(f"BetToCall: {bet_to_call}, MyStack: {my_stack}, ActiveOpps: {active_opponents_count}, WinProb: {win_probability}, PotOdds: {pot_odds_to_call}")
+    
     small_blind = decision_engine_instance.small_blind
     big_blind = decision_engine_instance.big_blind
     base_aggression_factor = decision_engine_instance.base_aggression_factor
 
     preflop_category = get_preflop_hand_category_func(hand_evaluation_tuple, my_hole_cards_str_list)
+    # print(f"Preflop Category from get_preflop_hand_category: {preflop_category}")
+
+    # Specific Set Mining Logic for small to medium pocket pairs (e.g., 22-77)
+    is_setmining_candidate_pair = False
+    if hand_description: 
+        low_pairs_for_setmining = ["Pair of Twos", "Pair of Threes", "Pair of Fours", "Pair of Fives", "Pair of Sixes", "Pair of Sevens"]
+        if any(pair_desc in hand_description for pair_desc in low_pairs_for_setmining):
+            is_setmining_candidate_pair = True
     
+    # print(f"Set Mining Check: is_setmining_candidate_pair = {is_setmining_candidate_pair} (based on hand_description: '{hand_description}')")
+
+    if is_setmining_candidate_pair and bet_to_call > 0:
+        can_set_mine_stack_wise = (bet_to_call <= my_stack * 0.10) 
+        has_decent_equity_for_set_mine = win_probability > 0.15 # Overall equity check
+
+        # print(f"Set Mining Conditions: active_opponents_count={active_opponents_count}, can_set_mine_stack_wise={can_set_mine_stack_wise}, has_decent_equity_for_set_mine={has_decent_equity_for_set_mine}")
+
+        if active_opponents_count >= 2 and can_set_mine_stack_wise and has_decent_equity_for_set_mine:
+            # print(f"Preflop Logic: Applying SET MINING CALL for {my_hole_cards_str_list} ({hand_description}). Bet: {bet_to_call}, Stack: {my_stack}, ActiveOpps: {active_opponents_count}")
+            return action_call_const, bet_to_call
+
     num_limpers = 0
     my_investment_this_round = 0
     if my_player:
@@ -65,6 +90,7 @@ def make_preflop_decision(
         raise_amount = max(raise_amount, min_total_after_raise)
     raise_amount = round(min(raise_amount, my_stack), 2)
 
+    # This print was moved down, after set mining logic and raise_amount calculation
     print(f"Preflop Logic: Category: {preflop_category}, WinP: {win_probability:.3f}, BetToCall: {bet_to_call}, CalcRaise: {raise_amount}, MyStack: {my_stack}")
 
     if preflop_category == "Premium Pair":
