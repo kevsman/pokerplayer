@@ -129,7 +129,7 @@ class DecisionEngine:
                 else: action = ACTION_FOLD
             elif hand_rank_category == "One Pair":
                 if max_opponent_bet_this_street == 0: action = ACTION_CHECK 
-                elif amount_to_call > 0 and amount_to_call <= my_stack * 0.1: action = ACTION_CALL; amount = amount_to_call
+                elif amount_to_call > 0 and amount_to_call <= my_stack * 0.25: action = ACTION_CALL; amount = amount_to_call # Increased threshold from 0.1 to 0.25
                 else: action = ACTION_FOLD
             else: # High Card or less
                 if max_opponent_bet_this_street == 0: action = ACTION_CHECK
