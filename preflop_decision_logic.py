@@ -175,7 +175,7 @@ def make_preflop_decision(
             return action_raise_const, actual_raise_amount
 
     # AKs, AKo, AQs, AQo, AJs, AJo, KQs, KQo (Playable Broadway / Suited Ace)
-    if preflop_category in ["Suited Ace", "Offsuit Ace", "Suited King", "Offsuit King", "Playable Broadway"]:
+    if preflop_category in ["Suited Ace", "Offsuit Ace", "Suited King", "Offsuit King", "Playable Broadway", "Offsuit Broadway"]:
         if position in ['UTG', 'MP']: # Corrected list syntax
             if bet_to_call == 0: # Opening
                 open_raise = (3 * big_blind) + (num_limpers * big_blind)
@@ -190,21 +190,34 @@ def make_preflop_decision(
             else: # Facing a large raise
                 print(f"{preflop_category} in {position}, facing large raise > 4BB. Action: FOLD")
                 return action_fold_const, 0
-        elif position in ['CO', 'BTN', 'SB']: # Corrected list syntax
+        elif position in ['CO', 'BTN']: # Opening from CO or BTN
             if bet_to_call == 0: # Opening or raising over limpers
                 open_raise = (3 * big_blind) + (num_limpers * big_blind)
                 open_raise = max(open_raise, min_raise)
                 open_raise = round(min(open_raise, my_stack),2)
                 print(f"{preflop_category} in {position}, opening/raising limpers. Action: RAISE, Amount: {open_raise}")
                 return action_raise_const, open_raise
-            elif bet_to_call <= big_blind * 5: # Can call slightly larger raises or 3-bets in late position
-                 # Consider 3-betting some of these hands in LP vs an open.
-                 # For AJs MP call raise test: UTG raised to 0.06 (3xBB). Bot is MP. bet_to_call = 0.06. BB=0.02. 0.06 is 3*BB.
-                 # This falls into bet_to_call <= big_blind * 4 (or *5 for LP). So CALL. This matches test.
+            elif bet_to_call <= big_blind * 5: 
                 print(f"{preflop_category} in {position}, facing raise <= 5BB. Action: CALL, Amount: {bet_to_call}")
                 return action_call_const, bet_to_call
             else: # Facing a very large raise (4bet+)
                 print(f"{preflop_category} in {position}, facing large raise > 5BB. Action: FOLD")
+                return action_fold_const, 0
+        elif position == 'SB':
+            # Scenario: Folded to SB. SB needs to complete BB or raise.
+            # bet_to_call here would be big_blind - small_blind if BB hasn't raised.
+            # max_bet_on_table would be big_blind if BB hasn't raised.
+            if bet_to_call == (big_blind - small_blind) and max_bet_on_table == big_blind: # Folded to SB, opportunity to open
+                open_raise = (3 * big_blind) # Standard SB open sizing
+                open_raise = max(open_raise, min_raise)
+                open_raise = round(min(open_raise, my_stack),2)
+                print(f"{preflop_category} in SB, folded to, opening. Action: RAISE, Amount: {open_raise}")
+                return action_raise_const, open_raise
+            elif bet_to_call <= big_blind * 5: # Facing a raise after SB posted
+                print(f"{preflop_category} in SB, facing raise <= 5BB. Action: CALL, Amount: {bet_to_call}")
+                return action_call_const, bet_to_call
+            else: # Facing a very large raise (4bet+)
+                print(f"{preflop_category} in SB, facing large raise > 5BB. Action: FOLD")
                 return action_fold_const, 0
         elif position == 'BB': # Corrected: Direct comparison for single item
             if bet_to_call == 0 and can_check:

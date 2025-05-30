@@ -265,6 +265,198 @@ class TestPreFlopScenarios(unittest.TestCase):
         self.assertEqual(action, "call", f"Action for AJs in MP facing {utg_raise_amount} raise is not CALL.")
         self.assertEqual(amount, utg_raise_amount, "Call amount for AJs in MP is incorrect.")
 
+    def test_preflop_strong_hand_lp_3bet_vs_open(self):
+        """Pre-Flop: Bot has a strong hand (KK) in LP (BTN), faces an open raise from MP, should 3-bet."""
+        mp_open_raise_amount = self.bot.config['big_blind'] * 3 # e.g., 0.06
+
+        # Player setup: MP opens, CO folds (implicit), BTN (TestBot) to act, SB, BB still in.
+        # For simplicity, we'll just have MP, TestBot (BTN), SB, BB.
+        all_players = [
+            {"name": "Opponent_MP_Open", "hand": [], "stack": 1.0, "position": "MP", "current_bet": mp_open_raise_amount, "isFolded": False},
+            {"name": "TestBot_BTN", "hand": ["Kc", "Kh"], "stack": 1.0, "position": "BTN", "current_bet": 0, "isFolded": False, "is_my_player": True},
+            {"name": "Opponent_SB", "hand": [], "stack": 1.0, "position": "SB", "current_bet": self.bot.config['small_blind'], "isFolded": False},
+            {"name": "Opponent_BB", "hand": [], "stack": 1.0, "position": "BB", "current_bet": self.bot.config['big_blind'], "isFolded": False}
+        ]
+        my_player_index = 1 # TestBot is on the BTN
+
+        # Ensure 'hand' key exists and is correctly assigned
+        for i, p_data in enumerate(all_players):
+            if p_data.get('name') == 'TestBot_BTN':
+                p_data['hand'] = ["Kc", "Kh"]
+            elif 'hand' not in p_data or not p_data['hand']:
+                p_data['hand'] = []
+            # Basic seat assignment for mock structure
+            p_data['seat'] = str(i + 1)
+
+
+        current_pot_size = mp_open_raise_amount + self.bot.config['small_blind'] + self.bot.config['big_blind']
+        
+        # Expected 3-bet sizing:
+        # Typically 3x the original raise when in position.
+        # Original raise was to 0.06. So, 3-bet to 0.18.
+        expected_3bet_total_amount = mp_open_raise_amount * 3 # 0.06 * 3 = 0.18
+
+        game_state = self._create_game_state(
+            players=all_players,
+            pot_size=current_pot_size,
+            community_cards=[],
+            current_round="preflop",
+            big_blind=self.bot.config['big_blind'],
+            small_blind=self.bot.config['small_blind'],
+            min_raise=self.bot.config['big_blind'] * 2 # Standard min raise
+        )
+        
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        self.assertEqual(action, "raise", "Action for KK on BTN facing MP open is not RAISE (3-bet).")
+        self.assertAlmostEqual(amount, expected_3bet_total_amount, delta=0.001, msg=f"3-bet amount for KK on BTN is incorrect. Expected ~{expected_3bet_total_amount}")
+
+    def test_preflop_weak_hand_utg_fold(self):
+        """Pre-Flop: Bot has a weak hand (83o) UTG, should fold."""
+        my_player_index = 0 # Bot is UTG
+        bot_hand = ['8c', '3h'] # Define bot hand
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0, has_turn=True,
+            game_stage='Pre-Flop', position='UTG', name='TestBot_UTG_Fold'
+        )
+        opponents = [
+            self._create_mock_opponent_data(seat='2', stack=1.0, current_bet=self.bot.config['small_blind'], position='SB', name='Opponent_SB'),
+            self._create_mock_opponent_data(seat='3', stack=1.0, current_bet=self.bot.config['big_blind'], position='BB', name='Opponent_BB')
+        ]
+        all_players = [None] * (len(opponents) + 1)
+        all_players[my_player_index] = my_player_obj
+        opp_idx = 0
+        for i in range(len(all_players)):
+            if i != my_player_index:
+                all_players[i] = opponents[opp_idx]
+                all_players[i]['seat'] = str(i + 1)
+                all_players[i]['name'] = f"Opponent{i+1}_{all_players[i]['position']}"
+                opp_idx += 1
+
+        for p in all_players:
+            if p is None: continue
+            if p.get('name') == 'TestBot_UTG_Fold':
+                p['hand'] = bot_hand
+            elif 'hand' not in p or not p['hand']:
+                p['hand'] = []
+
+        table_pot_size = self.bot.config['small_blind'] + self.bot.config['big_blind']
+        table = self._create_mock_table_data(community_cards=[], pot_size=table_pot_size, game_stage='Pre-Flop')
+
+        action, amount = self.bot.decision_engine.make_decision(
+            self._create_game_state(
+                players=all_players,
+                pot_size=table['pot_size'],
+                community_cards=table['community_cards'],
+                current_round="preflop",
+                big_blind=self.bot.config['big_blind'],
+                small_blind=self.bot.config['small_blind'],
+                min_raise=self.bot.config['big_blind'] * 2
+            ),
+            my_player_index
+        )
+        self.assertEqual(action, "fold", "Action for 83o UTG is not FOLD.")
+
+    def test_preflop_sb_open_raise_playable_hand(self):
+        """Pre-Flop: Bot is in SB, folded to, has KJo, should open raise."""
+        my_player_index = 1 # Bot is SB
+        bot_hand = ['Kh', 'Jd'] # KJo
+
+        # Player setup: UTG folds (implicit), SB (TestBot) to act, BB is present.
+        # For simplicity, we'll model a 3-handed game: BTN (folded), SB (TestBot), BB
+        player_btn_folded = self._create_mock_opponent_data(seat='1', stack=1.0, current_bet=0, position='BTN', name='Opponent_BTN_Folded', is_active_player=False)
+        player_btn_folded['isFolded'] = True # Explicitly mark as folded
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=self.bot.config['small_blind'], bet_to_call=0, has_turn=True,
+            game_stage='Pre-Flop', position='SB', name='TestBot_SB_Open'
+        )
+        player_bb = self._create_mock_opponent_data(seat='3', stack=0.98, current_bet=self.bot.config['big_blind'], position='BB', name='Opponent_BB_Active')
+
+        all_players = [player_btn_folded, my_player_obj, player_bb]
+        # Correct seat and hand assignment
+        for i, p_data in enumerate(all_players):
+            p_data['seat'] = str(i + 1) # Ensure seat is string '1', '2', '3'
+            if p_data.get('name') == 'TestBot_SB_Open':
+                p_data['hand'] = bot_hand
+            elif 'hand' not in p_data or not p_data['hand']:
+                p_data['hand'] = []
+
+
+        table_pot_size = self.bot.config['small_blind'] + self.bot.config['big_blind']
+        table = self._create_mock_table_data(community_cards=[], pot_size=table_pot_size, game_stage='Pre-Flop')
+
+        # Expected raise: Standard open from SB is often to 3xBB.
+        # Bot's current bet is SB (0.01). BB is 0.02. Raise to 0.06 total.
+        expected_raise_total_amount = self.bot.config['big_blind'] * 3
+
+        action, amount = self.bot.decision_engine.make_decision(
+            self._create_game_state(
+                players=all_players,
+                pot_size=table['pot_size'],
+                community_cards=table['community_cards'],
+                current_round="preflop",
+                big_blind=self.bot.config['big_blind'],
+                small_blind=self.bot.config['small_blind'],
+                min_raise=self.bot.config['big_blind'] * 2
+            ),
+            my_player_index
+        )
+        self.assertEqual(action, "raise", "Action for KJo in SB (unopened pot) is not RAISE.")
+        self.assertAlmostEqual(amount, expected_raise_total_amount, delta=0.001, msg=f"Raise amount for KJo in SB is incorrect. Expected ~{expected_raise_total_amount}")
+
+    def test_preflop_mp_3bet_strong_hand_vs_utg_raise(self):
+        """Pre-Flop: Bot has QQ in MP, UTG raises, bot should 3-bet."""
+        utg_raise_amount = self.bot.config['big_blind'] * 3 # UTG opens to 0.06
+        my_player_index = 1 # Bot is MP
+        bot_hand = ['Qc', 'Qh']
+
+        # Player setup: UTG raises, MP (TestBot) to act, CO, BTN, SB, BB still in.
+        # Simplified: UTG, MP(Bot), BTN, SB, BB
+        player_utg_raiser = self._create_mock_opponent_data(seat='1', stack=0.94, current_bet=utg_raise_amount, position='UTG', name='Opponent_UTG_Raiser')
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=utg_raise_amount, has_turn=True,
+            game_stage='Pre-Flop', position='MP', name='TestBot_MP_3Bet'
+        )
+        player_btn = self._create_mock_opponent_data(seat='3', stack=1.0, current_bet=0, position='BTN', name='Opponent_BTN')
+        player_sb = self._create_mock_opponent_data(seat='4', stack=0.99, current_bet=self.bot.config['small_blind'], position='SB', name='Opponent_SB_Active')
+        player_bb = self._create_mock_opponent_data(seat='5', stack=0.98, current_bet=self.bot.config['big_blind'], position='BB', name='Opponent_BB_Active')
+
+        all_players = [player_utg_raiser, my_player_obj, player_btn, player_sb, player_bb]
+        for i, p_data in enumerate(all_players):
+            p_data['seat'] = str(i + 1)
+            if p_data.get('name') == 'TestBot_MP_3Bet':
+                p_data['hand'] = bot_hand
+            elif 'hand' not in p_data or not p_data['hand']:
+                p_data['hand'] = []
+
+        current_pot_size = utg_raise_amount + self.bot.config['small_blind'] + self.bot.config['big_blind'] # Pot before MP's action
+        table = self._create_mock_table_data(community_cards=[], pot_size=current_pot_size, game_stage='Pre-Flop')
+
+        # Expected 3-bet sizing:
+        # UTG raised to 0.06.
+        # OOP 3-bet is typically 3.5x-4x the open. Let's use 3.5x for calculation.
+        # 3.5 * 0.06 = 0.21
+        # Or, if logic is simpler (e.g. 3x original raise + dead money, or fixed 3x raise amount)
+        # Let's assume 3x the raise amount as the *additional* bet, so total bet is 4x original raise amount.
+        # Or more standard: 3x the previous bet. Previous bet = 0.06. So 3-bet to 0.18.
+        expected_3bet_total_amount = utg_raise_amount * 3 # 0.06 * 3 = 0.18
+
+        action, amount = self.bot.decision_engine.make_decision(
+            self._create_game_state(
+                players=all_players,
+                pot_size=table['pot_size'], # This pot is before MP's action
+                community_cards=table['community_cards'],
+                current_round="preflop",
+                big_blind=self.bot.config['big_blind'],
+                small_blind=self.bot.config['small_blind'],
+                min_raise=self.bot.config['big_blind'] * 2
+            ),
+            my_player_index
+        )
+        self.assertEqual(action, "raise", "Action for QQ in MP facing UTG raise is not RAISE (3-bet).")
+        self.assertAlmostEqual(amount, expected_3bet_total_amount, delta=0.001, msg=f"3-bet amount for QQ in MP is incorrect. Expected ~{expected_3bet_total_amount}")
+
 if __name__ == '__main__':
     unittest.main()
 
