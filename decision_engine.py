@@ -29,10 +29,14 @@ class DecisionEngine:
     def __init__(self, hand_evaluator, config=None): 
         self.hand_evaluator = hand_evaluator
         self.config = config if config is not None else {}
-        # Ensure essential config values are set as attributes with defaults
-        self.big_blind = self.config.get('big_blind', 0.02) 
-        self.small_blind = self.config.get('small_blind', 0.01)
-        self.base_aggression_factor_postflop = self.config.get('base_aggression_factor_postflop', 1.0) # Added default
+        self.big_blind_amount = self.config.get('big_blind', 0.02) # Renamed for clarity
+        self.small_blind_amount = self.config.get('small_blind', 0.01) # Renamed for clarity
+        self.base_aggression_factor = self.config.get('base_aggression_factor_postflop', 1.0) # Renamed for clarity
+        
+        # Make helper functions available as instance methods or attributes
+        self.get_optimal_bet_size_func = get_optimal_bet_size
+        self.calculate_expected_value_func = calculate_expected_value
+        self.should_bluff_func = should_bluff
 
     def _calculate_bet_to_call(self, my_player, all_players, player_index, big_blind_amount):
         """
@@ -93,7 +97,7 @@ class DecisionEngine:
         
         # Calculate bet_to_call and max_bet_on_table
         # Pass game_state['big_blind'] directly
-        bet_to_call_calculated, max_bet_on_table = self._calculate_bet_to_call(my_player, all_players, player_index, game_state['big_blind'])
+        bet_to_call_calculated, max_bet_on_table = self._calculate_bet_to_call(my_player, all_players, player_index, self.big_blind_amount)
 
         can_check = bet_to_call_calculated == 0
         active_opponents_count = sum(1 for i, p in enumerate(all_players) if p and not p.get('isFolded', False) and i != player_index)
@@ -118,11 +122,11 @@ class DecisionEngine:
                 my_stack=my_player['stack'],
                 pot_size=pot_size,
                 active_opponents_count=active_opponents_count,
-                small_blind=game_state['small_blind'],
-                big_blind=game_state['big_blind'],
+                small_blind=self.small_blind_amount, # Use renamed attribute
+                big_blind=self.big_blind_amount,    # Use renamed attribute
                 my_current_bet_this_street=my_player.get('current_bet', 0),
                 max_bet_on_table=max_bet_on_table, 
-                min_raise=game_state.get('min_raise', game_state['big_blind'] * 2),
+                min_raise=game_state.get('min_raise', self.big_blind_amount * 2), # Use renamed attribute
                 is_sb=is_sb,
                 is_bb=is_bb,
                 action_fold_const=ACTION_FOLD,
@@ -147,7 +151,7 @@ class DecisionEngine:
             sys.stderr.flush()
             
             action, amount = make_postflop_decision(
-                decision_engine_instance=self,
+                decision_engine_instance=self, # Pass self to access helper funcs
                 numerical_hand_rank=numerical_hand_rank, 
                 hand_description=hand_description,     
                 bet_to_call=bet_to_call_calculated,
@@ -162,13 +166,11 @@ class DecisionEngine:
                 action_check_const=ACTION_CHECK,
                 action_call_const=ACTION_CALL,
                 action_raise_const=ACTION_RAISE,
-                get_optimal_bet_size_func=get_optimal_bet_size,
-                calculate_expected_value_func=calculate_expected_value,
-                should_bluff_func=should_bluff,
+                action_bet_const=ACTION_BET,
                 my_player_data=my_player,
-                # Pass big_blind and base_aggression_factor_postflop directly
-                big_blind_amount=game_state['big_blind'], 
-                base_aggression_factor=self.base_aggression_factor_postflop
+                big_blind_amount=self.big_blind_amount, # Pass renamed attribute
+                base_aggression_factor=self.base_aggression_factor # Pass renamed attribute
+                # Helper functions (get_optimal_bet_size_func, etc.) are now accessed via decision_engine_instance
             )
         
         amount = float(amount) if amount is not None else 0.0
