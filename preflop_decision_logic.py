@@ -69,17 +69,22 @@ def make_preflop_decision(
 
     if preflop_category == "Premium Pair":
         if bet_to_call == 0:
-            return action_raise_const, min(raise_amount * 1.2, my_stack)  # More aggressive with premium        elif bet_to_call <= my_stack * 0.5:  # Increased from 0.45
-            ev_call = calculate_expected_value_func(action_call_const, bet_to_call, pot_size, win_probability, bet_to_call)
-            ev_raise = calculate_expected_value_func(action_raise_const, raise_amount, pot_size, win_probability)
-            if ev_raise > ev_call and raise_amount < my_stack * 0.9 :  # Increased willingness to raise
-                return action_raise_const, raise_amount
-            elif win_probability > pot_odds_to_call or win_probability > 0.35:  # Lowered threshold
+            return action_raise_const, min(raise_amount * 1.25, my_stack)  # Increased aggression
+        elif bet_to_call <= my_stack * 0.6: # Increased threshold for considering a raise/call vs all-in
+            # If facing a bet, always re-raise with premium pairs if not too much of stack
+            # Ensure raise_amount is a significant re-raise
+            reraise_amount = max(raise_amount, bet_to_call * 3) # Standard 3x reraise
+            reraise_amount = min(reraise_amount, my_stack)
+
+            if reraise_amount > bet_to_call and reraise_amount < my_stack * 0.85: # Ensure it's a valid raise and not committing too much
+                return action_raise_const, reraise_amount
+            elif win_probability > pot_odds_to_call or win_probability > 0.33: # Lowered win_prob for call
                 return action_call_const, bet_to_call
             else:
                 return action_fold_const, 0
         else: 
-            if win_probability > pot_odds_to_call or win_probability > 0.4:  # Lowered from 0.45                   
+            # Facing a large bet (potentially all-in)
+            if win_probability > pot_odds_to_call or win_probability > 0.38: # Slightly more conservative for all-in calls
                 return action_call_const, min(my_stack, bet_to_call)
             return action_fold_const, 0
     
@@ -103,6 +108,28 @@ def make_preflop_decision(
     elif preflop_category in ["Playable Broadway", "Medium Pair", "Suited Connector"]:
         win_prob_open_playable = 0.18 
         win_prob_call_playable = 0.15
+        # Fold to 3-bets or large bets unless very good odds or very high win_probability
+        # Check if it's a 3-bet: current bet_to_call is significantly larger than a standard open, 
+        # and there was a previous raise (max_bet_on_table reflects the size of that raise).
+        # A simple check for 3-bet: if bet_to_call suggests a re-raise over an initial raise.
+        # An initial raise is often ~3BB. A 3-bet is often ~3x the initial raise.
+        is_facing_3bet_or_more = False
+        if max_bet_on_table > big_blind * 4 and bet_to_call > max_bet_on_table: # Heuristic: initial raise was > 4BB, and current bet_to_call is even more
+            is_facing_3bet_or_more = True
+        elif bet_to_call > big_blind * 8: # Heuristic: any bet to call > 8BB preflop is likely a 3bet or more
+            is_facing_3bet_or_more = True
+
+        if is_facing_3bet_or_more:
+            # Tighter criteria for calling a 3-bet with these hands
+            if preflop_category == "Suited Connector" and win_probability > 0.28 and win_probability > pot_odds_to_call and bet_to_call < my_stack * 0.20:
+                 return action_call_const, bet_to_call
+            # For other playable hands, be even tighter or fold
+            elif win_probability > 0.30 and win_probability > pot_odds_to_call and bet_to_call < my_stack * 0.15:
+                 return action_call_const, bet_to_call
+            if can_check: 
+                return action_check_const, 0
+            return action_fold_const, 0
+
         if bet_to_call == 0 and win_probability > win_prob_open_playable:
             return action_raise_const, raise_amount 
         elif bet_to_call > 0 and bet_to_call <= pot_size * 0.5 and \

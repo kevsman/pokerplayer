@@ -63,7 +63,7 @@ class DecisionEngine:
 
         numerical_hand_rank = get_hand_strength_value(hand_evaluation_tuple) # from hand_utils
         hand_description = hand_evaluation_tuple[1]
-        my_hole_cards_str_list = my_player.get('cards', [])
+        my_hole_cards_str_list = my_player.get('hole_cards', []) # Ensure we get actual hole cards
 
         pot_size_str = table_data.get('pot_size', "0").replace('$', '').replace(',', '').replace('€', '')
         try:
@@ -78,20 +78,31 @@ class DecisionEngine:
             my_stack = self.big_blind * 100
 
         active_opponents_count = 0
-        max_bet_on_table = 0.0
+        max_bet_on_table = 0.0 # Max bet from other players
         
         for p in all_players_data:
-            if p.get('is_empty', False) or p.get('name') == my_player.get('name'):
+            if p.get('is_empty', False): # Skip empty seats
                 continue
-            if p.get('bet', '0') != 'folded':
+            
+            if p.get('is_my_player', False): # Skip myself
+                continue
+            
+            # p is an opponent.
+            # Count them if they are active and haven't folded.
+            # is_active should be True if they are in the hand.
+            # bet != 'folded' is an additional check.
+            if p.get('is_active', False) and str(p.get('bet', '0')).lower() != 'folded':
                 active_opponents_count += 1
+            
+            # Update max_bet_on_table with this opponent's bet if it's numeric
             try:
-                player_bet_str = p.get('bet', '0').replace('$', '').replace(',', '').replace('€', '')
-                player_bet = float(player_bet_str)
-                max_bet_on_table = max(max_bet_on_table, player_bet)
+                player_bet_str = str(p.get('bet', '0')).replace('$', '').replace(',', '').replace('€', '')
+                if player_bet_str.lower() != 'folded':
+                    player_bet_value = float(player_bet_str)
+                    max_bet_on_table = max(max_bet_on_table, player_bet_value)
             except ValueError:
-                pass 
-
+                pass # Non-numeric bet string that isn't 'folded'
+        
         my_current_bet_str = my_player.get('bet', '0').replace('$', '').replace(',', '').replace('€', '')
         try:
             my_current_bet = float(my_current_bet_str)
@@ -168,5 +179,6 @@ class DecisionEngine:
             ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE, # Pass action constants
             self._get_optimal_bet_size_wrapper, # Pass wrapper for bet sizing
             self._calculate_ev_wrapper, # Pass wrapper for EV
-            should_bluff # Pass function from ev_utils
+            should_bluff, # Pass function from ev_utils
+            my_player # Pass my_player data for context like hand_notes
         )
