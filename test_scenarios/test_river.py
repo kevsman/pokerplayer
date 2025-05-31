@@ -20,9 +20,13 @@ class TestRiverScenarios(unittest.TestCase):
             'big_blind': 0.02,
             'small_blind': 0.01,
         }
-        # Correct PokerBot initialization
-        self.bot = PokerBot(big_blind=self.config['big_blind'], small_blind=self.config['small_blind'])
+        self.bot = PokerBot(config=self.config) # Pass config object
         self.hand_evaluator = HandEvaluator()
+
+    def tearDown(self):
+        """Clean up after tests."""
+        if hasattr(self.bot, 'close_logger') and callable(self.bot.close_logger):
+            self.bot.close_logger()
 
     # Helper methods adapted from test_turn.py
     def _create_mock_my_player_data(self, hand, stack, current_bet, bet_to_call, has_turn, game_stage, community_cards=None, position='UTG', name='TestBot', win_probability=None):
@@ -474,6 +478,3 @@ class TestRiverScenarios(unittest.TestCase):
             # If bluffing all-in, amount could be bot_stack or effective_stack
             # self.assertAlmostEqual(amount, min(bot_stack, opponent_stack), delta=0.001, msg="Expected all-in bluff amount.")
             self.assertGreaterEqual(amount, table_pot_size, "All-in bluff should generally be at least pot sized if it's a bluff bet.")
-
-if __name__ == '__main__':
-    unittest.main()

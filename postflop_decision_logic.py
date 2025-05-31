@@ -232,7 +232,7 @@ def make_postflop_decision(
         elif is_medium:
             logger.debug(f"Hand is_medium. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
             # Call with medium strength if odds are good, especially with draws (not explicitly modeled here yet)
-            if win_probability > pot_odds_to_call and bet_to_call < 0.3 * pot_size : # Call if good odds and bet is not too large
+            if win_probability > pot_odds_to_call and bet_to_call <= 0.6 * pot_size : # Call if good odds and bet is not too large (e.g. up to 60% pot)
                 call_amount = bet_to_call
                 logger.info(f"Decision: CALL (medium hand, good odds and bet size). Amount to call: {call_amount:.2f}")
                 return action_call_const, round(call_amount, 2)

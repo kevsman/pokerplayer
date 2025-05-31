@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 from poker_bot import PokerBot
 from decision_engine import ACTION_CALL, ACTION_RAISE, ACTION_CHECK, ACTION_FOLD, ACTION_BET
-from hand_evaluator import HandEvaluator # Added import
+from hand_evaluator import HandEvaluator # Ensure HandEvaluator is imported
 
 class TestPreFlopScenarios(unittest.TestCase):
     def setUp(self):
@@ -17,14 +17,16 @@ class TestPreFlopScenarios(unittest.TestCase):
             'small_blind': 0.01,
             # Add other necessary config items if your bot uses them
         }
-        # Assuming PokerBot takes DecisionEngine instance or creates one.
-        # For simplicity, let's say PokerBot creates its own DecisionEngine.
+        # PokerBot now takes config and initializes DecisionEngine with HandEvaluator
         self.bot = PokerBot(config=self.config) 
-        # If PokerBot doesn't create it, or you need to mock/control it directly:
-        # self.decision_engine_instance = DecisionEngine(hand_evaluator=None, config=self.config)
-        # self.bot.decision_engine = self.decision_engine_instance 
+        # HandEvaluator is now initialized within PokerBot and passed to DecisionEngine.
+        # We still need an instance for _create_mock_my_player_data if it uses preflop strength directly.
+        self.hand_evaluator = self.bot.hand_evaluator # Use the bot's hand_evaluator instance
 
-        self.hand_evaluator = HandEvaluator() # Initialize HandEvaluator
+    def tearDown(self):
+        """Clean up after tests."""
+        if hasattr(self.bot, 'close_logger') and callable(self.bot.close_logger):
+            self.bot.close_logger()
 
     # Helper methods from TestFlopScenarios (can be moved to a base class later)
     def _create_mock_my_player_data(self, cards, stack, current_bet, bet_to_call, has_turn, game_stage, community_cards=None, position='UTG', name='TestBot'):
@@ -32,15 +34,13 @@ class TestPreFlopScenarios(unittest.TestCase):
         hand_evaluation_tuple = (0, "N/A", []) 
         preflop_strength = 0.0
         if cards and len(cards) == 2:
+            # Use the hand_evaluator instance from setUp
             preflop_strength = self.hand_evaluator.evaluate_preflop_strength(cards)
-            # For preflop, the hand_evaluation tuple can reflect this strength.
-            # The decision engine's preflop logic primarily uses preflop_strength directly.
-            # However, providing a consistent structure for hand_evaluation is good.
             if game_stage == 'Pre-Flop':
                  hand_evaluation_tuple = (preflop_strength, f"Preflop Strength: {preflop_strength:.2f}", cards)
         
-        # Postflop evaluation (not strictly for preflop tests, but good for consistency if method is shared)
         elif cards and game_stage != 'Pre-Flop': 
+            # Use the hand_evaluator instance from setUp
             hand_eval_dict = self.hand_evaluator.evaluate_hand(cards, community_cards)
             hand_evaluation_tuple = (hand_eval_dict['rank_value'], hand_eval_dict['description'], hand_eval_dict['tie_breakers'])
 
@@ -48,7 +48,7 @@ class TestPreFlopScenarios(unittest.TestCase):
             'cards': cards, 'stack': stack, 'current_bet': current_bet, 'bet_to_call': bet_to_call,
             'has_turn': has_turn, 'is_my_player': True, 'seat': '1', 'name': name,
             'hand_evaluation': hand_evaluation_tuple, 'id': 'player1', 'isActive': True, 'isFolded': False,
-            'position': position, 'preflop_strength': preflop_strength, # Ensure this is passed
+            'position': position, 'preflop_strength': preflop_strength, 
             'available_actions': ['call', 'raise', 'fold', 'check', 'bet']
         }
 
@@ -161,8 +161,7 @@ class TestPreFlopScenarios(unittest.TestCase):
         my_player_index = 2 # Bot is BB
         bot_hand = ['7h', '2d'] # Define bot hand
         
-        # Player setup: UTG, SB, BB (TestBot)
-        # UTG and SB limp or post, BB is to act.
+        # Player setup: UTG and SB limp or post, BB is to act.
         player_utg = self._create_mock_opponent_data(seat='1', stack=0.98, current_bet=self.bot.config['big_blind'], position='UTG', name='Opponent_UTG_limp') 
         player_sb = self._create_mock_opponent_data(seat='2', stack=0.99, current_bet=self.bot.config['small_blind'], position='SB', name='Opponent_SB_post') 
         my_player_obj = self._create_mock_my_player_data(
@@ -199,7 +198,7 @@ class TestPreFlopScenarios(unittest.TestCase):
     def test_preflop_weak_hand_sb_fold_to_raise(self):
         """Pre-Flop: Bot has a weak hand (T3s) in SB, faces a raise, should fold."""
         my_player_index = 1 # Bot is SB
-        bot_hand = ['Ts', '3s'] # Define bot hand
+        bot_hand = ['Ts', '3s'] # Define bot_hand
 
         # Player setup: UTG raises, SB (TestBot) to act, BB still in.
         utg_raise_total_bet = self.bot.config['big_blind'] * 3 
@@ -241,10 +240,10 @@ class TestPreFlopScenarios(unittest.TestCase):
         utg_raise_amount = self.bot.config['big_blind'] * 3 # 0.02 * 3 = 0.06
         
         all_players = [
-            {"name": "Opponent2_UTG", "hand": [], "stack": 1.0, "position": "UTG", "current_bet": utg_raise_amount, "isFolded": False},
-            {"name": "TestBot_MP", "hand": ["As", "Js"], "stack": 1.0, "position": "MP", "current_bet": 0, "isFolded": False, "is_my_player": True},
-            {"name": "Opponent3_SB", "hand": [], "stack": 1.0, "position": "SB", "current_bet": self.bot.config['small_blind'], "isFolded": False},
-            {"name": "Opponent4_BB", "hand": [], "stack": 1.0, "position": "BB", "current_bet": self.bot.config['big_blind'], "isFolded": False}
+            {"name": "Opponent2_UTG", "hand": [], "stack": 1.0, "position": "UTG", "current_bet": utg_raise_amount, "isFolded": False, "has_turn": False},
+            {"name": "TestBot_MP", "hand": ["As", "Js"], "stack": 1.0, "position": "MP", "current_bet": 0, "isFolded": False, "is_my_player": True, "has_turn": True},
+            {"name": "Opponent3_SB", "hand": [], "stack": 1.0, "position": "SB", "current_bet": self.bot.config['small_blind'], "isFolded": False, "has_turn": False},
+            {"name": "Opponent4_BB", "hand": [], "stack": 1.0, "position": "BB", "current_bet": self.bot.config['big_blind'], "isFolded": False, "has_turn": False}
         ]
         my_player_index = 1
 
@@ -269,13 +268,11 @@ class TestPreFlopScenarios(unittest.TestCase):
         """Pre-Flop: Bot has a strong hand (KK) in LP (BTN), faces an open raise from MP, should 3-bet."""
         mp_open_raise_amount = self.bot.config['big_blind'] * 3 # e.g., 0.06
 
-        # Player setup: MP opens, CO folds (implicit), BTN (TestBot) to act, SB, BB still in.
-        # For simplicity, we'll just have MP, TestBot (BTN), SB, BB.
         all_players = [
-            {"name": "Opponent_MP_Open", "hand": [], "stack": 1.0, "position": "MP", "current_bet": mp_open_raise_amount, "isFolded": False},
-            {"name": "TestBot_BTN", "hand": ["Kc", "Kh"], "stack": 1.0, "position": "BTN", "current_bet": 0, "isFolded": False, "is_my_player": True},
-            {"name": "Opponent_SB", "hand": [], "stack": 1.0, "position": "SB", "current_bet": self.bot.config['small_blind'], "isFolded": False},
-            {"name": "Opponent_BB", "hand": [], "stack": 1.0, "position": "BB", "current_bet": self.bot.config['big_blind'], "isFolded": False}
+            {"name": "Opponent_MP_Open", "hand": [], "stack": 1.0, "position": "MP", "current_bet": mp_open_raise_amount, "isFolded": False, "has_turn": False},
+            {"name": "TestBot_BTN", "hand": ["Kc", "Kh"], "stack": 1.0, "position": "BTN", "current_bet": 0, "isFolded": False, "is_my_player": True, "has_turn": True},
+            {"name": "Opponent_SB", "hand": [], "stack": 1.0, "position": "SB", "current_bet": self.bot.config['small_blind'], "isFolded": False, "has_turn": False},
+            {"name": "Opponent_BB", "hand": [], "stack": 1.0, "position": "BB", "current_bet": self.bot.config['big_blind'], "isFolded": False, "has_turn": False}
         ]
         my_player_index = 1 # TestBot is on the BTN
 
@@ -459,14 +456,3 @@ class TestPreFlopScenarios(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-# Ensure PokerBot class is defined or imported if not already
-# from poker_bot import PokerBot # Or wherever it's defined
-
-# Minimal PokerBot class for tests to run if not imported
-class PokerBot:
-    def __init__(self, config=None):
-        self.config = config if config is not None else {}
-        # Assuming DecisionEngine does not need hand_evaluator for preflop tests, or it's handled internally
-        from decision_engine import DecisionEngine # Moved import here to avoid circular dependency if PokerBot is in its own file
-        self.decision_engine = DecisionEngine(hand_evaluator=None, config=self.config)

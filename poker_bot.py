@@ -3,10 +3,10 @@ import re
 import sys
 from hand_evaluator import HandEvaluator
 from html_parser import PokerPageParser
-from decision_engine import DecisionEngine, ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE # Updated import
-from ui_controller import UIController # Added import
+from decision_engine import DecisionEngine, ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE
+from ui_controller import UIController
 import time
-import logging # Added import
+import logging
 
 # Action definitions
 
@@ -22,37 +22,43 @@ def parse_currency_string(value_str):
         return 0.0 # Or raise an error
 
 class PokerBot:
-    # html_content parameter removed from __init__ signature
-    def __init__(self, big_blind=0.02, small_blind=0.01):
+    def __init__(self, config=None): # Modified signature to accept config
         # Setup logging
         self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.DEBUG) # Set to DEBUG to capture all levels of messages
-        self.fh = None # Initialize fh to None
-        self.ch = None # Initialize ch to None
-        # Create file handler
-        # Store file handler to close it later
-        self.fh = logging.FileHandler('poker_bot.log', mode='a', encoding='utf-8') # Append mode, UTF-8 encoding
+        self.logger.setLevel(logging.DEBUG)
+        self.fh = None 
+        self.ch = None
+        
+        log_file_path = 'poker_bot.log'
+        # Attempt to remove existing handlers if any, to prevent duplication in interactive sessions/re-instantiation
+        for handler in self.logger.handlers[:]:
+            handler.close()
+            self.logger.removeHandler(handler)
+
+        self.fh = logging.FileHandler(log_file_path, mode='a', encoding='utf-8')
         self.fh.setLevel(logging.DEBUG)
-        # Create console handler with a higher log level (optional, for cleaner console output)
-        self.ch = logging.StreamHandler(sys.stdout) # Explicitly use sys.stdout
+        self.ch = logging.StreamHandler(sys.stdout)
         self.ch.setLevel(logging.INFO)
-        # Create formatter and add it to the handlers
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         self.fh.setFormatter(formatter)
         self.ch.setFormatter(formatter)
-        # Add the handlers to the logger
-        if not self.logger.handlers: # Avoid adding multiple handlers if __init__ is called multiple times
-            self.logger.addHandler(self.fh)
-            self.logger.addHandler(self.ch)
+        self.logger.addHandler(self.fh)
+        self.logger.addHandler(self.ch)
+        self.logger.propagate = False # Prevent logging to root logger if it has handlers
+
+        self.config = config if config is not None else {}
+        self.big_blind = self.config.get('big_blind', 0.02)
+        self.small_blind = self.config.get('small_blind', 0.01)
+        
+        # Ensure big_blind and small_blind are in self.config for DecisionEngine and other parts
+        if 'big_blind' not in self.config: self.config['big_blind'] = self.big_blind
+        if 'small_blind' not in self.config: self.config['small_blind'] = self.small_blind
 
         try:
-            self.parser = PokerPageParser() # Correctly instantiate with no arguments
-            if self.parser is None: # This check is less likely to fail now
+            self.parser = PokerPageParser()
+            if self.parser is None:
                 self.logger.critical("self.parser is None after PokerPageParser() instantiation.")
-                self.logger.critical("Please check the definition of the PokerPageParser class/function in html_parser.py.")
-                self.logger.critical("It might be returning None or not be a class constructor.")
                 raise RuntimeError("PokerPageParser could not be initialized properly.")
-            
             if not hasattr(self.parser, 'parse_html'):
                 error_msg = (
                     f"CRITICAL ERROR: self.parser (type: {type(self.parser)}) exists but does not have a 'parse_html' method. "
@@ -60,23 +66,47 @@ class PokerBot:
                 )
                 self.logger.critical(error_msg)
                 raise AttributeError(error_msg)
-
         except Exception as e:
             self.logger.critical(f"Failed to instantiate or validate PokerPageParser during PokerBot initialization: {e}")
-            # Re-raise the exception to stop the bot if the parser is critical
             raise
 
-        self.hand_evaluator = HandEvaluator()
-        # self.decision_engine = DecisionEngine(big_blind, small_blind) # Old incorrect instantiation
-        decision_engine_config = {'big_blind': big_blind, 'small_blind': small_blind}
-        self.decision_engine = DecisionEngine(self.hand_evaluator, config=decision_engine_config)
-        self.ui_controller = UIController() # Added UIController instance
+        self.hand_evaluator = HandEvaluator() # Initialize HandEvaluator
+        # Pass the hand_evaluator and the full config to DecisionEngine
+        self.decision_engine = DecisionEngine(self.hand_evaluator, config=self.config) 
+        self.ui_controller = UIController()
         self.table_data = {}
         self.player_data = []
-        self.big_blind = big_blind
-        self.small_blind = small_blind
+        # self.big_blind and self.small_blind are already set from config or defaults
         self.running = False
         self.last_html_content = None
+
+    def close_logger(self):
+        """Close all logging handlers."""
+        # Check if logger was initialized and has handlers
+        if hasattr(self, 'logger') and self.logger and self.logger.hasHandlers():
+            self.logger.info("Closing logger handlers.")
+            if self.fh:
+                self.fh.close()
+                self.logger.removeHandler(self.fh)
+                self.fh = None
+            if self.ch:
+                self.ch.close()
+                self.logger.removeHandler(self.ch)
+                self.ch = None
+            # Also clear any other handlers that might have been added
+            for handler in self.logger.handlers[:]:
+                handler.close()
+                self.logger.removeHandler(handler)
+        elif hasattr(self, 'fh') and self.fh: # Fallback for fh if logger is not fully set
+            self.fh.close()
+            self.fh = None
+        elif hasattr(self, 'ch') and self.ch: # Fallback for ch if logger is not fully set
+            self.ch.close()
+            self.ch = None
+
+    def __del__(self):
+        """Ensure logger is closed when bot instance is deleted."""
+        self.close_logger()
 
     def analyze_table(self):
         self.table_data = self.parser.analyze_table()
@@ -300,19 +330,28 @@ class PokerBot:
                                # Let's call it from the main script or test runner.
 
     def close_logger(self):
-        """Closes the log handlers."""
-        if self.fh:
-            self.logger.removeHandler(self.fh)
+        """Close all logging handlers."""
+        # Check if logger was initialized and has handlers
+        if hasattr(self, 'logger') and self.logger and self.logger.hasHandlers():
+            self.logger.info("Closing logger handlers.")
+            if self.fh:
+                self.fh.close()
+                self.logger.removeHandler(self.fh)
+                self.fh = None
+            if self.ch:
+                self.ch.close()
+                self.logger.removeHandler(self.ch)
+                self.ch = None
+            # Also clear any other handlers that might have been added
+            for handler in self.logger.handlers[:]:
+                handler.close()
+                self.logger.removeHandler(handler)
+        elif hasattr(self, 'fh') and self.fh: # Fallback for fh if logger is not fully set
             self.fh.close()
             self.fh = None
-        if self.ch:
-            self.logger.removeHandler(self.ch)
+        elif hasattr(self, 'ch') and self.ch: # Fallback for ch if logger is not fully set
             self.ch.close()
             self.ch = None
-        # Also remove any other handlers that might have been added, though less likely here
-        for handler in self.logger.handlers[:]:
-            handler.close()
-            self.logger.removeHandler(handler)
 
     def main_loop(self):
         self.running = True

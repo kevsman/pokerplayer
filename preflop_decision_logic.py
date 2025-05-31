@@ -117,20 +117,35 @@ def make_preflop_decision(
         if can_check and is_bb and bet_to_call == 0:
             print(f"Weak hand in BB, option to check. Action: CHECK")
             return action_check_const, 0
+        # If SB limps and BB has a weak hand, BB should check (already covered by can_check and bet_to_call == 0)
+        # If facing a raise, fold weak hands.
         if bet_to_call > 0:
-            # Fold to any raise unless it's a tiny completion in BB vs SB limp
-            if is_bb and bet_to_call == small_blind and max_bet_on_table == small_blind and active_opponents_count == 1: # SB limped, BB to complete
-                 print(f"Weak hand in BB, small completion vs SB limp. Action: CALL")
-                 return action_call_const, bet_to_call
+            # Exception: If it's a very small completion bet in BB vs SB limp, and pot odds are amazing.
+            # However, for "Weak" category, folding is generally safer.
+            if is_bb and max_bet_on_table == small_blind and bet_to_call == (small_blind - my_current_bet_this_street):
+                 # This is SB limping, BB has option to complete. With a truly weak hand, check if possible, else fold to raise.
+                 # If bet_to_call is small_blind (meaning SB limped and we are BB with BB already in), this is effectively a check.
+                 # The issue is if SB limps, BB's bet_to_call is 0 if SB just posted SB.
+                 # If SB completes to BB, then BB's bet_to_call is 0.
+                 # This specific logic for SB limp completion needs to be handled by `can_check` and `bet_to_call == 0` for BB.
+                 pass # Covered by general check/fold logic
+
             print(f"Weak hand facing bet > SB completion. Action: FOLD")
             return action_fold_const, 0
-        if bet_to_call == 0 and not can_check: # e.g. UTG with 72o, must bet or fold by rule (no check)
+        
+        # If no bet to call, and cannot check (e.g., UTG must act), fold weak hands.
+        if bet_to_call == 0 and not can_check:
              print(f"Weak hand, cannot check (e.g. UTG open), no bet to call. Action: FOLD")
              return action_fold_const, 0
-        if bet_to_call == 0 and can_check and not is_bb : # e.g. UTG, can check if allowed by rules (limp)
-            print(f"Weak hand, not BB, can check (limp). Action: CHECK")
+        
+        # If no bet to call, can check, and not BB (e.g. UTG limp is allowed by rules, or later position check through)
+        if bet_to_call == 0 and can_check and not is_bb:
+            print(f"Weak hand, not BB, can check (limp/check through). Action: CHECK")
             return action_check_const, 0
-        print(f"Weak hand, default. Action: FOLD (or CHECK if can_check is True and bet_to_call is 0)")
+        
+        # Default for weak hands: if can check, check. Otherwise, fold.
+        # This covers the BB case where it's checked to them (bet_to_call == 0, can_check == True)
+        print(f"Weak hand, default. Action: CHECK if can_check else FOLD. (can_check={can_check}, bet_to_call={bet_to_call})")
         return action_check_const if can_check else action_fold_const, 0
 
 
@@ -175,16 +190,24 @@ def make_preflop_decision(
             return action_raise_const, actual_raise_amount
 
     # AKs, AKo, AQs, AQo, AJs, AJo, KQs, KQo (Playable Broadway / Suited Ace)
-    if preflop_category in ["Suited Ace", "Offsuit Ace", "Suited King", "Offsuit King", "Playable Broadway", "Offsuit Broadway"]:
-        if position in ['UTG', 'MP']: # Corrected list syntax
+    if preflop_category in ["Suited Ace", "Offsuit Ace", "Suited King", "Offsuit King", "Playable Broadway", "Offsuit Broadway", "Strong Pair"]: # Added Strong Pair
+        if position in ['UTG', 'MP']:
             if bet_to_call == 0: # Opening
                 open_raise = (3 * big_blind) + (num_limpers * big_blind)
                 open_raise = max(open_raise, min_raise)
                 open_raise = round(min(open_raise, my_stack),2)
                 print(f"{preflop_category} in {position}, opening. Action: RAISE, Amount: {open_raise}")
                 return action_raise_const, open_raise
-            elif bet_to_call <= big_blind * 4: # Facing a reasonable raise (e.g. up to 3bet of 12BB if BB=1)
-                # Call raises with these hands from early/mid position
+            elif bet_to_call <= big_blind * 4: 
+                # For Strong Pair (JJ, TT), consider calling 3-bets more often than folding.
+                if preflop_category == "Strong Pair" and bet_to_call > big_blind * 3: # If it's a 3bet, and we have TT/JJ
+                    # Facing a 3-bet, TT/JJ can be tricky. Let's call smaller 3-bets, fold to larger ones.
+                    if bet_to_call <= big_blind * 3.5: # Call up to a 3.5x 3bet (e.g. 7BB if original raise was 2BB)
+                        print(f"{preflop_category} in {position}, facing 3-bet <= 3.5x. Action: CALL, Amount: {bet_to_call}")
+                        return action_call_const, bet_to_call
+                    else:
+                        print(f"{preflop_category} in {position}, facing large 3-bet > 3.5x. Action: FOLD")
+                        return action_fold_const, 0
                 print(f"{preflop_category} in {position}, facing raise <= 4BB. Action: CALL, Amount: {bet_to_call}")
                 return action_call_const, bet_to_call
             else: # Facing a large raise
@@ -204,21 +227,18 @@ def make_preflop_decision(
                 print(f"{preflop_category} in {position}, facing large raise > 5BB. Action: FOLD")
                 return action_fold_const, 0
         elif position == 'SB':
-            # Scenario: Folded to SB. SB needs to complete BB or raise.
-            # bet_to_call here would be big_blind - small_blind if BB hasn't raised.
-            # max_bet_on_table would be big_blind if BB hasn't raised.
-            if bet_to_call == (big_blind - small_blind) and max_bet_on_table == big_blind: # Folded to SB, opportunity to open
-                open_raise = (3 * big_blind) # Standard SB open sizing
+            if max_bet_on_table <= big_blind and (bet_to_call == big_blind - small_blind or bet_to_call == 0) : # Folded to SB or limped to SB
+                # This condition means it's either folded to SB (max_bet_on_table is BB, bet_to_call is BB-SB)
+                # Or someone limped and SB has option to complete/raise (max_bet_on_table is BB, bet_to_call is BB-SB)
+                # Or it's folded around and SB is effectively opening (bet_to_call is 0 if we consider SB already in)
+                # Simplified: If action is on SB and no one has raised yet beyond the BB.
+                open_raise = (3 * big_blind) # Standard SB open sizing vs BB
+                if num_limpers > 0: # If BTN limped, SB might make it 4BB.
+                    open_raise = (3 + num_limpers) * big_blind
                 open_raise = max(open_raise, min_raise)
                 open_raise = round(min(open_raise, my_stack),2)
-                print(f"{preflop_category} in SB, folded to, opening. Action: RAISE, Amount: {open_raise}")
+                print(f"{preflop_category} in SB, opening/isolating. Action: RAISE, Amount: {open_raise}")
                 return action_raise_const, open_raise
-            elif bet_to_call <= big_blind * 5: # Facing a raise after SB posted
-                print(f"{preflop_category} in SB, facing raise <= 5BB. Action: CALL, Amount: {bet_to_call}")
-                return action_call_const, bet_to_call
-            else: # Facing a very large raise (4bet+)
-                print(f"{preflop_category} in SB, facing large raise > 5BB. Action: FOLD")
-                return action_fold_const, 0
         elif position == 'BB': # Corrected: Direct comparison for single item
             if bet_to_call == 0 and can_check:
                 print(f"{preflop_category} in BB, option to check. Action: CHECK")

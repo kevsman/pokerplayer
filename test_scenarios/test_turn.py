@@ -18,12 +18,17 @@ class TestTurnScenarios(unittest.TestCase):
             # Add other necessary config parameters if PokerBot or DecisionEngine expects them
         }
         # Initialize PokerBot with individual config values if it does not take a config dict
-        self.bot = PokerBot(big_blind=self.config['big_blind'], small_blind=self.config['small_blind'])
+        self.bot = PokerBot(config=self.config) # Pass config object
         # If DecisionEngine is not created by PokerBot or needs specific setup for tests:
         # from decision_engine import DecisionEngine # Ensure DecisionEngine is imported
         # self.decision_engine_instance = DecisionEngine(hand_evaluator=HandEvaluator(), config=self.config)
         # self.bot.decision_engine = self.decision_engine_instance
         self.hand_evaluator = HandEvaluator() # Initialize HandEvaluator
+
+    def tearDown(self):
+        """Clean up after tests."""
+        if hasattr(self.bot, 'close_logger') and callable(self.bot.close_logger):
+            self.bot.close_logger()
 
     # Helper methods (adapted from test_preflop.py and test_flop.py)
     def _create_mock_my_player_data(self, cards, stack, current_bet, bet_to_call, has_turn, game_stage, community_cards=None, position='UTG', name='TestBot', win_probability=None):
