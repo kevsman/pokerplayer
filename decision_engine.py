@@ -68,32 +68,47 @@ class DecisionEngine:
     def make_decision(self, game_state, player_index):
         # Extract player and game state information
         my_player = game_state['players'][player_index]
+
+        if not my_player.get('has_turn', False): # Check if it's the bot's turn
+            logger.info(f"Not player {my_player.get('name', player_index)}'s turn (has_turn: {my_player.get('has_turn')}). No action taken.")
+            return None, 0 # Return None action if not bot's turn
+
         all_players = game_state['players']
         current_round = game_state['current_round']
-        # Ensure pot_size is correctly retrieved and typed
+        
         pot_value = game_state.get('pot_size', game_state.get('pot'))
         if pot_value is None:
-            # Fallback if neither 'pot_size' nor 'pot' is found, though one should exist.
-            # Log a warning or handle as an error if this case is not expected.
             logger.warning("Pot size not found in game_state, defaulting to 0.0. Game state keys: %s", game_state.keys())
             pot_size = 0.0
         else:
-            pot_size = parse_monetary_value(pot_value) # Use existing parser
+            pot_size = parse_monetary_value(pot_value)
+
+        # Ensure my_stack is a float
+        my_stack_raw = my_player.get('stack')
+        if my_stack_raw is None:
+            logger.warning(f"Player stack not found for player {player_index}, defaulting to 0.0.")
+            my_stack = 0.0
+        else:
+            my_stack = parse_monetary_value(my_stack_raw)
 
         community_cards = game_state['community_cards']
 
         # Evaluate hand for the current player
-        # This needs to be done for both preflop (for win_probability if used) and postflop
         hand_eval_dict = self.hand_evaluator.evaluate_hand(my_player['hand'], community_cards)
         numerical_hand_rank = hand_eval_dict.get('rank_value', 0)
         hand_description = hand_eval_dict.get('description', "N/A")
-        # win_probability might be calculated differently or be part of hand_eval_dict or a separate call
-        # For now, let's assume it might come from hand_eval_dict or needs to be calculated
-        # This is a placeholder, actual win_probability calculation might be more complex
-        if 'win_probability' in my_player: # Check if win_probability is directly provided in player data (for testing)
-            win_probability = my_player['win_probability']
+        
+        # Ensure win_probability is a float
+        raw_win_probability = my_player.get('win_probability', hand_eval_dict.get('win_probability'))
+        if raw_win_probability is None:
+            logger.warning(f"win_probability not found for player {player_index} or in hand_eval_dict, defaulting to 0.5.")
+            win_probability = 0.5 # Default if not found
         else:
-            win_probability = hand_eval_dict.get('win_probability', 0.5) # Default if not in hand_eval_dict either
+            try:
+                win_probability = float(raw_win_probability)
+            except (ValueError, TypeError):
+                logger.warning(f"Could not convert win_probability '{raw_win_probability}' to float. Defaulting to 0.0.")
+                win_probability = 0.0 # Default to a float if conversion fails
         
         # Calculate bet_to_call and max_bet_on_table
         # Pass game_state['big_blind'] directly
@@ -119,14 +134,14 @@ class DecisionEngine:
                 position=my_player['position'],
                 bet_to_call=bet_to_call_calculated,
                 can_check=can_check,
-                my_stack=my_player['stack'],
+                my_stack=my_stack, # Pass converted float stack
                 pot_size=pot_size,
                 active_opponents_count=active_opponents_count,
-                small_blind=self.small_blind_amount, # Use renamed attribute
-                big_blind=self.big_blind_amount,    # Use renamed attribute
-                my_current_bet_this_street=my_player.get('current_bet', 0),
+                small_blind=self.small_blind_amount,
+                big_blind=self.big_blind_amount,
+                my_current_bet_this_street=parse_monetary_value(my_player.get('current_bet', 0)), # Ensure this is float too
                 max_bet_on_table=max_bet_on_table, 
-                min_raise=game_state.get('min_raise', self.big_blind_amount * 2), # Use renamed attribute
+                min_raise=parse_monetary_value(game_state.get('min_raise', self.big_blind_amount * 2)), # Ensure this is float
                 is_sb=is_sb,
                 is_bb=is_bb,
                 action_fold_const=ACTION_FOLD,
@@ -135,32 +150,30 @@ class DecisionEngine:
                 action_raise_const=ACTION_RAISE
             )
         else: # postflop
-            # numerical_hand_rank, hand_description, and win_probability are now in scope
-
             pot_odds_to_call = 0
-            if (pot_size + bet_to_call_calculated) > 0:
+            if (pot_size + bet_to_call_calculated) > 0: # Ensure denominator is not zero
                 pot_odds_to_call = bet_to_call_calculated / (pot_size + bet_to_call_calculated)
 
             spr = 0
             if pot_size > 0:
-                spr = my_player['stack'] / pot_size
+                spr = my_stack / pot_size # Use converted float stack
             else: 
-                spr = float('inf') if my_player['stack'] > 0 else 0
+                spr = float('inf') if my_stack > 0 else 0
             
             print(f"  DEBUG ENGINE: PRE-CALL to make_postflop_decision: bet_to_call_calculated={bet_to_call_calculated}, max_bet_on_table={max_bet_on_table}", file=sys.stderr)
             sys.stderr.flush()
-            
+
             action, amount = make_postflop_decision(
-                decision_engine_instance=self, # Pass self to access helper funcs
-                numerical_hand_rank=numerical_hand_rank, 
-                hand_description=hand_description,     
+                decision_engine_instance=self,
+                numerical_hand_rank=numerical_hand_rank,
+                hand_description=hand_description,
                 bet_to_call=bet_to_call_calculated,
                 can_check=can_check,
                 pot_size=pot_size,
-                my_stack=my_player['stack'],
-                win_probability=win_probability,       
+                my_stack=my_stack, # Pass converted float stack
+                win_probability=win_probability, # Pass converted float win_probability
                 pot_odds_to_call=pot_odds_to_call,
-                game_stage=current_round,
+                game_stage=current_round, 
                 spr=spr,
                 action_fold_const=ACTION_FOLD,
                 action_check_const=ACTION_CHECK,
@@ -168,13 +181,37 @@ class DecisionEngine:
                 action_raise_const=ACTION_RAISE,
                 action_bet_const=ACTION_BET,
                 my_player_data=my_player,
-                big_blind_amount=self.big_blind_amount, # Pass renamed attribute
-                base_aggression_factor=self.base_aggression_factor # Pass renamed attribute
-                # Helper functions (get_optimal_bet_size_func, etc.) are now accessed via decision_engine_instance
+                big_blind_amount=self.big_blind_amount,
+                base_aggression_factor=self.base_aggression_factor,
+                max_bet_on_table=max_bet_on_table
             )
         
-        amount = float(amount) if amount is not None else 0.0
-        if action == ACTION_CHECK or action == ACTION_FOLD:
-            amount = 0.0
+        # Ensure amount is a float before returning
+        if isinstance(amount, (str)):
+            try:
+                amount = float(amount)
+            except ValueError:
+                logger.error(f"Could not convert action amount '{amount}' to float. Defaulting to 0.0.")
+                amount = 0.0
+        elif not isinstance(amount, (int, float)):
+             logger.warning(f"Action amount '{amount}' is not int/float. Type: {type(amount)}. Defaulting to 0.0.")
+             amount = 0.0
 
-        return action, amount
+
+        # Final safety check for amount if action is not fold or check
+        if action not in [ACTION_FOLD, ACTION_CHECK] and amount <= 0 and action != ACTION_CALL: # Call can be 0 if already all-in and covered
+             # Exception for call: if bet_to_call is 0 and it's a call action, amount 0 is fine.
+            if not (action == ACTION_CALL and bet_to_call_calculated == 0):
+                logger.warning(f"Action {action} has amount {amount}. This might be unintended. Overriding to check if possible, else fold.")
+                if can_check:
+                    action, amount = ACTION_CHECK, 0
+                else:
+                    # If it's a bet/raise that resolved to 0, it's problematic.
+                    # If it was a call that resolved to 0 (and bet_to_call > 0), it's also problematic.
+                    # This usually means an issue in bet sizing or decision logic.
+                    # For safety, if we can't check, and we are supposed to bet/raise/call >0 but amount is 0, fold.
+                    logger.error(f"Unsafe action {action} with amount {amount} when cannot check. Defaulting to FOLD.")
+                    action, amount = ACTION_FOLD, 0
+
+
+        return action, round(amount, 2)

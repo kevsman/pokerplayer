@@ -72,34 +72,58 @@ def calculate_expected_value(action, amount, pot_size, win_probability,
         
     return 0.0
 
-def should_bluff(pot_size, stack_size, win_probability, game_stage="Flop"):
+def should_bluff(pot_size, stack_size, game_stage, win_probability, bet_to_pot_ratio_for_bluff=0.5):
     """
     Enhanced bluffing logic considering multiple factors
     Returns True if conditions are favorable for bluffing
+
+    Args:
+        pot_size (float): Current size of the pot.
+        stack_size (float): Our current stack size.
+        game_stage (str): Current stage of the game ("Flop", "Turn", "River").
+        win_probability (float): Our estimated probability of winning the hand if it goes to showdown.
+        bet_to_pot_ratio_for_bluff (float, optional): The bet size relative to the pot we are considering for the bluff.
+                                                    This helps estimate if the bluff is likely to succeed.
+                                                    Defaults to 0.5 (half-pot bet).
     """
+    # Ensure win_probability is a float for comparisons
+    try:
+        win_prob_float = float(win_probability)
+    except (ValueError, TypeError):
+        # If conversion fails, assume it's not a valid probability for bluffing (conservative)
+        return False
+
     # Don't bluff if we have a decent hand
-    if win_probability > 0.35:
+    if win_prob_float > 0.35:
         return False
     
     # Don't bluff if pot is too small (not worth the risk)
-    if pot_size < stack_size * 0.05:
+    # Or if stack is too small relative to pot (preserve chips, less fold equity)
+    if pot_size < stack_size * 0.05 or stack_size < pot_size * 2:
         return False
-    
-    # Don't bluff if we're short-stacked (preserve chips)
-    if stack_size < pot_size * 3:
-        return False
-    
-    # River bluffs should be more selective
+        
+    # River bluffs should be more selective and require low win probability
     if game_stage == "River":
-        return pot_size > stack_size * 0.1 and win_probability < 0.15
+        # Bluff more if the bet is substantial enough to cause folds
+        return bet_to_pot_ratio_for_bluff >= 0.6 and win_prob_float < 0.15
     
-    # Turn bluffs with some equity (semi-bluffs)
+    # Turn bluffs - can be semi-bluffs with some draw equity, or pure bluffs
     elif game_stage == "Turn":
-        return win_probability > 0.15 and win_probability < 0.25
+        # Semi-bluff with some draw equity
+        if 0.15 < win_prob_float < 0.30 and bet_to_pot_ratio_for_bluff >= 0.5:
+            return True
+        # Pure bluff on Turn if conditions are right (e.g. scare cards, tight opponent - not modeled here)
+        # For now, limit pure Turn bluffs to lower win_prob
+        if win_prob_float < 0.15 and bet_to_pot_ratio_for_bluff >= 0.6:
+            return True
+        return False
     
-    # Flop bluffs - more liberal with drawing potential
-    else:
-        return win_probability > 0.10 and win_probability < 0.30
+    # Flop bluffs - more liberal, especially with draws or on certain board textures
+    # (board texture not modeled here yet)
+    else: # Flop
+        if win_prob_float < 0.25 and bet_to_pot_ratio_for_bluff >= 0.4:
+            return True
+        return False
 
 def should_bluff_old(fold_equity, pot_size, bet_size):
     """

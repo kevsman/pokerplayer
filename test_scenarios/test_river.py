@@ -1,7 +1,10 @@
 import sys
 import os
 import unittest # Add unittest import
-import logging
+import logging # Added logging
+
+# Configure basic logging for the test run to see debug messages
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 # Add the project root to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
