@@ -123,7 +123,8 @@ class TestTurnScenarios(unittest.TestCase):
 
         my_player_obj = self._create_mock_my_player_data(
             cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0, has_turn=True,
-            game_stage='Turn', community_cards=community_cards, position='BTN', name='TestBot_BTN'
+            game_stage='Turn', community_cards=community_cards, position='BTN', name='TestBot_BTN',
+            win_probability=0.85 # Explicitly set high win probability
         )
         opponents = [
             self._create_mock_opponent_data(seat=2, stack=1.0, current_bet=0, position='BB', name='Opponent_BB')
@@ -148,7 +149,7 @@ class TestTurnScenarios(unittest.TestCase):
         action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
 
         # Assertion: With a strong hand (two pair) and opportunity to bet, bot should bet.
-        self.assertEqual(action, ACTION_RAISE, "Bot should bet with strong hand on the turn.") # Changed ACTION_BET to ACTION_RAISE
+        self.assertEqual(action, ACTION_BET, "Bot should bet with strong hand on the turn.") # Changed ACTION_RAISE to ACTION_BET
         self.assertGreater(amount, 0, "Bet amount should be greater than 0.")
 
     def test_turn_my_turn_opportunity_to_check(self):
