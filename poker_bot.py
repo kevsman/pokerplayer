@@ -5,6 +5,7 @@ from hand_evaluator import HandEvaluator
 from html_parser import PokerPageParser
 from decision_engine import DecisionEngine, ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE
 from ui_controller import UIController
+from equity_calculator import EquityCalculator # Added import
 import time
 import logging
 
@@ -74,6 +75,7 @@ class PokerBot:
         # Pass the hand_evaluator and the full config to DecisionEngine
         self.decision_engine = DecisionEngine(self.hand_evaluator, config=self.config) 
         self.ui_controller = UIController()
+        self.equity_calculator = EquityCalculator() # Added instantiation
         self.table_data = {}
         self.player_data = []
         # self.big_blind and self.small_blind are already set from config or defaults
@@ -112,21 +114,60 @@ class PokerBot:
         self.table_data = self.parser.analyze_table()
 
     def analyze_players(self):
-        self.player_data = self.parser.analyze_players()
+        self.player_data = self.parser.analyze_players() 
         
+        community_cards_for_equity = self.table_data.get('community_cards', [])
+        # Ensure community_cards_for_equity are in the string format EquityCalculator expects, if not already.
+        # Assuming parser already provides them as list of strings like ['Ah', 'Ks']
+
         for player_info in self.player_data:
-            if player_info.get('is_my_player') and player_info.get('cards'):
-                community_cards = self.table_data.get('community_cards', [])
-                # Store the full evaluation tuple from HandEvaluator
-                player_info['hand_evaluation'] = self.hand_evaluator.calculate_best_hand(player_info['cards'], community_cards)
-                # Keep the string description for summary purposes if needed
+            player_hole_cards = player_info.get('cards')
+            
+            if player_info.get('is_my_player') and player_hole_cards:
+                # Calculate hand evaluation (rank, description)
+                player_info['hand_evaluation'] = self.hand_evaluator.calculate_best_hand(player_hole_cards, community_cards_for_equity)
                 player_info['hand_rank'] = player_info['hand_evaluation'][1] 
+
+                # Calculate win probability using EquityCalculator
+                # For simplicity in this test, assume 1 opponent and a default number of simulations.
+                # opponent_range_str_list might be complex; for now, let EquityCalculator handle default/random if applicable.
+                # EquityCalculator.calculate_equity_monte_carlo expects hole_cards_str_list as a list of lists,
+                # e.g., [['Ah', 'Qh']] for one player.
+                
+                # Correctly format hole_cards for EquityCalculator:
+                formatted_hole_cards = [player_hole_cards] if player_hole_cards else []
+
+                if formatted_hole_cards:
+                    # Using a simplified call for now, assuming 1 opponent, random range.
+                    # The EquityCalculator's current implementation of calculate_equity_monte_carlo
+                    # might need adjustment if opponent_range_str_list is strictly required or
+                    # if it doesn't handle a "random" opponent by default.
+                    # For now, passing None for opponent_range and a fixed number of simulations.
+                    # This part might need refinement based on EquityCalculator's exact API.
+                    win_prob, tie_prob, equity = self.equity_calculator.calculate_equity_monte_carlo(
+                        formatted_hole_cards, 
+                        community_cards_for_equity, 
+                        None, # opponent_range_str_list - assuming None means random or default
+                        num_simulations=500 # A reasonable number for faster testing
+                    )
+                    player_info['win_probability'] = win_prob
+                    player_info['tie_probability'] = tie_prob # Store tie_prob as well
+                    # self.logger.debug(f"Calculated equity for {player_info.get('name')}: Win={win_prob:.2f}, Tie={tie_prob:.2f}")
+                else:
+                    player_info['win_probability'] = 0.0 # Default if no hole cards
+                    player_info['tie_probability'] = 0.0
+                    # self.logger.debug(f"No hole cards for {player_info.get('name')} to calculate equity.")
+
             elif not player_info.get('is_my_player') and player_info.get('has_hidden_cards'):
                 player_info['hand_rank'] = "N/A (Hidden Cards)"
                 player_info['hand_evaluation'] = (0, "N/A (Hidden Cards)", []) # Default eval for others
+                player_info['win_probability'] = 0.0 # Cannot calculate for hidden cards
+                player_info['tie_probability'] = 0.0
             else:
                 player_info['hand_rank'] = "N/A"
                 player_info['hand_evaluation'] = (0, "N/A", []) # Default eval for empty/no cards
+                player_info['win_probability'] = 0.0
+                player_info['tie_probability'] = 0.0
 
 
     def get_active_player(self):
@@ -278,7 +319,7 @@ class PokerBot:
                 self.logger.error("Essential game data missing after self.analyze() from test file.")
                 return ACTION_FOLD, 0
 
-            self.logger.info("\\\\n--- Game Summary from Test File ---")
+            self.logger.info("\\n--- Game Summary from Test File ---")
             self.logger.info(self.get_summary())
             self.logger.info("--- End Game Summary ---")
 
@@ -292,7 +333,45 @@ class PokerBot:
                 if my_player_data.get('is_all_in_call_available'):
                     self.logger.debug("Parser detected: All-in call is available.")
 
-                action_tuple = self.decision_engine.make_decision(my_player_data, table_data, all_players_data)
+                # Find my_player_index
+                my_player_index = -1
+                for i, p_data in enumerate(all_players_data):
+                    # Assuming 'name' and 'seat' are reliable identifiers, or a unique ID if available
+                    if p_data.get('name') == my_player_data.get('name') and p_data.get('seat') == my_player_data.get('seat'):
+                        my_player_index = i
+                        break
+                
+                if my_player_index == -1:
+                    self.logger.error("Could not find my_player_index in all_players_data for test file run.")
+                    return ACTION_FOLD, 0
+
+                # Construct game_state for DecisionEngine
+                # Ensure player data has 'hand' key for cards
+                processed_players_data = []
+                for p_data in all_players_data:
+                    p_copy = p_data.copy()
+                    if 'cards' in p_copy and 'hand' not in p_copy:
+                        p_copy['hand'] = p_copy['cards']
+                    elif 'hand' not in p_copy: # Ensure hand key exists even if no cards (e.g. for opponents)
+                        p_copy['hand'] = []
+                    processed_players_data.append(p_copy)
+
+                game_state_for_decision = {
+                    # "players": all_players_data, # PokerPageParser now returns 'all_players_data'
+                    "players": processed_players_data, # Use processed data
+                    "pot_size": table_data.get('pot_size'),
+                    "community_cards": table_data.get('community_cards'),
+                    "current_round": table_data.get('game_stage', 'preflop').lower(), # Ensure current_round is present
+                    "big_blind": self.config.get('big_blind'),
+                    "small_blind": self.config.get('small_blind'),
+                    "min_raise": self.config.get('min_raise', self.config.get('big_blind', 0.02) * 2), # Ensure min_raise
+                    # 'board' and 'street' are often aliases or similar to community_cards and current_round
+                    "board": table_data.get('community_cards'), 
+                    "street": table_data.get('game_stage', 'preflop').lower()
+                }
+
+                # action_tuple = self.decision_engine.make_decision(my_player_data, table_data, all_players_data)
+                action_tuple = self.decision_engine.make_decision(game_state_for_decision, my_player_index)
                 
                 action = ""
                 amount = 0 
@@ -407,27 +486,65 @@ class PokerBot:
                 # Get data from PokerBot's attributes after analysis
                 my_player_data = self.get_my_player()
                 table_data = self.table_data
-                all_players_data = self.player_data # self.player_data is the list of all player dicts
-
-                # Check if essential data is present after analysis
-                if not my_player_data or not table_data: # all_players_data is self.player_data
-                    self.logger.warning("Essential game data missing after self.analyze(). Retrying in 1 second...")
-                    time.sleep(1)
-                    continue
+                raw_all_players_data = self.player_data # self.player_data is the list of all player dicts
 
                 if my_player_data and my_player_data.get('has_turn'):
                     hand_rank_description = my_player_data.get('hand_evaluation', (0, "N/A"))[1]
-                    # Enhanced logging for player's turn
-                    bet_to_call_str = my_player_data.get('bet_to_call', '0') # Get bet_to_call from player data
+                    bet_to_call_str = my_player_data.get('bet_to_call', '0')
                     bet_to_call_val = parse_currency_string(bet_to_call_str)
                     log_message = (
-                        f"My turn. Hand: {my_player_data.get('cards')}, Rank: {hand_rank_description}, " 
+                        f"My turn. Hand: {my_player_data.get('cards')}, Rank: {hand_rank_description}, " # Log uses 'cards'
                         f"Stack: {my_player_data.get('stack')}, Bet to call: {bet_to_call_val:.2f}"
                     )
                     self.logger.info(log_message)
                     self.logger.info(f"Pot: {table_data.get('pot_size')}, Community Cards: {table_data.get('community_cards')}")
 
-                    action_tuple = self.decision_engine.make_decision(my_player_data, table_data, all_players_data)
+                    # Process player data for DecisionEngine compatibility
+                    processed_players_list = []
+                    for p_orig in raw_all_players_data:
+                        p_copy = p_orig.copy()
+                        if 'hand' not in p_copy and 'cards' in p_copy:
+                            p_copy['hand'] = p_copy['cards']  # Copy 'cards' to 'hand'
+                        elif 'hand' not in p_copy:
+                            p_copy['hand'] = []  # Ensure 'hand' key exists, default to empty
+                        
+                        # Ensure 'position' key exists in the copy here
+                        if 'position' not in p_copy or not p_copy['position']:
+                            self.logger.warning(f"Player {p_copy.get('name', 'Unknown Player')} (Seat {p_copy.get('seat', 'N/A')}, ID {p_copy.get('id', 'N/A')}) in p_copy is missing 'position' or it is empty. Defaulting to 'Unknown'.")
+                            p_copy['position'] = "Unknown"
+                        
+                        processed_players_list.append(p_copy)
+
+                    # Find my_player_index in the processed list and set 'has_turn'
+                    my_player_id = my_player_data.get('id')
+                    my_player_index = -1
+                    for i, p_proc_data in enumerate(processed_players_list):
+                        # 'position' key is already guaranteed by the loop above for all p_proc_data
+
+                        if p_proc_data.get('id') == my_player_id:
+                            my_player_index = i
+                            # Ensure 'has_turn' is set on the correct player object in the list
+                            # (it was already p_proc_data, but direct list access is also fine)
+                            processed_players_list[i]['has_turn'] = True 
+                            break
+                    
+                    if my_player_index == -1:
+                        self.logger.error("Could not find my_player_index in processed_players_list.")
+                        action_tuple = (ACTION_FOLD, 0)
+                    else:
+                        # Construct the game_state dictionary using the processed player list
+                        game_state_for_decision = {
+                            "players": processed_players_list, # Use the fully processed list
+                            "pot_size": table_data.get('pot_size'),
+                            "community_cards": table_data.get('community_cards'),
+                            "current_round": table_data.get('street', table_data.get('game_stage', 'preflop')).lower(),
+                            "big_blind": self.config.get('big_blind'),
+                            "small_blind": self.config.get('small_blind'),
+                            "min_raise": self.config.get('big_blind') * 2, # Example, adjust as needed
+                            "board": table_data.get('community_cards'), 
+                            "street": table_data.get('street', table_data.get('game_stage', 'preflop')).lower()
+                        }
+                        action_tuple = self.decision_engine.make_decision(game_state_for_decision, my_player_index)
                     
                     action = ""
                     amount = 0 # Default amount to 0

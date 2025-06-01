@@ -21,9 +21,14 @@ logger = logging.getLogger(__name__)
 def parse_monetary_value(value_str_or_float):
     if isinstance(value_str_or_float, (int, float)):
         return float(value_str_or_float)
-    if value_str_or_float is None or str(value_str_or_float).strip() == "":
+    if value_str_or_float is None or str(value_str_or_float).strip() == "" or str(value_str_or_float).strip().upper() == "N/A": # Added N/A check
+        logger.warning(f"Invalid monetary value received: '{value_str_or_float}'. Defaulting to 0.0.") # Log a warning
         return 0.0
-    return float(str(value_str_or_float).replace('$', '').replace(',', '').replace('€', ''))
+    try:
+        return float(str(value_str_or_float).replace('$', '').replace(',', '').replace('€', ''))
+    except ValueError:
+        logger.error(f"Could not convert monetary value '{value_str_or_float}' to float. Defaulting to 0.0.")
+        return 0.0
 
 class DecisionEngine:
     def __init__(self, hand_evaluator, config=None): 
@@ -56,23 +61,33 @@ class DecisionEngine:
                 if player_current_bet > max_bet_on_table:
                     max_bet_on_table = player_current_bet
 
-        my_current_bet = parse_monetary_value(my_player.get('current_bet', 0.0))
-        
-        bet_to_call = max_bet_on_table - my_current_bet
+        # Use the bet_to_call from the parsed game state if available and seems reliable
+        # This value is often directly provided by the poker client's UI or logs
+        parsed_bet_to_call_str = my_player.get('bet_to_call')
+        if parsed_bet_to_call_str is not None:
+            bet_to_call = parse_monetary_value(parsed_bet_to_call_str)
+            # Sanity check: if my_player's current_bet is already max_bet_on_table, bet_to_call should be 0
+            my_current_bet = parse_monetary_value(my_player.get('current_bet', 0.0))
+            if my_current_bet >= max_bet_on_table:
+                 bet_to_call = 0.0
+            # Further sanity check: bet_to_call shouldn't exceed max_bet_on_table
+            # This also implies that if bet_to_call is positive, max_bet_on_table should be > my_current_bet
+            # bet_to_call = max(0.0, min(bet_to_call, max_bet_on_table - my_current_bet)) # This could be too restrictive
+
+        else:
+            # Fallback to calculating from current bets if 'bet_to_call' is not in my_player data
+            my_current_bet = parse_monetary_value(my_player.get('current_bet', 0.0))
+            bet_to_call = max_bet_on_table - my_current_bet
         
         # Ensure bet_to_call is not negative
         bet_to_call = max(0.0, bet_to_call)
 
+        # logger.debug(f"_calculate_bet_to_call: my_player_bet={my_player.get('current_bet', 0.0)}, max_bet_on_table={max_bet_on_table}, initial_parsed_b2c={parsed_bet_to_call_str}, final_b2c={bet_to_call}")
         return bet_to_call, max_bet_on_table
 
     def make_decision(self, game_state, player_index):
         # Extract player and game state information
         my_player = game_state['players'][player_index]
-
-        if not my_player.get('has_turn', False): # Check if it's the bot's turn
-            logger.info(f"Not player {my_player.get('name', player_index)}'s turn (has_turn: {my_player.get('has_turn')}). No action taken.")
-            return None, 0 # Return None action if not bot's turn
-
         all_players = game_state['players']
         current_round = game_state['current_round']
         
@@ -112,7 +127,56 @@ class DecisionEngine:
         
         # Calculate bet_to_call and max_bet_on_table
         # Pass game_state['big_blind'] directly
-        bet_to_call_calculated, max_bet_on_table = self._calculate_bet_to_call(my_player, all_players, player_index, self.big_blind_amount)
+        # bet_to_call_calculated, max_bet_on_table = self._calculate_bet_to_call(my_player, all_players, player_index, self.big_blind_amount)
+
+        # Use bet_to_call directly from my_player if available, otherwise calculate it.
+        # max_bet_on_table is still useful for bet sizing logic.
+        max_bet_on_table = 0.0
+        print(f"  DEBUG ENGINE: Calculating max_bet_on_table. Raw all_players data used by decision_engine: {all_players}", file=sys.stderr)
+        for i, p_data in enumerate(all_players):
+            if p_data:
+                player_seat = p_data.get('seat', f'index {i}')
+                raw_player_bet = p_data.get('bet', 0.0) # Changed 'current_bet' to 'bet'
+                player_current_bet = parse_monetary_value(raw_player_bet)
+                print(f"  DEBUG ENGINE: Player at seat/index {player_seat} - Raw bet: '{raw_player_bet}', Parsed bet: {player_current_bet}", file=sys.stderr)
+                if player_current_bet > max_bet_on_table:
+                    max_bet_on_table = player_current_bet
+                    print(f"  DEBUG ENGINE: New max_bet_on_table: {max_bet_on_table} from player at seat/index {player_seat}", file=sys.stderr)
+            else:
+                print(f"  DEBUG ENGINE: Player data at index {i} is None or empty.", file=sys.stderr)
+        print(f"  DEBUG ENGINE: Final calculated max_bet_on_table before use: {max_bet_on_table}", file=sys.stderr)
+
+
+        bet_to_call_str = my_player.get('bet_to_call')
+        if bet_to_call_str is not None:
+            bet_to_call_calculated = parse_monetary_value(bet_to_call_str)
+            # Sanity check against max_bet_on_table and my_player's own current_bet
+            my_current_bet = parse_monetary_value(my_player.get('current_bet', 0.0))
+            if my_current_bet >= max_bet_on_table: # If I've already matched or exceeded the max bet
+                # If the UI indicated a positive amount to call, respect that by not zeroing out here.
+                # This ensures that if UI says "call X" (X>0), can_check will be false.
+                # If UI said "call 0" or invalid, then it's fine to set to 0.0.
+                if bet_to_call_calculated <= 0:
+                    bet_to_call_calculated = 0.0
+                # If bet_to_call_calculated was > 0 from UI, it remains that positive value here.
+                # The 'else' block below might still refine it if it's an overestimation.
+                # However, for this specific 'if' branch (my_current_bet >= max_bet_on_table),
+                # actual_amount_to_add would be 0. If UI says call > 0, we must use UI's value.
+                # This means if UI says "call 0.03" and my_current_bet >= max_bet_on_table,
+                # bet_to_call_calculated will remain 0.03 from the UI.
+            else: # Ensure it's not more than the difference needed to reach max_bet_on_table
+                # my_current_bet < max_bet_on_table
+                # bet_to_call_calculated is from UI.
+                # actual_amount_to_add is (max_bet_on_table - my_current_bet)
+                # We should call the minimum of what UI suggests and what's actually needed.
+                actual_amount_to_add = max_bet_on_table - my_current_bet
+                bet_to_call_calculated = max(0.0, min(bet_to_call_calculated, actual_amount_to_add))
+        else:
+            # Fallback to calculating from current bets if 'bet_to_call' is not in my_player data
+            my_current_bet = parse_monetary_value(my_player.get('current_bet', 0.0))
+            bet_to_call_calculated = max(0.0, max_bet_on_table - my_current_bet)
+        
+        logger.debug(f"Make_decision: Parsed_bet_to_call_str: {bet_to_call_str}, Calculated_bet_to_call: {bet_to_call_calculated}, Max_bet_on_table: {max_bet_on_table}, My_current_bet: {my_player.get('current_bet')}")
 
         can_check = bet_to_call_calculated == 0
         active_opponents_count = sum(1 for i, p in enumerate(all_players) if p and not p.get('isFolded', False) and i != player_index)

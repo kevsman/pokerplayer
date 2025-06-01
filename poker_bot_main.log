@@ -158,3 +158,1484 @@
 2025-05-30 13:57:35,963 - INFO - 
 --- New Decision Cycle ---
 2025-05-30 13:57:35,964 - DEBUG - Attempting to retrieve game HTML from screen...
+2025-05-31 13:11:58,251 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:11:58,252 - INFO - Found 0 potential action elements.
+2025-05-31 13:11:58,257 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:11:58,258 - INFO - Found 0 potential action elements.
+2025-05-31 13:11:58,309 - INFO - Equity calculation complete for ['4♠', 'A♦'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 13:12:01,714 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:01,714 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:01,725 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:01,726 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:01,799 - INFO - Equity calculation complete for ['4♠', 'A♦'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-05-31 13:12:05,186 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:05,187 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:05,196 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:05,196 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:05,271 - INFO - Equity calculation complete for ['4♠', 'A♦'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 13:12:08,672 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:08,674 - INFO - Found 3 potential action elements.
+2025-05-31 13:12:08,685 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:08,686 - INFO - Found 3 potential action elements.
+2025-05-31 13:12:08,763 - INFO - Equity calculation complete for ['4♠', 'A♦'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-05-31 13:12:08,767 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 13:12:17,622 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:17,622 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:17,629 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:17,630 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:17,704 - INFO - Equity calculation complete for ['4♠', 'A♦'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 13:12:21,095 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:21,096 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:21,104 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:21,105 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:21,183 - INFO - Equity calculation complete for ['4♠', 'A♦'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 13:12:24,581 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:24,581 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:24,590 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:24,592 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:24,600 - INFO - Equity calculation complete for ['4♠', 'A♦'] vs random. Win: 0.00%, Tie: 0.16%, Equity: 0.00% (500 simulations)
+2025-05-31 13:12:27,993 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:27,994 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:28,002 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:28,003 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:28,013 - INFO - Equity calculation complete for ['4♠', 'A♦'] vs random. Win: 0.00%, Tie: 0.20%, Equity: 0.00% (500 simulations)
+2025-05-31 13:12:31,402 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:31,403 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:31,411 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:31,411 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:31,422 - INFO - Equity calculation complete for ['4♠', 'A♦'] vs random. Win: 0.00%, Tie: 0.15%, Equity: 0.00% (500 simulations)
+2025-05-31 13:12:34,821 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:34,822 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:34,828 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:34,829 - INFO - Found 0 potential action elements.
+2025-05-31 13:12:34,837 - INFO - Equity calculation complete for ['4♠', 'A♦'] vs random. Win: 0.00%, Tie: 0.19%, Equity: 0.00% (500 simulations)
+2025-05-31 13:12:38,255 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:38,255 - INFO - Found 3 potential action elements.
+2025-05-31 13:12:38,266 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:38,267 - INFO - Found 3 potential action elements.
+2025-05-31 13:12:38,276 - INFO - Equity calculation complete for ['4♠', 'A♦'] vs random. Win: 0.00%, Tie: 0.17%, Equity: 0.00% (500 simulations)
+2025-05-31 13:12:38,279 - INFO - Decision: CHECK (weak hand).
+2025-05-31 13:12:47,137 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:47,137 - INFO - Found 3 potential action elements.
+2025-05-31 13:12:47,145 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:12:47,146 - INFO - Found 3 potential action elements.
+2025-05-31 13:12:47,159 - INFO - Equity calculation complete for ['4♠', 'A♦'] vs random. Win: 0.00%, Tie: 0.36%, Equity: 0.00% (500 simulations)
+2025-05-31 13:12:47,162 - INFO - Decision: CHECK (weak hand).
+2025-05-31 13:18:57,108 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:18:57,109 - INFO - Found 0 potential action elements.
+2025-05-31 13:18:57,123 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:18:57,124 - INFO - Found 0 potential action elements.
+2025-05-31 13:18:57,253 - INFO - Equity calculation complete for ['6♥', '2♥'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 13:19:00,667 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:19:00,668 - INFO - Found 0 potential action elements.
+2025-05-31 13:19:00,680 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:19:00,681 - INFO - Found 0 potential action elements.
+2025-05-31 13:19:00,814 - INFO - Equity calculation complete for ['6♥', '2♥'] vs random. Win: 0.00%, Tie: 0.03%, Equity: 0.00% (500 simulations)
+2025-05-31 13:19:04,227 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:19:04,228 - INFO - Found 0 potential action elements.
+2025-05-31 13:19:04,238 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:19:04,239 - INFO - Found 0 potential action elements.
+2025-05-31 13:19:04,370 - INFO - Equity calculation complete for ['6♥', '2♥'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 13:19:07,805 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:19:07,806 - INFO - Found 3 potential action elements.
+2025-05-31 13:19:07,815 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:19:07,815 - INFO - Found 3 potential action elements.
+2025-05-31 13:19:07,932 - INFO - Equity calculation complete for ['6♥', '2♥'] vs random. Win: 0.00%, Tie: 0.03%, Equity: 0.00% (500 simulations)
+2025-05-31 13:19:07,937 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 13:29:49,492 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:29:49,493 - INFO - Found 3 potential action elements.
+2025-05-31 13:29:49,497 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:29:49,498 - INFO - Found 3 potential action elements.
+2025-05-31 13:29:49,569 - INFO - Equity calculation complete for ['K♦', '3♣'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-05-31 13:29:49,572 - WARNING - Invalid monetary value received: 'N/A'. Defaulting to 0.0.
+2025-05-31 13:29:49,573 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 13:29:58,453 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:29:58,454 - INFO - Found 3 potential action elements.
+2025-05-31 13:29:58,462 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:29:58,464 - INFO - Found 3 potential action elements.
+2025-05-31 13:29:58,473 - INFO - Equity calculation complete for ['K♦', '3♣'] vs random. Win: 0.00%, Tie: 0.19%, Equity: 0.00% (500 simulations)
+2025-05-31 13:29:58,478 - WARNING - Invalid monetary value received: 'N/A'. Defaulting to 0.0.
+2025-05-31 13:29:58,478 - INFO - Decision: CHECK (weak hand).
+2025-05-31 13:31:22,852 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:31:22,853 - INFO - Found 3 potential action elements.
+2025-05-31 13:31:22,858 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:31:22,859 - INFO - Found 3 potential action elements.
+2025-05-31 13:31:22,906 - INFO - Equity calculation complete for ['A♦', '4♠'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-05-31 13:31:22,909 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 13:31:31,799 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:31:31,799 - INFO - Found 3 potential action elements.
+2025-05-31 13:31:31,807 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:31:31,808 - INFO - Found 3 potential action elements.
+2025-05-31 13:31:31,814 - INFO - Equity calculation complete for ['A♦', '4♠'] vs random. Win: 0.00%, Tie: 0.21%, Equity: 0.00% (500 simulations)
+2025-05-31 13:31:31,817 - INFO - Decision: CHECK (weak hand).
+2025-05-31 13:37:28,454 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:37:28,456 - INFO - Found 0 potential action elements.
+2025-05-31 13:37:28,474 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:37:28,475 - INFO - Found 0 potential action elements.
+2025-05-31 13:37:28,484 - INFO - Equity calculation complete for ['K♠', '7♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-05-31 13:37:31,899 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:37:31,900 - INFO - Found 3 potential action elements.
+2025-05-31 13:37:31,906 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:37:31,906 - INFO - Found 3 potential action elements.
+2025-05-31 13:37:31,989 - INFO - Equity calculation complete for ['7♦', '9♠'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 13:37:31,997 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 13:41:10,465 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:41:10,466 - INFO - Found 0 potential action elements.
+2025-05-31 13:41:10,469 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:41:10,470 - INFO - Found 0 potential action elements.
+2025-05-31 13:41:13,876 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:41:13,876 - INFO - Found 3 potential action elements.
+2025-05-31 13:41:13,881 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:41:13,881 - INFO - Found 3 potential action elements.
+2025-05-31 13:41:13,884 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 13:44:26,371 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:44:26,372 - INFO - Found 0 potential action elements.
+2025-05-31 13:44:26,377 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:44:26,377 - INFO - Found 0 potential action elements.
+2025-05-31 13:44:29,773 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:44:29,774 - INFO - Found 0 potential action elements.
+2025-05-31 13:44:29,779 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:44:29,779 - INFO - Found 0 potential action elements.
+2025-05-31 13:44:33,189 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:44:33,189 - INFO - Found 0 potential action elements.
+2025-05-31 13:44:33,195 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:44:33,195 - INFO - Found 0 potential action elements.
+2025-05-31 13:44:36,599 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:44:36,599 - INFO - Found 3 potential action elements.
+2025-05-31 13:44:36,605 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:44:36,605 - INFO - Found 3 potential action elements.
+2025-05-31 13:44:36,608 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 13:46:50,759 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:46:50,760 - INFO - Found 0 potential action elements.
+2025-05-31 13:46:50,770 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:46:50,771 - INFO - Found 0 potential action elements.
+2025-05-31 13:46:54,197 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:46:54,197 - INFO - Found 0 potential action elements.
+2025-05-31 13:46:54,206 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:46:54,207 - INFO - Found 0 potential action elements.
+2025-05-31 13:46:57,607 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:46:57,607 - INFO - Found 0 potential action elements.
+2025-05-31 13:46:57,612 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:46:57,613 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:01,005 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:01,006 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:01,012 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:01,012 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:04,423 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:04,424 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:04,430 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:04,431 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:07,851 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:07,851 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:07,858 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:07,859 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:11,257 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:11,258 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:11,262 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:11,263 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:14,695 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:14,696 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:14,704 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:14,707 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:18,117 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:18,117 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:18,128 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:18,129 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:21,533 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:21,534 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:21,542 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:21,543 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:24,944 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:24,945 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:24,949 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:24,949 - INFO - Found 0 potential action elements.
+2025-05-31 13:47:28,360 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:28,360 - INFO - Found 3 potential action elements.
+2025-05-31 13:47:28,366 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:47:28,367 - INFO - Found 3 potential action elements.
+2025-05-31 13:47:28,371 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 13:52:20,217 - DEBUG - cards_holder_hero not found for player kta23. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:20,218 - DEBUG - cards_holder_hero not found for player EricHassli1. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:20,219 - DEBUG - cards_holder_hero not found for player BUREBISTA66. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:20,220 - DEBUG - cards_holder_hero not found for player Ricardas97818. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:20,222 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:52:20,223 - INFO - Found 3 potential action elements.
+2025-05-31 13:52:20,223 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:20,224 - DEBUG - Element raw text: 'FoldFold'
+2025-05-31 13:52:20,224 - DEBUG - Processed button_text_content: 'fold fold'
+2025-05-31 13:52:20,224 - DEBUG - Player info bet_to_call after this element's logic: 0
+2025-05-31 13:52:20,225 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:20,225 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:20,225 - DEBUG - Element raw text: 'Call
+€0.06Call€0.06'
+2025-05-31 13:52:20,225 - DEBUG - Processed button_text_content: 'call
+€0.06 call €0.06'
+2025-05-31 13:52:20,226 - DEBUG - Found amount span <span class='action-value'>: '€0.06'
+2025-05-31 13:52:20,226 - DEBUG - Parsed amount from span: 0.06
+2025-05-31 13:52:20,226 - DEBUG - Updated player_info['bet_to_call'] to 0.06 from button 'call
+€0.06 call €0.06' with amount 0.06
+2025-05-31 13:52:20,226 - DEBUG - Player info bet_to_call after this element's logic: 0.06
+2025-05-31 13:52:20,227 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:20,227 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:20,227 - DEBUG - Element raw text: 'Raise To
+€0.10Raise To€0.10'
+2025-05-31 13:52:20,228 - DEBUG - Processed button_text_content: 'raise to
+€0.10 raise to €0.10'
+2025-05-31 13:52:20,228 - DEBUG - Found amount span <span class='action-value'>: '€0.10'
+2025-05-31 13:52:20,229 - DEBUG - Parsed amount from span: 0.1
+2025-05-31 13:52:20,230 - DEBUG - Player info bet_to_call after this element's logic: 0.06
+2025-05-31 13:52:20,230 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:20,231 - DEBUG - Final detected actions for player warriorwonder25: ['fold', 'call', 'raise']
+2025-05-31 13:52:20,231 - DEBUG - Is all-in call available for player warriorwonder25: False
+2025-05-31 13:52:20,231 - DEBUG - Player's bet_to_call: 0.06
+2025-05-31 13:52:20,231 - DEBUG - HTML_PARSER_DEBUG: Processing MY_PLAYER: warriorwonder25. Attempting to find 'cards-holder-hero'.
+2025-05-31 13:52:20,231 - DEBUG - Found cards_holder_hero for player warriorwonder25
+2025-05-31 13:52:20,232 - DEBUG - Found 0 card_divs inside cards_holder_hero
+2025-05-31 13:52:20,236 - DEBUG - cards_holder_hero not found for player kta23. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:20,237 - DEBUG - cards_holder_hero not found for player EricHassli1. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:20,238 - DEBUG - cards_holder_hero not found for player BUREBISTA66. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:20,239 - DEBUG - cards_holder_hero not found for player Ricardas97818. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:20,242 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:52:20,242 - INFO - Found 3 potential action elements.
+2025-05-31 13:52:20,242 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:20,242 - DEBUG - Element raw text: 'FoldFold'
+2025-05-31 13:52:20,242 - DEBUG - Processed button_text_content: 'fold fold'
+2025-05-31 13:52:20,243 - DEBUG - Player info bet_to_call after this element's logic: 0
+2025-05-31 13:52:20,243 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:20,243 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:20,243 - DEBUG - Element raw text: 'Call
+€0.06Call€0.06'
+2025-05-31 13:52:20,243 - DEBUG - Processed button_text_content: 'call
+€0.06 call €0.06'
+2025-05-31 13:52:20,243 - DEBUG - Found amount span <span class='action-value'>: '€0.06'
+2025-05-31 13:52:20,244 - DEBUG - Parsed amount from span: 0.06
+2025-05-31 13:52:20,244 - DEBUG - Updated player_info['bet_to_call'] to 0.06 from button 'call
+€0.06 call €0.06' with amount 0.06
+2025-05-31 13:52:20,244 - DEBUG - Player info bet_to_call after this element's logic: 0.06
+2025-05-31 13:52:20,244 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:20,245 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:20,245 - DEBUG - Element raw text: 'Raise To
+€0.10Raise To€0.10'
+2025-05-31 13:52:20,245 - DEBUG - Processed button_text_content: 'raise to
+€0.10 raise to €0.10'
+2025-05-31 13:52:20,245 - DEBUG - Found amount span <span class='action-value'>: '€0.10'
+2025-05-31 13:52:20,245 - DEBUG - Parsed amount from span: 0.1
+2025-05-31 13:52:20,245 - DEBUG - Player info bet_to_call after this element's logic: 0.06
+2025-05-31 13:52:20,245 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:20,245 - DEBUG - Final detected actions for player warriorwonder25: ['fold', 'call', 'raise']
+2025-05-31 13:52:20,246 - DEBUG - Is all-in call available for player warriorwonder25: False
+2025-05-31 13:52:20,246 - DEBUG - Player's bet_to_call: 0.06
+2025-05-31 13:52:20,246 - DEBUG - HTML_PARSER_DEBUG: Processing MY_PLAYER: warriorwonder25. Attempting to find 'cards-holder-hero'.
+2025-05-31 13:52:20,246 - DEBUG - Found cards_holder_hero for player warriorwonder25
+2025-05-31 13:52:20,246 - DEBUG - Found 0 card_divs inside cards_holder_hero
+2025-05-31 13:52:20,249 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 13:52:29,151 - DEBUG - cards_holder_hero not found for player kta23. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:29,155 - DEBUG - cards_holder_hero not found for player EricHassli1. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:29,157 - DEBUG - cards_holder_hero not found for player N/A. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:29,158 - DEBUG - cards_holder_hero not found for player Ricardas97818. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:29,161 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:52:29,161 - INFO - Found 0 potential action elements.
+2025-05-31 13:52:29,162 - DEBUG - Final detected actions for player warriorwonder25: []
+2025-05-31 13:52:29,163 - DEBUG - Is all-in call available for player warriorwonder25: False
+2025-05-31 13:52:29,164 - DEBUG - Player's bet_to_call: 0
+2025-05-31 13:52:29,164 - DEBUG - HTML_PARSER_DEBUG: Processing MY_PLAYER: warriorwonder25. Attempting to find 'cards-holder-hero'.
+2025-05-31 13:52:29,165 - DEBUG - Found cards_holder_hero for player warriorwonder25
+2025-05-31 13:52:29,166 - DEBUG - Found 0 card_divs inside cards_holder_hero
+2025-05-31 13:52:29,179 - DEBUG - cards_holder_hero not found for player kta23. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:29,180 - DEBUG - cards_holder_hero not found for player EricHassli1. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:29,182 - DEBUG - cards_holder_hero not found for player N/A. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:29,183 - DEBUG - cards_holder_hero not found for player Ricardas97818. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:29,189 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:52:29,190 - INFO - Found 0 potential action elements.
+2025-05-31 13:52:29,191 - DEBUG - Final detected actions for player warriorwonder25: []
+2025-05-31 13:52:29,191 - DEBUG - Is all-in call available for player warriorwonder25: False
+2025-05-31 13:52:29,192 - DEBUG - Player's bet_to_call: 0
+2025-05-31 13:52:29,192 - DEBUG - HTML_PARSER_DEBUG: Processing MY_PLAYER: warriorwonder25. Attempting to find 'cards-holder-hero'.
+2025-05-31 13:52:29,193 - DEBUG - Found cards_holder_hero for player warriorwonder25
+2025-05-31 13:52:29,193 - DEBUG - Found 0 card_divs inside cards_holder_hero
+2025-05-31 13:52:32,595 - DEBUG - cards_holder_hero not found for player kta23. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:32,597 - DEBUG - cards_holder_hero not found for player EricHassli1. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:32,598 - DEBUG - cards_holder_hero not found for player BUREBISTA66. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:32,599 - DEBUG - cards_holder_hero not found for player Ricardas97818. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:32,602 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:52:32,603 - INFO - Found 3 potential action elements.
+2025-05-31 13:52:32,603 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:32,604 - DEBUG - Element raw text: 'FoldFold'
+2025-05-31 13:52:32,604 - DEBUG - Processed button_text_content: 'fold fold'
+2025-05-31 13:52:32,605 - DEBUG - Player info bet_to_call after this element's logic: 0
+2025-05-31 13:52:32,606 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:32,607 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:32,607 - DEBUG - Element raw text: 'Call
+€0.02Call€0.02'
+2025-05-31 13:52:32,608 - DEBUG - Processed button_text_content: 'call
+€0.02 call €0.02'
+2025-05-31 13:52:32,608 - DEBUG - Found amount span <span class='action-value'>: '€0.02'
+2025-05-31 13:52:32,609 - DEBUG - Parsed amount from span: 0.02
+2025-05-31 13:52:32,610 - DEBUG - Updated player_info['bet_to_call'] to 0.02 from button 'call
+€0.02 call €0.02' with amount 0.02
+2025-05-31 13:52:32,610 - DEBUG - Player info bet_to_call after this element's logic: 0.02
+2025-05-31 13:52:32,611 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:32,611 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:32,611 - DEBUG - Element raw text: 'Raise To
+€0.04Raise To€0.04'
+2025-05-31 13:52:32,612 - DEBUG - Processed button_text_content: 'raise to
+€0.04 raise to €0.04'
+2025-05-31 13:52:32,612 - DEBUG - Found amount span <span class='action-value'>: '€0.04'
+2025-05-31 13:52:32,612 - DEBUG - Parsed amount from span: 0.04
+2025-05-31 13:52:32,612 - DEBUG - Player info bet_to_call after this element's logic: 0.02
+2025-05-31 13:52:32,612 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:32,613 - DEBUG - Final detected actions for player warriorwonder25: ['fold', 'call', 'raise']
+2025-05-31 13:52:32,613 - DEBUG - Is all-in call available for player warriorwonder25: False
+2025-05-31 13:52:32,613 - DEBUG - Player's bet_to_call: 0.02
+2025-05-31 13:52:32,614 - DEBUG - HTML_PARSER_DEBUG: Processing MY_PLAYER: warriorwonder25. Attempting to find 'cards-holder-hero'.
+2025-05-31 13:52:32,614 - DEBUG - Found cards_holder_hero for player warriorwonder25
+2025-05-31 13:52:32,614 - DEBUG - Found 0 card_divs inside cards_holder_hero
+2025-05-31 13:52:32,624 - DEBUG - cards_holder_hero not found for player kta23. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:32,625 - DEBUG - cards_holder_hero not found for player EricHassli1. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:32,626 - DEBUG - cards_holder_hero not found for player BUREBISTA66. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:32,627 - DEBUG - cards_holder_hero not found for player Ricardas97818. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:32,630 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:52:32,630 - INFO - Found 3 potential action elements.
+2025-05-31 13:52:32,631 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:32,631 - DEBUG - Element raw text: 'FoldFold'
+2025-05-31 13:52:32,631 - DEBUG - Processed button_text_content: 'fold fold'
+2025-05-31 13:52:32,631 - DEBUG - Player info bet_to_call after this element's logic: 0
+2025-05-31 13:52:32,632 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:32,632 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:32,632 - DEBUG - Element raw text: 'Call
+€0.02Call€0.02'
+2025-05-31 13:52:32,633 - DEBUG - Processed button_text_content: 'call
+€0.02 call €0.02'
+2025-05-31 13:52:32,634 - DEBUG - Found amount span <span class='action-value'>: '€0.02'
+2025-05-31 13:52:32,634 - DEBUG - Parsed amount from span: 0.02
+2025-05-31 13:52:32,634 - DEBUG - Updated player_info['bet_to_call'] to 0.02 from button 'call
+€0.02 call €0.02' with amount 0.02
+2025-05-31 13:52:32,635 - DEBUG - Player info bet_to_call after this element's logic: 0.02
+2025-05-31 13:52:32,635 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:32,636 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:32,637 - DEBUG - Element raw text: 'Raise To
+€0.04Raise To€0.04'
+2025-05-31 13:52:32,637 - DEBUG - Processed button_text_content: 'raise to
+€0.04 raise to €0.04'
+2025-05-31 13:52:32,638 - DEBUG - Found amount span <span class='action-value'>: '€0.04'
+2025-05-31 13:52:32,639 - DEBUG - Parsed amount from span: 0.04
+2025-05-31 13:52:32,639 - DEBUG - Player info bet_to_call after this element's logic: 0.02
+2025-05-31 13:52:32,639 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:32,639 - DEBUG - Final detected actions for player warriorwonder25: ['fold', 'call', 'raise']
+2025-05-31 13:52:32,639 - DEBUG - Is all-in call available for player warriorwonder25: False
+2025-05-31 13:52:32,640 - DEBUG - Player's bet_to_call: 0.02
+2025-05-31 13:52:32,640 - DEBUG - HTML_PARSER_DEBUG: Processing MY_PLAYER: warriorwonder25. Attempting to find 'cards-holder-hero'.
+2025-05-31 13:52:32,640 - DEBUG - Found cards_holder_hero for player warriorwonder25
+2025-05-31 13:52:32,641 - DEBUG - Found 0 card_divs inside cards_holder_hero
+2025-05-31 13:52:32,646 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 13:52:54,468 - DEBUG - cards_holder_hero not found for player kta23. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:54,469 - DEBUG - cards_holder_hero not found for player EricHassli1. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:54,470 - DEBUG - cards_holder_hero not found for player BUREBISTA66. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:54,471 - DEBUG - cards_holder_hero not found for player Ricardas97818. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:54,472 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:52:54,473 - INFO - Found 3 potential action elements.
+2025-05-31 13:52:54,473 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:54,473 - DEBUG - Element raw text: 'FoldFold'
+2025-05-31 13:52:54,473 - DEBUG - Processed button_text_content: 'fold fold'
+2025-05-31 13:52:54,473 - DEBUG - Player info bet_to_call after this element's logic: 0
+2025-05-31 13:52:54,473 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:54,473 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:54,474 - DEBUG - Element raw text: 'Call
+€0.02Call€0.02'
+2025-05-31 13:52:54,475 - DEBUG - Processed button_text_content: 'call
+€0.02 call €0.02'
+2025-05-31 13:52:54,475 - DEBUG - Found amount span <span class='action-value'>: '€0.02'
+2025-05-31 13:52:54,476 - DEBUG - Parsed amount from span: 0.02
+2025-05-31 13:52:54,476 - DEBUG - Updated player_info['bet_to_call'] to 0.02 from button 'call
+€0.02 call €0.02' with amount 0.02
+2025-05-31 13:52:54,476 - DEBUG - Player info bet_to_call after this element's logic: 0.02
+2025-05-31 13:52:54,476 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:54,476 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:54,477 - DEBUG - Element raw text: 'Raise To
+€0.04Raise To€0.04'
+2025-05-31 13:52:54,477 - DEBUG - Processed button_text_content: 'raise to
+€0.04 raise to €0.04'
+2025-05-31 13:52:54,478 - DEBUG - Found amount span <span class='action-value'>: '€0.04'
+2025-05-31 13:52:54,478 - DEBUG - Parsed amount from span: 0.04
+2025-05-31 13:52:54,478 - DEBUG - Player info bet_to_call after this element's logic: 0.02
+2025-05-31 13:52:54,478 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:54,478 - DEBUG - Final detected actions for player warriorwonder25: ['fold', 'call', 'raise']
+2025-05-31 13:52:54,479 - DEBUG - Is all-in call available for player warriorwonder25: False
+2025-05-31 13:52:54,479 - DEBUG - Player's bet_to_call: 0.02
+2025-05-31 13:52:54,479 - DEBUG - HTML_PARSER_DEBUG: Processing MY_PLAYER: warriorwonder25. Attempting to find 'cards-holder-hero'.
+2025-05-31 13:52:54,479 - DEBUG - Found cards_holder_hero for player warriorwonder25
+2025-05-31 13:52:54,480 - DEBUG - Found 0 card_divs inside cards_holder_hero
+2025-05-31 13:52:54,483 - DEBUG - cards_holder_hero not found for player kta23. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:54,484 - DEBUG - cards_holder_hero not found for player EricHassli1. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:54,485 - DEBUG - cards_holder_hero not found for player BUREBISTA66. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:54,486 - DEBUG - cards_holder_hero not found for player Ricardas97818. Checking for cards_holder-other-hidden.
+2025-05-31 13:52:54,488 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 13:52:54,488 - INFO - Found 3 potential action elements.
+2025-05-31 13:52:54,489 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:54,489 - DEBUG - Element raw text: 'FoldFold'
+2025-05-31 13:52:54,489 - DEBUG - Processed button_text_content: 'fold fold'
+2025-05-31 13:52:54,489 - DEBUG - Player info bet_to_call after this element's logic: 0
+2025-05-31 13:52:54,489 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:54,489 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:54,490 - DEBUG - Element raw text: 'Call
+€0.02Call€0.02'
+2025-05-31 13:52:54,490 - DEBUG - Processed button_text_content: 'call
+€0.02 call €0.02'
+2025-05-31 13:52:54,491 - DEBUG - Found amount span <span class='action-value'>: '€0.02'
+2025-05-31 13:52:54,491 - DEBUG - Parsed amount from span: 0.02
+2025-05-31 13:52:54,491 - DEBUG - Updated player_info['bet_to_call'] to 0.02 from button 'call
+€0.02 call €0.02' with amount 0.02
+2025-05-31 13:52:54,491 - DEBUG - Player info bet_to_call after this element's logic: 0.02
+2025-05-31 13:52:54,491 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:54,491 - DEBUG - --- Debug Amount Parsing for element: ---
+2025-05-31 13:52:54,491 - DEBUG - Element raw text: 'Raise To
+€0.04Raise To€0.04'
+2025-05-31 13:52:54,492 - DEBUG - Processed button_text_content: 'raise to
+€0.04 raise to €0.04'
+2025-05-31 13:52:54,492 - DEBUG - Found amount span <span class='action-value'>: '€0.04'
+2025-05-31 13:52:54,492 - DEBUG - Parsed amount from span: 0.04
+2025-05-31 13:52:54,492 - DEBUG - Player info bet_to_call after this element's logic: 0.02
+2025-05-31 13:52:54,492 - DEBUG - --- End Debug Amount Parsing ---
+2025-05-31 13:52:54,492 - DEBUG - Final detected actions for player warriorwonder25: ['fold', 'call', 'raise']
+2025-05-31 13:52:54,492 - DEBUG - Is all-in call available for player warriorwonder25: False
+2025-05-31 13:52:54,493 - DEBUG - Player's bet_to_call: 0.02
+2025-05-31 13:52:54,493 - DEBUG - HTML_PARSER_DEBUG: Processing MY_PLAYER: warriorwonder25. Attempting to find 'cards-holder-hero'.
+2025-05-31 13:52:54,494 - DEBUG - Found cards_holder_hero for player warriorwonder25
+2025-05-31 13:52:54,494 - DEBUG - Found 0 card_divs inside cards_holder_hero
+2025-05-31 13:52:54,498 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 14:02:12,320 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 14:02:12,321 - INFO - Found 0 potential action elements.
+2025-05-31 14:02:12,328 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 14:02:12,329 - INFO - Found 0 potential action elements.
+2025-05-31 14:02:12,340 - INFO - Equity calculation complete for ['Q♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.38%, Equity: 0.00% (500 simulations)
+2025-05-31 14:02:15,750 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 14:02:15,751 - INFO - Found 0 potential action elements.
+2025-05-31 14:02:15,755 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 14:02:15,756 - INFO - Found 0 potential action elements.
+2025-05-31 14:02:15,762 - INFO - Equity calculation complete for ['Q♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-05-31 14:02:19,163 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 14:02:19,164 - INFO - Found 3 potential action elements.
+2025-05-31 14:02:19,169 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 14:02:19,169 - INFO - Found 3 potential action elements.
+2025-05-31 14:02:19,231 - INFO - Equity calculation complete for ['9♣', '10♦'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 14:02:19,235 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 19:20:34,964 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 19:20:34,972 - INFO - Found 3 potential action elements.
+2025-05-31 19:20:34,977 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 19:20:34,977 - INFO - Found 3 potential action elements.
+2025-05-31 19:20:35,029 - INFO - Equity calculation complete for ['8♣', '5♥'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 19:20:35,032 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:01:06,273 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:06,280 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:06,287 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:06,287 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:09,677 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:09,678 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:09,683 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:09,683 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:13,084 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:13,085 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:13,094 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:13,095 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:16,486 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:16,486 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:16,493 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:16,493 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:16,559 - INFO - Equity calculation complete for ['3♣', '3♦'] vs random. Win: 0.00%, Tie: 0.07%, Equity: 0.00% (500 simulations)
+2025-05-31 23:01:19,949 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:19,949 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:19,956 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:19,957 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:20,026 - INFO - Equity calculation complete for ['3♣', '3♦'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-05-31 23:01:23,435 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:23,436 - INFO - Found 3 potential action elements.
+2025-05-31 23:01:23,442 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:23,442 - INFO - Found 3 potential action elements.
+2025-05-31 23:01:23,526 - INFO - Equity calculation complete for ['3♣', '3♦'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:01:23,531 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:01:32,384 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:32,385 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:32,390 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:32,390 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:32,462 - INFO - Equity calculation complete for ['4♣', '7♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:01:35,859 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:35,859 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:35,867 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:35,867 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:35,933 - INFO - Equity calculation complete for ['4♣', '7♣'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-05-31 23:01:39,333 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:39,334 - INFO - Found 3 potential action elements.
+2025-05-31 23:01:39,342 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:39,343 - INFO - Found 3 potential action elements.
+2025-05-31 23:01:39,397 - INFO - Equity calculation complete for ['4♣', '7♣'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-05-31 23:01:39,399 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:01:48,273 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:48,274 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:48,286 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:48,286 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:48,300 - INFO - Equity calculation complete for ['4♣', '7♣'] vs random. Win: 0.00%, Tie: 0.16%, Equity: 0.00% (500 simulations)
+2025-05-31 23:01:51,697 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:51,697 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:51,705 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:51,706 - INFO - Found 0 potential action elements.
+2025-05-31 23:01:51,765 - INFO - Equity calculation complete for ['6♣', 'J♠'] vs random. Win: 0.00%, Tie: 0.07%, Equity: 0.00% (500 simulations)
+2025-05-31 23:01:55,146 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:55,147 - INFO - Found 3 potential action elements.
+2025-05-31 23:01:55,155 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:01:55,155 - INFO - Found 3 potential action elements.
+2025-05-31 23:01:55,222 - INFO - Equity calculation complete for ['6♣', 'J♠'] vs random. Win: 0.00%, Tie: 0.07%, Equity: 0.00% (500 simulations)
+2025-05-31 23:01:55,225 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:02:04,117 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:04,118 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:04,124 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:04,124 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:04,190 - INFO - Equity calculation complete for ['6♣', 'J♠'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:07,606 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:07,607 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:07,616 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:07,617 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:07,622 - INFO - Equity calculation complete for ['6♣', 'J♠'] vs random. Win: 0.00%, Tie: 0.20%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:11,006 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:11,007 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:11,018 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:11,019 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:11,029 - INFO - Equity calculation complete for ['6♣', 'J♠'] vs random. Win: 0.00%, Tie: 0.38%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:14,436 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:14,437 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:14,446 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:14,446 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:14,455 - INFO - Equity calculation complete for ['6♣', 'J♠'] vs random. Win: 0.00%, Tie: 0.38%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:17,859 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:17,860 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:17,867 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:17,868 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:17,878 - INFO - Equity calculation complete for ['6♣', 'J♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:21,267 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:21,268 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:21,275 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:21,275 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:21,280 - INFO - Equity calculation complete for ['6♣', 'J♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:24,695 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:24,696 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:24,722 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:24,723 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:24,742 - INFO - Equity calculation complete for ['6♣', 'J♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:28,129 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:28,129 - INFO - Found 3 potential action elements.
+2025-05-31 23:02:28,136 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:28,137 - INFO - Found 3 potential action elements.
+2025-05-31 23:02:28,202 - INFO - Equity calculation complete for ['10♣', '9♦'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:28,205 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:02:37,069 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:37,070 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:37,076 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:37,076 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:37,147 - INFO - Equity calculation complete for ['4♣', 'K♠'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:40,554 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:40,554 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:40,563 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:40,564 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:40,632 - INFO - Equity calculation complete for ['4♣', 'K♠'] vs random. Win: 0.00%, Tie: 0.03%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:44,023 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:44,024 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:44,034 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:44,035 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:44,099 - INFO - Equity calculation complete for ['4♣', 'K♠'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:47,505 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:47,505 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:47,510 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:47,510 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:47,593 - INFO - Equity calculation complete for ['4♣', 'K♠'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:50,982 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:50,982 - INFO - Found 3 potential action elements.
+2025-05-31 23:02:50,987 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:50,988 - INFO - Found 3 potential action elements.
+2025-05-31 23:02:51,050 - INFO - Equity calculation complete for ['4♣', 'K♠'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:02:51,052 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:02:59,922 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:59,923 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:59,927 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:02:59,928 - INFO - Found 0 potential action elements.
+2025-05-31 23:02:59,997 - INFO - Equity calculation complete for ['7♥', '4♥'] vs random. Win: 0.00%, Tie: 0.03%, Equity: 0.00% (500 simulations)
+2025-05-31 23:03:03,393 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:03,394 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:03,402 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:03,403 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:03,456 - INFO - Equity calculation complete for ['7♥', '4♥'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:03:06,857 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:06,858 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:06,864 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:06,865 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:06,936 - INFO - Equity calculation complete for ['7♥', '4♥'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:03:10,321 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:10,321 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:10,328 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:10,329 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:10,400 - INFO - Equity calculation complete for ['7♥', '4♥'] vs random. Win: 0.00%, Tie: 0.07%, Equity: 0.00% (500 simulations)
+2025-05-31 23:03:13,795 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:13,795 - INFO - Found 3 potential action elements.
+2025-05-31 23:03:13,802 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:13,803 - INFO - Found 3 potential action elements.
+2025-05-31 23:03:13,873 - INFO - Equity calculation complete for ['7♥', '4♥'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:03:13,876 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:03:22,778 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:22,779 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:22,799 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:22,800 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:22,822 - INFO - Equity calculation complete for ['7♥', '4♥'] vs random. Win: 0.00%, Tie: 0.16%, Equity: 0.00% (500 simulations)
+2025-05-31 23:03:26,212 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:26,212 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:26,222 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:26,223 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:26,289 - INFO - Equity calculation complete for ['A♦', '6♠'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:03:29,677 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:29,677 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:29,687 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:29,687 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:29,751 - INFO - Equity calculation complete for ['A♦', '6♠'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:03:33,150 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:33,151 - INFO - Found 3 potential action elements.
+2025-05-31 23:03:33,156 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:33,156 - INFO - Found 3 potential action elements.
+2025-05-31 23:03:33,238 - INFO - Equity calculation complete for ['A♦', '6♠'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:03:33,241 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:03:42,125 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:42,126 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:42,140 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:42,142 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:42,157 - INFO - Equity calculation complete for ['A♦', '6♠'] vs random. Win: 0.00%, Tie: 0.18%, Equity: 0.00% (500 simulations)
+2025-05-31 23:03:45,555 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:45,556 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:45,561 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:45,561 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:45,566 - INFO - Equity calculation complete for ['A♦', '6♠'] vs random. Win: 0.00%, Tie: 0.18%, Equity: 0.00% (500 simulations)
+2025-05-31 23:03:48,958 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:48,959 - INFO - Found 3 potential action elements.
+2025-05-31 23:03:48,964 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:48,964 - INFO - Found 3 potential action elements.
+2025-05-31 23:03:49,030 - INFO - Equity calculation complete for ['3♠', '2♥'] vs random. Win: 0.00%, Tie: 0.03%, Equity: 0.00% (500 simulations)
+2025-05-31 23:03:49,033 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:03:57,892 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:57,893 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:57,901 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:03:57,902 - INFO - Found 0 potential action elements.
+2025-05-31 23:03:57,961 - INFO - Equity calculation complete for ['3♠', '2♥'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-05-31 23:04:01,359 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:01,360 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:01,369 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:01,369 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:01,457 - INFO - Equity calculation complete for ['3♠', '2♥'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:04:04,851 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:04,851 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:04,858 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:04,859 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:04,923 - INFO - Equity calculation complete for ['3♠', '2♥'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:04:08,333 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:08,334 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:08,353 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:08,354 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:08,370 - INFO - Equity calculation complete for ['3♠', '2♥'] vs random. Win: 0.00%, Tie: 0.20%, Equity: 0.00% (500 simulations)
+2025-05-31 23:04:11,754 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:11,755 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:11,763 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:11,763 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:11,825 - INFO - Equity calculation complete for ['2♣', 'K♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:04:15,215 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:15,216 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:15,221 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:15,222 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:15,291 - INFO - Equity calculation complete for ['2♣', 'K♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:04:18,699 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:18,699 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:18,705 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:18,706 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:18,775 - INFO - Equity calculation complete for ['2♣', 'K♣'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:04:22,165 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:22,166 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:22,170 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:22,170 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:22,241 - INFO - Equity calculation complete for ['2♣', 'K♣'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:04:25,625 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:25,625 - INFO - Found 3 potential action elements.
+2025-05-31 23:04:25,634 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:25,634 - INFO - Found 3 potential action elements.
+2025-05-31 23:04:25,698 - INFO - Equity calculation complete for ['2♣', 'K♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:04:25,700 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:04:34,555 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:34,556 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:34,561 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:34,562 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:34,625 - INFO - Equity calculation complete for ['8♣', 'K♥'] vs random. Win: 0.00%, Tie: 0.03%, Equity: 0.00% (500 simulations)
+2025-05-31 23:04:38,018 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:38,018 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:38,027 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:04:38,028 - INFO - Found 0 potential action elements.
+2025-05-31 23:04:38,094 - INFO - Equity calculation complete for ['8♣', 'K♥'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:08:43,840 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:08:43,841 - INFO - Found 0 potential action elements.
+2025-05-31 23:08:43,846 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:08:43,847 - INFO - Found 0 potential action elements.
+2025-05-31 23:08:47,239 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:08:47,240 - INFO - Found 0 potential action elements.
+2025-05-31 23:08:47,245 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:08:47,246 - INFO - Found 0 potential action elements.
+2025-05-31 23:08:50,649 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:08:50,650 - INFO - Found 0 potential action elements.
+2025-05-31 23:08:50,657 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:08:50,657 - INFO - Found 0 potential action elements.
+2025-05-31 23:08:54,062 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:08:54,063 - INFO - Found 0 potential action elements.
+2025-05-31 23:08:54,072 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:08:54,073 - INFO - Found 0 potential action elements.
+2025-05-31 23:08:57,477 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:08:57,478 - INFO - Found 0 potential action elements.
+2025-05-31 23:08:57,484 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:08:57,484 - INFO - Found 0 potential action elements.
+2025-05-31 23:09:00,903 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:00,903 - INFO - Found 0 potential action elements.
+2025-05-31 23:09:00,912 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:00,913 - INFO - Found 0 potential action elements.
+2025-05-31 23:09:04,305 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:04,306 - INFO - Found 0 potential action elements.
+2025-05-31 23:09:04,320 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:04,320 - INFO - Found 0 potential action elements.
+2025-05-31 23:09:07,719 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:07,720 - INFO - Found 0 potential action elements.
+2025-05-31 23:09:07,736 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:07,737 - INFO - Found 0 potential action elements.
+2025-05-31 23:09:11,144 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:11,144 - INFO - Found 0 potential action elements.
+2025-05-31 23:09:11,152 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:11,153 - INFO - Found 0 potential action elements.
+2025-05-31 23:09:14,556 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:14,557 - INFO - Found 0 potential action elements.
+2025-05-31 23:09:14,567 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:14,568 - INFO - Found 0 potential action elements.
+2025-05-31 23:09:14,639 - INFO - Equity calculation complete for ['10♥', '4♠'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-05-31 23:09:18,047 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:18,048 - INFO - Found 3 potential action elements.
+2025-05-31 23:09:18,054 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:18,055 - INFO - Found 3 potential action elements.
+2025-05-31 23:09:18,142 - INFO - Equity calculation complete for ['10♥', '4♠'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:09:18,145 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:09:27,012 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:27,013 - INFO - Found 3 potential action elements.
+2025-05-31 23:09:27,026 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:09:27,026 - INFO - Found 3 potential action elements.
+2025-05-31 23:09:27,107 - INFO - Equity calculation complete for ['10♥', '4♠'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:09:27,110 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:10:59,244 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:10:59,245 - INFO - Found 3 potential action elements.
+2025-05-31 23:10:59,257 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:10:59,257 - INFO - Found 3 potential action elements.
+2025-05-31 23:10:59,320 - INFO - Equity calculation complete for ['2♦', '4♦'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:10:59,324 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-05-31 23:11:08,203 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:11:08,205 - INFO - Found 0 potential action elements.
+2025-05-31 23:11:08,212 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:11:08,213 - INFO - Found 0 potential action elements.
+2025-05-31 23:11:08,288 - INFO - Equity calculation complete for ['8♥', '9♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:11:11,702 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:11:11,702 - INFO - Found 0 potential action elements.
+2025-05-31 23:11:11,707 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:11:11,708 - INFO - Found 0 potential action elements.
+2025-05-31 23:11:11,789 - INFO - Equity calculation complete for ['8♥', '9♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-05-31 23:11:15,196 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:11:15,196 - INFO - Found 0 potential action elements.
+2025-05-31 23:11:15,209 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:11:15,210 - INFO - Found 0 potential action elements.
+2025-05-31 23:11:15,279 - INFO - Equity calculation complete for ['8♥', '9♣'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:11:18,691 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:11:18,692 - INFO - Found 0 potential action elements.
+2025-05-31 23:11:18,704 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:11:18,705 - INFO - Found 0 potential action elements.
+2025-05-31 23:11:18,779 - INFO - Equity calculation complete for ['8♥', '9♣'] vs random. Win: 0.00%, Tie: 0.03%, Equity: 0.00% (500 simulations)
+2025-05-31 23:11:22,175 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:11:22,175 - INFO - Found 0 potential action elements.
+2025-05-31 23:11:22,181 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:11:22,182 - INFO - Found 0 potential action elements.
+2025-05-31 23:11:22,246 - INFO - Equity calculation complete for ['8♥', '9♣'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-05-31 23:11:25,654 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:11:25,656 - INFO - Found 3 potential action elements.
+2025-05-31 23:11:25,664 - INFO - Found actions area. Analyzing buttons...
+2025-05-31 23:11:25,664 - INFO - Found 3 potential action elements.
+2025-05-31 23:11:25,743 - INFO - Equity calculation complete for ['8♥', '9♣'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-05-31 23:11:25,746 - ERROR - Invalid hole_cards (expected list of 2 cards): []. Returning 'Weak'.
+2025-06-01 07:32:57,188 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 07:32:57,190 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 07:32:57,190 - INFO - Found 0 potential action elements.
+2025-06-01 07:32:57,192 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 07:32:57,194 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 07:32:57,194 - INFO - Found 0 potential action elements.
+2025-06-01 07:32:57,228 - INFO - Equity calculation complete for ['J♦', 'K♦'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-06-01 07:34:09,403 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 07:34:09,405 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 07:34:09,405 - INFO - Found 3 potential action elements.
+2025-06-01 07:34:09,407 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 07:34:09,409 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 07:34:09,409 - INFO - Found 3 potential action elements.
+2025-06-01 07:34:09,442 - INFO - Equity calculation complete for ['2♥', '10♥'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-06-01 07:34:09,443 - ERROR - Failed to get valid rank values from cards: ['2♥', '10♥']. Ranks: 2, 0. Returning 'Weak'.
+2025-06-01 07:35:57,286 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 07:35:57,290 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 07:35:57,290 - INFO - Found 3 potential action elements.
+2025-06-01 07:35:57,293 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 07:35:57,295 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 07:35:57,295 - INFO - Found 3 potential action elements.
+2025-06-01 07:35:57,332 - INFO - Equity calculation complete for ['10♥', '7♣'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-06-01 07:35:57,334 - ERROR - Failed to get valid rank values from cards: ['10♥', '7♣']. Ranks: 0, 7. Returning 'Weak'.
+2025-06-01 07:37:27,831 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 07:37:27,834 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 07:37:27,835 - INFO - Found 0 potential action elements.
+2025-06-01 07:37:27,837 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 07:37:27,839 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 07:37:27,839 - INFO - Found 0 potential action elements.
+2025-06-01 07:37:31,215 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 07:37:31,218 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 07:37:31,218 - INFO - Found 0 potential action elements.
+2025-06-01 07:37:31,221 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 07:37:31,223 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 07:37:31,224 - INFO - Found 0 potential action elements.
+2025-06-01 07:37:31,261 - INFO - Equity calculation complete for ['3♠', '6♠'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 07:37:34,637 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 07:37:34,640 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 07:37:34,640 - INFO - Found 3 potential action elements.
+2025-06-01 07:37:34,642 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 07:37:34,643 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 07:37:34,644 - INFO - Found 3 potential action elements.
+2025-06-01 07:37:34,677 - INFO - Equity calculation complete for ['3♠', '6♠'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-06-01 07:37:34,680 - ERROR - Failed to get valid rank values from cards: ['3♠', '6♠']. Ranks: 0, 0. Returning 'Weak'.
+2025-06-01 14:02:38,163 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:38,175 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:38,175 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:38,179 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:38,182 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:38,183 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:41,592 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:41,600 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:41,601 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:41,606 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:41,609 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:41,609 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:45,009 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:45,013 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:45,013 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:45,016 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:45,019 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:45,020 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:48,426 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:48,434 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:48,435 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:48,442 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:48,450 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:48,451 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:51,855 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:51,864 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:51,865 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:51,871 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:51,874 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:51,874 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:55,264 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:55,267 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:55,268 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:55,270 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:55,273 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:55,274 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:58,670 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:58,675 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:58,676 - INFO - Found 0 potential action elements.
+2025-06-01 14:02:58,683 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:02:58,686 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:02:58,687 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:02,091 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:02,099 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:02,100 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:02,106 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:02,110 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:02,111 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:05,504 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:05,507 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:05,508 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:05,513 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:05,516 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:05,517 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:08,920 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:08,925 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:08,926 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:08,933 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:08,936 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:08,937 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:12,334 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:12,337 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:12,337 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:12,344 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:12,350 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:12,351 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:15,756 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:15,760 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:15,760 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:15,768 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:15,773 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:15,774 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:19,172 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:19,177 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:19,177 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:19,183 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:19,187 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:19,188 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:22,591 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:22,595 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:22,596 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:22,599 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:22,607 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:22,608 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:26,008 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:26,011 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:26,012 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:26,018 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:26,022 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:26,023 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:29,425 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:29,432 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:29,433 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:29,437 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:29,439 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:29,440 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:29,532 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:03:32,935 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:32,940 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:32,940 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:32,944 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:32,950 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:32,951 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:33,031 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:03:36,441 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:36,445 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:36,446 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:36,451 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:36,457 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:36,459 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:36,531 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:03:39,928 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:39,935 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:39,935 - INFO - Found 3 potential action elements.
+2025-06-01 14:03:39,942 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:39,949 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:39,949 - INFO - Found 3 potential action elements.
+2025-06-01 14:03:40,016 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-06-01 14:03:48,886 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:48,890 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:48,891 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:48,894 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:48,902 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:48,903 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:48,981 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:03:52,373 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:52,378 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:52,379 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:52,384 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:52,390 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:52,391 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:52,474 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:03:55,886 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:55,890 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:55,891 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:55,893 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:55,899 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:55,900 - INFO - Found 0 potential action elements.
+2025-06-01 14:03:55,976 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-06-01 14:03:59,376 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:59,382 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:59,382 - INFO - Found 3 potential action elements.
+2025-06-01 14:03:59,390 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:03:59,394 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:03:59,394 - INFO - Found 3 potential action elements.
+2025-06-01 14:03:59,472 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:08,369 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:08,373 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:08,374 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:08,377 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:08,386 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:08,387 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:08,400 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 0.18%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:11,801 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:11,804 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:11,804 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:11,807 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:11,810 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:11,811 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:11,822 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 0.36%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:15,221 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:15,231 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:15,233 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:15,245 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:15,253 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:15,254 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:15,264 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 0.34%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:18,658 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:18,661 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:18,661 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:18,667 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:18,672 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:18,672 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:18,677 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:22,084 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:22,088 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:22,088 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:22,092 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:22,095 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:22,096 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:22,105 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:25,513 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:25,517 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:25,519 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:25,525 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:25,535 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:25,536 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:25,541 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:28,950 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:28,955 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:28,955 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:28,958 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:28,962 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:28,963 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:28,971 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:32,377 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:32,381 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:32,383 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:32,390 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:32,396 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:32,397 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:32,407 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:35,811 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:35,814 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:35,814 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:35,821 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:35,825 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:35,826 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:35,834 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:39,246 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:39,252 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:39,253 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:39,256 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:39,262 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:39,264 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:39,270 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:42,701 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:42,704 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:42,704 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:42,707 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:42,710 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:42,711 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:42,716 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:46,128 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:46,131 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:46,131 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:46,134 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:46,137 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:46,137 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:46,147 - INFO - Equity calculation complete for ['3♣', 'J♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:49,539 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:49,544 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:49,545 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:49,550 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:49,558 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:49,559 - INFO - Found 0 potential action elements.
+2025-06-01 14:04:49,630 - INFO - Equity calculation complete for ['Q♦', '9♠'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-06-01 14:04:53,044 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:53,047 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:53,048 - INFO - Found 3 potential action elements.
+2025-06-01 14:04:53,053 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:04:53,056 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:04:53,057 - INFO - Found 3 potential action elements.
+2025-06-01 14:04:53,148 - INFO - Equity calculation complete for ['Q♦', '9♠'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:02,027 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:02,036 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:02,037 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:02,048 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:02,054 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:02,054 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:02,137 - INFO - Equity calculation complete for ['Q♦', '9♠'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:05,546 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:05,552 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:05,554 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:05,562 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:05,569 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:05,569 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:05,575 - INFO - Equity calculation complete for ['Q♦', '9♠'] vs random. Win: 0.00%, Tie: 0.21%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:08,973 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:08,976 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:08,977 - INFO - Found 3 potential action elements.
+2025-06-01 14:05:08,982 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:08,991 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:08,992 - INFO - Found 3 potential action elements.
+2025-06-01 14:05:09,058 - INFO - Equity calculation complete for ['2♣', '10♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:17,925 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:17,929 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:17,930 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:17,937 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:17,940 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:17,941 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:18,018 - INFO - Equity calculation complete for ['2♣', '10♣'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:21,431 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:21,435 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:21,435 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:21,440 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:21,445 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:21,446 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:21,524 - INFO - Equity calculation complete for ['2♣', '10♣'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:24,924 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:24,928 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:24,929 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:24,937 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:24,943 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:24,943 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:25,024 - INFO - Equity calculation complete for ['2♣', '10♣'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:28,427 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:28,434 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:28,434 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:28,442 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:28,451 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:28,452 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:28,529 - INFO - Equity calculation complete for ['2♣', '10♣'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:31,938 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:31,942 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:31,943 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:31,947 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:31,954 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:31,955 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:31,962 - INFO - Equity calculation complete for ['2♣', '10♣'] vs random. Win: 0.00%, Tie: 0.19%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:35,360 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:35,364 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:35,364 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:35,371 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:35,374 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:35,375 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:35,431 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:38,824 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:38,826 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:38,828 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:38,831 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:38,835 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:38,836 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:38,908 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:42,315 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:42,322 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:42,323 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:42,327 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:42,331 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:42,332 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:42,414 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.06%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:45,814 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:45,820 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:45,821 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:45,825 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:45,831 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:45,831 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:45,905 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.03%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:49,316 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:49,323 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:49,324 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:49,329 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:49,338 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:49,339 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:49,409 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:52,808 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:52,811 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:52,811 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:52,814 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:52,824 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:52,825 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:52,896 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:56,292 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:56,296 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:56,297 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:56,301 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:56,306 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:56,306 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:56,374 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.03%, Equity: 0.00% (500 simulations)
+2025-06-01 14:05:59,776 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:59,780 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:59,780 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:59,789 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:05:59,795 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:05:59,796 - INFO - Found 0 potential action elements.
+2025-06-01 14:05:59,871 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.04%, Equity: 0.00% (500 simulations)
+2025-06-01 14:06:03,275 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:03,278 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:03,279 - INFO - Found 0 potential action elements.
+2025-06-01 14:06:03,285 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:03,289 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:03,290 - INFO - Found 0 potential action elements.
+2025-06-01 14:06:03,365 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.07%, Equity: 0.00% (500 simulations)
+2025-06-01 14:06:06,780 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:06,785 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:06,785 - INFO - Found 3 potential action elements.
+2025-06-01 14:06:06,790 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:06,794 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:06,794 - INFO - Found 3 potential action elements.
+2025-06-01 14:06:06,871 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:06:15,763 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:15,767 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:15,768 - INFO - Found 3 potential action elements.
+2025-06-01 14:06:15,779 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:15,786 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:15,787 - INFO - Found 3 potential action elements.
+2025-06-01 14:06:15,794 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.18%, Equity: 0.00% (500 simulations)
+2025-06-01 14:06:15,797 - INFO - Decision: CHECK (weak hand).
+2025-06-01 14:06:24,678 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:24,685 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:24,686 - INFO - Found 3 potential action elements.
+2025-06-01 14:06:24,690 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:24,693 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:24,693 - INFO - Found 3 potential action elements.
+2025-06-01 14:06:24,698 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.39%, Equity: 0.00% (500 simulations)
+2025-06-01 14:06:24,701 - INFO - Decision: BET (medium hand, bluffing when can check). Amount: 0.05
+2025-06-01 14:06:33,101 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:33,107 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:33,109 - INFO - Found 3 potential action elements.
+2025-06-01 14:06:33,116 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:33,124 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:33,124 - INFO - Found 3 potential action elements.
+2025-06-01 14:06:33,131 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.38%, Equity: 0.00% (500 simulations)
+2025-06-01 14:06:33,133 - INFO - Decision: BET (medium hand, bluffing when can check). Amount: 0.05
+2025-06-01 14:06:41,527 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:41,537 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:41,538 - INFO - Found 3 potential action elements.
+2025-06-01 14:06:41,548 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:41,557 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:41,557 - INFO - Found 3 potential action elements.
+2025-06-01 14:06:41,564 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.36%, Equity: 0.00% (500 simulations)
+2025-06-01 14:06:41,567 - INFO - Decision: BET (medium hand, bluffing when can check). Amount: 0.05
+2025-06-01 14:06:49,965 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:49,974 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:49,975 - INFO - Found 3 potential action elements.
+2025-06-01 14:06:49,986 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:49,993 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:49,993 - INFO - Found 3 potential action elements.
+2025-06-01 14:06:50,000 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 0.36%, Equity: 0.00% (500 simulations)
+2025-06-01 14:06:50,004 - INFO - Decision: BET (medium hand, bluffing when can check). Amount: 0.05
+2025-06-01 14:06:58,414 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:58,417 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:58,418 - INFO - Found 1 potential action elements.
+2025-06-01 14:06:58,418 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:06:58,425 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:06:58,430 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:06:58,431 - INFO - Found 1 potential action elements.
+2025-06-01 14:06:58,432 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:06:58,446 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-06-01 14:07:01,842 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:01,845 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:01,845 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:01,846 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:01,849 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:01,853 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:01,854 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:01,854 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:01,861 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-06-01 14:07:05,261 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:05,263 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:05,264 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:05,264 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:05,268 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:05,277 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:05,278 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:05,279 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:05,283 - INFO - Equity calculation complete for ['J♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.00% (500 simulations)
+2025-06-01 14:07:08,688 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:08,690 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:08,691 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:08,691 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:08,694 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:08,697 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:08,698 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:08,698 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:12,097 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:12,100 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:12,101 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:12,101 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:12,106 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:12,110 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:12,110 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:12,110 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:15,531 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:15,533 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:15,534 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:15,534 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:15,538 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:15,543 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:15,544 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:15,544 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:18,956 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:18,960 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:18,961 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:18,961 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:18,964 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:18,968 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:18,969 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:18,970 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:22,366 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:22,371 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:22,374 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:22,375 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:22,380 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:22,388 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:22,389 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:22,390 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:25,796 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:25,800 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:25,801 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:25,802 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:25,809 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:25,813 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:25,814 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:25,814 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:29,215 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:29,221 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:29,222 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:29,223 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:29,228 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:29,235 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:29,236 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:29,237 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:32,632 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:32,637 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:32,637 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:32,638 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:32,642 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:32,649 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:32,650 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:32,650 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:36,050 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:36,056 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:36,057 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:36,057 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:36,063 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:36,068 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:36,069 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:36,069 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:39,458 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:39,461 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:39,462 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:39,463 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:39,468 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:39,475 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:39,476 - INFO - Found 1 potential action elements.
+2025-06-01 14:07:39,477 - WARNING - Unrecognized action button text: 'deal me in deal me in'
+2025-06-01 14:07:42,878 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:42,881 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:42,881 - INFO - Found 0 potential action elements.
+2025-06-01 14:07:42,884 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:42,888 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:42,890 - INFO - Found 0 potential action elements.
+2025-06-01 14:07:46,302 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:46,306 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:46,307 - INFO - Found 0 potential action elements.
+2025-06-01 14:07:46,310 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:46,316 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:46,317 - INFO - Found 0 potential action elements.
+2025-06-01 14:07:49,729 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:49,732 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:49,732 - INFO - Found 0 potential action elements.
+2025-06-01 14:07:49,734 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:49,739 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:49,740 - INFO - Found 0 potential action elements.
+2025-06-01 14:07:53,150 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:53,156 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:53,158 - INFO - Found 0 potential action elements.
+2025-06-01 14:07:53,160 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:53,164 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:53,164 - INFO - Found 0 potential action elements.
+2025-06-01 14:07:56,563 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:56,568 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:56,569 - INFO - Found 0 potential action elements.
+2025-06-01 14:07:56,579 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:56,584 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:56,585 - INFO - Found 0 potential action elements.
+2025-06-01 14:07:59,982 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:59,987 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:59,989 - INFO - Found 0 potential action elements.
+2025-06-01 14:07:59,995 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:07:59,998 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:07:59,998 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:03,394 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:03,397 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:03,398 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:03,401 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:03,406 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:03,407 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:06,817 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:06,821 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:06,822 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:06,828 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:06,831 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:06,831 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:10,231 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:10,238 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:10,238 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:10,241 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:10,244 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:10,244 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:13,651 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:13,657 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:13,657 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:13,662 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:13,667 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:13,667 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:17,066 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:17,074 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:17,075 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:17,079 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:17,084 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:17,085 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:17,159 - INFO - Equity calculation complete for ['10♠', 'K♦'] vs random. Win: 0.00%, Tie: 0.07%, Equity: 0.00% (500 simulations)
+2025-06-01 14:08:20,577 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:20,582 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:20,582 - INFO - Found 3 potential action elements.
+2025-06-01 14:08:20,586 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:20,591 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:20,591 - INFO - Found 3 potential action elements.
+2025-06-01 14:08:20,664 - INFO - Equity calculation complete for ['10♠', 'K♦'] vs random. Win: 0.00%, Tie: 0.05%, Equity: 0.00% (500 simulations)
+2025-06-01 14:08:29,558 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:29,563 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:29,563 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:29,568 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:29,573 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:29,574 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:29,643 - INFO - Equity calculation complete for ['10♠', 'K♦'] vs random. Win: 0.00%, Tie: 0.08%, Equity: 0.00% (500 simulations)
+2025-06-01 14:08:33,047 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:33,052 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:33,052 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:33,057 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:33,061 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:33,062 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:33,072 - INFO - Equity calculation complete for ['10♠', 'K♦'] vs random. Win: 0.00%, Tie: 0.20%, Equity: 0.00% (500 simulations)
+2025-06-01 14:08:36,540 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:36,544 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:36,545 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:36,549 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:36,551 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:36,552 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:36,562 - INFO - Equity calculation complete for ['10♠', 'K♦'] vs random. Win: 0.00%, Tie: 0.16%, Equity: 0.00% (500 simulations)
+2025-06-01 14:08:39,971 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:39,976 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:39,977 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:39,979 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:39,985 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:39,985 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:39,995 - INFO - Equity calculation complete for ['10♠', 'K♦'] vs random. Win: 0.00%, Tie: 0.17%, Equity: 0.00% (500 simulations)
+2025-06-01 14:08:43,403 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:43,410 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:43,411 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:43,416 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:43,422 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:43,424 - INFO - Found 0 potential action elements.
+2025-06-01 14:08:43,431 - INFO - Equity calculation complete for ['10♠', 'K♦'] vs random. Win: 0.00%, Tie: 0.19%, Equity: 0.00% (500 simulations)
+2025-06-01 14:08:46,839 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:46,842 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:46,842 - INFO - Found 3 potential action elements.
+2025-06-01 14:08:46,845 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-01 14:08:46,849 - INFO - Found actions area. Analyzing buttons...
+2025-06-01 14:08:46,850 - INFO - Found 3 potential action elements.
+2025-06-01 14:08:46,859 - INFO - Equity calculation complete for ['10♠', 'K♦'] vs random. Win: 0.00%, Tie: 0.18%, Equity: 0.00% (500 simulations)
+2025-06-01 14:08:46,863 - INFO - Decision: FOLD (medium hand, odds not good or bet too large). Bet_to_call: 0.02, Pot: 0.08

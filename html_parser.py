@@ -9,6 +9,29 @@ class PokerPageParser:
         self.table_data = {}
         self.player_data = []
 
+    def _check_visibility_of_element_and_its_ancestors(self, element, stop_ancestor):
+        # Returns True if element is considered visible, False otherwise.
+        # An element is visible if:
+        # 1. It exists.
+        # 2. It does not have 'pt-hidden' or 'pt-visibility-hidden' class.
+        # 3. None of its ancestors up to (but not including) stop_ancestor's parent,
+        #    and not stop_ancestor itself if stop_ancestor is one of its direct parents,
+        #    have 'pt-hidden' or 'pt-visibility-hidden'.
+        if not element: 
+            return False
+        
+        element_classes = element.get('class', [])
+        if 'pt-hidden' in element_classes or 'pt-visibility-hidden' in element_classes:
+            return False
+
+        parent = element.parent
+        while parent and parent != stop_ancestor and parent.name != 'body':
+            parent_classes = parent.get('class', [])
+            if 'pt-hidden' in parent_classes or 'pt-visibility-hidden' in parent_classes:
+                return False # Parent is hidden
+            parent = parent.parent
+        return True
+
     def parse_html(self, html_content):
         if not html_content or not html_content.strip():
             self.logger.error("HTML content is empty in PokerPageParser.parse_html") # Replaced print with self.logger.error
@@ -127,33 +150,64 @@ class PokerPageParser:
             self.logger.error("BeautifulSoup object (self.soup) not initialized before calling analyze_players.") # Replaced print with self.logger.error
             return []
         self.player_data = [] 
+        active_player_already_identified_for_this_parse = False # New flag to track if an active player has been found
+
+        # Find all elements that are marked as player areas
+        player_area_elements = self.soup.find_all('div', class_='player-area')
+        self.logger.info(f"Found {len(player_area_elements)} 'div.player-area' elements to process.")
+
+        if not player_area_elements:
+            self.logger.warning("No 'div.player-area' elements found. No players will be parsed.")
+            return []
         
-        potential_player_elements = self.soup.find_all('div', class_='player-area')
-        player_elements = []
-        for el in potential_player_elements:
-            if any(re.match(r'player-seat-\d+', c) for c in el.get('class', [])):
-                player_elements.append(el)
-        
-        for player_element in player_elements:
+        for player_element in player_area_elements: # Iterate directly over all found player-area divs
             player_info = {
                 'seat': None, 'name': 'N/A', 'stack': 'N/A', 'bet': '0', 
                 'is_my_player': False, 'is_empty': False, 'cards': [], 
-                'has_turn': False, 'has_hidden_cards': False
+                'has_turn': False, # Initialize to False
+                'has_hidden_cards': False
                 # 'hand_rank' will be calculated by PokerBot using HandEvaluator
             }
 
-            seat_class = next((cls for cls in player_element.get('class', []) if cls.startswith('player-seat-')), None)
-            if seat_class:
-                player_info['seat'] = seat_class.split('-')[-1]
+            # Try to extract seat number from the player_element's classes
+            element_classes = player_element.get('class', [])
+            seat_match = None
+            for c_name in element_classes:
+                match = re.match(r'player-seat-(\d+)', c_name) # Regex to find player-seat-NUMBER
+                if match:
+                    seat_match = match
+                    break
+            
+            if seat_match:
+                player_info['seat'] = seat_match.group(1)
+                player_info['id'] = player_info['seat'] 
+            # else:
+                # self.logger.debug(f"No 'player-seat-(\\d+)' class found directly on 'div.player-area' with classes {element_classes}. Seat will be None for now.")
 
-            if 'my-player' in player_element.get('class', []):
+            # Check if it's 'my-player'
+            if 'my-player' in element_classes:
                 player_info['is_my_player'] = True
             
+            # Check for empty seat
             empty_seat_element = player_element.find('div', class_='empty-seat')
             if empty_seat_element and empty_seat_element.text.strip().lower() == 'empty':
                 player_info['is_empty'] = True
-                self.player_data.append(player_info)
+                self.logger.debug(f"Identified as empty seat. Seat: {player_info['seat']}, Classes: {element_classes}")
+                self.player_data.append(player_info) # Add empty seat to player data
+                continue # Move to the next player_area_element
+
+            # If it's not an empty seat, a seat number is crucial for further processing.
+            # If we didn't find a seat number for this non-empty player, log and skip it.
+            if not player_info['seat']:
+                self.logger.warning(
+                    f"Skipping 'div.player-area' element (classes: {element_classes}) "
+                    f"as it's not marked empty and no 'player-seat-(\\d+)' class was found for it."
+                )
                 continue
+
+            # From here, the original logic for a valid player_element continues
+            # player_info has 'seat', 'id', and 'is_my_player' potentially set.
+            # It's not an empty seat.
 
             name_element = player_element.find('div', class_='text-block nickname')
             if name_element:
@@ -189,41 +243,44 @@ class PokerPageParser:
                 if bet_amount_element and bet_amount_element.text.strip():
                     player_info['bet'] = bet_amount_element.text.strip()
             
-            player_info['has_turn'] = False
+            # Determine if this player *would* be active based on local conditions
+            current_player_meets_active_criteria = False
+            
+            # Check 1: 'player-active' class
             table_player_div = player_element.find('div', class_='table-player')
             if table_player_div and 'player-active' in table_player_div.get('class', []):
-                player_info['has_turn'] = True
+                current_player_meets_active_criteria = True
             
-            if not player_info['has_turn']:
+            if not current_player_meets_active_criteria:
                 nameplate_div = player_element.find('div', class_='player-nameplate')
                 if nameplate_div:
+                    # Check 2: Visible 'text-countdown'
                     countdown_div = nameplate_div.find('div', class_='text-countdown')
-                    if countdown_div and 'pt-hidden' not in countdown_div.get('class', []):
-                        is_parent_hidden = False
-                        parent = countdown_div.parent
-                        while parent and parent != nameplate_div and parent.name != 'body':
-                            if 'pt-hidden' in parent.get('class', []) or \
-                               'pt-visibility-hidden' in parent.get('class', []):
-                                is_parent_hidden = True
-                                break
-                            parent = parent.parent
-                        if not is_parent_hidden:
-                            player_info['has_turn'] = True
+                    if self._check_visibility_of_element_and_its_ancestors(countdown_div, nameplate_div):
+                        current_player_meets_active_criteria = True
                     
-                    if not player_info['has_turn']: 
+                    if not current_player_meets_active_criteria: 
+                        # Check 3: Visible 'timeout-wrapper'
                         timeout_wrapper_div = nameplate_div.find('div', class_='timeout-wrapper')
-                        if timeout_wrapper_div and 'pt-hidden' not in timeout_wrapper_div.get('class', []):
-                            is_parent_hidden = False
-                            parent = timeout_wrapper_div.parent
-                            while parent and parent != nameplate_div and parent.name != 'body':
-                                if 'pt-hidden' in parent.get('class', []) or \
-                                   'pt-visibility-hidden' in parent.get('class', []):
-                                    is_parent_hidden = True
-                                    break
-                                parent = parent.parent
-                            if not is_parent_hidden:
-                                player_info['has_turn'] = True
+                        if self._check_visibility_of_element_and_its_ancestors(timeout_wrapper_div, nameplate_div):
+                            current_player_meets_active_criteria = True
             
+            # Now, decide if this player gets 'has_turn' based on the global flag
+            if current_player_meets_active_criteria:
+                if not active_player_already_identified_for_this_parse:
+                    player_info['has_turn'] = True
+                    active_player_already_identified_for_this_parse = True
+                else:
+                    # Another player was already marked as active. This one is not.
+                    player_info['has_turn'] = False 
+                    self.logger.warning(
+                        f"Player {player_info.get('name', player_info.get('seat', 'UnknownSeat'))} "
+                        f"(Classes: {player_element.get('class', [])}) "
+                        f"met active criteria, but another player was already identified as active. "
+                        f"HTML might be ambiguous or multiple turn indicators present."
+                    )
+            # player_info['has_turn'] remains False if current_player_meets_active_criteria is False
+
             if player_info['is_my_player']:
                 player_info['available_actions'] = []
                 player_info['is_all_in_call_available'] = False
@@ -249,6 +306,7 @@ class PokerPageParser:
 
                     self.logger.info(f"Found {len(elements_to_check)} potential action elements.") # Replaced print with self.logger.info
                     
+
                     # Use a set to store unique actions to avoid duplicates from parsing
                     unique_actions_found = set()
 
@@ -448,4 +506,113 @@ class PokerPageParser:
                         player_info['has_hidden_cards'] = True
             
             self.player_data.append(player_info)
+
+        # --- BEGIN POSITION CALCULATION ---
+        if self.player_data and self.table_data.get('dealer_position'):
+            try:
+                dealer_seat = int(self.table_data['dealer_position'])
+                active_players = sorted([p for p in self.player_data if not p.get('is_empty') and p.get('seat') is not None], key=lambda x: int(x['seat']))
+                
+                num_players = len(active_players)
+                if num_players > 0:
+                    dealer_idx = -1
+                    for i, p in enumerate(active_players):
+                        if int(p['seat']) == dealer_seat:
+                            dealer_idx = i
+                            break
+                    
+                    if dealer_idx != -1:
+                        positions = []
+                        if num_players == 2:
+                            positions = ["SB", "BB"] # Dealer is SB in 2-handed
+                            # SB is dealer, BB is other player
+                            sb_player_index = dealer_idx
+                            bb_player_index = (dealer_idx + 1) % num_players
+                            active_players[sb_player_index]['position'] = "SB"
+                            active_players[bb_player_index]['position'] = "BB"
+                        elif num_players > 2:
+                            # Standard positions: SB, BB, UTG, UTG+1, ..., MP, ..., CO, BTN
+                            # BTN is always dealer_idx
+                            # SB is (dealer_idx + 1) % num_players
+                            # BB is (dealer_idx + 2) % num_players
+                            active_players[dealer_idx]['position'] = "BTN"
+                            active_players[(dealer_idx + 1) % num_players]['position'] = "SB"
+                            active_players[(dealer_idx + 2) % num_players]['position'] = "BB"
+
+                            # Assign UTG, MP, CO based on remaining players
+                            # This is a simplified assignment, can be more complex for tables > 6 players
+                            # Order of play is SB, BB, UTG, ..., CO, BTN
+                            # Players are sorted by seat, positions are relative to BTN
+                            
+                            # Example for 6-max: BTN, SB, BB, UTG, MP, CO
+                            # Player after BB is UTG
+                            # Player before BTN is CO
+                            # Player between UTG and CO is MP
+
+                            # Relative to BB (who is 2 spots after dealer)
+                            # (dealer_idx + 3) % num_players is UTG
+                            # ... up to (dealer_idx - 1 + num_players) % num_players which is CO
+
+                            # Simplified for now, can be expanded
+                            # This logic assigns positions in order of play after BB
+                            # For 6-max: BTN (dealer), SB, BB, UTG, MP, CO
+                            # Player indices in `active_players` after sorting by seat:
+                            # Dealer is at `dealer_idx`
+                            # SB is at `(dealer_idx + 1) % num_players`
+                            # BB is at `(dealer_idx + 2) % num_players`
+                            # UTG is at `(dealer_idx + 3) % num_players` (if num_players > 3)
+                            # etc.
+
+                            # Let's assign remaining based on num_players
+                            if num_players == 3: # BTN, SB, BB
+                                pass # Already assigned
+                            elif num_players == 4: # BTN, SB, BB, UTG (CO for some conventions)
+                                active_players[(dealer_idx + 3) % num_players]['position'] = "UTG" 
+                            elif num_players == 5: # BTN, SB, BB, UTG, CO
+                                active_players[(dealer_idx + 3) % num_players]['position'] = "UTG"
+                                active_players[(dealer_idx + 4) % num_players]['position'] = "CO"
+                            elif num_players >= 6: # BTN, SB, BB, UTG, MP..., CO
+                                active_players[(dealer_idx + 3) % num_players]['position'] = "UTG"
+                                # For 6-max, player after UTG is MP
+                                if num_players == 6:
+                                     active_players[(dealer_idx + 4) % num_players]['position'] = "MP"
+                                     active_players[(dealer_idx + 5) % num_players]['position'] = "CO" # also (dealer_idx -1 + num_players) % num_players
+                                elif num_players > 6:
+                                    # More complex for 7-9 handed, requires multiple MPs or UTG+x
+                                    # This is a basic assignment, assuming up to 6-max effectively for now
+                                    # For simplicity, let's fill remaining as MP then CO
+                                    # UTG is (D+3)
+                                    # CO is (D-1)
+                                    # MP is between
+                                    # Example 9-max: BTN, SB, BB, UTG, UTG+1, UTG+2 (or MP1), MP2 (or LJ), HJ, CO
+                                    
+                                    # Simplified:
+                                    # (dealer_idx + 3) is UTG
+                                    # (dealer_idx - 1 + num_players) % num_players is CO
+                                    # All players between (dealer_idx + 3) and (dealer_idx -1) are MP
+                                    
+                                    # This loop assigns MP to players between UTG and CO
+                                    # Start from player after UTG
+                                    current_idx = (dealer_idx + 4) % num_players
+                                    co_idx = (dealer_idx - 1 + num_players) % num_players
+                                    
+                                    # Check if CO is already assigned (e.g. num_players = 5)
+                                    if 'position' not in active_players[co_idx]:
+                                         active_players[co_idx]['position'] = "CO"
+
+                                    while current_idx != co_idx:
+                                        if 'position' not in active_players[current_idx]: # if not already SB,BB,BTN,UTG,CO
+                                            active_players[current_idx]['position'] = "MP"
+                                        current_idx = (current_idx + 1) % num_players
+                                        if current_idx == dealer_idx: # Should not happen if CO is before BTN
+                                            break 
+                    else:
+                        self.logger.warning("Dealer position not found among active players.")
+                else:
+                    self.logger.warning("No active players found to assign positions.")
+            except ValueError:
+                self.logger.error(f"Could not parse dealer_position: {self.table_data.get('dealer_position')} as int.")
+            except Exception as e:
+                self.logger.error(f"Error during position calculation: {e}", exc_info=True)
+        # --- END POSITION CALCULATION ---
         return self.player_data

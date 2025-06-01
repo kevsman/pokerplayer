@@ -146,9 +146,10 @@ class EquityCalculator:
 
                 # logger.debug(f"Sim {i}: Player Eval: {player_eval}, Opponent Eval: {opponent_eval}")
 
-                if player_eval > opponent_eval:
+                comparison_result = self._compare_hands(player_eval, opponent_eval)
+                if comparison_result > 0:
                     player_wins += 1
-                elif player_eval == opponent_eval:
+                elif comparison_result == 0:
                     ties += 1
                 # else: loss, no increment needed for losses count here
 
@@ -181,17 +182,37 @@ class EquityCalculator:
         )
         return win_probability, tie_probability, equity
     
-    def _compare_hands(self, hand1, hand2):
+    def _compare_hands(self, hand1_eval, hand2_eval):
         """
-        Compare two hand evaluations
+        Compare two hand evaluations (dictionaries from evaluate_hand)
         Returns: 1 if hand1 wins, -1 if hand2 wins, 0 if tie
         """
-        if hand1[0] > hand2[0]:  # hand1 has better rank
+        # Ensure both evaluations are valid dictionaries with 'rank_value'
+        if not isinstance(hand1_eval, dict) or 'rank_value' not in hand1_eval:
+            logger.error(f"Invalid hand1_eval: {hand1_eval}")
+            # Assuming if one hand is invalid, it cannot be compared meaningfully or loses by default
+            # Depending on rules, this might need adjustment. If hand2 is also invalid, it's a tie of invalids.
+            return -1 if isinstance(hand2_eval, dict) and 'rank_value' in hand2_eval else 0
+        
+        if not isinstance(hand2_eval, dict) or 'rank_value' not in hand2_eval:
+            logger.error(f"Invalid hand2_eval: {hand2_eval}")
+            return 1 # hand1 wins if hand2 is invalid and hand1 is valid
+
+        hand1_rank_value = hand1_eval['rank_value']
+        hand2_rank_value = hand2_eval['rank_value']
+
+        if hand1_rank_value > hand2_rank_value:  # hand1 has better rank
             return 1
-        elif hand1[0] < hand2[0]:  # hand2 has better rank
+        elif hand1_rank_value < hand2_rank_value:  # hand2 has better rank
             return -1
         else:  # Same rank, compare tie breakers
-            return self.hand_evaluator._compare_tie_breakers(hand1[2], hand2[2])
+            # Ensure 'tie_breakers' exist and are comparable
+            hand1_tie_breakers = hand1_eval.get('tie_breakers')
+            hand2_tie_breakers = hand2_eval.get('tie_breakers')
+
+            # If tie_breakers are missing or not lists, this comparison might be problematic
+            # HandEvaluator._compare_tie_breakers should handle this
+            return self.hand_evaluator._compare_tie_breakers(hand1_tie_breakers, hand2_tie_breakers)
     
     def estimate_outs(self, hero_cards, community_cards):
         """
@@ -225,8 +246,9 @@ class EquityCalculator:
         for card in unknown_cards:
             test_community = community_cards_norm + [card]
             if len(test_community) <= 5:
-                test_hand = self.hand_evaluator.calculate_best_hand(hero_cards_norm, test_community)
-                if self._compare_hands(test_hand, current_hand) > 0:
+                test_hand_eval = self.hand_evaluator.calculate_best_hand(hero_cards_norm, test_community)
+                # current_hand is already an eval dictionary
+                if self._compare_hands(test_hand_eval, current_hand) > 0:
                     outs += 1
         
         return outs

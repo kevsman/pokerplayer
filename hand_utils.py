@@ -46,17 +46,18 @@ def calculate_stack_to_pot_ratio(stack_size, pot_size):
         return float('inf')
     return stack_size / pot_size
 
-RANK_TO_VALUE = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
+RANK_TO_VALUE = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14, '10': 10}
 
 def _get_rank_value(card_str):
     """Helper to get numerical rank from a card string like 'Ah' or 'Td'."""
-    if not card_str or len(card_str) < 1:
+    if not card_str or len(card_str) < 2: # Ensure card string has at least rank and suit
         return 0
-    # Correctly handle '10' rank
-    rank_char = card_str[:-1] if len(card_str) > 1 and card_str[-1].lower() in 'hdsc' else card_str
-    if rank_char == '10': 
-        return 10
-    return RANK_TO_VALUE.get(rank_char[0].upper(), 0)
+    
+    # Extract rank part (e.g., '10' from '10h', 'A' from 'Ah')
+    # Assumes card_str is normalized, e.g., "3s", "Th", "10d"
+    rank_part = card_str[:-1] # Gets '3' from '3s', '10' from '10s'
+    
+    return RANK_TO_VALUE.get(rank_part.upper(), 0)
 
 
 def get_preflop_hand_category(hole_cards, position): # Renamed parameters for clarity
@@ -71,9 +72,10 @@ def get_preflop_hand_category(hole_cards, position): # Renamed parameters for cl
         logger.error(f"Elements in hole_cards are not valid card strings: {hole_cards}. Returning 'Weak'.")
         return "Weak"
 
-    cards_to_process = hole_cards # Use the direct parameter
+    # Normalize card strings before processing
+    cards_to_process = normalize_card_list(hole_cards)
     
-    logger.debug(f"Cards being processed for rank extraction: {cards_to_process}")
+    logger.debug(f"Cards being processed for rank extraction (normalized): {cards_to_process}")
 
     try:
         rank1_val = _get_rank_value(cards_to_process[0])
