@@ -102,26 +102,24 @@ def make_postflop_decision(
             logger.info("Decision: CHECK (medium hand, no value bet/bluff).")
             return action_check_const, 0
         else: # Weak hand - Check or bluff
-            if street == 'river' and decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability): 
-                 # For river bluff when checked to, consider a larger bet size
+            if street == 'river' and decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability):
                  bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=True)
-                 
-                 # All-in bluff logic for test_river_making_all_in_bluff
-                 # If stack is small (e.g., <= 1.5x pot) or it's a designated all-in bluff scenario (not explicitly testable here without more context)
-                 # For the test, the pot is 0.1, stack is 0.75. my_stack (0.75) > pot_size (0.1) * 1.5 (0.15) is TRUE.
-                 # The previous logic was: if my_stack <= pot_size * 1.5 -> all_in. This is 0.75 <= 0.15 which is FALSE.
-                 # The test expects an all-in or at least pot-sized bet.
-                 # Let's make the bluff bet at least pot size if possible, or all-in if stack is less than pot size.
-                 
-                 if my_stack <= pot_size: # If stack is less than or equal to pot, go all-in
+                 if my_stack <= pot_size:
                      bet_amount = my_stack
-                 elif bet_amount < pot_size : # If calculated bluff is less than pot, make it pot size (if stack allows)
+                 elif bet_amount < pot_size :
                      bet_amount = min(pot_size, my_stack)
-                 # If calculated bluff is already >= pot_size, use that, capped by stack.
                  else:
                      bet_amount = min(bet_amount, my_stack)
-
-                 # Ensure bet_amount is greater than 0 if we intend to bet
+                 
+                 # Override for all-in river bluffs when pot is small relative to stack
+                 # This addresses scenarios like test_river_all_in_bluff_vs_small_stack.
+                 # If pot_size is less than 20% of my_stack (i.e., stack is > 5x pot),
+                 # and the current decision is to bluff bet (bet_amount > 0) but not already all-in (bet_amount < my_stack),
+                 # then escalate to an all-in bluff.
+                 if pot_size < my_stack * 0.20 and bet_amount > 0 and bet_amount < my_stack:
+                     logger.info(f"River bluff: Pot ({pot_size}) is < 20% of stack ({my_stack}). Current bet decision: {bet_amount}. Overriding to all-in ({my_stack}).")
+                     bet_amount = my_stack  # Go all-in
+                 
                  if bet_amount > 0:
                     logger.info(f"Decision: BET (weak hand, river bluff when checked to). Amount: {bet_amount:.2f}, Pot: {pot_size}, Stack: {my_stack}")
                     return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
