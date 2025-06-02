@@ -2957,3 +2957,29 @@ It is YOUR turn to act.
 2025-06-01 22:12:27,193 - __main__ - INFO - PokerBot stopped by user.
 2025-06-01 22:12:27,194 - __main__ - INFO - PokerBot main_loop ended.
 2025-06-01 22:12:27,194 - __main__ - INFO - Closing logger handlers.
+2025-06-02 10:50:13,549 - poker_bot - INFO - --- Running Test with File: h:\Programming\pokerplayer\examples\flop_my_turn_raised.html ---
+2025-06-02 10:50:13,550 - poker_bot - INFO - HTML length: 77008
+2025-06-02 10:50:13,600 - poker_bot - INFO - \n--- Game Summary from Test File ---
+2025-06-02 10:50:13,601 - poker_bot - INFO - --- Table --- Hand ID: 11449345621
+Pot: €0.32
+Game Stage: Flop
+Community Cards: J♠ 7♠ 3♥
+Dealer Position: Seat 1
+
+--- Players ---
+  Seat 1: Frext1 - Stack: €2, Bet: 0
+  Seat 2: Empty
+  Seat 3: Empty
+  Seat 4: warriorwonder25 (ME, Hand: High Card, J, ACTIVE TURN) - Stack: €0.82, Bet: 0 Cards: 9♣ 10♦
+  Seat 5: Sincerecube24 - Stack: €0.64, Bet: €0.02 (Has hidden cards)
+  Seat 6: qwer37912 - Stack: €0.59, Bet: €0.18 (Has hidden cards)
+
+It is currently Seat 4 (warriorwonder25)'s turn.
+It is YOUR turn to act.
+2025-06-02 10:50:13,601 - poker_bot - INFO - --- End Game Summary ---
+2025-06-02 10:50:13,601 - poker_bot - INFO - My turn. Hand: ['9♣', '10♦'], Rank: High Card, J, Stack: €0.82
+2025-06-02 10:50:13,601 - poker_bot - INFO - Pot: €0.32, Community Cards: ['J♠', '7♠', '3♥']
+2025-06-02 10:50:13,601 - poker_bot - DEBUG - Detected available actions: ['fold', 'call', 'raise']
+2025-06-02 10:50:13,602 - poker_bot - INFO - Decision: fold Amount: 0.00
+2025-06-02 10:50:13,602 - poker_bot - INFO - --- Test File Run Finished for: h:\Programming\pokerplayer\examples\flop_my_turn_raised.html ---
+2025-06-02 10:50:13,602 - poker_bot - INFO - Closing logger handlers.

@@ -12,8 +12,6 @@ ACTION_FOLD = "fold"
 ACTION_CHECK = "check"
 ACTION_CALL = "call"
 ACTION_RAISE = "raise"
-ACTION_BET = "bet"
-ACTION_ALL_IN = "all-in"
 
 logger = logging.getLogger(__name__)
 
@@ -232,7 +230,6 @@ class DecisionEngine:
                 action_check_const=ACTION_CHECK,
                 action_call_const=ACTION_CALL,
                 action_raise_const=ACTION_RAISE,
-                action_bet_const=ACTION_BET,
                 my_player_data=my_player,
                 big_blind_amount=self.big_blind_amount,
                 base_aggression_factor=self.base_aggression_factor,

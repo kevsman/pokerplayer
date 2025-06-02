@@ -6,7 +6,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from poker_bot import PokerBot
-from decision_engine import ACTION_CALL, ACTION_RAISE, ACTION_CHECK, ACTION_FOLD, ACTION_BET
+from decision_engine import ACTION_CALL, ACTION_RAISE, ACTION_CHECK, ACTION_FOLD
 from hand_evaluator import HandEvaluator
 
 class TestFlopScenarios(unittest.TestCase):
@@ -121,7 +121,7 @@ class TestFlopScenarios(unittest.TestCase):
             min_raise=self.config['big_blind'] * 2 
         )
         action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
-        self.assertEqual(action, ACTION_BET, "Bot should bet with two pair on the flop when checked to.")
+        self.assertEqual(action, ACTION_RAISE, "Bot should bet with two pair on the flop when checked to.")
         self.assertGreater(amount, 0, "Bet amount should be greater than 0.")
 
     def test_flop_my_turn_opponent_bets_medium_hand_call(self):
@@ -194,8 +194,8 @@ class TestFlopScenarios(unittest.TestCase):
             min_raise=self.config['big_blind'] * 2
         )
         action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
-        self.assertIn(action, [ACTION_BET, ACTION_CHECK], "Bot should either bet (semi-bluff) or check with a strong draw.")
-        if action == ACTION_BET:
+        self.assertIn(action, [ACTION_RAISE, ACTION_CHECK], "Bot should either bet (semi-bluff) or check with a strong draw.")
+        if action == ACTION_RAISE:
             self.assertGreater(amount, 0, "Semi-bluff bet amount should be greater than 0.")
 
 if __name__ == '__main__':

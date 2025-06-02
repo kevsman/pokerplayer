@@ -3,7 +3,7 @@ import re
 import sys
 from hand_evaluator import HandEvaluator
 from html_parser import PokerPageParser
-from decision_engine import DecisionEngine, ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE, ACTION_BET, ACTION_ALL_IN
+from decision_engine import DecisionEngine, ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE
 from ui_controller import UIController
 from equity_calculator import EquityCalculator # Added import
 import time
@@ -593,10 +593,6 @@ class PokerBot:
                             self.ui_controller.action_all_in() 
                         else:
                             self.ui_controller.action_raise(amount) # Pass amount to action_raise
-                    elif action == ACTION_BET: # Added handling for ACTION_BET
-                        self.ui_controller.action_bet(amount) # Assumes a method action_bet exists in UIController
-                    elif action == ACTION_ALL_IN: # Added handling for ACTION_ALL_IN
-                        self.ui_controller.action_all_in()
                     else:
                         self.logger.warning(f"Unknown action type: {action}. Performing FOLD.")
                         self.ui_controller.action_fold()
