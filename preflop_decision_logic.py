@@ -59,15 +59,13 @@ def make_preflop_decision(
         else:
             num_limpers = 0 # Avoid division by zero if big_blind is 0
         num_limpers = max(0, num_limpers)
-
-
     # --- Raise Amount Calculation (Revised) ---
     if max_bet_on_table <= big_blind: # No prior actual raise, only blinds or limps posted. This is an opening or isolation raise situation.
         # Opening raise or isolation raise over limpers.
         if position == 'CO':
             base_open_multiple = 3
         elif position == 'BTN':
-            base_open_multiple = 2.5
+            base_open_multiple = 3
         else:
             base_open_multiple = 3
         raise_amount_calculated = (base_open_multiple * big_blind) + (num_limpers * big_blind)
@@ -78,10 +76,9 @@ def make_preflop_decision(
             raise_amount_calculated = 4.5 * max_bet_on_table
         # 4-bet: if max_bet_on_table > 7*big_blind (likely a 3-bet), use 2.3x
         elif max_bet_on_table > 7 * big_blind:
-            raise_amount_calculated = 2.3 * max_bet_on_table
-        # 3-bet OOP (SB/BB): 3.5x open
+            raise_amount_calculated = 2.3 * max_bet_on_table        # 3-bet OOP (SB/BB): 3x open
         elif position in ['SB', 'BB']:
-            raise_amount_calculated = 3.5 * max_bet_on_table
+            raise_amount_calculated = 3 * max_bet_on_table
         # 3-bet IP: 3x open
         else:
             raise_amount_calculated = 3 * max_bet_on_table
