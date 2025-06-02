@@ -6,7 +6,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from poker_bot import PokerBot
-from decision_engine import ACTION_CALL, ACTION_RAISE, ACTION_CHECK, ACTION_FOLD, ACTION_BET
+from decision_engine import ACTION_CALL, ACTION_RAISE, ACTION_CHECK, ACTION_FOLD # Removed ACTION_BET
 from hand_evaluator import HandEvaluator # Ensure HandEvaluator is imported
 
 class TestPreFlopScenarios(unittest.TestCase):
