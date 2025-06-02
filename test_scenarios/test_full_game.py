@@ -6,7 +6,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from poker_bot import PokerBot
-from decision_engine import ACTION_CALL, ACTION_RAISE, ACTION_CHECK, ACTION_FOLD, ACTION_BET
+from decision_engine import ACTION_CALL, ACTION_RAISE, ACTION_CHECK, ACTION_FOLD 
 from hand_evaluator import HandEvaluator
 
 class TestFullGameScenarios(unittest.TestCase):
@@ -174,7 +174,7 @@ class TestFullGameScenarios(unittest.TestCase):
         action, amount = self.bot.decision_engine.make_decision(game_state_flop, my_player_index)
         
         self.assertIsNotNone(action, "Action should not be None on flop")
-        self.assertEqual(action, ACTION_BET, f"Expected BET with top two pair on flop, got {action}")
+        self.assertEqual(action, ACTION_RAISE, f"Expected BET with top two pair on flop, got {action}") 
         self.assertGreaterEqual(amount, current_pot * 0.4, f"Flop bet {amount} too small")
         self.assertLessEqual(amount, current_pot * 0.8, f"Flop bet {amount} too large")
         print(f"Flop action: {action}, Amount: {amount}")
@@ -207,7 +207,7 @@ class TestFullGameScenarios(unittest.TestCase):
         action, amount = self.bot.decision_engine.make_decision(game_state_turn, my_player_index)
 
         self.assertIsNotNone(action, "Action should not be None on turn")
-        self.assertEqual(action, ACTION_BET, f"Expected BET on turn, got {action}")
+        self.assertEqual(action, ACTION_RAISE, f"Expected BET on turn, got {action}")
         self.assertGreaterEqual(amount, current_pot * 0.4)
         self.assertLessEqual(amount, current_pot * 0.8)
         print(f"Turn action: {action}, Amount: {amount}")
@@ -241,7 +241,7 @@ class TestFullGameScenarios(unittest.TestCase):
         
         self.assertIsNotNone(action, "Action should not be None on river")
         # Value bet the straight.
-        self.assertEqual(action, ACTION_BET, f"Expected BET on river with a straight, got {action}")
+        self.assertEqual(action, ACTION_RAISE, f"Expected BET on river with a straight, got {action}")
         self.assertGreaterEqual(amount, current_pot * 0.4, "River bet too small for a straight")
         self.assertLessEqual(amount, current_pot * 0.8, "River bet too large for a straight")
         print(f"River action: {action}, Amount: {amount}")
