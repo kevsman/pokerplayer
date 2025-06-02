@@ -1,3 +1,5 @@
 poker_bot_main.log
 poker_bot.log
 poker_bot.log
+/__pycache__/*
+/test_scenarios/*
