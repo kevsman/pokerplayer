@@ -60,7 +60,6 @@ class EquityCalculator:
         return [card for card in self.all_cards if card not in known_cards]
     
     def calculate_equity_monte_carlo(self, hole_cards_str_list, community_cards_str_list, opponent_range_str_list, num_simulations):
-        # Expects normalized card strings, e.g., [['Ah', 'Qh']], ['Kh', 'Jd', '2c']
         logger.debug(
             f"Enter calculate_equity_monte_carlo. Hole Cards: {hole_cards_str_list}, "
             f"Community Cards: {community_cards_str_list}, Opponent Range: {opponent_range_str_list}, "
@@ -73,83 +72,112 @@ class EquityCalculator:
 
         player_wins = 0
         ties = 0
-        total_simulations_count = 0 # Counts successful simulations
+        total_simulations_count = 0
 
-        # Assuming hole_cards_str_list contains one list of cards for the player
         raw_player_cards_input = hole_cards_str_list[0]
-        
         player_hole_cards_str_list_for_conversion = []
         if isinstance(raw_player_cards_input, str):
-            # If "Ah", treat as a single card string in a list
             player_hole_cards_str_list_for_conversion = [raw_player_cards_input]
         elif isinstance(raw_player_cards_input, list):
-            # If [\'Ah\', \'Kh\'] or [\'Ah\'], it\'s already in the correct list format
             player_hole_cards_str_list_for_conversion = raw_player_cards_input
         else:
             logger.error(f"Unexpected type for player hole cards input: {type(raw_player_cards_input)}. Value: {raw_player_cards_input}")
-            # Fallback to empty list, which will lead to an error return shortly
-            player_hole_cards_str_list_for_conversion = []
+            return 0.0, 0.0, 0.0
+        
+        # Ensure community_cards_str_list is a list, even if empty
+        community_cards_str_list = community_cards_str_list if community_cards_str_list is not None else []
 
+        # 1. Prepare known cards as strings
+        known_cards_strings = player_hole_cards_str_list_for_conversion + community_cards_str_list
+
+        # 2. Generate initial string deck and filter known cards (strings) from it
+        deck_strings = self._generate_deck()
+        deck_strings = [c for c in deck_strings if c not in known_cards_strings]
+
+        # 3. Convert player and community cards to HandEvaluator's internal object format for evaluation
+        player_hole_cards_obj = []
+        community_cards_obj = []
         try:
             player_hole_cards_obj = [self.hand_evaluator._convert_card_to_value(c) for c in player_hole_cards_str_list_for_conversion]
-            community_cards_obj = [self.hand_evaluator._convert_card_to_value(c) for c in community_cards_str_list]
-            
             player_hole_cards_obj = [c for c in player_hole_cards_obj if c is not None]
-            community_cards_obj = [c for c in community_cards_obj if c is not None]
 
-            # Critical check: if player\'s hole cards couldn\'t be converted, equity calculation is not meaningful.
+            if community_cards_str_list:
+                community_cards_obj = [self.hand_evaluator._convert_card_to_value(c) for c in community_cards_str_list]
+                community_cards_obj = [c for c in community_cards_obj if c is not None]
+
             if len(player_hole_cards_obj) != len(player_hole_cards_str_list_for_conversion):
                 logger.error(f"Failed to convert all player hole cards. Input: {player_hole_cards_str_list_for_conversion} -> Converted: {player_hole_cards_obj}")
                 return 0.0, 0.0, 0.0
-            
-            # Log if community cards failed conversion, but proceed if player cards are okay.
-            if len(community_cards_obj) != len(community_cards_str_list):
+            if community_cards_str_list and len(community_cards_obj) != len(community_cards_str_list):
                 logger.warning(f"Failed to convert some community cards. Input: {community_cards_str_list} -> Converted: {community_cards_obj}")
-
         except Exception as e:
-            logger.error(f"Error during card conversion: {e}", exc_info=True)
+            logger.error(f"Error during initial card conversion to objects: {e}", exc_info=True)
             return 0.0, 0.0, 0.0
 
-        deck = self._generate_deck() # Changed from self.hand_evaluator.create_deck()
-        deck = [c for c in deck if c not in player_hole_cards_obj and c not in community_cards_obj]
-
         for i in range(num_simulations):
-            current_deck = list(deck) # Make a copy for this simulation
+            current_deck_sim_strings = list(deck_strings) # Use the correctly pre-filtered string deck
             
             try:
-                # Determine how many more board cards are needed
                 num_board_cards_needed = 5 - len(community_cards_obj)
                 
-                # Deal opponent hand (assuming one opponent for now, using 'random' range)
-                # This part needs to be robust for different ranges. For 'random', deal 2 cards.
-                if len(current_deck) < 2 + num_board_cards_needed:
-                    logger.warning(f"Not enough cards in deck ({len(current_deck)}) to deal opponent hand and remaining board. Skipping simulation {i}.")
+                # Check if enough cards for opponent + board
+                required_cards_for_sim = 2 + max(0, num_board_cards_needed)
+                if len(current_deck_sim_strings) < required_cards_for_sim:
+                    logger.debug(f"Sim {i}: Not enough cards in deck ({len(current_deck_sim_strings)}) for simulation. Need {required_cards_for_sim}. Skipping.")
                     continue
 
-                opponent_hole_cards_sim_obj = self.hand_evaluator.deal_random_cards(current_deck, 2)
+                # Deal opponent hand (strings)
+                opponent_hole_cards_strings = self.hand_evaluator.deal_random_cards(current_deck_sim_strings, 2)
                 
-                # Deal remaining board cards
-                additional_board_cards_obj = []
+                # Deal remaining board cards (strings)
+                additional_board_cards_strings = []
                 if num_board_cards_needed > 0:
-                    if len(current_deck) < num_board_cards_needed:
-                        logger.warning(f"Not enough cards in deck ({len(current_deck)}) to deal remaining board cards. Skipping simulation {i}.")
+                    if len(current_deck_sim_strings) < num_board_cards_needed:
+                        logger.debug(f"Sim {i}: Not enough cards for additional board. Deck: {len(current_deck_sim_strings)}, Need: {num_board_cards_needed}. Skipping.")
                         continue
-                    additional_board_cards_obj = self.hand_evaluator.deal_random_cards(current_deck, num_board_cards_needed)
+                    additional_board_cards_strings = self.hand_evaluator.deal_random_cards(current_deck_sim_strings, num_board_cards_needed)
                 
+                # Convert dealt string cards to HandEvaluator's object format for evaluation
+                opponent_hole_cards_sim_obj = [self.hand_evaluator._convert_card_to_value(c) for c in opponent_hole_cards_strings]
+                opponent_hole_cards_sim_obj = [c for c in opponent_hole_cards_sim_obj if c is not None]
+
+                additional_board_cards_obj = [self.hand_evaluator._convert_card_to_value(c) for c in additional_board_cards_strings]
+                additional_board_cards_obj = [c for c in additional_board_cards_obj if c is not None]
+
+                if len(opponent_hole_cards_sim_obj) != 2:
+                    logger.debug(f"Sim {i}: Opponent card conversion resulted in != 2 cards. Strings: {opponent_hole_cards_strings}, Objs: {opponent_hole_cards_sim_obj}. Skipping.")
+                    continue
+                
+                if num_board_cards_needed > 0 and len(additional_board_cards_obj) != num_board_cards_needed:
+                    logger.debug(f"Sim {i}: Additional board card conversion resulted in wrong count. Strings: {additional_board_cards_strings}, Objs: {additional_board_cards_obj}, Needed: {num_board_cards_needed}. Skipping.")
+                    continue
+
                 current_board_sim_obj = community_cards_obj + additional_board_cards_obj
 
-                # Log cards before evaluation
-                # logger.debug(f"Sim {i}: Player: {player_hole_cards_str}, Opponent: {self.hand_evaluator.cards_to_strings(opponent_hole_cards_sim_obj)}, Board: {self.hand_evaluator.cards_to_strings(current_board_sim_obj)}")
+                if len(current_board_sim_obj) > 5:
+                     logger.warning(f"Sim {i}: Board length > 5 ({len(current_board_sim_obj)}). Board: {self.hand_evaluator.cards_to_strings(current_board_sim_obj) if hasattr(self.hand_evaluator, 'cards_to_strings') else current_board_sim_obj}. Skipping.")
+                     continue
+
 
                 player_eval = self.hand_evaluator.evaluate_hand(player_hole_cards_obj, current_board_sim_obj)
                 opponent_eval = self.hand_evaluator.evaluate_hand(opponent_hole_cards_sim_obj, current_board_sim_obj)
+                comparison_result_for_log = self._compare_hands(player_eval, opponent_eval)
 
-                # logger.debug(f"Sim {i}: Player Eval: {player_eval}, Opponent Eval: {opponent_eval}")
+                if i < 5: # Log details for the first 5 simulations for debugging
+                    sim_board_strings_log = community_cards_str_list + additional_board_cards_strings
+                    
+                    # Assuming player_hole_cards_str_list_for_conversion and opponent_hole_cards_strings are lists of strings
+                    player_hole_cards_str_log = player_hole_cards_str_list_for_conversion
+                    opponent_hole_cards_str_log = opponent_hole_cards_strings
 
-                comparison_result = self._compare_hands(player_eval, opponent_eval)
-                if comparison_result > 0:
+                    logger.debug(f"SIM_DEBUG #{i}: PlayerHole: {player_hole_cards_str_log}, OpponentHole: {opponent_hole_cards_str_log}, Board: {sim_board_strings_log}")
+                    logger.debug(f"SIM_DEBUG #{i}: PlayerEval Rank: {player_eval.get('rank_value')}, Desc: {player_eval.get('description')}, Tiebreakers: {player_eval.get('tie_breakers')}")
+                    logger.debug(f"SIM_DEBUG #{i}: OpponentEval Rank: {opponent_eval.get('rank_value')}, Desc: {opponent_eval.get('description')}, Tiebreakers: {opponent_eval.get('tie_breakers')}")
+                    logger.debug(f"SIM_DEBUG #{i}: ComparisonResult: {comparison_result_for_log}")
+
+                if comparison_result_for_log > 0:
                     player_wins += 1
-                elif comparison_result == 0:
+                elif comparison_result_for_log == 0:
                     ties += 1
                 # else: loss, no increment needed for losses count here
 
@@ -172,8 +200,7 @@ class EquityCalculator:
         tie_probability = ties / total_simulations_count
         
         # Equity is typically win_prob + (tie_prob / 2) if splitting pot on tie.
-        # Or, more generally, related to pot share. For now, let's use a simple definition.
-        equity = win_probability # Simplified, often (win_prob + tie_prob / num_opponents_sharing_tie)
+        equity = win_probability + (tie_probability / 2) # Corrected equity calculation
 
         logger.info(
             f"Equity calculation complete for {player_hole_cards_str_list_for_conversion} vs random. "

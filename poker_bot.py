@@ -3,7 +3,7 @@ import re
 import sys
 from hand_evaluator import HandEvaluator
 from html_parser import PokerPageParser
-from decision_engine import DecisionEngine, ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE
+from decision_engine import DecisionEngine, ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE, ACTION_BET, ACTION_ALL_IN
 from ui_controller import UIController
 from equity_calculator import EquityCalculator # Added import
 import time
@@ -364,7 +364,7 @@ class PokerBot:
                     "current_round": table_data.get('game_stage', 'preflop').lower(), # Ensure current_round is present
                     "big_blind": self.config.get('big_blind'),
                     "small_blind": self.config.get('small_blind'),
-                    "min_raise": self.config.get('min_raise', self.config.get('big_blind', 0.02) * 2), # Ensure min_raise
+                    "min_raise": self.config.get('big_blind', 0.02) * 2, # Ensure min_raise
                     # 'board' and 'street' are often aliases or similar to community_cards and current_round
                     "board": table_data.get('community_cards'), 
                     "street": table_data.get('game_stage', 'preflop').lower()
@@ -382,10 +382,11 @@ class PokerBot:
                         amount = 0
                 elif isinstance(action_tuple, str): 
                     action = action_tuple
+                    amount = 0 # Initialize amount if action_tuple is a string
                 else:
                     self.logger.warning(f"Warning: Unknown action format from decision engine: {action_tuple}")
-                    action = ACTION_FOLD
-                    amount = 0 
+                    action = ACTION_FOLD # Default to FOLD
+                    amount = 0
 
                 decision_log_message = f"Decision: {action}"
                 if amount is not None:
@@ -555,13 +556,11 @@ class PokerBot:
                             amount = 0
                     elif isinstance(action_tuple, str): # Should ideally not happen if make_decision is standardized
                         action = action_tuple
-                        # If only action string is returned, it implies no specific amount (e.g. FOLD, CHECK)
-                        # For CALL/RAISE, this path would be problematic if amount isn't part of a tuple.
-                        # However, make_decision is expected to return (ACTION, amount)
+                        amount = 0 # Initialize amount if action_tuple is a string
                     else:
                         self.logger.warning(f"Warning: Unknown action format from decision engine: {action_tuple}")
-                        action = ACTION_FOLD
-                        amount = 0 # Ensure amount is 0 for FOLD
+                        action = ACTION_FOLD # Default to FOLD
+                        amount = 0
 
                     # Enhanced logging for decision
                     decision_log_message = f"Decision: {action}"
@@ -590,26 +589,30 @@ class PokerBot:
                         my_current_stack = parse_currency_string(my_player_data.get('stack', '0'))
                         # Ensure amount is not None and is a number before comparison
                         if amount is not None and isinstance(amount, (int, float)) and my_current_stack <= amount: 
-                             # Check if a dedicated all-in button is available from parser info (optional)
-                            if 'all_in' in my_player_data.get('available_actions', []):
-                                self.logger.info("Performing All-in action (raise all-in).")
-                                self.ui_controller.action_all_in()
-                            else:
-                                self.logger.info("Performing Raise action (for all-in amount).")
-                                self.ui_controller.action_raise(amount=amount) # Standard raise if no specific all-in button identified for this path
+                            self.logger.info("Performing All-in Raise action.")
+                            self.ui_controller.action_all_in() 
                         else:
-                            self.ui_controller.action_raise(amount=amount)
+                            self.ui_controller.action_raise(amount) # Pass amount to action_raise
+                    elif action == ACTION_BET: # Added handling for ACTION_BET
+                        self.ui_controller.action_bet(amount) # Assumes a method action_bet exists in UIController
+                    elif action == ACTION_ALL_IN: # Added handling for ACTION_ALL_IN
+                        self.ui_controller.action_all_in()
                     else:
-                        self.logger.warning(f"Unknown action: {action}")
+                        self.logger.warning(f"Unknown action type: {action}. Performing FOLD.")
+                        self.ui_controller.action_fold()
                     
-                    time.sleep(5) # Changed from 2 to 5 seconds
+                    time.sleep(self.config.get('delays', {}).get('after_action_delay', 5.0))
+
                 else:
-                    if my_player_data: # Successfully parsed, but not our turn
-                         self.logger.info(f"Not my turn. My Hand: {my_player_data.get('cards')}. Waiting...")
-                    else: # Should not happen if parsing check above is robust
-                         self.logger.warning("Player data not found or not my turn. Waiting...")
+                    active_player = self.get_active_player()
+                    if active_player:
+                        self.logger.info(f"Not my turn. Active player: {active_player.get('name')}. Waiting...")
+                    elif my_player_data: # My player data exists, but not my turn (e.g. game ended, or observing)
+                        self.logger.info(f"Not my turn. My Hand: {my_player_data.get('cards')}. Stack: {my_player_data.get('stack')}. Waiting...")
+                    else: # No player data found for me.
+                        self.logger.info("My player data not found. Waiting...")
                 
-                time.sleep(self.ui_controller.get_delay('main_loop_general_delay')) # Use configured delay
+                time.sleep(self.config.get('delays', {}).get('main_loop_general_delay', 1.0))
 
         except KeyboardInterrupt:
             self.logger.info("PokerBot stopped by user.")

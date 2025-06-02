@@ -88,6 +88,11 @@ class DecisionEngine:
     def make_decision(self, game_state, player_index):
         # Extract player and game state information
         my_player = game_state['players'][player_index]
+
+        if not my_player.get('has_turn'):
+            logger.info(f"Not player {player_index}'s turn. Returning (None, 0).")
+            return None, 0
+        
         all_players = game_state['players']
         current_round = game_state['current_round']
         
@@ -132,58 +137,42 @@ class DecisionEngine:
         # Use bet_to_call directly from my_player if available, otherwise calculate it.
         # max_bet_on_table is still useful for bet sizing logic.
         max_bet_on_table = 0.0
-        print(f"  DEBUG ENGINE: Calculating max_bet_on_table. Raw all_players data used by decision_engine: {all_players}", file=sys.stderr)
+        logger.debug(f"  DEBUG ENGINE: Calculating max_bet_on_table. Raw all_players data used by decision_engine: {all_players}")
         for i, p_data in enumerate(all_players):
             if p_data:
                 player_seat = p_data.get('seat', f'index {i}')
-                raw_player_bet = p_data.get('bet', 0.0) # Changed 'current_bet' to 'bet'
+                # Prioritize 'current_bet' as test data often uses it, fallback to 'bet'
+                raw_player_bet = p_data.get('current_bet', p_data.get('bet', 0.0))
                 player_current_bet = parse_monetary_value(raw_player_bet)
-                print(f"  DEBUG ENGINE: Player at seat/index {player_seat} - Raw bet: '{raw_player_bet}', Parsed bet: {player_current_bet}", file=sys.stderr)
+                logger.debug(f"  DEBUG ENGINE: Player at seat/index {player_seat} - Raw bet: '{raw_player_bet}', Parsed bet: {player_current_bet}")
                 if player_current_bet > max_bet_on_table:
                     max_bet_on_table = player_current_bet
-                    print(f"  DEBUG ENGINE: New max_bet_on_table: {max_bet_on_table} from player at seat/index {player_seat}", file=sys.stderr)
+                    logger.debug(f"  DEBUG ENGINE: New max_bet_on_table: {max_bet_on_table} from player at seat/index {player_seat}")
             else:
-                print(f"  DEBUG ENGINE: Player data at index {i} is None or empty.", file=sys.stderr)
-        print(f"  DEBUG ENGINE: Final calculated max_bet_on_table before use: {max_bet_on_table}", file=sys.stderr)
+                logger.debug(f"  DEBUG ENGINE: Player data at index {i} is None or empty.")
+        logger.debug(f"  DEBUG ENGINE: Final calculated max_bet_on_table before use: {max_bet_on_table}")
 
+
+        my_current_bet = parse_monetary_value(my_player.get('current_bet', 0.0))
+        # This is the actual amount required to call the highest bet on the table.
+        bet_to_call_calculated = max(0.0, max_bet_on_table - my_current_bet)
 
         bet_to_call_str = my_player.get('bet_to_call')
+        parsed_ui_bet_to_call_for_log = "N/A" # Initialize for logging
         if bet_to_call_str is not None:
-            bet_to_call_calculated = parse_monetary_value(bet_to_call_str)
-            # Sanity check against max_bet_on_table and my_player's own current_bet
-            my_current_bet = parse_monetary_value(my_player.get('current_bet', 0.0))
-            if my_current_bet >= max_bet_on_table: # If I've already matched or exceeded the max bet
-                # If the UI indicated a positive amount to call, respect that by not zeroing out here.
-                # This ensures that if UI says "call X" (X>0), can_check will be false.
-                # If UI said "call 0" or invalid, then it's fine to set to 0.0.
-                if bet_to_call_calculated <= 0:
-                    bet_to_call_calculated = 0.0
-                # If bet_to_call_calculated was > 0 from UI, it remains that positive value here.
-                # The 'else' block below might still refine it if it's an overestimation.
-                # However, for this specific 'if' branch (my_current_bet >= max_bet_on_table),
-                # actual_amount_to_add would be 0. If UI says call > 0, we must use UI's value.
-                # This means if UI says "call 0.03" and my_current_bet >= max_bet_on_table,
-                # bet_to_call_calculated will remain 0.03 from the UI.
-            else: # Ensure it's not more than the difference needed to reach max_bet_on_table
-                # my_current_bet < max_bet_on_table
-                # bet_to_call_calculated is from UI.
-                # actual_amount_to_add is (max_bet_on_table - my_current_bet)
-                # We should call the minimum of what UI suggests and what's actually needed.
-                actual_amount_to_add = max_bet_on_table - my_current_bet
-                bet_to_call_calculated = max(0.0, min(bet_to_call_calculated, actual_amount_to_add))
-        else:
-            # Fallback to calculating from current bets if 'bet_to_call' is not in my_player data
-            my_current_bet = parse_monetary_value(my_player.get('current_bet', 0.0))
-            bet_to_call_calculated = max(0.0, max_bet_on_table - my_current_bet)
+            parsed_ui_bet_to_call_for_log = parse_monetary_value(bet_to_call_str)
+            # Optional: Log if UI and calculated differ significantly, but primarily trust calculated.
+            if parsed_ui_bet_to_call_for_log != bet_to_call_calculated and logger.isEnabledFor(logging.DEBUG): # Use isEnabledFor
+                 logger.debug(f"Make_decision: UI bet_to_call ({parsed_ui_bet_to_call_for_log}) differs from calculated ({bet_to_call_calculated}). Using calculated.")
         
-        logger.debug(f"Make_decision: Parsed_bet_to_call_str: {bet_to_call_str}, Calculated_bet_to_call: {bet_to_call_calculated}, Max_bet_on_table: {max_bet_on_table}, My_current_bet: {my_player.get('current_bet')}")
+        logger.debug(f"Make_decision: UI_bet_to_call_val: {parsed_ui_bet_to_call_for_log}, Calculated_bet_to_call: {bet_to_call_calculated}, Max_bet_on_table: {max_bet_on_table}, My_current_bet: {my_current_bet}")
 
         can_check = bet_to_call_calculated == 0
         active_opponents_count = sum(1 for i, p in enumerate(all_players) if p and not p.get('isFolded', False) and i != player_index)
 
         if current_round == 'preflop':
-            print(f"  DEBUG ENGINE: PRE-CALL to make_preflop_decision: bet_to_call_calculated={bet_to_call_calculated}, max_bet_on_table={max_bet_on_table}", file=sys.stderr)
-            sys.stderr.flush()
+            logger.debug(f"  DEBUG ENGINE: PRE-CALL to make_preflop_decision: bet_to_call_calculated={bet_to_call_calculated}, max_bet_on_table={max_bet_on_table}")
+            # sys.stderr.flush() # Not needed with logger
             
             # Calculate hand_category
             hand_category = get_preflop_hand_category(my_player['hand'], my_player['position'])
@@ -224,8 +213,8 @@ class DecisionEngine:
             else: 
                 spr = float('inf') if my_stack > 0 else 0
             
-            print(f"  DEBUG ENGINE: PRE-CALL to make_postflop_decision: bet_to_call_calculated={bet_to_call_calculated}, max_bet_on_table={max_bet_on_table}", file=sys.stderr)
-            sys.stderr.flush()
+            logger.debug(f"  DEBUG ENGINE: PRE-CALL to make_postflop_decision: bet_to_call_calculated={bet_to_call_calculated}, max_bet_on_table={max_bet_on_table}")
+            # sys.stderr.flush() # Not needed with logger
 
             action, amount = make_postflop_decision(
                 decision_engine_instance=self,
