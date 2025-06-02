@@ -2983,3 +2983,93 @@ It is YOUR turn to act.
 2025-06-02 10:50:13,602 - poker_bot - INFO - Decision: fold Amount: 0.00
 2025-06-02 10:50:13,602 - poker_bot - INFO - --- Test File Run Finished for: h:\Programming\pokerplayer\examples\flop_my_turn_raised.html ---
 2025-06-02 10:50:13,602 - poker_bot - INFO - Closing logger handlers.
+2025-06-02 10:56:37,375 - poker_bot - INFO - --- Running Test with File: h:\Programming\pokerplayer\examples\flop_my_turn_raised.html ---
+2025-06-02 10:56:37,376 - poker_bot - INFO - HTML length: 77008
+2025-06-02 10:56:37,425 - poker_bot - INFO - \n--- Game Summary from Test File ---
+2025-06-02 10:56:37,426 - poker_bot - INFO - --- Table --- Hand ID: 11449345621
+Pot: €0.32
+Game Stage: Flop
+Community Cards: J♠ 7♠ 3♥
+Dealer Position: Seat 1
+
+--- Players ---
+  Seat 1: Frext1 - Stack: €2, Bet: 0
+  Seat 2: Empty
+  Seat 3: Empty
+  Seat 4: warriorwonder25 (ME, Hand: High Card, J, ACTIVE TURN) - Stack: €0.82, Bet: 0 Cards: 9♣ 10♦
+  Seat 5: Sincerecube24 - Stack: €0.64, Bet: €0.02 (Has hidden cards)
+  Seat 6: qwer37912 - Stack: €0.59, Bet: €0.18 (Has hidden cards)
+
+It is currently Seat 4 (warriorwonder25)'s turn.
+It is YOUR turn to act.
+2025-06-02 10:56:37,426 - poker_bot - INFO - --- End Game Summary ---
+2025-06-02 10:56:37,426 - poker_bot - INFO - My turn. Hand: ['9♣', '10♦'], Rank: High Card, J, Stack: €0.82
+2025-06-02 10:56:37,426 - poker_bot - INFO - Pot: €0.32, Community Cards: ['J♠', '7♠', '3♥']
+2025-06-02 10:56:37,426 - poker_bot - DEBUG - Detected available actions: ['fold', 'call', 'raise']
+2025-06-02 10:56:37,426 - poker_bot - ERROR - Error during test file run for h:\Programming\pokerplayer\examples\flop_my_turn_raised.html: make_postflop_decision() missing 1 required positional argument: 'action_bet_const'
+Traceback (most recent call last):
+  File "h:\Programming\pokerplayer\poker_bot.py", line 374, in run_test_file
+    action_tuple = self.decision_engine.make_decision(game_state_for_decision, my_player_index)
+  File "h:\Programming\pokerplayer\decision_engine.py", line 217, in make_decision
+    action, amount = make_postflop_decision(
+TypeError: make_postflop_decision() missing 1 required positional argument: 'action_bet_const'
+2025-06-02 10:56:37,427 - poker_bot - INFO - --- Test File Run Finished for: h:\Programming\pokerplayer\examples\flop_my_turn_raised.html ---
+2025-06-02 10:56:37,428 - poker_bot - INFO - Closing logger handlers.
+2025-06-02 10:56:47,428 - poker_bot - INFO - --- Running Test with File: h:\Programming\pokerplayer\examples\flop_my_turn_raised.html ---
+2025-06-02 10:56:47,429 - poker_bot - INFO - HTML length: 77008
+2025-06-02 10:56:47,479 - poker_bot - INFO - \n--- Game Summary from Test File ---
+2025-06-02 10:56:47,479 - poker_bot - INFO - --- Table --- Hand ID: 11449345621
+Pot: €0.32
+Game Stage: Flop
+Community Cards: J♠ 7♠ 3♥
+Dealer Position: Seat 1
+
+--- Players ---
+  Seat 1: Frext1 - Stack: €2, Bet: 0
+  Seat 2: Empty
+  Seat 3: Empty
+  Seat 4: warriorwonder25 (ME, Hand: High Card, J, ACTIVE TURN) - Stack: €0.82, Bet: 0 Cards: 9♣ 10♦
+  Seat 5: Sincerecube24 - Stack: €0.64, Bet: €0.02 (Has hidden cards)
+  Seat 6: qwer37912 - Stack: €0.59, Bet: €0.18 (Has hidden cards)
+
+It is currently Seat 4 (warriorwonder25)'s turn.
+It is YOUR turn to act.
+2025-06-02 10:56:47,479 - poker_bot - INFO - --- End Game Summary ---
+2025-06-02 10:56:47,479 - poker_bot - INFO - My turn. Hand: ['9♣', '10♦'], Rank: High Card, J, Stack: €0.82
+2025-06-02 10:56:47,480 - poker_bot - INFO - Pot: €0.32, Community Cards: ['J♠', '7♠', '3♥']
+2025-06-02 10:56:47,480 - poker_bot - DEBUG - Detected available actions: ['fold', 'call', 'raise']
+2025-06-02 10:56:47,480 - poker_bot - ERROR - Error during test file run for h:\Programming\pokerplayer\examples\flop_my_turn_raised.html: make_postflop_decision() missing 1 required positional argument: 'action_bet_const'
+Traceback (most recent call last):
+  File "h:\Programming\pokerplayer\poker_bot.py", line 374, in run_test_file
+    action_tuple = self.decision_engine.make_decision(game_state_for_decision, my_player_index)
+  File "h:\Programming\pokerplayer\decision_engine.py", line 217, in make_decision
+    action, amount = make_postflop_decision(
+TypeError: make_postflop_decision() missing 1 required positional argument: 'action_bet_const'
+2025-06-02 10:56:47,481 - poker_bot - INFO - --- Test File Run Finished for: h:\Programming\pokerplayer\examples\flop_my_turn_raised.html ---
+2025-06-02 10:56:47,481 - poker_bot - INFO - Closing logger handlers.
+2025-06-02 10:57:20,482 - poker_bot - INFO - --- Running Test with File: h:\Programming\pokerplayer\examples\flop_my_turn_raised.html ---
+2025-06-02 10:57:20,482 - poker_bot - INFO - HTML length: 77008
+2025-06-02 10:57:20,534 - poker_bot - INFO - \n--- Game Summary from Test File ---
+2025-06-02 10:57:20,535 - poker_bot - INFO - --- Table --- Hand ID: 11449345621
+Pot: €0.32
+Game Stage: Flop
+Community Cards: J♠ 7♠ 3♥
+Dealer Position: Seat 1
+
+--- Players ---
+  Seat 1: Frext1 - Stack: €2, Bet: 0
+  Seat 2: Empty
+  Seat 3: Empty
+  Seat 4: warriorwonder25 (ME, Hand: High Card, J, ACTIVE TURN) - Stack: €0.82, Bet: 0 Cards: 9♣ 10♦
+  Seat 5: Sincerecube24 - Stack: €0.64, Bet: €0.02 (Has hidden cards)
+  Seat 6: qwer37912 - Stack: €0.59, Bet: €0.18 (Has hidden cards)
+
+It is currently Seat 4 (warriorwonder25)'s turn.
+It is YOUR turn to act.
+2025-06-02 10:57:20,535 - poker_bot - INFO - --- End Game Summary ---
+2025-06-02 10:57:20,535 - poker_bot - INFO - My turn. Hand: ['9♣', '10♦'], Rank: High Card, J, Stack: €0.82
+2025-06-02 10:57:20,535 - poker_bot - INFO - Pot: €0.32, Community Cards: ['J♠', '7♠', '3♥']
+2025-06-02 10:57:20,536 - poker_bot - DEBUG - Detected available actions: ['fold', 'call', 'raise']
+2025-06-02 10:57:20,536 - poker_bot - INFO - Decision: fold Amount: 0.00
+2025-06-02 10:57:20,536 - poker_bot - INFO - --- Test File Run Finished for: h:\Programming\pokerplayer\examples\flop_my_turn_raised.html ---
+2025-06-02 10:57:20,536 - poker_bot - INFO - Closing logger handlers.

@@ -33,7 +33,6 @@ def make_postflop_decision(
     action_check_const,
     action_call_const,
     action_raise_const,
-    action_bet_const,
     my_player_data,
     big_blind_amount,
     base_aggression_factor,
@@ -59,7 +58,7 @@ def make_postflop_decision(
             bet_amount = min(bet_amount, my_stack)
             if bet_amount > 0:
                 logger.info(f"Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: {bet_amount:.2f}")
-                return action_bet_const, round(bet_amount, 2)
+                return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
             else:
                 logger.info("Decision: CHECK (very_strong/strong, but optimal bet is 0).")
                 return action_check_const, 0
@@ -72,7 +71,7 @@ def make_postflop_decision(
             bet_amount = min(bet_amount, my_stack)
             if bet_amount > 0:
                 logger.info(f"Decision: BET (strong hand, thin value when checked to). Amount: {bet_amount:.2f}")
-                return action_bet_const, round(bet_amount, 2)
+                return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
             
             # If optimal bet is 0, or if we decided not to value bet, consider a bluff (though less likely for 'is_strong')
             if decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability): 
@@ -80,7 +79,7 @@ def make_postflop_decision(
                 bluff_bet_amount = min(bluff_bet_amount, my_stack)
                 if bluff_bet_amount > 0:
                     logger.info(f"Decision: BET (strong hand, bluffing when can check). Amount: {bluff_bet_amount:.2f}")
-                    return action_bet_const, round(bluff_bet_amount, 2)
+                    return action_raise_const, round(bluff_bet_amount, 2) # Changed action_bet_const to action_raise_const
             logger.info("Decision: CHECK (strong hand, no value bet/bluff).")
             return action_check_const, 0
         elif is_medium: # Check/bet or check/bluff with medium hands
@@ -90,7 +89,7 @@ def make_postflop_decision(
                 value_bet_amount = min(value_bet_amount, my_stack)
                 if value_bet_amount > 0:
                     logger.info(f"Decision: BET (medium hand, thin value when checked to). Amount: {value_bet_amount:.2f}")
-                    return action_bet_const, round(value_bet_amount, 2)
+                    return action_raise_const, round(value_bet_amount, 2) # Changed action_bet_const to action_raise_const
             
             # If not value betting (either win_prob too low or optimal bet was 0), consider bluffing.
             if decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability): 
@@ -98,7 +97,7 @@ def make_postflop_decision(
                 bluff_bet_amount = min(bluff_bet_amount, my_stack)
                 if bluff_bet_amount > 0:
                     logger.info(f"Decision: BET (medium hand, bluffing when can check). Amount: {bluff_bet_amount:.2f}")
-                    return action_bet_const, round(bluff_bet_amount, 2)
+                    return action_raise_const, round(bluff_bet_amount, 2) # Changed action_bet_const to action_raise_const
             
             logger.info("Decision: CHECK (medium hand, no value bet/bluff).")
             return action_check_const, 0
@@ -125,7 +124,7 @@ def make_postflop_decision(
                  # Ensure bet_amount is greater than 0 if we intend to bet
                  if bet_amount > 0:
                     logger.info(f"Decision: BET (weak hand, river bluff when checked to). Amount: {bet_amount:.2f}, Pot: {pot_size}, Stack: {my_stack}")
-                    return action_bet_const, round(bet_amount, 2)
+                    return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
                  else: # If bet_amount resolved to 0 (e.g. stack is 0), check.
                     logger.info(f"Decision: CHECK (weak hand, intended bluff but bet_amount is 0). Pot: {pot_size}, Stack: {my_stack}")
                     return action_check_const, 0
