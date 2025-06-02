@@ -63,21 +63,31 @@ def make_preflop_decision(
 
     # --- Raise Amount Calculation (Revised) ---
     if max_bet_on_table <= big_blind: # No prior actual raise, only blinds or limps posted. This is an opening or isolation raise situation.
-        # Opening raise or isolation raise over limpers: 3xBB base + 1BB for each limper.
-        # (Consider position-based opening sizes later, e.g., 2.5x from BTN/CO)
-        base_open_multiple = 3 
-        # if position in ['CO', 'BTN'] and num_limpers == 0: # Example: 2.5x for CO/BTN opens
-        #     base_open_multiple = 2.5
+        # Opening raise or isolation raise over limpers.
+        if position == 'CO':
+            base_open_multiple = 3
+        elif position == 'BTN':
+            base_open_multiple = 2.5
+        else:
+            base_open_multiple = 3
         raise_amount_calculated = (base_open_multiple * big_blind) + (num_limpers * big_blind)
     else: # Facing a real raise (max_bet_on_table > big_blind). This is a re-raise (3-bet, 4-bet, etc.) situation.
-        # Standard 3-bet/re-raise sizing: 3x the opponent's total bet on this street.
-        raise_amount_calculated = 3 * max_bet_on_table # Total bet amount for our re-raise
-
-    # Ensure raise is at least min_raise and respects stack size
-    raise_amount_calculated = max(raise_amount_calculated, min_raise if min_raise > bet_to_call else 0) # min_raise is total, ensure it's actually a raise
-    if bet_to_call > 0 and raise_amount_calculated <= bet_to_call : # If calculated amount is not a raise over the call
-        raise_amount_calculated = min_raise # Default to min_raise if previous calc was too small but > bet_to_call
-
+        # 3-bet/4-bet/squeeze sizing
+        # Squeeze: if more than one opponent has put in max_bet_on_table, use 4.5x open
+        if position in ['CO', 'BTN'] and pot_size > 2 * max_bet_on_table:
+            raise_amount_calculated = 4.5 * max_bet_on_table
+        # 4-bet: if max_bet_on_table > 7*big_blind (likely a 3-bet), use 2.3x
+        elif max_bet_on_table > 7 * big_blind:
+            raise_amount_calculated = 2.3 * max_bet_on_table
+        # 3-bet OOP (SB/BB): 3.5x open
+        elif position in ['SB', 'BB']:
+            raise_amount_calculated = 3.5 * max_bet_on_table
+        # 3-bet IP: 3x open
+        else:
+            raise_amount_calculated = 3 * max_bet_on_table
+    raise_amount_calculated = max(raise_amount_calculated, min_raise if min_raise > bet_to_call else 0)
+    if bet_to_call > 0 and raise_amount_calculated <= bet_to_call:
+        raise_amount_calculated = min_raise
     raise_amount_calculated = round(min(raise_amount_calculated, my_stack), 2)
     
     # This check was here, ensure it's still valid:
@@ -194,6 +204,12 @@ def make_preflop_decision(
     # Medium Pair (99, 88, 77) - Added
     if preflop_category in ["Suited Ace", "Offsuit Ace", "Suited King", "Offsuit King", "Playable Broadway", "Offsuit Broadway", "Strong Pair", "Suited Playable", "Medium Pair"]:
         if position in ['UTG', 'MP']:
+            # Facing a real raise (max_bet_on_table > big_blind)
+            # Fold AJo/ATo facing UTG raise + MP 3-bet
+            if bet_to_call > big_blind * 4 or (preflop_category in ["Offsuit Ace", "Offsuit Broadway"] and max_bet_on_table > 7 * big_blind):
+                print(f"{preflop_category} in {position}, facing large raise or 3-bet. Action: FOLD")
+                return action_fold_const, 0
+
             # Opening or raising over limpers if no one has made a 'real' raise yet
             if max_bet_on_table <= big_blind:
                 # Use the global raise_amount_calculated for opening
@@ -235,10 +251,27 @@ def make_preflop_decision(
                 print(f"{preflop_category} in {position}, facing raise <= 4BB. Action: CALL, Amount: {bet_to_call}")
                 return action_call_const, bet_to_call
             else: # Facing a large raise
+                # test_preflop_utg_fold_ajo_vs_mp_3bet_6max: UTG AJo (Offsuit Ace) faces MP 3bet (0.18, which is 9BB)
+                # bet_to_call here would be 0.18 - 0.06 = 0.12 (6BB)
+                # max_bet_on_table is 0.18 (9BB)
+                # This condition (bet_to_call <= big_blind * 4) is (6BB <= 4BB) which is false.
+                # So it correctly goes to this else block for folding AJo UTG vs 3bet.
                 print(f"{preflop_category} in {position}, facing large raise > 4BB. Action: FOLD")
                 return action_fold_const, 0
         elif position in ['CO', 'BTN']:
-            # Opening or raising over limpers
+            # Facing a raise (max_bet_on_table > big_blind)
+            # Fold AJo/ATo facing UTG raise + MP 3-bet
+            if preflop_category in ["Offsuit Ace", "Offsuit Broadway"] and max_bet_on_table > 7 * big_blind:
+                print(f"{preflop_category} in {position}, facing large raise or 3-bet. Action: FOLD")
+                return action_fold_const, 0
+            # Squeeze logic: if pot_size > 2*max_bet_on_table, treat as squeeze
+            if pot_size > 2 * max_bet_on_table and preflop_category in ["Strong Pair", "Playable Broadway"]:
+                squeeze_amount = round(4.5 * max_bet_on_table, 2)
+                squeeze_amount = max(squeeze_amount, min_raise)
+                squeeze_amount = round(min(squeeze_amount, my_stack), 2)
+                print(f"{preflop_category} in {position}, squeeze. Action: RAISE, Amount: {squeeze_amount}")
+                return action_raise_const, squeeze_amount
+            # Default: if we are in CO/BTN and no large raise, play as normal (open or call)
             if max_bet_on_table <= big_blind:
                 open_raise = raise_amount_calculated # Use global calc: (3*BB or 2.5*BB) + limpers
                 open_raise = max(open_raise, min_raise)
@@ -249,13 +282,17 @@ def make_preflop_decision(
                 else: # Raise calculation failed
                      if can_check: return action_check_const, 0
                      return action_fold_const, 0 # Should not happen often here
-            # Facing a raise (max_bet_on_table > big_blind)
+            # Facing a real raise (max_bet_on_table > big_blind)
             # 3-betting logic for strong hands like AQo, AK, AQs, KQs, TT+
             elif preflop_category in ["Playable Broadway", "Offsuit Broadway", "Suited Ace", "Offsuit Ace", "Strong Pair"] and \
                  max_bet_on_table > big_blind and \
-                 max_bet_on_table <= big_blind * 3.5: # Facing an open raise (e.g. up to 3.5x)
+                 max_bet_on_table <= big_blind * 4.5: # Facing an open raise (e.g. up to 4.5x, to allow 3betting vs 3x, 3.5x opens)
                 
-                three_bet_amount = raise_amount_calculated # Global calc is 3 * max_bet_on_table
+                # test_preflop_co_call_3bet_kqs_vs_btn_6max: CO KQs (Playable Broadway) opens, BTN 3bets to 0.18 (9BB).
+                # Bot is CO, max_bet_on_table is 0.18. This condition (0.18 <= 0.02 * 4.5 = 0.09) is FALSE.
+                # So it will skip this 3-bet logic and go to call/fold logic below.
+
+                three_bet_amount = raise_amount_calculated # Global calc is ~3 * max_bet_on_table (or 2.3x if it's a 4bet situation)
                 three_bet_amount = max(three_bet_amount, min_raise)
                 three_bet_amount = round(min(three_bet_amount, my_stack), 2)
 
@@ -266,11 +303,24 @@ def make_preflop_decision(
                     print(f"{preflop_category} in {position}, 3-bet calc failed, calling. Action: CALL, Amount: {bet_to_call}")
                     return action_call_const, bet_to_call
             # Call wider if not 3-betting or if it's a weaker hand in this category
-            elif bet_to_call <= big_blind * 5: 
-                print(f"{preflop_category} in {position}, facing raise <= 5BB. Action: CALL, Amount: {bet_to_call}")
-                return action_call_const, bet_to_call
-            else: # Facing a very large raise (4bet+)
-                print(f"{preflop_category} in {position}, facing large raise > 5BB. Action: FOLD")
+            # test_preflop_co_call_3bet_kqs_vs_btn_6max: CO KQs, BTN 3bets to 0.18. bet_to_call is 0.12 (6BB).
+            # Condition: (6BB <= 5BB) is FALSE. So it goes to FOLD. This is why it fails.
+            # Need to adjust this for calling 3-bets.
+            elif bet_to_call <= big_blind * 10: # Call 3-bets up to 10BB deep effectively (e.g. calling a 3x open that was 3-bet to 9x)
+                # Specifically for KQs CO vs BTN 3bet: Hand is Playable Broadway.
+                if preflop_category in ["Playable Broadway", "Suited Ace", "Strong Pair"] or (preflop_category == "Offsuit Broadway" and position == 'BTN'): # Call 3bets with these
+                    print(f"{preflop_category} in {position}, facing 3-bet, calling. Action: CALL, Amount: {bet_to_call}")
+                    return action_call_const, bet_to_call
+                # For other hands in this block facing a 3-bet, might be a fold.
+                # This path is for CO/BTN. If it's a Medium Pair facing a 3bet, it's likely a fold.
+                if preflop_category == "Medium Pair":
+                    print(f"{preflop_category} in {position}, facing 3-bet, folding. Action: FOLD")
+                    return action_fold_const, 0
+                # Fallback for other cases in this bet_to_call range
+                print(f"{preflop_category} in {position}, facing raise <= 10BB (was <=5BB), considering call. Action: CALL, Amount: {bet_to_call}")
+                return action_call_const, bet_to_call # Broadened call range here
+            else: # Facing a very large raise (4bet+ or very large 3bet)
+                print(f"{preflop_category} in {position}, facing large raise > 10BB. Action: FOLD")
                 return action_fold_const, 0
         elif position == 'SB':
             # Opening / Isolating from SB
@@ -297,12 +347,48 @@ def make_preflop_decision(
                      print(f"{preflop_category} in SB, opening/isolating, raise calc issue, folding. Action: FOLD")
                      return action_fold_const, 0
             # Facing a raise when in SB
-            elif preflop_category in ["Suited Ace", "Playable Broadway", "Strong Pair", "Suited Playable", "Offsuit Broadway"] and \
+            # test_preflop_sb_3bet_a5s_vs_btn_open_3handed: SB A5s (Suited Ace) vs BTN open (0.05 = 2.5BB)
+            # bet_to_call = 0.05 - 0.01 = 0.04 (2BB). max_bet_on_table = 0.05 (2.5BB)
+            # Current logic: elif preflop_category in ["Suited Ace", ...] and bet_to_call <= 3.5BB and max_bet_on_table <= 4BB:
+            # This becomes CALL. Expected RAISE.
+            # Need a specific 3-bet bluffing range for SB vs BTN/CO opens.
+
+            # SB 3-betting range (value and bluffs)
+            # Value: Premium Pair, Strong Pair (sometimes), AK/AQ
+            # Bluffs: Suited Aces (A2s-A5s), some suited connectors/gappers
+            is_facing_steal_attempt = (max_bet_on_table <= big_blind * 3.5) # Facing a likely open from CO/BTN/MP
+
+            if is_facing_steal_attempt and preflop_category in ["Suited Ace", "Playable Broadway", "Strong Pair"]:
+                # Check if it's a good 3-bet candidate
+                if preflop_category == "Suited Ace" and hand_category in ["A2s", "A3s", "A4s", "A5s"]: # Example bluff 3-bet Axs
+                    three_bet_amount = raise_amount_calculated # Should be ~3.5x OOP
+                    three_bet_amount = max(three_bet_amount, min_raise)
+                    three_bet_amount = round(min(three_bet_amount, my_stack),2)
+                    if three_bet_amount > bet_to_call:
+                        print(f"{preflop_category} (bluff) in SB, 3-betting vs steal. Action: RAISE, Amount: {three_bet_amount}")
+                        return action_raise_const, three_bet_amount
+                elif preflop_category in ["Playable Broadway", "Strong Pair"]: # Value 3-bet
+                    three_bet_amount = raise_amount_calculated
+                    three_bet_amount = max(three_bet_amount, min_raise)
+                    three_bet_amount = round(min(three_bet_amount, my_stack), 2)
+                    if three_bet_amount > bet_to_call:
+                        print(f"{preflop_category} (value) in SB, 3-betting vs steal. Action: RAISE, Amount: {three_bet_amount}")
+                        return action_raise_const, three_bet_amount
+            
+            # Original SB calling logic vs raise
+            if preflop_category in ["Suited Ace", "Playable Broadway", "Strong Pair", "Suited Playable", "Offsuit Broadway", "Medium Pair"] and \
                  bet_to_call <= big_blind * 3.5 and \
                  max_bet_on_table <= big_blind * 4: # Call raises up to ~3.5-4BB from SB with decent hands
+                # test_preflop_sb_call_66_vs_btn_open_6max: SB 66 (Medium Pair) vs BTN 2.5BB open. bet_to_call = 0.04 (2BB)
+                # This condition is met. Action CALL. This is correct for 66.
+                # test_preflop_sb_fold_kto_vs_co_open_6max: SB KTo (Offsuit Broadway) vs CO 3BB open. bet_to_call = 0.05 (2.5BB)
+                # This condition is met. Action CALL. Expected FOLD. KTo is too weak here.
+                if preflop_category == "Offsuit Broadway" and hand_category not in ["AQo", "KQo"]: # Fold weaker offsuit broadways like KJo, KTo, QJo from SB vs open
+                    print(f"{preflop_category} ({hand_category}) in SB, too weak to call open. Action: FOLD")
+                    return action_fold_const, 0
+
                 print(f"{preflop_category} in SB, facing raise, calling. Action: CALL, Amount: {bet_to_call}")
                 return action_call_const, bet_to_call
-            # Add SB 3-bet logic here if needed for stronger hands vs BTN/CO opens
             else: # Fold to larger raises or if hand is not strong enough for the situation
                 print(f"{preflop_category} in SB, facing large bet or not strong enough. Action: FOLD")
                 return action_fold_const, 0
@@ -337,16 +423,29 @@ def make_preflop_decision(
                 # Example: Call with Suited Connectors, Medium Pairs, some Suited Aces/Kings if raise is not too large
                 if bet_to_call <= big_blind * 3: # Call raises up to 3x BB
                     if preflop_category in ["Suited Connector", "Medium Pair", "Suited Playable", "Offsuit Broadway", "Suited King", "Suited Ace"]:
+                        # test_preflop_bb_fold_94o_vs_utg_open_6max: 94o is "Weak", so this block is not hit. Correct.
+                        # test_preflop_bb_call_kjo_vs_sb_open_hu: KJo (Offsuit Broadway) vs SB 3BB open. bet_to_call = 0.04 (2BB).
+                        # This condition is met. Action CALL. This is correct.
                         print(f"{preflop_category} in BB, defending vs raise <= 3BB. Action: CALL, Amount: {bet_to_call}")
                         return action_call_const, bet_to_call
                 # 3-bet stronger hands vs smaller opens
-                elif preflop_category in ["Playable Broadway", "Strong Pair"] and bet_to_call <= big_blind * 2.5:
-                    three_bet_amount = 3 * max_bet_on_table
-                    three_bet_amount = max(three_bet_amount, min_raise)
-                    three_bet_amount = round(min(three_bet_amount, my_stack),2)
-                    if three_bet_amount > bet_to_call:
-                        print(f"{preflop_category} in BB, 3-betting vs open. Action: RAISE, Amount: {three_bet_amount}")
-                        return action_raise_const, three_bet_amount
+                # test_preflop_bb_3bet_ako_vs_co_open_6max: BB AKo (Offsuit Ace/Playable Broadway) vs CO 3BB open (0.06).
+                # bet_to_call = 0.04 (2BB). max_bet_on_table = 0.06 (3BB)
+                # Current logic: elif preflop_category in ["Playable Broadway", "Strong Pair"] and bet_to_call <= big_blind * 2.5:
+                # AKo is "Offsuit Ace" or "Playable Broadway". If "Playable Broadway", (2BB <= 2.5BB) is true.
+                # Then it 3-bets. This should work if AKo is Playable Broadway.
+                # The issue was it was FOLDING. This means it hit the final FOLD line for BB.
+                # This implies that `bet_to_call <= big_blind * 3` was FALSE for AKo, or the 3bet condition was false.
+                # If AKo is "Offsuit Ace", it wouldn't hit the 3-bet line. It should.
+                elif preflop_category in ["Playable Broadway", "Strong Pair", "Offsuit Ace"] and max_bet_on_table <= big_blind * 3.5: # 3-bet vs opens up to 3.5x
+                    # AKo should be Playable Broadway or Offsuit Ace. AQo too.
+                    if not (preflop_category == "Offsuit Ace" and hand_category not in ["AKo", "AQo"]): # Only 3bet AKo/AQo from Offsuit Ace cat
+                        three_bet_amount = round(3.5 * max_bet_on_table, 2)
+                        three_bet_amount = max(three_bet_amount, min_raise)
+                        three_bet_amount = round(min(three_bet_amount, my_stack), 2)
+                        if three_bet_amount > bet_to_call:
+                            print(f"{preflop_category} in BB, 3-betting vs open. Action: RAISE, Amount: {three_bet_amount}")
+                            return action_raise_const, three_bet_amount
                 
                 # Default fold if not calling or 3-betting
                 print(f"{preflop_category} in BB, facing raise, folding. Action: FOLD")
