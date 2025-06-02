@@ -112,13 +112,16 @@ def get_preflop_hand_category(hole_cards, position): # Renamed parameters for cl
         return "Strong Pair" 
     if is_pair and rank1_val >= 8: # 88, 99 (8,9)
         return "Strong Pair"
-    
-    # Suited Ace hands (AJs down to A2s)
+      # Suited Ace hands (AJs down to A2s)
     if is_suited and rank1_val == 14 and rank2_val >= 2 and rank2_val <= 11: # A2s-AJs
         return "Suited Ace"
         
+    # Playable Broadway suited (KQs specifically)
+    if is_suited and rank1_val == 13 and rank2_val == 12: # KQs
+        return "Playable Broadway"
+        
     # Suited Connectors / Gappers
-    if is_suited and (rank1_val - rank2_val) == 1 and rank1_val >= 7: # e.g. KQs, QJs, ..., 76s
+    if is_suited and (rank1_val - rank2_val) == 1 and rank1_val >= 7: # e.g. QJs, JTs, ..., 76s (excluding KQs which is Playable Broadway)
         return "Suited Connector"
     if is_suited and (rank1_val - rank2_val) == 2 and rank1_val >= 9: # e.g. KJs, QTs, ..., 97s
         return "Suited Connector" # Or "Suited Gapper"
