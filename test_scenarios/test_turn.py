@@ -6,8 +6,8 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from poker_bot import PokerBot
-from decision_engine import ACTION_CALL, ACTION_RAISE, ACTION_CHECK, ACTION_FOLD, ACTION_BET # Added
-from hand_evaluator import HandEvaluator # Added
+from decision_engine import ACTION_CALL, ACTION_RAISE, ACTION_CHECK, ACTION_FOLD 
+from hand_evaluator import HandEvaluator
 
 class TestTurnScenarios(unittest.TestCase):
     def setUp(self):
@@ -149,7 +149,8 @@ class TestTurnScenarios(unittest.TestCase):
         action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
 
         # Assertion: With a strong hand (two pair) and opportunity to bet, bot should bet.
-        self.assertEqual(action, ACTION_BET, "Bot should bet with strong hand on the turn.") # Changed ACTION_RAISE to ACTION_BET
+        # ACTION_BET was replaced with ACTION_RAISE as ACTION_BET is not defined in decision_engine
+        self.assertEqual(action, ACTION_RAISE, "Bot should bet with strong hand on the turn.") 
         self.assertGreater(amount, 0, "Bet amount should be greater than 0.")
 
     def test_turn_my_turn_opportunity_to_check(self):
