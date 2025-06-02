@@ -190,7 +190,9 @@ def make_preflop_decision(
             return action_raise_const, actual_raise_amount
 
     # AKs, AKo, AQs, AQo, AJs, AJo, KQs, KQo (Playable Broadway / Suited Ace)
-    if preflop_category in ["Suited Ace", "Offsuit Ace", "Suited King", "Offsuit King", "Playable Broadway", "Offsuit Broadway", "Strong Pair"]: # Added Strong Pair
+    # Strong Pair (JJ, TT)
+    # Suited Playable (KJs, KTs, QJs, QTs, JTs) - Added KTs here for BB defense
+    if preflop_category in ["Suited Ace", "Offsuit Ace", "Suited King", "Offsuit King", "Playable Broadway", "Offsuit Broadway", "Strong Pair", "Suited Playable"]:
         if position in ['UTG', 'MP']:
             if bet_to_call == 0: # Opening
                 open_raise = (3 * big_blind) + (num_limpers * big_blind)
@@ -240,9 +242,13 @@ def make_preflop_decision(
                 print(f"{preflop_category} in SB, opening/isolating. Action: RAISE, Amount: {open_raise}")
                 return action_raise_const, open_raise
         elif position == 'BB': # Corrected: Direct comparison for single item
-            if bet_to_call == 0 and can_check:
+            if can_check and bet_to_call == 0:
                 print(f"{preflop_category} in BB, option to check. Action: CHECK")
                 return action_check_const, 0
+            # BB defense logic: Call with Suited Playable (like KTs) if facing a steal up to 3.5x BB
+            elif preflop_category == "Suited Playable" and bet_to_call <= big_blind * 3.5 and max_bet_on_table <= big_blind * 3.5 : # e.g. KTs vs SB 3.5x steal
+                print(f"{preflop_category} in BB, defending vs steal (<=3.5x BB). Action: CALL, Amount: {bet_to_call}")
+                return action_call_const, bet_to_call
             elif bet_to_call <= big_blind * 4 : 
                 print(f"{preflop_category} in BB, facing raise <= 4BB. Action: CALL, Amount: {bet_to_call}")
                 return action_call_const, bet_to_call
@@ -250,36 +256,25 @@ def make_preflop_decision(
                 print(f"{preflop_category} in BB, facing large raise > 4BB. Action: FOLD")
                 return action_fold_const, 0
 
-
     if preflop_category == "Suited Connector": # e.g. JTs, 98s, 87s
-        if position in ['MP', 'CO', 'BTN']: # Corrected list syntax
-            if bet_to_call == 0 and num_limpers > 0 : # Raise over limpers
-                raise_val = (3 * big_blind) + (num_limpers * big_blind)
-                raise_val = max(raise_val, min_raise)
-                raise_val = round(min(raise_val, my_stack),2)
-                print(f"Suited Connector in {position} over limpers. Action: RAISE, Amount: {raise_val}")
-                return action_raise_const, raise_val
-            elif bet_to_call == big_blind and active_opponents_count <= 2 and num_limpers == 0: # Open limp from MP/CO/BTN if short-handed or passive
-                 # This is generally not good strategy, but for a basic bot. Prefer open raising or folding.
-                 # Let's change to open raise or fold.
-                 open_raise = (2.5 * big_blind) # Smaller open with these hands
-                 open_raise = max(open_raise, min_raise)
-                 open_raise = round(min(open_raise, my_stack),2)
-                 if bet_to_call == 0:
-                    print(f"Suited Connector in {position}, opening. Action: RAISE, Amount: {open_raise}")
-                    return action_raise_const, open_raise
-                 else: # Facing a bet
-                    print(f"Suited Connector in {position}, facing bet. Action: FOLD") # Fold to raises if we didn't open
+        if position in ['MP', 'CO', 'BTN']:
+            if bet_to_call == 0: # Opening or action is on us with no prior raise
+                open_raise_amount = (2.5 * big_blind) # Default open for suited connectors
+                if num_limpers > 0:
+                    open_raise_amount = (3 * big_blind) + (num_limpers * big_blind)
+                
+                open_raise_amount = max(open_raise_amount, min_raise) # Ensure it's at least min_raise
+                open_raise_amount = round(min(open_raise_amount, my_stack), 2)
+                print(f"Suited Connector in {position}, opening/raising limpers. Action: RAISE, Amount: {open_raise_amount}")
+                return action_raise_const, open_raise_amount
+            else: # Facing a bet (bet_to_call > 0)
+                # Call if the amount to call is up to 3 big blinds
+                if bet_to_call <= big_blind * 3:
+                    print(f"Suited Connector in {position}, facing bet, amount to call <= 3BB. Action: CALL, Amount: {bet_to_call}")
+                    return action_call_const, bet_to_call
+                else:
+                    print(f"Suited Connector in {position}, facing bet, conditions not met for call. Action: FOLD")
                     return action_fold_const, 0
-            elif bet_to_call > 0 and bet_to_call <= big_blind * 2 and pot_size / bet_to_call > 4: # Call small raises if pot odds are good
-                print(f"Suited Connector in {position}, good pot odds to call small raise. Action: CALL, Amount: {bet_to_call}")
-                return action_call_const, bet_to_call
-            else:
-                if can_check and bet_to_call == 0:
-                    print(f"Suited Connector in {position}, can check. Action: CHECK")
-                    return action_check_const, 0
-                print(f"Suited Connector in {position}, no good spot. Action: FOLD")
-                return action_fold_const, 0
         elif position == 'SB' or position == 'BB': # Corrected: Direct comparison for single item
             if can_check and bet_to_call == 0:
                 print(f"Suited Connector in {position} (Blind), can check. Action: CHECK")
