@@ -490,7 +490,7 @@ class TestPreFlopScenariosNr3(unittest.TestCase):
 
         all_players = [opponent_utg, opponent_mp, opponent_co, opponent_btn, opponent_sb, my_player_obj]
         
-            table_pot_size = limp_amount * 3 + self.config['small_blind'] + self.config['big_blind'] # 3 limps + blinds
+        table_pot_size = limp_amount * 3 + self.config['small_blind'] + self.config['big_blind'] # 3 limps + blinds
         table = self._create_mock_table_data(community_cards=[], pot_size=table_pot_size, game_stage='Pre-Flop')
 
         action, amount = self.bot.decision_engine.make_decision(
