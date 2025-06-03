@@ -125,6 +125,10 @@ class UIController:
     def action_check_call(self):
         return self._click_position("check_call_button", randomize=True)
 
+    def action_all_in(self):
+        """Perform an all-in action by clicking the all-in button."""
+        return self._click_position("all_in_button", randomize=True)
+
     def action_raise(self, amount):
         if not amount:
             print("Error: Raise amount not provided for action_raise.")
