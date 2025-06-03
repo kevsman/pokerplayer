@@ -5,7 +5,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
 
 from poker_bot import PokerBot
-from html_parser import PokerPageParser # Changed from HTMLParser
+from html_parser_original import PokerPageParser # Changed from HTMLParser
 from decision_engine import DecisionEngine # Assuming DecisionEngine might be needed for type hints or direct use
 
 def run_test_with_html(html_file_path):

@@ -148,7 +148,7 @@ class PokerBot:
                         formatted_hole_cards, 
                         community_cards_for_equity, 
                         None, # opponent_range_str_list - assuming None means random or default
-                        num_simulations=500 # A reasonable number for faster testing
+                        num_simulations=10000 # A reasonable number for faster testing
                     )
                     player_info['win_probability'] = win_prob
                     player_info['tie_probability'] = tie_prob # Store tie_prob as well

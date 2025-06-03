@@ -1,0 +1,392 @@
+2025-06-03 13:31:12,029 - position_debugger - INFO - Starting position debug with dealer seat: 1
+2025-06-03 13:31:12,029 - position_debugger - INFO - Raw player data:
+2025-06-03 13:31:12,029 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:31:12,030 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:31:12,030 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:31:12,030 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:31:12,030 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:31:12,030 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:31:12,030 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:31:12,030 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:31:12,030 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:31:12,030 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:31:12,030 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:31:12,030 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:31:12,030 - position_debugger - INFO - Dealer found at index 0 in sorted active players
+2025-06-03 13:31:12,030 - position_debugger - INFO - 5 players - standard positions:
+2025-06-03 13:31:12,030 - position_debugger - INFO -   BTN (Dealer): Seat 1
+2025-06-03 13:31:12,030 - position_debugger - INFO -   SB: Seat 2
+2025-06-03 13:31:12,031 - position_debugger - INFO -   BB: Seat 4
+2025-06-03 13:31:12,031 - position_debugger - INFO -   UTG: Seat 5
+2025-06-03 13:31:12,031 - position_debugger - INFO -   CO: Seat 6
+2025-06-03 13:31:12,031 - position_debugger - INFO - Final position mapping:
+2025-06-03 13:31:12,031 - position_debugger - INFO -   Seat 1: BTN
+2025-06-03 13:31:12,031 - position_debugger - INFO -   Seat 2: SB
+2025-06-03 13:31:12,031 - position_debugger - INFO -   Seat 4: BB
+2025-06-03 13:31:12,031 - position_debugger - INFO -   Seat 5: UTG
+2025-06-03 13:31:12,031 - position_debugger - INFO -   Seat 6: CO
+2025-06-03 13:31:12,032 - position_debugger - INFO - MY PLAYER position: BB in seat 4
+2025-06-03 13:31:12,032 - position_debugger - INFO - Test position assignment result: {'1': 'BTN', '2': 'SB', '4': 'BB', '5': 'UTG', '6': 'CO'}
+2025-06-03 13:31:12,032 - position_debugger - INFO - 
+--- Testing with dealer in seat 1 ---
+2025-06-03 13:31:12,032 - position_debugger - INFO - Starting position debug with dealer seat: 1
+2025-06-03 13:31:12,033 - position_debugger - INFO - Raw player data:
+2025-06-03 13:31:12,033 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:31:12,033 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:31:12,033 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:31:12,033 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:31:12,033 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:31:12,033 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:31:12,034 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:31:12,034 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:31:12,034 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:31:12,034 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:31:12,034 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:31:12,034 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:31:12,034 - position_debugger - INFO - Dealer found at index 0 in sorted active players
+2025-06-03 13:31:12,034 - position_debugger - INFO - 5 players - standard positions:
+2025-06-03 13:31:12,034 - position_debugger - INFO -   BTN (Dealer): Seat 1
+2025-06-03 13:31:12,034 - position_debugger - INFO -   SB: Seat 2
+2025-06-03 13:31:12,034 - position_debugger - INFO -   BB: Seat 4
+2025-06-03 13:31:12,035 - position_debugger - INFO -   UTG: Seat 5
+2025-06-03 13:31:12,035 - position_debugger - INFO -   CO: Seat 6
+2025-06-03 13:31:12,035 - position_debugger - INFO - Final position mapping:
+2025-06-03 13:31:12,035 - position_debugger - INFO -   Seat 1: BTN
+2025-06-03 13:31:12,035 - position_debugger - INFO -   Seat 2: SB
+2025-06-03 13:31:12,035 - position_debugger - INFO -   Seat 4: BB
+2025-06-03 13:31:12,035 - position_debugger - INFO -   Seat 5: UTG
+2025-06-03 13:31:12,035 - position_debugger - INFO -   Seat 6: CO
+2025-06-03 13:31:12,035 - position_debugger - INFO - MY PLAYER position: BB in seat 4
+2025-06-03 13:31:12,036 - position_debugger - INFO - 
+--- Testing with dealer in seat 2 ---
+2025-06-03 13:31:12,036 - position_debugger - INFO - Starting position debug with dealer seat: 2
+2025-06-03 13:31:12,036 - position_debugger - INFO - Raw player data:
+2025-06-03 13:31:12,036 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:31:12,036 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:31:12,036 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:31:12,036 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:31:12,036 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:31:12,037 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:31:12,037 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:31:12,037 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:31:12,037 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:31:12,037 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:31:12,037 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:31:12,037 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:31:12,038 - position_debugger - INFO - Dealer found at index 1 in sorted active players
+2025-06-03 13:31:12,038 - position_debugger - INFO - 5 players - standard positions:
+2025-06-03 13:31:12,038 - position_debugger - INFO -   BTN (Dealer): Seat 2
+2025-06-03 13:31:12,038 - position_debugger - INFO -   SB: Seat 4
+2025-06-03 13:31:12,038 - position_debugger - INFO -   BB: Seat 5
+2025-06-03 13:31:12,038 - position_debugger - INFO -   UTG: Seat 6
+2025-06-03 13:31:12,038 - position_debugger - INFO -   CO: Seat 1
+2025-06-03 13:31:12,038 - position_debugger - INFO - Final position mapping:
+2025-06-03 13:31:12,038 - position_debugger - INFO -   Seat 1: CO
+2025-06-03 13:31:12,038 - position_debugger - INFO -   Seat 2: BTN
+2025-06-03 13:31:12,038 - position_debugger - INFO -   Seat 4: SB
+2025-06-03 13:31:12,039 - position_debugger - INFO -   Seat 5: BB
+2025-06-03 13:31:12,039 - position_debugger - INFO -   Seat 6: UTG
+2025-06-03 13:31:12,039 - position_debugger - INFO - MY PLAYER position: SB in seat 4
+2025-06-03 13:31:12,039 - position_debugger - INFO - 
+--- Testing with dealer in seat 3 ---
+2025-06-03 13:31:12,039 - position_debugger - INFO - Starting position debug with dealer seat: 3
+2025-06-03 13:31:12,039 - position_debugger - INFO - Raw player data:
+2025-06-03 13:31:12,039 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:31:12,039 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:31:12,039 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:31:12,039 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:31:12,039 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:31:12,040 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:31:12,040 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:31:12,040 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:31:12,040 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:31:12,040 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:31:12,040 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:31:12,040 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:31:12,040 - position_debugger - WARNING - Dealer seat 3 not found in active players
+2025-06-03 13:31:12,041 - position_debugger - INFO - 
+--- Testing with dealer in seat 4 ---
+2025-06-03 13:31:12,041 - position_debugger - INFO - Starting position debug with dealer seat: 4
+2025-06-03 13:31:12,041 - position_debugger - INFO - Raw player data:
+2025-06-03 13:31:12,041 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:31:12,041 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:31:12,041 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:31:12,042 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:31:12,042 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:31:12,042 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:31:12,042 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:31:12,042 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:31:12,042 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:31:12,042 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:31:12,042 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:31:12,043 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:31:12,043 - position_debugger - INFO - Dealer found at index 2 in sorted active players
+2025-06-03 13:31:12,043 - position_debugger - INFO - 5 players - standard positions:
+2025-06-03 13:31:12,043 - position_debugger - INFO -   BTN (Dealer): Seat 4
+2025-06-03 13:31:12,043 - position_debugger - INFO -   SB: Seat 5
+2025-06-03 13:31:12,043 - position_debugger - INFO -   BB: Seat 6
+2025-06-03 13:31:12,043 - position_debugger - INFO -   UTG: Seat 1
+2025-06-03 13:31:12,043 - position_debugger - INFO -   CO: Seat 2
+2025-06-03 13:31:12,043 - position_debugger - INFO - Final position mapping:
+2025-06-03 13:31:12,043 - position_debugger - INFO -   Seat 1: UTG
+2025-06-03 13:31:12,043 - position_debugger - INFO -   Seat 2: CO
+2025-06-03 13:31:12,043 - position_debugger - INFO -   Seat 4: BTN
+2025-06-03 13:31:12,043 - position_debugger - INFO -   Seat 5: SB
+2025-06-03 13:31:12,044 - position_debugger - INFO -   Seat 6: BB
+2025-06-03 13:31:12,044 - position_debugger - INFO - MY PLAYER position: BTN in seat 4
+2025-06-03 13:31:12,044 - position_debugger - INFO - 
+--- Testing with dealer in seat 5 ---
+2025-06-03 13:31:12,044 - position_debugger - INFO - Starting position debug with dealer seat: 5
+2025-06-03 13:31:12,044 - position_debugger - INFO - Raw player data:
+2025-06-03 13:31:12,044 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:31:12,044 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:31:12,044 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:31:12,044 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:31:12,044 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:31:12,045 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:31:12,045 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:31:12,045 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:31:12,045 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:31:12,045 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:31:12,045 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:31:12,045 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:31:12,046 - position_debugger - INFO - Dealer found at index 3 in sorted active players
+2025-06-03 13:31:12,046 - position_debugger - INFO - 5 players - standard positions:
+2025-06-03 13:31:12,046 - position_debugger - INFO -   BTN (Dealer): Seat 5
+2025-06-03 13:31:12,046 - position_debugger - INFO -   SB: Seat 6
+2025-06-03 13:31:12,046 - position_debugger - INFO -   BB: Seat 1
+2025-06-03 13:31:12,046 - position_debugger - INFO -   UTG: Seat 2
+2025-06-03 13:31:12,046 - position_debugger - INFO -   CO: Seat 4
+2025-06-03 13:31:12,046 - position_debugger - INFO - Final position mapping:
+2025-06-03 13:31:12,046 - position_debugger - INFO -   Seat 1: BB
+2025-06-03 13:31:12,046 - position_debugger - INFO -   Seat 2: UTG
+2025-06-03 13:31:12,047 - position_debugger - INFO -   Seat 4: CO
+2025-06-03 13:31:12,047 - position_debugger - INFO -   Seat 5: BTN
+2025-06-03 13:31:12,047 - position_debugger - INFO -   Seat 6: SB
+2025-06-03 13:31:12,047 - position_debugger - INFO - MY PLAYER position: CO in seat 4
+2025-06-03 13:31:12,047 - position_debugger - INFO - 
+--- Testing with dealer in seat 6 ---
+2025-06-03 13:31:12,047 - position_debugger - INFO - Starting position debug with dealer seat: 6
+2025-06-03 13:31:12,047 - position_debugger - INFO - Raw player data:
+2025-06-03 13:31:12,047 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:31:12,047 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:31:12,047 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:31:12,047 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:31:12,047 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:31:12,047 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:31:12,047 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:31:12,048 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:31:12,048 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:31:12,048 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:31:12,048 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:31:12,048 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:31:12,048 - position_debugger - INFO - Dealer found at index 4 in sorted active players
+2025-06-03 13:31:12,048 - position_debugger - INFO - 5 players - standard positions:
+2025-06-03 13:31:12,048 - position_debugger - INFO -   BTN (Dealer): Seat 6
+2025-06-03 13:31:12,048 - position_debugger - INFO -   SB: Seat 1
+2025-06-03 13:31:12,048 - position_debugger - INFO -   BB: Seat 2
+2025-06-03 13:31:12,048 - position_debugger - INFO -   UTG: Seat 4
+2025-06-03 13:31:12,049 - position_debugger - INFO -   CO: Seat 5
+2025-06-03 13:31:12,049 - position_debugger - INFO - Final position mapping:
+2025-06-03 13:31:12,049 - position_debugger - INFO -   Seat 1: SB
+2025-06-03 13:31:12,049 - position_debugger - INFO -   Seat 2: BB
+2025-06-03 13:31:12,049 - position_debugger - INFO -   Seat 4: UTG
+2025-06-03 13:31:12,049 - position_debugger - INFO -   Seat 5: CO
+2025-06-03 13:31:12,050 - position_debugger - INFO -   Seat 6: BTN
+2025-06-03 13:31:12,050 - position_debugger - INFO - MY PLAYER position: UTG in seat 4
+2025-06-03 13:34:35,656 - position_debugger - INFO - Starting position debug with dealer seat: 1
+2025-06-03 13:34:35,656 - position_debugger - INFO - Raw player data:
+2025-06-03 13:34:35,656 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:34:35,656 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:34:35,657 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:34:35,657 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:34:35,657 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:34:35,657 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:34:35,657 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:34:35,658 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:34:35,658 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:34:35,658 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:34:35,658 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:34:35,658 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:34:35,658 - position_debugger - INFO - Dealer found at index 0 in sorted active players
+2025-06-03 13:34:35,659 - position_debugger - INFO - 5 players - standard positions:
+2025-06-03 13:34:35,659 - position_debugger - INFO -   BTN (Dealer): Seat 1
+2025-06-03 13:34:35,659 - position_debugger - INFO -   SB: Seat 2
+2025-06-03 13:34:35,659 - position_debugger - INFO -   BB: Seat 4
+2025-06-03 13:34:35,659 - position_debugger - INFO -   UTG: Seat 5
+2025-06-03 13:34:35,660 - position_debugger - INFO -   CO: Seat 6
+2025-06-03 13:34:35,660 - position_debugger - INFO - Final position mapping:
+2025-06-03 13:34:35,660 - position_debugger - INFO -   Seat 1: BTN
+2025-06-03 13:34:35,660 - position_debugger - INFO -   Seat 2: SB
+2025-06-03 13:34:35,660 - position_debugger - INFO -   Seat 4: BB
+2025-06-03 13:34:35,660 - position_debugger - INFO -   Seat 5: UTG
+2025-06-03 13:34:35,660 - position_debugger - INFO -   Seat 6: CO
+2025-06-03 13:34:35,660 - position_debugger - INFO - MY PLAYER position: BB in seat 4
+2025-06-03 13:34:35,660 - position_debugger - INFO - Test position assignment result: {'1': 'BTN', '2': 'SB', '4': 'BB', '5': 'UTG', '6': 'CO'}
+2025-06-03 13:34:35,660 - position_debugger - INFO - 
+--- Testing with dealer in seat 1 ---
+2025-06-03 13:34:35,661 - position_debugger - INFO - Starting position debug with dealer seat: 1
+2025-06-03 13:34:35,661 - position_debugger - INFO - Raw player data:
+2025-06-03 13:34:35,661 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:34:35,661 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:34:35,661 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:34:35,661 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:34:35,661 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:34:35,661 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:34:35,661 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:34:35,661 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:34:35,661 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:34:35,662 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:34:35,662 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:34:35,662 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:34:35,662 - position_debugger - INFO - Dealer found at index 0 in sorted active players
+2025-06-03 13:34:35,662 - position_debugger - INFO - 5 players - standard positions:
+2025-06-03 13:34:35,662 - position_debugger - INFO -   BTN (Dealer): Seat 1
+2025-06-03 13:34:35,662 - position_debugger - INFO -   SB: Seat 2
+2025-06-03 13:34:35,662 - position_debugger - INFO -   BB: Seat 4
+2025-06-03 13:34:35,663 - position_debugger - INFO -   UTG: Seat 5
+2025-06-03 13:34:35,663 - position_debugger - INFO -   CO: Seat 6
+2025-06-03 13:34:35,663 - position_debugger - INFO - Final position mapping:
+2025-06-03 13:34:35,663 - position_debugger - INFO -   Seat 1: BTN
+2025-06-03 13:34:35,663 - position_debugger - INFO -   Seat 2: SB
+2025-06-03 13:34:35,663 - position_debugger - INFO -   Seat 4: BB
+2025-06-03 13:34:35,663 - position_debugger - INFO -   Seat 5: UTG
+2025-06-03 13:34:35,663 - position_debugger - INFO -   Seat 6: CO
+2025-06-03 13:34:35,664 - position_debugger - INFO - MY PLAYER position: BB in seat 4
+2025-06-03 13:34:35,664 - position_debugger - INFO - 
+--- Testing with dealer in seat 2 ---
+2025-06-03 13:34:35,664 - position_debugger - INFO - Starting position debug with dealer seat: 2
+2025-06-03 13:34:35,664 - position_debugger - INFO - Raw player data:
+2025-06-03 13:34:35,664 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:34:35,664 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:34:35,664 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:34:35,665 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:34:35,665 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:34:35,665 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:34:35,665 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:34:35,665 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:34:35,665 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:34:35,665 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:34:35,665 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:34:35,665 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:34:35,665 - position_debugger - INFO - Dealer found at index 1 in sorted active players
+2025-06-03 13:34:35,665 - position_debugger - INFO - 5 players - standard positions:
+2025-06-03 13:34:35,665 - position_debugger - INFO -   BTN (Dealer): Seat 2
+2025-06-03 13:34:35,665 - position_debugger - INFO -   SB: Seat 4
+2025-06-03 13:34:35,665 - position_debugger - INFO -   BB: Seat 5
+2025-06-03 13:34:35,665 - position_debugger - INFO -   UTG: Seat 6
+2025-06-03 13:34:35,665 - position_debugger - INFO -   CO: Seat 1
+2025-06-03 13:34:35,666 - position_debugger - INFO - Final position mapping:
+2025-06-03 13:34:35,666 - position_debugger - INFO -   Seat 1: CO
+2025-06-03 13:34:35,666 - position_debugger - INFO -   Seat 2: BTN
+2025-06-03 13:34:35,666 - position_debugger - INFO -   Seat 4: SB
+2025-06-03 13:34:35,666 - position_debugger - INFO -   Seat 5: BB
+2025-06-03 13:34:35,666 - position_debugger - INFO -   Seat 6: UTG
+2025-06-03 13:34:35,666 - position_debugger - INFO - MY PLAYER position: SB in seat 4
+2025-06-03 13:34:35,666 - position_debugger - INFO - 
+--- Testing with dealer in seat 3 ---
+2025-06-03 13:34:35,666 - position_debugger - INFO - Starting position debug with dealer seat: 3
+2025-06-03 13:34:35,667 - position_debugger - INFO - Raw player data:
+2025-06-03 13:34:35,667 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:34:35,667 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:34:35,667 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:34:35,667 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:34:35,667 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:34:35,668 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:34:35,668 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:34:35,668 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:34:35,668 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:34:35,668 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:34:35,668 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:34:35,668 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:34:35,668 - position_debugger - WARNING - Dealer seat 3 not found in active players
+2025-06-03 13:34:35,668 - position_debugger - INFO - 
+--- Testing with dealer in seat 4 ---
+2025-06-03 13:34:35,668 - position_debugger - INFO - Starting position debug with dealer seat: 4
+2025-06-03 13:34:35,669 - position_debugger - INFO - Raw player data:
+2025-06-03 13:34:35,669 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:34:35,669 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:34:35,669 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:34:35,669 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:34:35,669 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:34:35,669 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:34:35,669 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:34:35,669 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:34:35,669 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:34:35,669 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:34:35,669 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:34:35,669 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:34:35,669 - position_debugger - INFO - Dealer found at index 2 in sorted active players
+2025-06-03 13:34:35,669 - position_debugger - INFO - 5 players - standard positions:
+2025-06-03 13:34:35,670 - position_debugger - INFO -   BTN (Dealer): Seat 4
+2025-06-03 13:34:35,670 - position_debugger - INFO -   SB: Seat 5
+2025-06-03 13:34:35,670 - position_debugger - INFO -   BB: Seat 6
+2025-06-03 13:34:35,670 - position_debugger - INFO -   UTG: Seat 1
+2025-06-03 13:34:35,670 - position_debugger - INFO -   CO: Seat 2
+2025-06-03 13:34:35,670 - position_debugger - INFO - Final position mapping:
+2025-06-03 13:34:35,670 - position_debugger - INFO -   Seat 1: UTG
+2025-06-03 13:34:35,670 - position_debugger - INFO -   Seat 2: CO
+2025-06-03 13:34:35,670 - position_debugger - INFO -   Seat 4: BTN
+2025-06-03 13:34:35,670 - position_debugger - INFO -   Seat 5: SB
+2025-06-03 13:34:35,670 - position_debugger - INFO -   Seat 6: BB
+2025-06-03 13:34:35,671 - position_debugger - INFO - MY PLAYER position: BTN in seat 4
+2025-06-03 13:34:35,671 - position_debugger - INFO - 
+--- Testing with dealer in seat 5 ---
+2025-06-03 13:34:35,671 - position_debugger - INFO - Starting position debug with dealer seat: 5
+2025-06-03 13:34:35,671 - position_debugger - INFO - Raw player data:
+2025-06-03 13:34:35,671 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:34:35,671 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:34:35,671 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:34:35,671 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:34:35,672 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:34:35,672 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:34:35,672 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:34:35,672 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:34:35,672 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:34:35,672 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:34:35,672 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:34:35,672 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:34:35,673 - position_debugger - INFO - Dealer found at index 3 in sorted active players
+2025-06-03 13:34:35,673 - position_debugger - INFO - 5 players - standard positions:
+2025-06-03 13:34:35,673 - position_debugger - INFO -   BTN (Dealer): Seat 5
+2025-06-03 13:34:35,673 - position_debugger - INFO -   SB: Seat 6
+2025-06-03 13:34:35,673 - position_debugger - INFO -   BB: Seat 1
+2025-06-03 13:34:35,673 - position_debugger - INFO -   UTG: Seat 2
+2025-06-03 13:34:35,673 - position_debugger - INFO -   CO: Seat 4
+2025-06-03 13:34:35,673 - position_debugger - INFO - Final position mapping:
+2025-06-03 13:34:35,673 - position_debugger - INFO -   Seat 1: BB
+2025-06-03 13:34:35,674 - position_debugger - INFO -   Seat 2: UTG
+2025-06-03 13:34:35,674 - position_debugger - INFO -   Seat 4: CO
+2025-06-03 13:34:35,674 - position_debugger - INFO -   Seat 5: BTN
+2025-06-03 13:34:35,674 - position_debugger - INFO -   Seat 6: SB
+2025-06-03 13:34:35,674 - position_debugger - INFO - MY PLAYER position: CO in seat 4
+2025-06-03 13:34:35,674 - position_debugger - INFO - 
+--- Testing with dealer in seat 6 ---
+2025-06-03 13:34:35,674 - position_debugger - INFO - Starting position debug with dealer seat: 6
+2025-06-03 13:34:35,674 - position_debugger - INFO - Raw player data:
+2025-06-03 13:34:35,674 - position_debugger - INFO -   Player 0: Seat 1, Name Player1, Is My Player: False
+2025-06-03 13:34:35,675 - position_debugger - INFO -   Player 1: Seat 2, Name Player2, Is My Player: False
+2025-06-03 13:34:35,675 - position_debugger - INFO -   Player 2: Seat 3, Name EmptySeat, Is My Player: False
+2025-06-03 13:34:35,675 - position_debugger - INFO -   Player 3: Seat 4, Name MyPlayer, Is My Player: True
+2025-06-03 13:34:35,675 - position_debugger - INFO -   Player 4: Seat 5, Name Player5, Is My Player: False
+2025-06-03 13:34:35,675 - position_debugger - INFO -   Player 5: Seat 6, Name Player6, Is My Player: False
+2025-06-03 13:34:35,675 - position_debugger - INFO - Active players after sorting (total: 5):
+2025-06-03 13:34:35,676 - position_debugger - INFO -   Index 0: Seat 1, Name: Player1
+2025-06-03 13:34:35,676 - position_debugger - INFO -   Index 1: Seat 2, Name: Player2
+2025-06-03 13:34:35,676 - position_debugger - INFO -   Index 2: Seat 4, Name: MyPlayer
+2025-06-03 13:34:35,676 - position_debugger - INFO -   Index 3: Seat 5, Name: Player5
+2025-06-03 13:34:35,676 - position_debugger - INFO -   Index 4: Seat 6, Name: Player6
+2025-06-03 13:34:35,676 - position_debugger - INFO - Dealer found at index 4 in sorted active players
+2025-06-03 13:34:35,676 - position_debugger - INFO - 5 players - standard positions:
+2025-06-03 13:34:35,676 - position_debugger - INFO -   BTN (Dealer): Seat 6
+2025-06-03 13:34:35,676 - position_debugger - INFO -   SB: Seat 1
+2025-06-03 13:34:35,677 - position_debugger - INFO -   BB: Seat 2
+2025-06-03 13:34:35,677 - position_debugger - INFO -   UTG: Seat 4
+2025-06-03 13:34:35,677 - position_debugger - INFO -   CO: Seat 5
+2025-06-03 13:34:35,677 - position_debugger - INFO - Final position mapping:
+2025-06-03 13:34:35,677 - position_debugger - INFO -   Seat 1: SB
+2025-06-03 13:34:35,677 - position_debugger - INFO -   Seat 2: BB
+2025-06-03 13:34:35,677 - position_debugger - INFO -   Seat 4: UTG
+2025-06-03 13:34:35,677 - position_debugger - INFO -   Seat 5: CO
+2025-06-03 13:34:35,678 - position_debugger - INFO -   Seat 6: BTN
+2025-06-03 13:34:35,678 - position_debugger - INFO - MY PLAYER position: UTG in seat 4

@@ -8,7 +8,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from html_parser import PokerPageParser
+from html_parser_original import PokerPageParser
 from decision_engine import DecisionEngine
 from hand_evaluator import HandEvaluator
 
