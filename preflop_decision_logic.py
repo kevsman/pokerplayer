@@ -58,16 +58,16 @@ def make_preflop_decision(
                 num_limpers = 0
         else:
             num_limpers = 0 # Avoid division by zero if big_blind is 0
-        num_limpers = max(0, num_limpers)
-
-
-    # --- Raise Amount Calculation (Revised) ---
+        num_limpers = max(0, num_limpers)    # --- Raise Amount Calculation (Revised) ---
     if max_bet_on_table <= big_blind: # No prior actual raise, only blinds or limps posted. This is an opening or isolation raise situation.
         # Opening raise or isolation raise over limpers.
         if position == 'CO':
             base_open_multiple = 3
         elif position == 'BTN':
-            base_open_multiple = 2.5
+            if num_limpers > 0:
+                base_open_multiple = 3  # Use 3x for isolation over limpers
+            else:
+                base_open_multiple = 2.5  # Use 2.5x for normal opens
         else:
             base_open_multiple = 3
         raise_amount_calculated = (base_open_multiple * big_blind) + (num_limpers * big_blind)
@@ -77,13 +77,12 @@ def make_preflop_decision(
             raise_amount_calculated = 4.5 * max_bet_on_table
         # 4-bet: if max_bet_on_table > 7*big_blind (likely a 3-bet), use 2.33x (to get 0.42 from 0.18)
         elif max_bet_on_table > 7 * big_blind:
-            raise_amount_calculated = 2.33 * max_bet_on_table
-        # 3-bet OOP (SB/BB): 4x open for BB (as per test expectation)
+            raise_amount_calculated = 2.33 * max_bet_on_table        # 3-bet OOP (SB/BB): 3x open for SB value hands
         elif position in ['SB', 'BB']:
             if position == 'BB':
                 raise_amount_calculated = 4.0 * max_bet_on_table
             else:
-                raise_amount_calculated = 3.5 * max_bet_on_table
+                raise_amount_calculated = 3.0 * max_bet_on_table  # 3x for value hands, bluffs use custom sizing
         # 3-bet IP: 3x open
         else:
             raise_amount_calculated = 3 * max_bet_on_table
@@ -349,14 +348,13 @@ def make_preflop_decision(
                          print(f"{preflop_category} in SB, completing (raise calc failed). Action: CALL, Amount: {bet_to_call}")
                          return action_call_const, bet_to_call
                      print(f"{preflop_category} in SB, opening/isolating, raise calc issue, folding. Action: FOLD")
-                     return action_fold_const, 0
-            # Facing a raise when in SB
+                     return action_fold_const, 0            # Facing a raise when in SB
             # test_preflop_sb_3bet_a5s_vs_btn_open_3handed: SB A5s (Suited Ace) vs BTN open (0.05 = 2.5BB)
             # bet_to_call = 0.05 - 0.01 = 0.04 (2BB). max_bet_on_table = 0.05 (2.5BB)
             # Current logic: elif preflop_category in ["Suited Ace", ...] and bet_to_call <= 3.5BB and max_bet_on_table <= 4BB:
             # This becomes CALL. Expected RAISE.
             # Need a specific 3-bet bluffing range for SB vs BTN/CO opens.
-
+            
             # SB 3-betting range (value and bluffs)
             # Value: Premium Pair, Strong Pair (sometimes), AK/AQ
             # Bluffs: Suited Aces (A2s-A5s), some suited connectors/gappers
@@ -364,13 +362,36 @@ def make_preflop_decision(
             
             if is_facing_steal_attempt and preflop_category in ["Suited Ace", "Playable Broadway", "Strong Pair"]:
                 # Check if it's a good 3-bet candidate
-                if preflop_category == "Suited Ace": # Bluff 3-bet with suited aces like A2s-A5s
-                    three_bet_amount = raise_amount_calculated # Should be ~3.5x OOP
-                    three_bet_amount = max(three_bet_amount, min_raise)
-                    three_bet_amount = round(min(three_bet_amount, my_stack),2)
-                    if three_bet_amount > bet_to_call:
-                        print(f"{preflop_category} (bluff) in SB, 3-betting vs steal. Action: RAISE, Amount: {three_bet_amount}")
-                        return action_raise_const, three_bet_amount
+                if preflop_category == "Suited Ace": # Only bluff 3-bet with weak suited aces like A2s-A5s, not strong ones like AJs
+                    # Need to check the kicker to differentiate between bluff 3-bet hands (A2s-A5s) and call hands (A6s-AJs)
+                    # Import hand_utils to get rank values
+                    from hand_utils import RANK_TO_VALUE
+                    
+                    # Get the hand cards from my_player
+                    hand = my_player['hand']
+                    
+                    # Get the non-ace card (kicker)
+                    card1_rank = hand[0][:-1] if hand[0][:-1] != '10' else 'T'
+                    card2_rank = hand[1][:-1] if hand[1][:-1] != '10' else 'T'
+                    
+                    # Determine which is the ace and which is the kicker
+                    if card1_rank == 'A':
+                        kicker_rank = card2_rank
+                    else:
+                        kicker_rank = card1_rank
+                    
+                    kicker_value = RANK_TO_VALUE.get(kicker_rank, 0)
+                      # Weak suited aces (A2s-A5s) should 3-bet as bluffs
+                    if kicker_value >= 2 and kicker_value <= 5:
+                        # Bluff 3-bets use larger sizing for more fold equity
+                        three_bet_amount = 3.6 * max_bet_on_table  # 3.6x for bluffs
+                        three_bet_amount = max(three_bet_amount, min_raise)
+                        three_bet_amount = round(min(three_bet_amount, my_stack), 2)
+                        if three_bet_amount > bet_to_call:
+                            print(f"SB {preflop_category} (bluff 3-bet), vs steal attempt. Action: RAISE, Amount: {three_bet_amount}")
+                            return action_raise_const, three_bet_amount
+                    # Stronger suited aces (A6s-AJs) should call, not 3-bet
+                    # Fall through to calling logic below
                 elif preflop_category in ["Playable Broadway", "Strong Pair"]: # Value 3-bet
                     three_bet_amount = raise_amount_calculated
                     three_bet_amount = max(three_bet_amount, min_raise)
