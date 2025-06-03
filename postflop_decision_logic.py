@@ -227,18 +227,27 @@ def make_postflop_decision(
                 return action_fold_const, 0
 
         elif is_medium:
-            logger.debug(f"Hand is_medium. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
-            # Call with medium strength if odds are good, especially with draws (not explicitly modeled here yet)
+            logger.debug(f"Hand is_medium. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")            # Call with medium strength if odds are good, especially with draws (not explicitly modeled here yet)
             if win_probability > pot_odds_to_call and bet_to_call <= 0.6 * pot_size : # Call if good odds and bet is not too large (e.g. up to 60% pot)
                 call_amount = bet_to_call
                 logger.info(f"Decision: CALL (medium hand, good odds and bet size). Amount to call: {call_amount:.2f}")
-                return action_call_const, round(call_amount, 2)
+                return action_call_const, round(call_amount, 2)            
             else: # Fold if odds not good or bet is large for a medium hand
                 logger.info(f"Decision: FOLD (medium hand, odds not good or bet too large). Bet_to_call: {bet_to_call}, Pot: {pot_size}")
                 return action_fold_const, 0
         
         else: # Weak hand
-            logger.debug(f"Hand is_weak. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
+            logger.debug(f"Hand is_weak. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")            # Check if this is a drawing hand with sufficient pot odds to call
+            # Drawing hands typically have 25-40% equity and should call with good pot odds
+            # Be very conservative about bet sizing for weak hands - only call small bets
+            if (win_probability > pot_odds_to_call and 
+                win_probability >= 0.25 and win_probability <= 0.40 and 
+                bet_to_call <= 0.4 * pot_size):  # Only call bets up to 40% pot size
+                # This is likely a drawing hand with sufficient equity to call
+                call_amount = bet_to_call
+                logger.info(f"Decision: CALL (weak hand with drawing equity, good pot odds). Amount to call: {call_amount:.2f}, Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}")
+                return action_call_const, round(call_amount, 2)
+            
             # Consider bluff-raising if conditions are right (e.g., specific opponent, board texture)
             # This uses the generic should_bluff_func
             fold_equity_needed_for_bluff_raise = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 0.5 # Added check for division by zero
@@ -258,8 +267,8 @@ def make_postflop_decision(
                     logger.info(f"Decision: RAISE (weak hand, bluffing). Total Amount: {final_raise_amount:.2f}")
                     return action_raise_const, round(final_raise_amount, 2)
 
-            # Default to fold with weak hands if not bluffing
-            logger.info(f"Decision: FOLD (weak hand, no bluff). Bet_to_call: {bet_to_call}, Pot: {pot_size}")
+            # Default to fold with weak hands if not bluffing or calling with draws
+            logger.info(f"Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: {bet_to_call}, Pot: {pot_size}")
             return action_fold_const, 0
 
     # Fallback, should not be reached if logic is complete
