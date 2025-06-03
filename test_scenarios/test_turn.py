@@ -271,12 +271,340 @@ class TestTurnScenarios(unittest.TestCase):
         # Amount for fold is typically 0
         self.assertEqual(amount, 0, "Amount for fold action should be 0.")
 
-    # The test_turn_not_my_turn scenario is less about make_decision and more about game flow.
-    # If make_decision is called when it's not the bot's turn, it might error or do nothing.
-    # For this refactoring, we'll focus on tests where the bot *does* make a decision.
-    # A "not my turn" test would typically verify that the bot *doesn't* try to act.
-    # This might be better tested at a higher level or by ensuring make_decision isn't called.
-    # If the goal is to ensure make_decision handles it gracefully (e.g. returns a specific "no action" or raises error):
+    def test_turn_bot_has_strong_draw(self):
+        """Test turn scenario: bot has a strong draw (flush draw + straight draw)."""
+        my_player_index = 0
+        bot_hand = ['9h', '8h'] # Strong combo draw
+        community_cards = ['7h', '6s', 'Th', '5c'] # Turn gives flush draw + open-ended straight draw
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0.20, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='CO', name='TestBot_CO_Draw',
+            win_probability=0.65 # Strong draw has good equity
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=0.8, current_bet=0.20, position='BTN', name='Opponent_BTN_Bets'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=0.70, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # With a strong draw, bot should call or raise
+        self.assertIn(action, [ACTION_CALL, ACTION_RAISE], "Bot should call or raise with strong combo draw.")
+        if action == ACTION_CALL:
+            self.assertEqual(amount, 0.20, "Call amount should match the bet.")
+
+    def test_turn_bot_has_weak_draw(self):
+        """Test turn scenario: bot has a weak draw (gutshot)."""
+        my_player_index = 0
+        bot_hand = ['9c', '8d'] # Gutshot straight draw
+        community_cards = ['Ah', 'Kh', '6s', '2c'] # Turn gives only gutshot to Jack
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0.30, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='UTG', name='TestBot_UTG_WeakDraw',
+            win_probability=0.15 # Weak draw has low equity
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=0.7, current_bet=0.30, position='BB', name='Opponent_BB_Bets'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=0.80, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # With weak draw facing a large bet, bot should fold
+        self.assertEqual(action, ACTION_FOLD, "Bot should fold weak draw facing large bet.")
+
+    def test_turn_multiway_pot_strong_hand(self):
+        """Test turn scenario: multiway pot with strong hand."""
+        my_player_index = 1
+        bot_hand = ['Ad', 'Ac'] # Premium pocket pair
+        community_cards = ['8h', '7s', '2c', '3d'] # Safe board for overpair
+
+        opponent1 = self._create_mock_opponent_data(
+            seat=1, stack=0.9, current_bet=0.10, position='UTG', name='Opponent_UTG'
+        )
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0.10, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='MP', name='TestBot_MP_Multiway'
+        )
+        opponent2 = self._create_mock_opponent_data(
+            seat=3, stack=0.85, current_bet=0.10, position='CO', name='Opponent_CO'
+        )
+        all_players = [opponent1, my_player_obj, opponent2]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=0.80, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # In multiway pot with strong hand, bot should call or raise
+        self.assertIn(action, [ACTION_CALL, ACTION_RAISE], "Bot should call or raise with strong hand in multiway pot.")
+
+    def test_turn_coordinated_board_bluff_opportunity(self):
+        """Test turn scenario: coordinated board presents bluff opportunity."""
+        my_player_index = 0
+        bot_hand = ['As', '5d'] # Ace high, missed everything
+        community_cards = ['9h', '8h', '7c', '6h'] # Very coordinated, scary turn card
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='BTN', name='TestBot_BTN_BluffSpot',
+            win_probability=0.25 # Some fold equity due to scary board
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=1.0, current_bet=0, position='BB', name='Opponent_BB_ChecksTo'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=0.40, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # On scary coordinated board, bot might bluff or check
+        self.assertIn(action, [ACTION_CHECK, ACTION_RAISE], "Bot should check or bluff on coordinated scary board.")
+
+    def test_turn_made_straight_on_flush_board(self):
+        """Test turn scenario: bot makes straight but board has flush potential."""
+        my_player_index = 0
+        bot_hand = ['Jc', 'Ts'] # Makes straight
+        community_cards = ['9h', '8h', 'Qd', '7h'] # Straight but dangerous flush board
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0.25, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='SB', name='TestBot_SB_StraightFlushBoard',
+            win_probability=0.55 # Good hand but vulnerable to flush
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=0.75, current_bet=0.25, position='BB', name='Opponent_BB_BetsIntoFlushBoard'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=0.75, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # Made straight should call, but might be cautious due to flush board
+        self.assertIn(action, [ACTION_CALL, ACTION_FOLD], "Bot should call or fold straight on dangerous flush board.")
+
+    def test_turn_set_against_aggressive_opponent(self):
+        """Test turn scenario: bot has set facing aggressive betting."""
+        my_player_index = 1
+        bot_hand = ['7h', '7s'] # Pocket sevens
+        community_cards = ['7d', 'Kc', '3h', 'Qh'] # Flops set, turn brings flush draw
+
+        opponent_player = self._create_mock_opponent_data(
+            seat=1, stack=0.5, current_bet=0.50, position='BTN', name='Opponent_BTN_Aggressive'
+        )
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0.50, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='BB', name='TestBot_BB_Set',
+            win_probability=0.80 # Set is very strong
+        )
+        all_players = [opponent_player, my_player_obj]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=1.20, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # With set, bot should call or raise against aggression
+        self.assertIn(action, [ACTION_CALL, ACTION_RAISE], "Bot should call or raise set against aggressive betting.")
+
+    def test_turn_short_stack_all_in_decision(self):
+        """Test turn scenario: short stack faces all-in decision."""
+        my_player_index = 0
+        bot_hand = ['Kh', 'Qc'] # Decent but not premium hand
+        community_cards = ['Ks', '9d', '4h', '2s'] # Top pair, weak kicker
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=0.30, current_bet=0, bet_to_call=0.30, has_turn=True, # All-in decision
+            game_stage='Turn', community_cards=community_cards, position='SB', name='TestBot_SB_ShortStack',
+            win_probability=0.45 # Marginal hand
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=0.70, current_bet=0.30, position='BB', name='Opponent_BB_AllIn'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=0.90, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # Short stack with top pair should call all-in or fold depending on pot odds
+        self.assertIn(action, [ACTION_CALL, ACTION_FOLD], "Short stack should call or fold all-in with marginal hand.")
+
+    def test_turn_nut_flush_draw(self):
+        """Test turn scenario: bot has nut flush draw."""
+        my_player_index = 0
+        bot_hand = ['Ah', 'Kh'] # Nut flush draw
+        community_cards = ['9h', '5c', '2h', '7h'] # Turn completes flush draw
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0.35, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='CO', name='TestBot_CO_NutFlushDraw',
+            win_probability=0.70 # Nut flush draw has excellent equity
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=0.65, current_bet=0.35, position='BTN', name='Opponent_BTN_Bets'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=1.05, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # With nut flush draw, bot should call or raise
+        self.assertIn(action, [ACTION_CALL, ACTION_RAISE], "Bot should call or raise with nut flush draw.")
+
+    def test_turn_two_pair_on_straight_board(self):
+        """Test turn scenario: bot has two pair on straight-heavy board."""
+        my_player_index = 0
+        bot_hand = ['Kd', '9c'] # Two pair
+        community_cards = ['K♠', '9h', '8s', '7c'] # Two pair but dangerous straight board
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0.40, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='MP', name='TestBot_MP_TwoPairStraightBoard',
+            win_probability=0.35 # Two pair vulnerable to straights
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=0.60, current_bet=0.40, position='CO', name='Opponent_CO_BetsIntoStraightBoard'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=1.20, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # Two pair on straight board should be cautious
+        self.assertIn(action, [ACTION_CALL, ACTION_FOLD], "Bot should be cautious with two pair on straight board.")
+
+    def test_turn_check_raise_opportunity(self):
+        """Test turn scenario: bot checks with intention to check-raise."""
+        my_player_index = 0
+        bot_hand = ['As', 'Ad'] # Premium hand
+        community_cards = ['Ac', '6h', '3s', '2d'] # Top set
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='UTG', name='TestBot_UTG_CheckRaise',
+            win_probability=0.90 # Monster hand
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=1.0, current_bet=0, position='BTN', name='Opponent_BTN_Position'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=0.60, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # With monster hand out of position, might check for deception or bet for value
+        self.assertIn(action, [ACTION_CHECK, ACTION_RAISE], "Bot should check or bet with monster hand for value extraction.")
+
     def test_turn_not_my_turn_graceful_handling(self):
         """Test turn scenario: not bot's turn. Ensure make_decision handles this if called."""
         my_player_index = 0 # Bot
@@ -314,7 +642,6 @@ class TestTurnScenarios(unittest.TestCase):
         # Option 3: It raises an error.
         # For this example, let's assume it should return a "no action" (e.g., None, None or specific constants)
         # or perhaps the engine itself has a check.
-        # If the engine is robust, it might return (None, 0) or similar.
         # This test depends heavily on the expected behavior of `make_decision` when `my_player['has_turn']` is False.
         # Let's assume for now the decision engine's `make_decision` has a guard or returns a non-action.
         try:
@@ -328,6 +655,173 @@ class TestTurnScenarios(unittest.TestCase):
         # A more robust test would mock `make_decision` or check a state flag in the bot
         # to ensure it wasn't called inappropriately by a higher-level game loop.
         # For now, this tests a possible graceful return from make_decision itself.
+
+    def test_turn_pot_committed_decision(self):
+        """Test turn scenario: bot is pot committed and must call."""
+        my_player_index = 0
+        bot_hand = ['Jd', '9s'] # Marginal hand
+        community_cards = ['Jh', '8c', '3d', '2h'] # Top pair weak kicker
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=0.15, current_bet=0, bet_to_call=0.15, has_turn=True, # Pot committed
+            game_stage='Turn', community_cards=community_cards, position='BB', name='TestBot_BB_PotCommitted',
+            win_probability=0.35 # Marginal but pot committed
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=0.85, current_bet=0.15, position='BTN', name='Opponent_BTN_PutsAllIn'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=1.50, game_stage='Turn' # Large pot relative to remaining stack
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # When pot committed, bot should call even with marginal hand
+        self.assertEqual(action, ACTION_CALL, "Bot should call when pot committed.")
+        self.assertEqual(amount, 0.15, "Call amount should be remaining stack.")
+
+    def test_turn_paired_board_full_house_potential(self):
+        """Test turn scenario: board pairs on turn, creating full house potential."""
+        my_player_index = 0
+        bot_hand = ['Ks', 'Kd'] # Pocket kings
+        community_cards = ['Kh', '9c', '4s', '9d'] # Turn pairs the board, gives full house
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='CO', name='TestBot_CO_FullHouse',
+            win_probability=0.95 # Full house is very strong
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=1.0, current_bet=0, position='BTN', name='Opponent_BTN_Checks'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=0.50, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # With full house, bot should bet for value
+        self.assertEqual(action, ACTION_RAISE, "Bot should bet full house for value.")
+        self.assertGreater(amount, 0, "Bet amount should be greater than 0.")
+
+    def test_turn_overcards_to_board(self):
+        """Test turn scenario: bot has overcards to low board."""
+        my_player_index = 0
+        bot_hand = ['Ac', 'Kd'] # Big cards
+        community_cards = ['8h', '6s', '3c', '2d'] # Low board, overcards
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0.20, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='SB', name='TestBot_SB_Overcards',
+            win_probability=0.30 # Overcards have some equity
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=0.80, current_bet=0.20, position='BB', name='Opponent_BB_CBet'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=0.60, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # Overcards might call or fold depending on pot odds and position
+        self.assertIn(action, [ACTION_CALL, ACTION_FOLD], "Bot should call or fold with overcards.")
+
+    def test_turn_blocking_bet_opportunity(self):
+        """Test turn scenario: bot makes blocking bet with marginal hand."""
+        my_player_index = 0
+        bot_hand = ['Ah', '9c'] # Top pair weak kicker
+        community_cards = ['As', '7h', '4d', '2s'] # Dry board
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='SB', name='TestBot_SB_BlockingBet',
+            win_probability=0.55 # Marginal hand that might benefit from blocking bet
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=1.0, current_bet=0, position='BTN', name='Opponent_BTN_Position'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=0.40, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # With marginal hand out of position, might bet small (blocking bet) or check
+        self.assertIn(action, [ACTION_CHECK, ACTION_RAISE], "Bot should check or make blocking bet with marginal hand.")
+
+    def test_turn_runner_runner_flush_draw(self):
+        """Test turn scenario: turn gives runner-runner flush draw."""
+        my_player_index = 0
+        bot_hand = ['Kh', 'Qc'] # High cards
+        community_cards = ['Jd', '8h', '5c', 'Qh'] # Turn gives backdoor flush draw and pair
+
+        my_player_obj = self._create_mock_my_player_data(
+            cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0.15, has_turn=True,
+            game_stage='Turn', community_cards=community_cards, position='MP', name='TestBot_MP_BackdoorFlush',
+            win_probability=0.40 # Pair + backdoor draws
+        )
+        opponent_player = self._create_mock_opponent_data(
+            seat=2, stack=0.85, current_bet=0.15, position='CO', name='Opponent_CO_Bets'
+        )
+        all_players = [my_player_obj, opponent_player]
+        for i, p in enumerate(all_players):
+            p['id'] = f'player{i+1}'
+            p['seat'] = str(i + 1)
+            if i == my_player_index:
+                 p['is_my_player'] = True
+            else:
+                 p['is_my_player'] = False
+
+        table_data = self._create_mock_table_data(
+            community_cards=community_cards, pot_size=0.65, game_stage='Turn'
+        )
+        game_state = self._create_game_state(all_players, table_data, my_player_index)
+
+        action, amount = self.bot.decision_engine.make_decision(game_state, my_player_index)
+
+        # With pair and backdoor draws, might call or fold
+        self.assertIn(action, [ACTION_CALL, ACTION_FOLD], "Bot should call or fold with pair and backdoor draws.")
 
 if __name__ == '__main__':
     unittest.main()
