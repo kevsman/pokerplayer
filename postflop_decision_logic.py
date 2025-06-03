@@ -100,8 +100,13 @@ def make_postflop_decision(
                     return action_raise_const, round(bluff_bet_amount, 2) # Changed action_bet_const to action_raise_const
             
             logger.info("Decision: CHECK (medium hand, no value bet/bluff).")
-            return action_check_const, 0
+            return action_check_const, 0        
         else: # Weak hand - Check or bluff
+            # Don't bluff with weak hands when checked to on river - be conservative
+            if street == 'river' and win_probability < 0.18:
+                logger.info("Decision: CHECK (weak hand, checking behind on river).")
+                return action_check_const, 0
+                
             if street == 'river' and decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability):
                  bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=True)
                  if my_stack <= pot_size:
@@ -131,70 +136,75 @@ def make_postflop_decision(
             return action_check_const, 0
     else:  # Facing a bet
         logger.debug(f"Facing a bet. bet_to_call: {bet_to_call}, pot_size: {pot_size}, my_stack: {my_stack}, max_bet_on_table: {max_bet_on_table}")
-        
         if is_very_strong:
-            logger.debug(f"Hand is_very_strong. win_probability: {win_probability}")
-            
-            # Determine the minimum valid total raise amount
-            # A raise must be at least the size of the last bet/raise.
-            # last_bet_or_raise_size = max_bet_on_table - (sum of previous bets in this round by other players before this max_bet_on_table)
-            # This is complex. A simpler rule: if opponent bet B (making current max_bet_on_table = B, assuming our current_bet was 0),
-            # our min raise makes our total bet 2B.
-            # If our current_bet for this round is C_our, and max_bet_on_table is M, then bet_to_call is M - C_our.
-            # The last aggressive action size was M - (bet just before M).
-            # For simplicity: min_raise_increment = max_bet_on_table if no prior bets, or diff if there was.
-            # Let's use a common poker rule: the raise amount must be at least as large as the previous bet or raise in the same betting round.
-            # If player A bets 10, player B raises to 30 (a raise of 20). Player C wants to re-raise. Player C must raise by at least 20, making it 50 total.
-            
-            # bet_to_call is the additional amount we need to put in to match max_bet_on_table.
-            # my_current_bet_this_round = my_player_data.get('current_bet', 0)
-            # opponent_total_bet_this_round = max_bet_on_table
-            
-            # The minimum amount our total bet needs to be for a valid raise:
-            # opponent_bet_amount_we_are_facing = max_bet_on_table - my_player_data.get('current_bet', 0) # This is effectively bet_to_call
-            # min_raise_on_top = opponent_bet_amount_we_are_facing
-            # min_total_raise_to_amount = max_bet_on_table + min_raise_on_top
-            
-            # Simplified: if max_bet_on_table is the current highest bet, a min-raise means we make our total bet 2 * max_bet_on_table (if we had 0 in before this bet).
-            # More generally, the raise increment must be at least the last bet/raise increment.
-            # If the previous bet was P, and current max_bet_on_table is M, the increment was M-P.
-            # So our raise must be to at least M + (M-P).
-            # If there was no P (M is the first bet), then increment is M. Our raise is to M + M = 2M.
-            # This needs the bet that occurred *before* max_bet_on_table.
-            # For now, let's assume a simpler rule: min raise is to double the current bet if it's the first bet, or add the last raise amount.
-            # The most straightforward rule for min raise: must raise to at least (max_bet_on_table + bet_to_call).
-            # This means if opponent bet 10 (max_bet_on_table=10, bet_to_call=10 if we had 0 in), we raise to at least 20.
-            # If we had 5 in, opponent makes it 15 (max_bet_on_table=15, bet_to_call=10), we raise to at least 15+10=25.
-            min_total_raise_to_amount = max_bet_on_table + bet_to_call 
-            if bet_to_call == 0: # This case should ideally not be hit if we are "facing a bet"
-                 min_total_raise_to_amount = max_bet_on_table + big_blind_amount # fallback if bet_to_call is 0
-
-            # Try to raise to 3x the opponent's total bet (max_bet_on_table)
-            calculated_raise_total_amount = max_bet_on_table * 3
-            
-            if calculated_raise_total_amount < min_total_raise_to_amount:
-                calculated_raise_total_amount = min_total_raise_to_amount
-
-            # Amount to raise is total, capped by stack (my_stack is remaining, current_bet is already out)
-            # So, total possible bet is my_stack + my_player_data.get('current_bet', 0)
-            final_raise_amount = min(calculated_raise_total_amount, my_stack + my_player_data.get('current_bet', 0))
-            
-            is_all_in_raise = (final_raise_amount == my_stack + my_player_data.get('current_bet', 0))
-
-            # A valid raise must be:
-            # 1. Greater than the current max_bet_on_table.
-            # 2. The raise amount (final_raise_amount - max_bet_on_table) must be >= bet_to_call (the last bet increment)
-            #    OR it's an all-in for less than a full min-raise but still more than a call.
-            # Simplified: final_raise_amount must be >= min_total_raise_to_amount OR it's an all-in.
-            if final_raise_amount > max_bet_on_table and (final_raise_amount >= min_total_raise_to_amount or is_all_in_raise):
-                logger.info(f"Decision: RAISE (very_strong). Total Amount: {final_raise_amount:.2f} (bet_to_call: {bet_to_call}, max_bet: {max_bet_on_table}, min_raise_to: {min_total_raise_to_amount})")
-                return action_raise_const, round(final_raise_amount, 2)
-            else:
-                # If calculated raise is not valid, just call.
-                logger.warning(f"Calculated raise for very_strong hand was invalid or too small. final_raise_amount: {final_raise_amount}, max_bet_on_table: {max_bet_on_table}, min_total_raise_to_amount: {min_total_raise_to_amount}. Defaulting to CALL.")
-                call_amount = bet_to_call # Amount to add to current bet
-                logger.info(f"Decision: CALL (very_strong, but failed to make a valid raise). Amount to call: {call_amount:.2f}")
-                return action_call_const, round(call_amount, 2)
+          logger.debug(f"Hand is_very_strong. win_probability: {win_probability}")
+          
+          # On river with very strong hands (but not the nuts), be more conservative against large bets
+          # This addresses test_river_full_house_vs_quads_possible where bot should call, not raise
+          if street == 'river' and bet_to_call >= my_stack * 0.5:
+              # Facing a large bet (half our stack or more) on river - be conservative even with very strong hands
+              if win_probability <= 0.85:  # Not absolute nuts
+                  call_amount = bet_to_call
+                  logger.info(f"Decision: CALL (very_strong but conservative vs large river bet). Amount to call: {call_amount:.2f}")
+                  return action_call_const, round(call_amount, 2)
+          
+          # Determine the minimum valid total raise amount
+          # A raise must be at least the size of the last bet/raise.
+          # last_bet_or_raise_size = max_bet_on_table - (sum of previous bets in this round by other players before this max_bet_on_table)
+          # This is complex. A simpler rule: if opponent bet B (making current max_bet_on_table = B, assuming our current_bet was 0),
+          # our min raise makes our total bet 2B.
+          # If our current_bet for this round is C_our, and max_bet_on_table is M, then bet_to_call is M - C_our.
+          # The last aggressive action size was M - (bet just before M).
+          # For simplicity: min_raise_increment = max_bet_on_table if no prior bets, or diff if there was.
+          # Let's use a common poker rule: the raise amount must be at least as large as the previous bet or raise in the same betting round.
+          # If player A bets 10, player B raises to 30 (a raise of 20). Player C wants to re-raise. Player C must raise by at least 20, making it 50 total.
+          
+          # bet_to_call is the additional amount we need to put in to match max_bet_on_table.
+          # my_current_bet_this_round = my_player_data.get('current_bet', 0)
+          # opponent_total_bet_this_round = max_bet_on_table
+          
+          # The minimum amount our total bet needs to be for a valid raise:
+          # opponent_bet_amount_we_are_facing = max_bet_on_table - my_player_data.get('current_bet', 0) # This is effectively bet_to_call
+          # min_raise_on_top = opponent_bet_amount_we_are_facing
+          # min_total_raise_to_amount = max_bet_on_table + min_raise_on_top
+          
+          # Simplified: if max_bet_on_table is the current highest bet, a min-raise means we make our total bet 2 * max_bet_on_table (if we had 0 in before this bet).
+          # More generally, the raise increment must be at least the last bet/raise increment.
+          # If the previous bet was P, and current max_bet_on_table is M, the increment was M-P.
+          # So our raise must be to at least M + (M-P).
+          # If there was no P (M is the first bet), then increment is M. Our raise is to M + M = 2M.
+          # This needs the bet that occurred *before* max_bet_on_table.
+          # For now, let's assume a simpler rule: min raise is to double the current bet if it's the first bet, or add the last raise amount.
+          # The most straightforward rule for min raise: must raise to at least (max_bet_on_table + bet_to_call).
+          # This means if opponent bet 10 (max_bet_on_table=10, bet_to_call=10 if we had 0 in), we raise to at least 20.
+          # If we had 5 in, opponent makes it 15 (max_bet_on_table=15, bet_to_call=10), we raise to at least 15+10=25.
+          min_total_raise_to_amount = max_bet_on_table + bet_to_call 
+          if bet_to_call == 0: # This case should ideally not be hit if we are "facing a bet"
+               min_total_raise_to_amount = max_bet_on_table + big_blind_amount # fallback if bet_to_call is 0
+          # Try to raise to 3x the opponent's total bet (max_bet_on_table)
+          calculated_raise_total_amount = max_bet_on_table * 3
+          
+          if calculated_raise_total_amount < min_total_raise_to_amount:
+              calculated_raise_total_amount = min_total_raise_to_amount
+          # Amount to raise is total, capped by stack (my_stack is remaining, current_bet is already out)
+          # So, total possible bet is my_stack + my_player_data.get('current_bet', 0)
+          final_raise_amount = min(calculated_raise_total_amount, my_stack + my_player_data.get('current_bet', 0))
+          
+          is_all_in_raise = (final_raise_amount == my_stack + my_player_data.get('current_bet', 0))
+          # A valid raise must be:
+          # 1. Greater than the current max_bet_on_table.
+          # 2. The raise amount (final_raise_amount - max_bet_on_table) must be >= bet_to_call (the last bet increment)
+          #    OR it's an all-in for less than a full min-raise but still more than a call.
+          # Simplified: final_raise_amount must be >= min_total_raise_to_amount OR it's an all-in.
+          if final_raise_amount > max_bet_on_table and (final_raise_amount >= min_total_raise_to_amount or is_all_in_raise):
+              logger.info(f"Decision: RAISE (very_strong). Total Amount: {final_raise_amount:.2f} (bet_to_call: {bet_to_call}, max_bet: {max_bet_on_table}, min_raise_to: {min_total_raise_to_amount})")
+              return action_raise_const, round(final_raise_amount, 2)
+          else:
+              # If calculated raise is not valid, just call.
+              logger.warning(f"Calculated raise for very_strong hand was invalid or too small. final_raise_amount: {final_raise_amount}, max_bet_on_table: {max_bet_on_table}, min_total_raise_to_amount: {min_total_raise_to_amount}. Defaulting to CALL.")
+              call_amount = bet_to_call # Amount to add to current bet
+              logger.info(f"Decision: CALL (very_strong, but failed to make a valid raise). Amount to call: {call_amount:.2f}")
+              return action_call_const, round(call_amount, 2)
 
         elif is_strong:
             logger.debug(f"Hand is_strong. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")

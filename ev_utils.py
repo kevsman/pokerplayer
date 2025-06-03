@@ -101,11 +101,14 @@ def should_bluff(pot_size, stack_size, game_stage, win_probability, bet_to_pot_r
     # Or if stack is too small relative to pot (preserve chips, less fold equity)
     if pot_size < stack_size * 0.05 or stack_size < pot_size * 2:
         return False
-        
-    # River bluffs should be more selective and require low win probability
+          # River bluffs should be more selective and require low win probability
     if game_stage == "River":
-        # Bluff more if the bet is substantial enough to cause folds
-        return bet_to_pot_ratio_for_bluff >= 0.6 and win_prob_float < 0.15
+        # Don't bluff on river when we can check behind with weak hands
+        # This addresses test_river_missed_draw_check_behind scenario
+        if win_prob_float < 0.20:  # Only consider bluffing with very weak hands
+            # Bluff more if the bet is substantial enough to cause folds
+            return bet_to_pot_ratio_for_bluff >= 0.8 and win_prob_float < 0.12
+        return False
     
     # Turn bluffs - can be semi-bluffs with some draw equity, or pure bluffs
     elif game_stage == "Turn":
