@@ -166,8 +166,7 @@ class HandEvaluator:
             kickers = sorted([r for r in ranks if r != pair_val], reverse=True)
             desc = f"One Pair, {pair_name}s"
             return (2, desc, [pair_val] + kickers[:3])
-            
-        # 9. High Card
+              # 9. High Card
         high_card_name = self.rank_map_rev.get(ranks[0], ranks[0])
         desc = f"High Card, {high_card_name}"
         return (1, desc, ranks)
@@ -180,8 +179,8 @@ class HandEvaluator:
             if conv_card:
                 processed_cards.append(conv_card)
         
-        # Pre-flop: Return a basic evaluation (rank 0, description, sorted card ranks)
-        if not community_cards: 
+        # Pre-flop: Return evaluation based on pre-flop strength (rank 10-19 for pre-flop hands)
+        if not community_cards:
             if len(hole_cards) == 2:
                 c1_str, c2_str = hole_cards[0], hole_cards[1]
                 c1 = self._convert_card_to_value(c1_str)
@@ -199,27 +198,35 @@ class HandEvaluator:
                              s1, s2 = original_s2, original_s1
                         else:
                              s1, s2 = original_s1, original_s2
-
-
+                    
                     r1_name = self.rank_map_rev.get(r1_val, str(r1_val))
                     r2_name = self.rank_map_rev.get(r2_val, str(r2_val))
                     
                     desc = ""
                     if r1_val == r2_val:
                         desc = f"Pair of {r1_name}s"
+                        # Pocket pairs: rank 15-19 based on pair value
+                        rank = 15 + (r1_val - 2) / 12.0  # Scale 2-14 to 0-1, then add to base 15
                     else:
                         suited_str = " suited" if s1 == s2 else " offsuit"
                         desc = f"{r1_name}{r2_name}{suited_str}"
-                    # For pre-flop, rank is 0 (less than any made hand), tie-breakers are card ranks
-                    return (0, desc, sorted([r1_val, r2_val], reverse=True)) 
-            return (0, "N/A (Pre-flop - invalid hole cards)", [])
+                        # Non-pairs: rank 10-14 based on high card and suitedness
+                        rank = 10 + (r1_val - 2) / 12.0 + (r2_val - 2) / 120.0
+                        if s1 == s2:  # Suited gets bonus
+                            rank += 1.0
+                    
+                    return (rank, desc, sorted([r1_val, r2_val], reverse=True)) 
+            return (10, "N/A (Pre-flop - invalid hole cards)", [])
 
         if len(processed_cards) < 5:
-            # Return rank 0, description, and sorted processed card ranks if available
+            # For incomplete hands (flop/turn), use partial hand evaluation (rank 20-25)
             current_ranks = sorted([card[0] for card in processed_cards], reverse=True)
-            return (0, "N/A (Not enough cards for 5-card hand)", current_ranks)
+            # Base rank 20 + average of card ranks normalized
+            avg_rank = sum(current_ranks) / len(current_ranks) if current_ranks else 2
+            rank = 20 + (avg_rank - 2) / 12.0  # Scale to 20-21 range
+            return (rank, f"Incomplete hand ({len(processed_cards)} cards)", current_ranks)
 
-        best_hand_rank_eval = (0, "High Card", []) # Default to lowest possible if no combo found
+        best_hand_rank_eval = (1, "High Card", []) # Default to high card (rank 1) if no combo found
 
         for five_card_combo_processed in combinations(processed_cards, 5):
             current_hand_eval = self._evaluate_five_card_hand(list(five_card_combo_processed))

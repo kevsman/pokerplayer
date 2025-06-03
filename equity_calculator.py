@@ -158,9 +158,10 @@ class EquityCalculator:
                      logger.warning(f"Sim {i}: Board length > 5 ({len(current_board_sim_obj)}). Board: {self.hand_evaluator.cards_to_strings(current_board_sim_obj) if hasattr(self.hand_evaluator, 'cards_to_strings') else current_board_sim_obj}. Skipping.")
                      continue
 
-
-                player_eval = self.hand_evaluator.evaluate_hand(player_hole_cards_obj, current_board_sim_obj)
-                opponent_eval = self.hand_evaluator.evaluate_hand(opponent_hole_cards_sim_obj, current_board_sim_obj)
+                # Use string cards for evaluation (evaluate_hand expects strings, not tuples)
+                current_board_sim_strings = community_cards_str_list + additional_board_cards_strings
+                player_eval = self.hand_evaluator.evaluate_hand(player_hole_cards_str_list_for_conversion, current_board_sim_strings)
+                opponent_eval = self.hand_evaluator.evaluate_hand(opponent_hole_cards_strings, current_board_sim_strings)
                 comparison_result_for_log = self._compare_hands(player_eval, opponent_eval)
 
                 if i < 5: # Log details for the first 5 simulations for debugging
@@ -198,13 +199,12 @@ class EquityCalculator:
         
         win_probability = player_wins / total_simulations_count
         tie_probability = ties / total_simulations_count
-        
-        # Equity is typically win_prob + (tie_prob / 2) if splitting pot on tie.
+          # Equity is typically win_prob + (tie_prob / 2) if splitting pot on tie.
         equity = win_probability + (tie_probability / 2) # Corrected equity calculation
 
         logger.info(
             f"Equity calculation complete for {player_hole_cards_str_list_for_conversion} vs random. "
-            f"Win: {win_probability:.2f}%, Tie: {tie_probability:.2f}%, Equity: {equity:.2f}% "
+            f"Win: {win_probability*100:.2f}%, Tie: {tie_probability*100:.2f}%, Equity: {equity*100:.2f}% "
             f"({total_simulations_count} simulations)"
         )
         return win_probability, tie_probability, equity

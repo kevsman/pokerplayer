@@ -2842,3 +2842,1169 @@
 2025-06-01 22:12:24,084 - INFO - Found actions area. Analyzing buttons...
 2025-06-01 22:12:24,085 - INFO - Found 3 potential action elements.
 2025-06-01 22:12:24,093 - INFO - Equity calculation complete for ['J♥', '4♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:28:47,757 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:28:47,759 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:28:47,760 - INFO - Found 0 potential action elements.
+2025-06-03 09:28:47,762 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:28:47,764 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:28:47,764 - INFO - Found 0 potential action elements.
+2025-06-03 09:28:47,771 - INFO - Equity calculation complete for ['K♦', '5♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:28:51,158 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:28:51,161 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:28:51,161 - INFO - Found 0 potential action elements.
+2025-06-03 09:28:51,164 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:28:51,167 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:28:51,168 - INFO - Found 0 potential action elements.
+2025-06-03 09:28:51,178 - INFO - Equity calculation complete for ['K♦', '5♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:18,005 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:18,007 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:18,008 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:18,010 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:18,012 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:18,013 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:18,017 - INFO - Equity calculation complete for ['A♥', '3♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:21,404 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:21,408 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:21,408 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:21,413 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:21,418 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:21,418 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:21,429 - INFO - Equity calculation complete for ['A♥', '3♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:24,814 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:24,818 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:24,818 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:24,823 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:24,828 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:24,828 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:24,839 - INFO - Equity calculation complete for ['A♥', '3♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:28,220 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:28,223 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:28,224 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:28,228 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:28,232 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:28,233 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:28,242 - INFO - Equity calculation complete for ['A♥', '3♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:31,626 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:31,630 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:31,630 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:31,636 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:31,641 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:31,641 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:31,652 - INFO - Equity calculation complete for ['A♥', '3♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:35,035 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:35,040 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:35,040 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:35,045 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:35,050 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:35,051 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:35,061 - INFO - Equity calculation complete for ['A♥', '3♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:38,445 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:38,449 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:38,450 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:38,453 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:38,458 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:38,458 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:38,470 - INFO - Equity calculation complete for ['A♥', '3♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:41,858 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:41,862 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:41,863 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:41,868 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:41,873 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:41,874 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:41,884 - INFO - Equity calculation complete for ['A♥', '3♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:45,271 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:45,277 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:45,277 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:45,283 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:45,288 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:45,288 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:45,299 - INFO - Equity calculation complete for ['A♥', '3♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:48,686 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:48,690 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:48,691 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:48,695 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:48,700 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:48,700 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:48,709 - INFO - Equity calculation complete for ['A♥', '3♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:52,099 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:52,102 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:52,103 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:52,107 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:52,112 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:52,119 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:52,126 - INFO - Equity calculation complete for ['A♥', '3♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:55,519 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:55,523 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:55,523 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:55,527 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:55,532 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:55,532 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:55,539 - INFO - Equity calculation complete for ['A♥', '3♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:30:58,922 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:58,925 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:58,926 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:58,928 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:30:58,932 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:30:58,933 - INFO - Found 0 potential action elements.
+2025-06-03 09:30:58,942 - INFO - Equity calculation complete for ['3♦', 'Q♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:02,327 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:02,330 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:02,331 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:02,334 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:02,338 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:02,339 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:02,348 - INFO - Equity calculation complete for ['3♦', 'Q♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:05,731 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:05,735 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:05,735 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:05,740 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:05,744 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:05,744 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:05,755 - INFO - Equity calculation complete for ['3♦', 'Q♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:09,140 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:09,143 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:09,144 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:09,147 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:09,152 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:09,153 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:09,163 - INFO - Equity calculation complete for ['3♦', 'Q♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:12,547 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:12,550 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:12,551 - INFO - Found 2 potential action elements.
+2025-06-03 09:31:12,556 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:12,561 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:12,562 - INFO - Found 2 potential action elements.
+2025-06-03 09:31:12,573 - INFO - Equity calculation complete for ['3♦', 'Q♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:21,418 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:21,422 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:21,423 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:21,429 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:21,433 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:21,434 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:21,443 - INFO - Equity calculation complete for ['3♦', 'Q♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:24,825 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:24,829 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:24,829 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:24,833 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:24,837 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:24,838 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:24,848 - INFO - Equity calculation complete for ['3♦', 'Q♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:28,234 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:28,237 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:28,237 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:28,242 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:28,246 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:28,247 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:28,256 - INFO - Equity calculation complete for ['3♦', 'Q♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:31,639 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:31,643 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:31,644 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:31,650 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:31,654 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:31,655 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:31,664 - INFO - Equity calculation complete for ['3♦', 'Q♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:35,053 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:35,057 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:35,057 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:35,060 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:35,065 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:35,065 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:35,076 - INFO - Equity calculation complete for ['3♦', 'Q♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:38,460 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:38,464 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:38,464 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:38,468 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:38,473 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:38,473 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:38,484 - INFO - Equity calculation complete for ['3♦', 'Q♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:41,873 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:41,876 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:41,877 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:41,880 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:41,884 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:41,885 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:41,894 - INFO - Equity calculation complete for ['3♦', 'Q♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:45,277 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:45,281 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:45,281 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:45,285 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:45,289 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:45,290 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:45,300 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:48,688 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:48,691 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:48,692 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:48,695 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:48,700 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:48,700 - INFO - Found 0 potential action elements.
+2025-06-03 09:31:48,710 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:31:52,095 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:52,099 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:52,099 - INFO - Found 3 potential action elements.
+2025-06-03 09:31:52,103 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:31:52,108 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:31:52,108 - INFO - Found 3 potential action elements.
+2025-06-03 09:31:52,119 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:00,965 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:00,969 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:00,969 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:00,973 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:00,978 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:00,979 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:00,990 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:04,376 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:04,381 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:04,382 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:04,387 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:04,391 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:04,392 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:04,402 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:07,786 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:07,790 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:07,790 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:07,796 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:07,801 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:07,802 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:07,812 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:11,196 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:11,200 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:11,200 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:11,205 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:11,209 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:11,210 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:11,220 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:14,608 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:14,611 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:14,612 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:14,616 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:14,619 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:14,620 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:14,630 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:18,016 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:18,020 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:18,020 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:18,024 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:18,029 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:18,030 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:18,041 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:21,426 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:21,429 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:21,429 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:21,433 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:21,438 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:21,438 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:21,448 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:24,834 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:24,837 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:24,838 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:24,842 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:24,846 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:24,846 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:24,857 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:28,241 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:28,245 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:28,245 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:28,251 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:28,256 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:28,256 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:28,263 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:31,650 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:31,654 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:31,654 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:31,661 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:31,666 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:31,666 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:31,675 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:35,058 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:35,061 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:35,061 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:35,065 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:35,070 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:35,070 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:35,079 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:38,461 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:38,465 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:38,465 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:38,469 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:38,474 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:38,474 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:38,483 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:41,867 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:41,871 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:41,871 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:41,877 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:41,881 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:41,882 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:41,890 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:45,277 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:45,282 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:45,282 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:45,287 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:45,291 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:45,292 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:45,299 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:48,688 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:48,692 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:48,692 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:48,696 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:48,700 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:48,700 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:48,708 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:52,092 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:52,096 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:52,096 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:52,100 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:52,105 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:52,106 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:52,112 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:55,499 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:55,503 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:55,503 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:55,508 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:55,513 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:55,513 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:55,520 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:32:58,907 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:58,910 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:58,910 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:58,914 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:32:58,919 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:32:58,920 - INFO - Found 0 potential action elements.
+2025-06-03 09:32:58,926 - INFO - Equity calculation complete for ['8♥', 'A♠'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:02,307 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:02,311 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:02,311 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:02,316 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:02,320 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:02,321 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:02,330 - INFO - Equity calculation complete for ['5♠', '10♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:05,714 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:05,718 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:05,718 - INFO - Found 3 potential action elements.
+2025-06-03 09:33:05,723 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:05,727 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:05,728 - INFO - Found 3 potential action elements.
+2025-06-03 09:33:05,737 - INFO - Equity calculation complete for ['5♠', '10♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:14,581 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:14,585 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:14,585 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:14,589 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:14,594 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:14,595 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:14,605 - INFO - Equity calculation complete for ['5♠', '10♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:17,994 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:17,998 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:17,998 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:18,002 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:18,006 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:18,007 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:18,017 - INFO - Equity calculation complete for ['5♠', '10♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:21,401 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:21,405 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:21,405 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:21,409 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:21,413 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:21,413 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:21,421 - INFO - Equity calculation complete for ['5♠', '10♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:24,806 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:24,810 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:24,810 - INFO - Found 3 potential action elements.
+2025-06-03 09:33:24,814 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:24,818 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:24,818 - INFO - Found 3 potential action elements.
+2025-06-03 09:33:24,828 - INFO - Equity calculation complete for ['3♠', '7♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:33,679 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:33,683 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:33,683 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:33,688 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:33,694 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:33,694 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:33,705 - INFO - Equity calculation complete for ['3♠', '7♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:37,089 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:37,093 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:37,094 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:37,100 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:37,104 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:37,105 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:37,115 - INFO - Equity calculation complete for ['3♠', '7♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:40,500 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:40,503 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:40,503 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:40,507 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:40,512 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:40,512 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:40,524 - INFO - Equity calculation complete for ['3♠', '7♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:43,909 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:43,914 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:43,914 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:43,918 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:43,923 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:43,923 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:43,933 - INFO - Equity calculation complete for ['3♠', '7♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:47,323 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:47,327 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:47,327 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:47,333 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:47,338 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:47,339 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:47,349 - INFO - Equity calculation complete for ['3♠', '7♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:50,732 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:50,735 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:50,735 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:50,740 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:50,744 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:50,744 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:50,752 - INFO - Equity calculation complete for ['3♠', '7♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:54,139 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:54,142 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:54,143 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:54,146 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:54,150 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:54,150 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:54,159 - INFO - Equity calculation complete for ['Q♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:33:57,545 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:57,548 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:57,548 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:57,552 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:33:57,556 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:33:57,557 - INFO - Found 0 potential action elements.
+2025-06-03 09:33:57,565 - INFO - Equity calculation complete for ['Q♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:00,953 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:00,957 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:00,958 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:00,962 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:00,965 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:00,966 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:00,975 - INFO - Equity calculation complete for ['Q♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:04,361 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:04,365 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:04,365 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:04,370 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:04,375 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:04,375 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:04,386 - INFO - Equity calculation complete for ['Q♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:07,781 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:07,785 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:07,785 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:07,790 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:07,794 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:07,794 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:07,804 - INFO - Equity calculation complete for ['Q♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:11,186 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:11,189 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:11,190 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:11,193 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:11,198 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:11,198 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:11,207 - INFO - Equity calculation complete for ['Q♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:14,600 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:14,604 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:14,604 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:14,607 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:14,611 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:14,612 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:14,620 - INFO - Equity calculation complete for ['Q♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:18,001 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:18,005 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:18,006 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:18,009 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:18,013 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:18,014 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:18,022 - INFO - Equity calculation complete for ['Q♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:21,422 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:21,425 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:21,425 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:21,428 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:21,431 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:21,432 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:21,439 - INFO - Equity calculation complete for ['Q♠', 'Q♦'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:24,822 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:24,825 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:24,826 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:24,829 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:24,833 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:24,833 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:24,842 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:28,228 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:28,231 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:28,232 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:28,235 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:28,239 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:28,240 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:28,249 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:31,631 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:31,634 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:31,635 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:31,638 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:31,642 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:31,643 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:31,652 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:35,037 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:35,042 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:35,042 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:35,048 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:35,052 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:35,052 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:35,063 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:38,454 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:38,458 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:38,459 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:38,463 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:38,468 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:38,468 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:38,478 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:41,867 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:41,871 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:41,872 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:41,877 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:41,881 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:41,881 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:41,892 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:45,274 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:45,277 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:45,278 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:45,281 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:45,286 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:45,286 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:45,295 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:48,681 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:48,685 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:48,685 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:48,689 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:48,694 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:48,695 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:48,704 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:52,087 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:52,091 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:52,091 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:52,095 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:52,100 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:52,100 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:52,110 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:55,498 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:55,502 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:55,502 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:55,506 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:55,511 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:55,511 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:55,521 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:34:58,913 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:58,918 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:58,918 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:58,923 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:34:58,928 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:34:58,928 - INFO - Found 0 potential action elements.
+2025-06-03 09:34:58,938 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:35:02,321 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:02,324 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:02,325 - INFO - Found 2 potential action elements.
+2025-06-03 09:35:02,328 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:02,332 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:02,333 - INFO - Found 2 potential action elements.
+2025-06-03 09:35:02,342 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:35:11,188 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:11,192 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:11,192 - INFO - Found 0 potential action elements.
+2025-06-03 09:35:11,197 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:11,200 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:11,201 - INFO - Found 0 potential action elements.
+2025-06-03 09:35:11,210 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:35:14,598 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:14,601 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:14,601 - INFO - Found 0 potential action elements.
+2025-06-03 09:35:14,605 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:14,609 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:14,610 - INFO - Found 0 potential action elements.
+2025-06-03 09:35:14,619 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:35:18,013 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:18,017 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:18,017 - INFO - Found 0 potential action elements.
+2025-06-03 09:35:18,021 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:18,025 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:18,025 - INFO - Found 0 potential action elements.
+2025-06-03 09:35:18,033 - INFO - Equity calculation complete for ['4♥', '9♥'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:35:21,425 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:21,429 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:21,430 - INFO - Found 0 potential action elements.
+2025-06-03 09:35:21,434 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:21,438 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:21,438 - INFO - Found 0 potential action elements.
+2025-06-03 09:35:21,446 - INFO - Equity calculation complete for ['9♣', 'K♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:35:24,869 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:24,873 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:24,873 - INFO - Found 0 potential action elements.
+2025-06-03 09:35:24,876 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:24,879 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:24,880 - INFO - Found 0 potential action elements.
+2025-06-03 09:35:24,890 - INFO - Equity calculation complete for ['9♣', 'K♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:35:28,276 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:28,279 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:28,280 - INFO - Found 0 potential action elements.
+2025-06-03 09:35:28,283 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:28,287 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:28,288 - INFO - Found 0 potential action elements.
+2025-06-03 09:35:28,298 - INFO - Equity calculation complete for ['9♣', 'K♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:35:31,684 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:31,687 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:31,688 - INFO - Found 3 potential action elements.
+2025-06-03 09:35:31,691 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:35:31,695 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:35:31,696 - INFO - Found 3 potential action elements.
+2025-06-03 09:35:31,706 - INFO - Equity calculation complete for ['9♣', 'K♣'] vs random. Win: 0.00%, Tie: 1.00%, Equity: 0.50% (500 simulations)
+2025-06-03 09:55:46,321 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:55:46,323 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:55:46,325 - INFO - Found 3 potential action elements.
+2025-06-03 09:55:46,327 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:55:46,329 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:55:46,329 - INFO - Found 3 potential action elements.
+2025-06-03 09:55:46,391 - INFO - Equity calculation complete for ['5♥', '8♥'] vs random. Win: 26.80%, Tie: 15.80%, Equity: 34.70% (500 simulations)
+2025-06-03 09:55:46,393 - INFO - Decision: CHECK (weak hand).
+2025-06-03 09:55:55,236 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:55:55,241 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:55:55,241 - INFO - Found 0 potential action elements.
+2025-06-03 09:55:55,246 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:55:55,251 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:55:55,251 - INFO - Found 0 potential action elements.
+2025-06-03 09:55:55,376 - INFO - Equity calculation complete for ['5♥', '8♥'] vs random. Win: 16.20%, Tie: 18.20%, Equity: 25.30% (500 simulations)
+2025-06-03 09:55:58,762 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:55:58,765 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:55:58,766 - INFO - Found 3 potential action elements.
+2025-06-03 09:55:58,770 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:55:58,774 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:55:58,775 - INFO - Found 3 potential action elements.
+2025-06-03 09:55:58,903 - INFO - Equity calculation complete for ['5♥', '8♥'] vs random. Win: 12.60%, Tie: 22.20%, Equity: 23.70% (500 simulations)
+2025-06-03 09:55:58,904 - INFO - Decision: CHECK (weak hand).
+2025-06-03 09:56:07,747 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:07,750 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:07,751 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:07,754 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:07,758 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:07,759 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:07,884 - INFO - Equity calculation complete for ['5♥', '8♥'] vs random. Win: 18.20%, Tie: 21.40%, Equity: 28.90% (500 simulations)
+2025-06-03 09:56:11,266 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:11,269 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:11,270 - INFO - Found 3 potential action elements.
+2025-06-03 09:56:11,273 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:11,277 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:11,278 - INFO - Found 3 potential action elements.
+2025-06-03 09:56:11,401 - INFO - Equity calculation complete for ['5♥', '8♥'] vs random. Win: 16.00%, Tie: 21.60%, Equity: 26.80% (500 simulations)
+2025-06-03 09:56:11,403 - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.03, Pot: 0.11
+2025-06-03 09:56:20,247 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:20,250 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:20,251 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:20,253 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:20,258 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:20,259 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:20,390 - INFO - Equity calculation complete for ['5♠', '9♥'] vs random. Win: 38.60%, Tie: 11.60%, Equity: 44.40% (500 simulations)
+2025-06-03 09:56:23,776 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:23,779 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:23,780 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:23,784 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:23,789 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:23,790 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:23,921 - INFO - Equity calculation complete for ['5♠', '9♥'] vs random. Win: 41.40%, Tie: 9.40%, Equity: 46.10% (500 simulations)
+2025-06-03 09:56:27,305 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:27,308 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:27,309 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:27,312 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:27,315 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:27,316 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:27,442 - INFO - Equity calculation complete for ['5♠', '9♥'] vs random. Win: 37.40%, Tie: 14.80%, Equity: 44.80% (500 simulations)
+2025-06-03 09:56:30,827 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:30,830 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:30,831 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:30,835 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:30,840 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:30,840 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:30,967 - INFO - Equity calculation complete for ['5♠', '9♥'] vs random. Win: 37.80%, Tie: 10.40%, Equity: 43.00% (500 simulations)
+2025-06-03 09:56:34,352 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:34,355 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:34,355 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:34,359 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:34,362 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:34,363 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:34,487 - INFO - Equity calculation complete for ['5♠', '9♥'] vs random. Win: 37.00%, Tie: 11.80%, Equity: 42.90% (500 simulations)
+2025-06-03 09:56:37,870 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:37,874 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:37,874 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:37,878 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:37,882 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:37,882 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:38,012 - INFO - Equity calculation complete for ['5♠', '9♥'] vs random. Win: 36.20%, Tie: 10.40%, Equity: 41.40% (500 simulations)
+2025-06-03 09:56:41,400 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:41,404 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:41,404 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:41,408 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:41,411 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:41,412 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:41,542 - INFO - Equity calculation complete for ['5♠', '9♥'] vs random. Win: 40.00%, Tie: 11.20%, Equity: 45.60% (500 simulations)
+2025-06-03 09:56:44,928 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:44,931 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:44,931 - INFO - Found 3 potential action elements.
+2025-06-03 09:56:44,935 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:44,939 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:44,940 - INFO - Found 3 potential action elements.
+2025-06-03 09:56:45,071 - INFO - Equity calculation complete for ['5♠', '9♥'] vs random. Win: 38.80%, Tie: 11.80%, Equity: 44.70% (500 simulations)
+2025-06-03 09:56:53,915 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:53,919 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:53,919 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:53,923 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:53,927 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:53,928 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:54,056 - INFO - Equity calculation complete for ['6♥', '4♠'] vs random. Win: 35.00%, Tie: 8.80%, Equity: 39.40% (500 simulations)
+2025-06-03 09:56:57,440 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:57,443 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:57,443 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:57,447 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:56:57,452 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:56:57,453 - INFO - Found 0 potential action elements.
+2025-06-03 09:56:57,582 - INFO - Equity calculation complete for ['6♥', '4♠'] vs random. Win: 29.60%, Tie: 13.00%, Equity: 36.10% (500 simulations)
+2025-06-03 09:57:00,968 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:00,974 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:00,974 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:00,979 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:00,983 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:00,984 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:01,110 - INFO - Equity calculation complete for ['6♥', '4♠'] vs random. Win: 35.60%, Tie: 12.80%, Equity: 42.00% (500 simulations)
+2025-06-03 09:57:04,492 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:04,496 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:04,496 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:04,500 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:04,504 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:04,505 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:04,628 - INFO - Equity calculation complete for ['6♥', '4♠'] vs random. Win: 33.20%, Tie: 9.60%, Equity: 38.00% (500 simulations)
+2025-06-03 09:57:08,009 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:08,013 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:08,013 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:08,016 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:08,021 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:08,021 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:08,151 - INFO - Equity calculation complete for ['6♥', '4♠'] vs random. Win: 34.40%, Tie: 12.40%, Equity: 40.60% (500 simulations)
+2025-06-03 09:57:11,536 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:11,539 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:11,539 - INFO - Found 3 potential action elements.
+2025-06-03 09:57:11,542 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:11,547 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:11,548 - INFO - Found 3 potential action elements.
+2025-06-03 09:57:11,677 - INFO - Equity calculation complete for ['6♥', '4♠'] vs random. Win: 36.20%, Tie: 11.60%, Equity: 42.00% (500 simulations)
+2025-06-03 09:57:20,523 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:20,527 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:20,527 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:20,533 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:20,538 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:20,538 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:20,662 - INFO - Equity calculation complete for ['6♥', '4♠'] vs random. Win: 57.40%, Tie: 4.80%, Equity: 59.80% (500 simulations)
+2025-06-03 09:57:24,050 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:24,054 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:24,054 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:24,058 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:24,063 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:24,063 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:24,188 - INFO - Equity calculation complete for ['6♥', '4♠'] vs random. Win: 55.00%, Tie: 5.60%, Equity: 57.80% (500 simulations)
+2025-06-03 09:57:27,580 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:27,583 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:27,584 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:27,588 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:27,592 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:27,593 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:27,721 - INFO - Equity calculation complete for ['6♥', '4♠'] vs random. Win: 57.00%, Tie: 4.00%, Equity: 59.00% (500 simulations)
+2025-06-03 09:57:31,110 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:31,114 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:31,114 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:31,119 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:31,122 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:31,123 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:31,253 - INFO - Equity calculation complete for ['6♥', '4♠'] vs random. Win: 54.80%, Tie: 7.40%, Equity: 58.50% (500 simulations)
+2025-06-03 09:57:34,637 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:34,640 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:34,640 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:34,644 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:34,647 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:34,648 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:34,782 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 52.80%, Tie: 9.60%, Equity: 57.60% (500 simulations)
+2025-06-03 09:57:38,168 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:38,171 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:38,171 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:38,175 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:38,181 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:38,181 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:38,305 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 54.00%, Tie: 7.60%, Equity: 57.80% (500 simulations)
+2025-06-03 09:57:41,691 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:41,695 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:41,696 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:41,700 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:41,704 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:41,705 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:41,840 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 54.60%, Tie: 6.00%, Equity: 57.60% (500 simulations)
+2025-06-03 09:57:45,228 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:45,233 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:45,233 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:45,238 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:45,243 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:45,243 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:45,375 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 58.80%, Tie: 7.60%, Equity: 62.60% (500 simulations)
+2025-06-03 09:57:48,756 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:48,759 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:48,760 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:48,763 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:48,767 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:48,768 - INFO - Found 0 potential action elements.
+2025-06-03 09:57:48,898 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 61.40%, Tie: 7.40%, Equity: 65.10% (500 simulations)
+2025-06-03 09:57:52,285 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:52,288 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:52,289 - INFO - Found 3 potential action elements.
+2025-06-03 09:57:52,292 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:57:52,296 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:57:52,297 - INFO - Found 3 potential action elements.
+2025-06-03 09:57:52,424 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 53.40%, Tie: 7.20%, Equity: 57.00% (500 simulations)
+2025-06-03 09:58:01,268 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:01,272 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:01,272 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:01,277 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:01,281 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:01,281 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:01,415 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 56.60%, Tie: 6.20%, Equity: 59.70% (500 simulations)
+2025-06-03 09:58:04,801 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:04,804 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:04,805 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:04,810 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:04,814 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:04,814 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:04,939 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 46.00%, Tie: 4.20%, Equity: 48.10% (500 simulations)
+2025-06-03 09:58:08,330 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:08,334 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:08,334 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:08,338 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:08,342 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:08,343 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:08,469 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 51.20%, Tie: 4.40%, Equity: 53.40% (500 simulations)
+2025-06-03 09:58:11,856 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:11,859 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:11,859 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:11,864 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:11,868 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:11,869 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:11,995 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 55.40%, Tie: 3.00%, Equity: 56.90% (500 simulations)
+2025-06-03 09:58:15,384 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:15,387 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:15,388 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:15,393 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:15,398 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:15,398 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:15,521 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 52.00%, Tie: 2.20%, Equity: 53.10% (500 simulations)
+2025-06-03 09:58:18,904 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:18,908 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:18,909 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:18,912 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:18,917 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:18,918 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:19,042 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 55.80%, Tie: 3.40%, Equity: 57.50% (500 simulations)
+2025-06-03 09:58:22,425 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:22,429 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:22,429 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:22,434 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:22,438 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:22,438 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:22,561 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 51.40%, Tie: 4.60%, Equity: 53.70% (500 simulations)
+2025-06-03 09:58:25,945 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:25,948 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:25,949 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:25,954 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:25,958 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:25,959 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:26,085 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 52.80%, Tie: 4.80%, Equity: 55.20% (500 simulations)
+2025-06-03 09:58:29,472 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:29,476 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:29,477 - INFO - Found 3 potential action elements.
+2025-06-03 09:58:29,482 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:29,486 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:29,487 - INFO - Found 3 potential action elements.
+2025-06-03 09:58:29,614 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 53.20%, Tie: 4.20%, Equity: 55.30% (500 simulations)
+2025-06-03 09:58:29,615 - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 0.07
+2025-06-03 09:58:42,089 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:42,092 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:42,092 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:42,095 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:42,099 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:42,100 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:42,230 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 56.40%, Tie: 5.40%, Equity: 59.10% (500 simulations)
+2025-06-03 09:58:45,611 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:45,614 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:45,614 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:45,619 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:45,622 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:45,623 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:45,753 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 52.20%, Tie: 4.60%, Equity: 54.50% (500 simulations)
+2025-06-03 09:58:49,137 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:49,140 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:49,141 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:49,144 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:49,149 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:49,149 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:49,276 - INFO - Equity calculation complete for ['J♥', 'K♥'] vs random. Win: 54.40%, Tie: 10.20%, Equity: 59.50% (500 simulations)
+2025-06-03 09:58:52,664 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:52,668 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:52,668 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:52,671 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:52,676 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:52,676 - INFO - Found 0 potential action elements.
+2025-06-03 09:58:52,806 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 41.00%, Tie: 13.00%, Equity: 47.50% (500 simulations)
+2025-06-03 09:58:56,191 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:56,194 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:56,195 - INFO - Found 3 potential action elements.
+2025-06-03 09:58:56,198 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:58:56,202 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:58:56,203 - INFO - Found 3 potential action elements.
+2025-06-03 09:58:56,331 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 38.40%, Tie: 11.00%, Equity: 43.90% (500 simulations)
+2025-06-03 09:59:05,181 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:05,185 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:05,185 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:05,188 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:05,194 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:05,194 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:05,332 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 41.40%, Tie: 11.20%, Equity: 47.00% (500 simulations)
+2025-06-03 09:59:08,717 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:08,721 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:08,721 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:08,725 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:08,729 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:08,730 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:08,864 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 39.00%, Tie: 9.80%, Equity: 43.90% (500 simulations)
+2025-06-03 09:59:12,251 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:12,255 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:12,255 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:12,260 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:12,264 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:12,264 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:12,383 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 42.40%, Tie: 10.60%, Equity: 47.70% (500 simulations)
+2025-06-03 09:59:15,768 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:15,771 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:15,772 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:15,777 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:15,782 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:15,782 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:15,900 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 37.00%, Tie: 11.60%, Equity: 42.80% (500 simulations)
+2025-06-03 09:59:19,285 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:19,288 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:19,288 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:19,293 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:19,298 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:19,298 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:19,414 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 12.00%, Tie: 23.20%, Equity: 23.60% (500 simulations)
+2025-06-03 09:59:22,797 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:22,801 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:22,801 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:22,805 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:22,809 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:22,810 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:22,926 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 11.40%, Tie: 23.60%, Equity: 23.20% (500 simulations)
+2025-06-03 09:59:26,311 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:26,314 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:26,314 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:26,326 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:26,333 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:26,334 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:26,447 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 14.40%, Tie: 26.60%, Equity: 27.70% (500 simulations)
+2025-06-03 09:59:29,830 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:29,834 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:29,834 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:29,839 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:29,843 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:29,843 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:29,960 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 4.60%, Tie: 29.40%, Equity: 19.30% (500 simulations)
+2025-06-03 09:59:33,349 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:33,353 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:33,353 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:33,358 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:33,362 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:33,363 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:33,480 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 4.80%, Tie: 32.60%, Equity: 21.10% (500 simulations)
+2025-06-03 09:59:36,867 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:36,870 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:36,871 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:36,875 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:36,880 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:36,880 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:36,996 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 5.80%, Tie: 30.20%, Equity: 20.90% (500 simulations)
+2025-06-03 09:59:40,386 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:40,390 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:40,390 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:40,394 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:40,399 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:40,400 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:40,517 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 5.40%, Tie: 34.00%, Equity: 22.40% (500 simulations)
+2025-06-03 09:59:43,903 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:43,906 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:43,907 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:43,911 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:43,915 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:43,916 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:44,033 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 5.20%, Tie: 28.20%, Equity: 19.30% (500 simulations)
+2025-06-03 09:59:47,423 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:47,426 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:47,426 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:47,430 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:47,434 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:47,435 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:47,546 - INFO - Equity calculation complete for ['6♦', '4♦'] vs random. Win: 0.00%, Tie: 36.60%, Equity: 18.30% (500 simulations)
+2025-06-03 09:59:50,931 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:50,936 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:50,936 - INFO - Found 3 potential action elements.
+2025-06-03 09:59:50,940 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:50,944 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:50,944 - INFO - Found 3 potential action elements.
+2025-06-03 09:59:51,067 - INFO - Equity calculation complete for ['3♠', 'K♥'] vs random. Win: 48.00%, Tie: 10.20%, Equity: 53.10% (500 simulations)
+2025-06-03 09:59:59,910 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:59,914 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:59,915 - INFO - Found 0 potential action elements.
+2025-06-03 09:59:59,918 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 09:59:59,923 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 09:59:59,923 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:00,049 - INFO - Equity calculation complete for ['3♠', 'K♥'] vs random. Win: 43.40%, Tie: 10.40%, Equity: 48.60% (500 simulations)
+2025-06-03 10:00:03,434 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:03,438 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:03,438 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:03,441 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:03,445 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:03,446 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:03,567 - INFO - Equity calculation complete for ['3♠', 'K♥'] vs random. Win: 40.20%, Tie: 14.00%, Equity: 47.20% (500 simulations)
+2025-06-03 10:00:06,953 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:06,956 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:06,957 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:06,960 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:06,965 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:06,966 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:07,088 - INFO - Equity calculation complete for ['3♠', 'K♥'] vs random. Win: 31.40%, Tie: 13.60%, Equity: 38.20% (500 simulations)
+2025-06-03 10:00:10,478 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:10,481 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:10,482 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:10,486 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:10,490 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:10,491 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:10,609 - INFO - Equity calculation complete for ['3♠', 'K♥'] vs random. Win: 17.80%, Tie: 23.60%, Equity: 29.60% (500 simulations)
+2025-06-03 10:00:14,003 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:14,007 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:14,007 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:14,011 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:14,016 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:14,016 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:14,130 - INFO - Equity calculation complete for ['3♠', 'K♥'] vs random. Win: 0.00%, Tie: 27.80%, Equity: 13.90% (500 simulations)
+2025-06-03 10:00:17,516 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:17,519 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:17,520 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:17,524 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:17,528 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:17,529 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:17,642 - INFO - Equity calculation complete for ['3♠', 'K♥'] vs random. Win: 0.00%, Tie: 37.40%, Equity: 18.70% (500 simulations)
+2025-06-03 10:00:21,036 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:21,040 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:21,040 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:21,046 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:21,050 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:21,051 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:21,165 - INFO - Equity calculation complete for ['3♠', 'K♥'] vs random. Win: 0.00%, Tie: 36.60%, Equity: 18.30% (500 simulations)
+2025-06-03 10:00:24,550 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:24,553 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:24,554 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:24,558 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:24,562 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:24,562 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:24,685 - INFO - Equity calculation complete for ['J♥', '2♥'] vs random. Win: 38.20%, Tie: 9.60%, Equity: 43.00% (500 simulations)
+2025-06-03 10:00:28,065 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:28,069 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:28,069 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:28,073 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:28,077 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:28,077 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:28,201 - INFO - Equity calculation complete for ['J♥', '2♥'] vs random. Win: 41.80%, Tie: 10.00%, Equity: 46.80% (500 simulations)
+2025-06-03 10:00:31,585 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:31,589 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:31,589 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:31,592 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:31,596 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:31,597 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:31,716 - INFO - Equity calculation complete for ['J♥', '2♥'] vs random. Win: 44.20%, Tie: 8.80%, Equity: 48.60% (500 simulations)
+2025-06-03 10:00:35,100 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:35,104 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:35,105 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:35,108 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:35,112 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:35,112 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:35,235 - INFO - Equity calculation complete for ['J♥', '2♥'] vs random. Win: 43.00%, Tie: 10.60%, Equity: 48.30% (500 simulations)
+2025-06-03 10:00:38,622 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:38,626 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:38,626 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:38,630 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:38,634 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:38,634 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:38,761 - INFO - Equity calculation complete for ['J♥', '2♥'] vs random. Win: 35.20%, Tie: 11.40%, Equity: 40.90% (500 simulations)
+2025-06-03 10:00:42,143 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:42,147 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:42,148 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:42,151 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:42,154 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:42,155 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:42,278 - INFO - Equity calculation complete for ['8♠', '8♦'] vs random. Win: 66.80%, Tie: 0.40%, Equity: 67.00% (500 simulations)
+2025-06-03 10:00:45,662 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:45,666 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:45,666 - INFO - Found 3 potential action elements.
+2025-06-03 10:00:45,669 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:45,673 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:45,674 - INFO - Found 3 potential action elements.
+2025-06-03 10:00:45,808 - INFO - Equity calculation complete for ['8♠', '8♦'] vs random. Win: 72.60%, Tie: 1.00%, Equity: 73.10% (500 simulations)
+2025-06-03 10:00:54,653 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:54,658 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:54,658 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:54,662 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:54,666 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:54,666 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:54,781 - INFO - Equity calculation complete for ['8♠', '8♦'] vs random. Win: 64.60%, Tie: 0.00%, Equity: 64.60% (500 simulations)
+2025-06-03 10:00:58,174 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:58,178 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:58,178 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:58,182 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:00:58,186 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:00:58,187 - INFO - Found 0 potential action elements.
+2025-06-03 10:00:58,300 - INFO - Equity calculation complete for ['8♠', '8♦'] vs random. Win: 63.60%, Tie: 0.00%, Equity: 63.60% (500 simulations)
+2025-06-03 10:01:01,694 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:01:01,699 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:01:01,699 - INFO - Found 0 potential action elements.
+2025-06-03 10:01:01,706 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:01:01,711 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:01:01,711 - INFO - Found 0 potential action elements.
+2025-06-03 10:01:01,821 - INFO - Equity calculation complete for ['8♠', '8♦'] vs random. Win: 66.00%, Tie: 0.00%, Equity: 66.00% (500 simulations)
+2025-06-03 10:01:05,210 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:01:05,213 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:01:05,213 - INFO - Found 0 potential action elements.
+2025-06-03 10:01:05,217 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:01:05,222 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:01:05,223 - INFO - Found 0 potential action elements.
+2025-06-03 10:01:05,334 - INFO - Equity calculation complete for ['8♠', '8♦'] vs random. Win: 67.40%, Tie: 0.20%, Equity: 67.50% (500 simulations)
+2025-06-03 10:01:08,722 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:01:08,725 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:01:08,726 - INFO - Found 0 potential action elements.
+2025-06-03 10:01:08,729 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:01:08,734 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:01:08,735 - INFO - Found 0 potential action elements.
+2025-06-03 10:01:08,860 - INFO - Equity calculation complete for ['8♦', '3♥'] vs random. Win: 33.60%, Tie: 9.40%, Equity: 38.30% (500 simulations)
+2025-06-03 10:01:12,249 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:01:12,254 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:01:12,254 - INFO - Found 0 potential action elements.
+2025-06-03 10:01:12,257 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:01:12,261 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:01:12,262 - INFO - Found 0 potential action elements.
+2025-06-03 10:01:12,386 - INFO - Equity calculation complete for ['8♦', '3♥'] vs random. Win: 31.40%, Tie: 10.00%, Equity: 36.40% (500 simulations)
+2025-06-03 10:01:15,774 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:01:15,777 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:01:15,778 - INFO - Found 0 potential action elements.
+2025-06-03 10:01:15,781 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:01:15,785 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:01:15,786 - INFO - Found 0 potential action elements.
+2025-06-03 10:01:15,914 - INFO - Equity calculation complete for ['8♦', '3♥'] vs random. Win: 29.80%, Tie: 14.40%, Equity: 37.00% (500 simulations)
+2025-06-03 10:01:19,298 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:01:19,301 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:01:19,302 - INFO - Found 3 potential action elements.
+2025-06-03 10:01:19,306 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-03 10:01:19,311 - INFO - Found actions area. Analyzing buttons...
+2025-06-03 10:01:19,311 - INFO - Found 3 potential action elements.
+2025-06-03 10:01:19,443 - INFO - Equity calculation complete for ['8♦', '3♥'] vs random. Win: 35.00%, Tie: 9.00%, Equity: 39.50% (500 simulations)
