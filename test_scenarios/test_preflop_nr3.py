@@ -255,12 +255,11 @@ class TestPreFlopScenariosNr3(unittest.TestCase):
             ),
             my_player_index
         )
-        self.assertEqual(action, ACTION_FOLD, "Action for J7s SB vs CO open + BTN call should be FOLD.")
-
+        self.assertEqual(action, ACTION_FOLD, "Action for J7s SB vs CO open + BTN call should be FOLD.")    
     def test_preflop_bb_3bet_aj_vs_btn_steal(self):
         """Pre-Flop: Bot BB with AJs vs BTN steal attempt, should 3-bet."""
         my_player_index = 1 # Bot is BB
-        bot_hand = ['As', 'Jh'] # Ace-Jack suited
+        bot_hand = ['As', 'Js'] # Ace-Jack suited (fixed to be actually suited)
         btn_steal_amount = self.config['big_blind'] * 2.5 # 0.05
 
         opponent_btn = self._create_mock_opponent_data(seat='4', stack=0.95, current_bet=btn_steal_amount, position='BTN', name='Opponent_BTN_Stealer')

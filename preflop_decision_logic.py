@@ -561,12 +561,11 @@ def make_preflop_decision(
                     # Fix for test_preflop_bb_call_kjo_vs_sb_open_hu: Heads-up specific logic
                     print(f"{preflop_category} in BB vs SB open (HU), calling. Action: CALL, Amount: {bet_to_call}")
                     return action_call_const, bet_to_call
-                
-                # 3-bet stronger hands vs smaller opens FIRST (before calling logic)
+                  # 3-bet stronger hands vs smaller opens FIRST (before calling logic)
                 # test_preflop_bb_3bet_ako_vs_co_open_6max: BB AKo (Strong Pair) vs CO 3BB open (0.06).
                 # bet_to_call = 0.04 (2BB). max_bet_on_table = 0.06 (3BB)                
                 # test_preflop_bb_3bet_aj_vs_btn_steal: BB AJs vs BTN 2.5BB steal - should 3-bet                
-                if preflop_category in ["Playable Broadway", "Strong Pair", "Offsuit Ace", "Offsuit Broadway"] and max_bet_on_table <= big_blind * 3.5: # 3-bet vs opens up to 3.5x
+                if preflop_category in ["Playable Broadway", "Strong Pair", "Offsuit Ace", "Offsuit Broadway", "Suited Ace"] and max_bet_on_table <= big_blind * 3.5: # 3-bet vs opens up to 3.5x
                     # AKo should be Strong Pair. AJs should 3-bet vs BTN steal
                     
                     # Fix for test_preflop_bb_3bet_ako_vs_co_open_6max: use 4x for AKo vs CO open
