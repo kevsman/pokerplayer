@@ -76,11 +76,8 @@ class DecisionEngine:
             # Fallback to calculating from current bets if 'bet_to_call' is not in my_player data
             my_current_bet = parse_monetary_value(my_player.get('current_bet', 0.0))
             bet_to_call = max_bet_on_table - my_current_bet
-        
-        # Ensure bet_to_call is not negative
-        bet_to_call = max(0.0, bet_to_call)
-
-        # logger.debug(f"_calculate_bet_to_call: my_player_bet={my_player.get('current_bet', 0.0)}, max_bet_on_table={max_bet_on_table}, initial_parsed_b2c={parsed_bet_to_call_str}, final_b2c={bet_to_call}")
+          # Ensure bet_to_call is not negative
+        bet_to_call = max(0.0, bet_to_call)        # logger.debug(f"_calculate_bet_to_call: my_player_bet={my_player.get('current_bet', 0.0)}, max_bet_on_table={max_bet_on_table}, initial_parsed_b2c={parsed_bet_to_call_str}, final_b2c={bet_to_call}")
         return bet_to_call, max_bet_on_table
 
     def make_decision(self, game_state, player_index):

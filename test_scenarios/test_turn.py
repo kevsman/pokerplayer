@@ -543,7 +543,7 @@ class TestTurnScenarios(unittest.TestCase):
         """Test turn scenario: bot has two pair on straight-heavy board."""
         my_player_index = 0
         bot_hand = ['Kd', '9c'] # Two pair
-        community_cards = ['K♠', '9h', '8s', '7c'] # Two pair but dangerous straight board
+        community_cards = ['Ks', '9h', '8s', '7c'] # Two pair but dangerous straight board
 
         my_player_obj = self._create_mock_my_player_data(
             cards=bot_hand, stack=1.0, current_bet=0, bet_to_call=0.40, has_turn=True,

@@ -55,16 +55,17 @@ def make_postflop_decision(
         f"make_postflop_decision: street={street}, my_player_data={my_player_data}, "
         f"pot_size={pot_size}, win_prob={win_probability}, pot_odds={pot_odds_to_call}, "
         f"bet_to_call={bet_to_call}, max_bet_on_table={max_bet_on_table}, "
-        f"active_opponents_count={active_opponents_count}, can_check={can_check}"
-    )
+        f"active_opponents_count={active_opponents_count}, can_check={can_check}"    )
 
-    # Check for pot commitment - if we've already invested significant portion of our stack
+    # Check for pot commitment - if we've already invested or would invest significant portion of our stack
     committed_amount = my_player_data.get('current_bet', 0)
-    pot_commitment_ratio = committed_amount / (my_stack + committed_amount) if (my_stack + committed_amount) > 0 else 0
-    is_pot_committed = pot_commitment_ratio >= 0.4  # If we've committed 40%+ of our stack
+    total_commitment_if_call = committed_amount + bet_to_call
+    pot_commitment_ratio = total_commitment_if_call / (my_stack + total_commitment_if_call) if (my_stack + total_commitment_if_call) > 0 else 0
+    is_pot_committed = pot_commitment_ratio >= 0.4  # If we've committed or would commit 40%+ of our stack
     
     logger.debug(
-        f"Pot commitment check: committed_amount={committed_amount}, my_stack={my_stack}, "
+        f"Pot commitment check: committed_amount={committed_amount}, bet_to_call={bet_to_call}, "
+        f"total_commitment_if_call={total_commitment_if_call}, my_stack={my_stack}, "
         f"pot_commitment_ratio={pot_commitment_ratio:.2%}, is_pot_committed={is_pot_committed}"
     )
     

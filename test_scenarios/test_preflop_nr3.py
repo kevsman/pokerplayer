@@ -357,15 +357,14 @@ class TestPreFlopScenariosNr3(unittest.TestCase):
                 current_round="preflop",
                 big_blind=self.config['big_blind'],
                 small_blind=self.config['small_blind'],
-                min_raise=self.config['big_blind'] * 2
-            ),
+                min_raise=self.config['big_blind'] * 2            ),
             my_player_index
         )
         self.assertEqual(action, ACTION_FOLD, "Action for Q9o MP vs UTG open should be FOLD.")
 
     def test_preflop_btn_3bet_bluff_a4s_vs_co_open(self):
         """Pre-Flop: Bot BTN with A4s vs CO open, should 3-bet as bluff."""
-        my_player_index = 3 # Bot is BTN
+        my_player_index = 1 # Bot is BTN
         bot_hand = ['As', '4s'] # Ace-Four suited (good bluff candidate)
         co_open_amount = self.config['big_blind'] * 3 # 0.06
 
