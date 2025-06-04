@@ -9,11 +9,11 @@ import random # Added for click randomization
 
 CONFIG_FILE = "config.json"
 DEFAULT_DELAYS = {
-    "main_loop_general_delay": 1.0, # seconds
-    "after_action_delay": 5.0, # seconds
-    "short_pause": 0.5, # seconds
-    "medium_pause": 1.0, # seconds
-    "long_pause": 2.0 # seconds
+    "main_loop_general_delay": 0.5, # seconds
+    "after_action_delay": 2.5, # seconds
+    "short_pause": 0.25, # seconds
+    "medium_pause": 0.5, # seconds
+    "long_pause": 1.0 # seconds
 }
 
 class UIController:

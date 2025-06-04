@@ -1,0 +1,40 @@
+{
+    "positions": {
+        "positions": {},
+        "html_capture_point": {
+            "x": 1218,
+            "y": 261
+        },
+        "fold_button": {
+            "x": 753,
+            "y": 1125
+        },
+        "check_call_button": {
+            "x": 877,
+            "y": 1125
+        },
+        "all_in_button": {
+            "x": 1027,
+            "y": 1121
+        },
+        "raise_button": {
+            "x": 723,
+            "y": 1068
+        },
+        "raise_input_field": {
+            "x": 723,
+            "y": 1068
+        },
+        "confirm_raise_button": {
+            "x": 1019,
+            "y": 1112
+        }
+    },
+    "delays": {
+        "main_loop_general_delay": 0.5,
+        "after_action_delay": 2.5,
+        "short_pause": 0.25,
+        "medium_pause": 0.5,
+        "long_pause": 1.0
+    }
+}
