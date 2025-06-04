@@ -326,9 +326,9 @@ def make_postflop_decision(
                 logger.info(f"Decision: FOLD (marginal hand facing river raise). Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
                 return action_fold_const, 0
                 
-            if is_pot_committed and win_probability >= 0.25:
+            if is_pot_committed and win_probability >= 0.35:  # Increased from 0.25 to 0.35
                 call_amount = bet_to_call
-                logger.info(f"Decision: CALL (pot committed with draw). Amount to call: {call_amount:.2f}, Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
+                logger.info(f"Decision: CALL (pot committed with reasonable equity). Amount to call: {call_amount:.2f}, Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
                 return action_call_const, round(call_amount, 2)
             
             # Check if facing very large bet relative to stack - be extra conservative
@@ -341,17 +341,38 @@ def make_postflop_decision(
             # Drawing hands typically have 25-40% equity and should call with good pot odds
             # Be very conservative about bet sizing for weak hands - only call small bets
             # Also consider if facing multiple aggressive actions (bet + raise scenario)
-            bet_to_pot_ratio = bet_to_call / pot_size if pot_size > 0 else 1.0# If facing large bet (>50% pot) with drawing hand, be more cautious
-            # Also check if we're facing very aggressive action (large bet suggesting bet+raise)
+            bet_to_pot_ratio = bet_to_call / pot_size if pot_size > 0 else 1.0
+            
+            # Add detailed logging to debug the failing test
+            logger.debug(f"Drawing hand check: win_prob={win_probability:.2%}, pot_odds={pot_odds_to_call:.2%}, "
+                        f"bet_to_call={bet_to_call}, pot_size={pot_size}, bet_to_pot_ratio={bet_to_pot_ratio:.2%}, "
+                        f"my_stack={my_stack}")
+            
+            # For drawing hands, equity must exceed pot odds FIRST, then check bet sizing
+            # This is the most important check - never call with negative expected value
             if (win_probability > pot_odds_to_call and 
-                win_probability >= 0.25 and win_probability <= 0.40 and 
-                bet_to_call <= 0.35 * pot_size and  # Reduced from 40% to 35%
-                bet_to_pot_ratio <= 0.4 and         # Reduced from 50% to 40%
-                bet_to_call <= 0.25 * my_stack):    # Reduced from 30% to 25%
+                win_probability >= 0.25 and win_probability <= 0.45 and  # Drawing hand range
+                bet_to_call <= 0.35 * pot_size and  # Bet sizing check (restored to 35%)
+                bet_to_pot_ratio <= 0.4 and         # Bet to pot ratio check  
+                bet_to_call <= 0.25 * my_stack):    # Stack preservation check
                 # This is likely a drawing hand with sufficient equity to call
                 call_amount = bet_to_call
-                logger.info(f"Decision: CALL (weak hand with drawing equity, good pot odds). Amount to call: {call_amount:.2f}, Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}")
+                logger.info(f"Decision: CALL (weak hand with drawing equity, good pot odds). Amount to call: {call_amount:.2f}, Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}, Bet/Pot: {bet_to_pot_ratio:.2%}")
                 return action_call_const, round(call_amount, 2)
+            
+            # Log why we're not calling with this drawing hand - be more specific
+            if win_probability >= 0.25 and win_probability <= 0.45:
+                reasons = []
+                if win_probability <= pot_odds_to_call:
+                    reasons.append(f"Negative EV: Equity {win_probability:.2%} <= Pot odds {pot_odds_to_call:.2%}")
+                if bet_to_call > 0.35 * pot_size:
+                    reasons.append(f"Bet too large: {bet_to_call:.2f} > 35% of pot ({0.35 * pot_size:.2f})")
+                if bet_to_pot_ratio > 0.4:
+                    reasons.append(f"Bet/Pot ratio too high: {bet_to_pot_ratio:.2%} > 40%")
+                if bet_to_call > 0.25 * my_stack:
+                    reasons.append(f"Bet too large vs stack: {bet_to_call:.2f} > 25% of stack ({0.25 * my_stack:.2f})")
+                
+                logger.info(f"Not calling with drawing hand (equity {win_probability:.2%}). Reasons: {'; '.join(reasons)}")
             
             # Consider bluff-raising if conditions are right (e.g., specific opponent, board texture)
             # This uses the generic should_bluff_func
