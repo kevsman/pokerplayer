@@ -302,7 +302,7 @@ class TestFlopScenarios(unittest.TestCase):
         community = ['Ks', '9d', '3h']
         opponent_bet_amount = 0.25
         my_player_obj = self._create_mock_my_player_data(
-            hand=['K2', '4c'], stack=0.75, current_bet=0, bet_to_call=opponent_bet_amount, has_turn=True,
+            hand=['Kc', '2s'], stack=0.75, current_bet=0, bet_to_call=opponent_bet_amount, has_turn=True, # Corrected hand
             game_stage='Flop', community_cards=community, position='BTN', win_probability=0.35
         )
         opponent = self._create_mock_opponent_data(seat='2', stack=0.75, current_bet=opponent_bet_amount, position='BB')

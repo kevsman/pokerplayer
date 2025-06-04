@@ -2,6 +2,18 @@
 
 import logging
 
+# Setup debug logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+# Create file handler if it doesn't exist
+if not logger.handlers:
+    handler = logging.FileHandler('debug_postflop_decision_logic.log', mode='a')
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+
 # Constants for hand strength (example values, adjust as needed)
 # These might be defined elsewhere or passed as parameters
 VERY_STRONG_HAND_THRESHOLD = 7  # e.g., Two Pair or better
@@ -14,8 +26,6 @@ MEDIUM_HAND_THRESHOLD = 2       # e.g., Middle Pair or better
 # ACTION_CALL = "call"
 # ACTION_BET = "bet"
 # ACTION_RAISE = "raise"
-
-logger = logging.getLogger(__name__)
 
 def make_postflop_decision(
     decision_engine_instance, 
@@ -36,25 +46,62 @@ def make_postflop_decision(
     my_player_data,
     big_blind_amount,
     base_aggression_factor,
-    max_bet_on_table # Added this parameter
+    max_bet_on_table, # Added this parameter
+    active_opponents_count=1 # Add opponent count for multiway considerations
 ):
     street = game_stage # Use game_stage as street
 
     logger.debug(
         f"make_postflop_decision: street={street}, my_player_data={my_player_data}, "
         f"pot_size={pot_size}, win_prob={win_probability}, pot_odds={pot_odds_to_call}, "
-        f"bet_to_call={bet_to_call}, max_bet_on_table={max_bet_on_table}"
+        f"bet_to_call={bet_to_call}, max_bet_on_table={max_bet_on_table}, "
+        f"active_opponents_count={active_opponents_count}, can_check={can_check}"
     )
 
-    is_very_strong = numerical_hand_rank >= VERY_STRONG_HAND_THRESHOLD or win_probability > 0.85
-    is_strong = not is_very_strong and (numerical_hand_rank >= STRONG_HAND_THRESHOLD or win_probability > 0.65)
-    is_medium = not is_very_strong and not is_strong and (numerical_hand_rank >= MEDIUM_HAND_THRESHOLD or win_probability > 0.45)
+    # Check for pot commitment - if we've already invested significant portion of our stack
+    committed_amount = my_player_data.get('current_bet', 0)
+    pot_commitment_ratio = committed_amount / (my_stack + committed_amount) if (my_stack + committed_amount) > 0 else 0
+    is_pot_committed = pot_commitment_ratio >= 0.4  # If we've committed 40%+ of our stack
+    
+    logger.debug(
+        f"Pot commitment check: committed_amount={committed_amount}, my_stack={my_stack}, "
+        f"pot_commitment_ratio={pot_commitment_ratio:.2%}, is_pot_committed={is_pot_committed}"
+    )
+    
+    # Adjust hand strength classification
+    # For top pair weak kicker situations, be more conservative with win probability thresholds
+    is_very_strong = numerical_hand_rank >= VERY_STRONG_HAND_THRESHOLD or win_probability > 0.85    # Top pair with weak kicker (win prob 30-45%) should not be classified as strong or even medium
+    # especially when facing aggression - be more conservative with threshold
+    if numerical_hand_rank == 2 and win_probability < 0.60:  # One pair with modest win probability
+        is_strong = False  # Don't classify weak top pairs as strong
+        # Also don't classify as medium if win probability is very low
+        if win_probability < 0.40:
+            is_medium_override = False  # Force to weak if win prob < 40%
+        else:
+            is_medium_override = None  # Let normal logic decide
+    else:
+        is_strong = not is_very_strong and (numerical_hand_rank >= STRONG_HAND_THRESHOLD or win_probability > 0.65)
+        is_medium_override = None
+    
+    if is_medium_override is False:
+        is_medium = False
+    else:
+        is_medium = not is_very_strong and not is_strong and (numerical_hand_rank >= MEDIUM_HAND_THRESHOLD or win_probability > 0.45)
+    
     is_weak = not is_very_strong and not is_strong and not is_medium
 
     if can_check:
-        logger.debug("Option to check is available.")
+        logger.debug("Option to check is available.")        
         if is_very_strong or (is_strong and win_probability > 0.75): # Value bet strong hands
-            bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=False)
+            bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=False)              # Adjust bet size for multiway pots - be more conservative with more opponents
+            if active_opponents_count > 1:
+                multiway_factor = max(0.5, 1.0 - (active_opponents_count - 1) * 0.3)  # More aggressive reduction
+                original_bet_amount = bet_amount
+                bet_amount *= multiway_factor
+                logger.info(f"Multiway adjustment: {active_opponents_count} opponents, factor: {multiway_factor:.2f}, original: {original_bet_amount:.2f}, adjusted: {bet_amount:.2f}")
+            else:
+                logger.debug(f"Heads-up: {active_opponents_count} opponent, no adjustment")
+            
             bet_amount = min(bet_amount, my_stack)
             if bet_amount > 0:
                 logger.info(f"Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: {bet_amount:.2f}")
@@ -67,7 +114,15 @@ def make_postflop_decision(
             # win_probability > 0.6 is a good candidate for thin value when checked to.
             # The 'is_strong' condition already implies win_probability > 0.65 OR numerical_hand_rank >= STRONG_HAND_THRESHOLD
             # So, if it's 'is_strong' and we can check, we should consider a value bet.
-            bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=False)
+            bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=False)              # Adjust bet size for multiway pots
+            if active_opponents_count > 1:
+                multiway_factor = max(0.5, 1.0 - (active_opponents_count - 1) * 0.3)  # More aggressive reduction
+                original_bet_amount = bet_amount
+                bet_amount *= multiway_factor
+                logger.info(f"Multiway adjustment (strong): {active_opponents_count} opponents, factor: {multiway_factor:.2f}, original: {original_bet_amount:.2f}, adjusted: {bet_amount:.2f}")
+            else:
+                logger.debug(f"Heads-up (strong): {active_opponents_count} opponent, no adjustment")
+            
             bet_amount = min(bet_amount, my_stack)
             if bet_amount > 0:
                 logger.info(f"Decision: BET (strong hand, thin value when checked to). Amount: {bet_amount:.2f}")
@@ -79,13 +134,21 @@ def make_postflop_decision(
                 bluff_bet_amount = min(bluff_bet_amount, my_stack)
                 if bluff_bet_amount > 0:
                     logger.info(f"Decision: BET (strong hand, bluffing when can check). Amount: {bluff_bet_amount:.2f}")
-                    return action_raise_const, round(bluff_bet_amount, 2) # Changed action_bet_const to action_raise_const
-            logger.info("Decision: CHECK (strong hand, no value bet/bluff).")
+                    return action_raise_const, round(bluff_bet_amount, 2) # Changed action_bet_const to action_raise_const            logger.info("Decision: CHECK (strong hand, no value bet/bluff).")
             return action_check_const, 0
+        
         elif is_medium: # Check/bet or check/bluff with medium hands
             # For medium hands, consider a thin value bet if win_probability is decent.
             if win_probability > 0.5: # Threshold for thin value with medium hand
-                value_bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=False)
+                value_bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=False)                # Adjust bet size for multiway pots - medium hands should also be more conservative
+                if active_opponents_count > 1:
+                    multiway_factor = max(0.4, 1.0 - (active_opponents_count - 1) * 0.4)  # Even more aggressive reduction
+                    original_bet_amount = value_bet_amount
+                    value_bet_amount *= multiway_factor
+                    logger.info(f"Multiway adjustment (medium): {active_opponents_count} opponents, factor: {multiway_factor:.2f}, original: {original_bet_amount:.2f}, adjusted: {value_bet_amount:.2f}")
+                else:
+                    logger.debug(f"Heads-up (medium): {active_opponents_count} opponent, no adjustment")
+                
                 value_bet_amount = min(value_bet_amount, my_stack)
                 if value_bet_amount > 0:
                     logger.info(f"Decision: BET (medium hand, thin value when checked to). Amount: {value_bet_amount:.2f}")
@@ -205,9 +268,17 @@ def make_postflop_decision(
               call_amount = bet_to_call # Amount to add to current bet
               logger.info(f"Decision: CALL (very_strong, but failed to make a valid raise). Amount to call: {call_amount:.2f}")
               return action_call_const, round(call_amount, 2)
-
+        
         elif is_strong:
             logger.debug(f"Hand is_strong. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
+            
+            # Special case: Strong hand with low win probability facing aggressive action
+            # This can happen with weak straights/flushes facing multiple bets
+            bet_to_stack_ratio = bet_to_call / my_stack if my_stack > 0 else 1.0
+            if win_probability < 0.40 and bet_to_stack_ratio > 0.35:
+                logger.info(f"Decision: FOLD (strong hand but low win_prob {win_probability:.2f} and large bet {bet_to_stack_ratio:.2f} of stack).")
+                return action_fold_const, 0
+            
             if win_probability > pot_odds_to_call or (street == 'river' and win_probability > 0.7): # Good odds or strong river hand
                 # Consider raising if pot odds are very good or implied odds are high
                 # For now, just call with strong hands if odds are met.
@@ -232,27 +303,45 @@ def make_postflop_decision(
                     if final_raise_amount > max_bet_on_table and (final_raise_amount >= min_total_raise_to_amount or is_all_in_raise):
                         logger.info(f"Decision: RAISE (strong hand, semi-bluff). Total Amount: {final_raise_amount:.2f}")
                         return action_raise_const, round(final_raise_amount, 2)
-                
                 logger.info(f"Decision: FOLD (strong hand, but odds not good enough, no semi-bluff). Bet_to_call: {bet_to_call}, Pot: {pot_size}")
                 return action_fold_const, 0
 
         elif is_medium:
-            logger.debug(f"Hand is_medium. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")            # Call with medium strength if odds are good, especially with draws (not explicitly modeled here yet)
+            logger.debug(f"Hand is_medium. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
+            # Call with medium strength if odds are good, especially with draws (not explicitly modeled here yet)
             if win_probability > pot_odds_to_call and bet_to_call <= 0.6 * pot_size : # Call if good odds and bet is not too large (e.g. up to 60% pot)
                 call_amount = bet_to_call
                 logger.info(f"Decision: CALL (medium hand, good odds and bet size). Amount to call: {call_amount:.2f}")
-                return action_call_const, round(call_amount, 2)            
+                return action_call_const, round(call_amount, 2)
             else: # Fold if odds not good or bet is large for a medium hand
                 logger.info(f"Decision: FOLD (medium hand, odds not good or bet too large). Bet_to_call: {bet_to_call}, Pot: {pot_size}")
                 return action_fold_const, 0
         
         else: # Weak hand
-            logger.debug(f"Hand is_weak. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")            # Check if this is a drawing hand with sufficient pot odds to call
+            logger.debug(f"Hand is_weak. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
+              # Special handling for pot commitment with draws
+            if is_pot_committed and win_probability >= 0.25:
+                call_amount = bet_to_call
+                logger.info(f"Decision: CALL (pot committed with draw). Amount to call: {call_amount:.2f}, Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
+                return action_call_const, round(call_amount, 2)
+            
+            # Check if facing very large bet relative to stack - be extra conservative
+            bet_to_stack_ratio = bet_to_call / my_stack if my_stack > 0 else 1.0
+            if bet_to_stack_ratio > 0.4:  # If bet is more than 40% of our stack
+                logger.info(f"Decision: FOLD (weak hand, large bet {bet_to_call:.2f} > 40% of stack {my_stack:.2f})")
+                return action_fold_const, 0
+            
+            # Check if this is a drawing hand with sufficient pot odds to call
             # Drawing hands typically have 25-40% equity and should call with good pot odds
             # Be very conservative about bet sizing for weak hands - only call small bets
+            # Also consider if facing multiple aggressive actions (bet + raise scenario)
+            bet_to_pot_ratio = bet_to_call / pot_size if pot_size > 0 else 1.0# If facing large bet (>50% pot) with drawing hand, be more cautious
+            # Also check if we're facing very aggressive action (large bet suggesting bet+raise)
             if (win_probability > pot_odds_to_call and 
                 win_probability >= 0.25 and win_probability <= 0.40 and 
-                bet_to_call <= 0.4 * pot_size):  # Only call bets up to 40% pot size
+                bet_to_call <= 0.35 * pot_size and  # Reduced from 40% to 35%
+                bet_to_pot_ratio <= 0.4 and         # Reduced from 50% to 40%
+                bet_to_call <= 0.25 * my_stack):    # Reduced from 30% to 25%
                 # This is likely a drawing hand with sufficient equity to call
                 call_amount = bet_to_call
                 logger.info(f"Decision: CALL (weak hand with drawing equity, good pot odds). Amount to call: {call_amount:.2f}, Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}")
