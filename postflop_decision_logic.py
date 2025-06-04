@@ -320,7 +320,12 @@ def make_postflop_decision(
         
         else: # Weak hand
             logger.debug(f"Hand is_weak. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
-              # Special handling for pot commitment with draws
+              # Special handling for pot commitment with draws            # Special case for river raises
+            if street == 'river' and max_bet_on_table > 0 and my_player_data.get('current_bet', 0) > 0 and win_probability < 0.4:
+                # We've already bet on the river and are facing a raise with low equity
+                logger.info(f"Decision: FOLD (marginal hand facing river raise). Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
+                return action_fold_const, 0
+                
             if is_pot_committed and win_probability >= 0.25:
                 call_amount = bet_to_call
                 logger.info(f"Decision: CALL (pot committed with draw). Amount to call: {call_amount:.2f}, Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
