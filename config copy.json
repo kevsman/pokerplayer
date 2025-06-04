@@ -2,32 +2,32 @@
     "positions": {
         "positions": {},
         "html_capture_point": {
-            "x": 1278,
-            "y": 394
+            "x": 1236,
+            "y": 396
         },
         "fold_button": {
-            "x": 757,
-            "y": 1123
+            "x": 732,
+            "y": 1119
         },
         "check_call_button": {
-            "x": 886,
-            "y": 1117
+            "x": 887,
+            "y": 1124
         },
         "all_in_button": {
-            "x": 1017,
-            "y": 1123
+            "x": 1019,
+            "y": 1125
         },
         "raise_button": {
-            "x": 718,
-            "y": 1065
+            "x": 732,
+            "y": 1070
         },
         "raise_input_field": {
-            "x": 723,
-            "y": 1065
+            "x": 732,
+            "y": 1070
         },
         "confirm_raise_button": {
-            "x": 1013,
-            "y": 1106
+            "x": 1002,
+            "y": 1114
         }
     },
     "delays": {
