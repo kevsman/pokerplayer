@@ -1507,3 +1507,8 @@
 2025-06-05 11:56:35,134 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.06, pot_size: 0.33, my_stack: 0.06, max_bet_on_table: 0.08
 2025-06-05 11:56:35,134 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.3092, pot_odds: 0.15384615384615383
 2025-06-05 11:56:35,134 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, large bet 0.06 > 40% of stack 0.06)
+2025-06-05 13:55:58,560 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0}, pot_size=0.2, win_prob=0.8, pot_odds=0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-05 13:55:58,560 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=1.8, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-05 13:55:58,560 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-05 13:55:58,560 - postflop_decision_logic - DEBUG - Heads-up: 1 opponent, no adjustment
+2025-06-05 13:55:58,560 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 0.15

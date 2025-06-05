@@ -27,6 +27,87 @@ MEDIUM_HAND_THRESHOLD = 2       # e.g., Middle Pair or better
 # ACTION_BET = "bet"
 # ACTION_RAISE = "raise"
 
+# Enhanced drawing hand detection function
+def is_drawing_hand(win_probability, hand_rank, street):
+    """
+    Detect if this is likely a drawing hand based on equity and hand strength.
+    Drawing hands typically have:
+    - Moderate equity (25-50%) but low made hand strength
+    - Are not on the river (no draws possible)
+    """
+    if street == 'river':
+        return False  # No draws on river
+    
+    # High card or weak pair with reasonable equity = likely draw
+    # This includes flush draws, straight draws, overcards, etc.
+    return (hand_rank <= 2 and 0.25 <= win_probability <= 0.50)
+
+def get_optimal_value_bet_size_percentage(pot_size, hand_strength, street, opponent_count):
+    """
+    Dynamic bet sizing based on multiple factors.
+    Returns the percentage of pot to bet for value.
+    """
+    base_sizing = {
+        'flop': 0.7,   # 70% pot
+        'turn': 0.75,  # 75% pot  
+        'river': 0.8   # 80% pot
+    }
+    
+    size_multiplier = base_sizing.get(street, 0.7)
+    
+    # Adjust for hand strength
+    if hand_strength == 'very_strong':
+        size_multiplier *= 1.1  # Bet bigger with very strong hands
+    elif hand_strength == 'medium':
+        size_multiplier *= 0.8  # Bet smaller with medium hands
+    
+    # Adjust for opponent count (multiway = smaller bets)
+    if opponent_count > 1:
+        size_multiplier *= max(0.6, 1.0 - (opponent_count - 1) * 0.2)
+    
+    return size_multiplier
+
+def get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False):
+    """
+    Enhanced bet sizing function that uses dynamic percentage-based sizing.
+    Integrates the new get_optimal_value_bet_size_percentage function.
+    """
+    if pot_size <= 0:
+        return min(big_blind_amount * 2.5, my_stack)
+    
+    if bluff:
+        # For bluffs, use simpler sizing
+        if street == "river":
+            bet = pot_size * 0.75  # Larger river bluffs
+        elif street == "turn":
+            bet = pot_size * 0.65
+        else:
+            bet = pot_size * 0.5 
+        bet = max(bet, big_blind_amount) 
+        return min(round(bet, 2), my_stack)
+    
+    # Determine hand strength category for dynamic sizing
+    hand_strength = 'medium'  # default
+    if numerical_hand_rank >= 7:  # Full house+
+        hand_strength = 'very_strong'
+    elif numerical_hand_rank >= 4:  # Three of a kind+
+        hand_strength = 'very_strong'
+    elif numerical_hand_rank >= 2:  # Pair+
+        hand_strength = 'medium'
+    # else remains 'medium' for draws/high card
+    
+    # Get optimal percentage from dynamic function
+    bet_percentage = get_optimal_value_bet_size_percentage(pot_size, hand_strength, street, active_opponents_count)
+    
+    # Calculate bet amount
+    bet = pot_size * bet_percentage
+    
+    # Ensure minimum bet size
+    min_bet = big_blind_amount if street != "preflop" else big_blind_amount * 2
+    bet = max(bet, min_bet)
+    
+    return min(round(bet, 2), my_stack)
+
 def make_postflop_decision(
     decision_engine_instance, 
     numerical_hand_rank, 
@@ -55,46 +136,61 @@ def make_postflop_decision(
         f"make_postflop_decision: street={street}, my_player_data={my_player_data}, "
         f"pot_size={pot_size}, win_prob={win_probability}, pot_odds={pot_odds_to_call}, "
         f"bet_to_call={bet_to_call}, max_bet_on_table={max_bet_on_table}, "
-        f"active_opponents_count={active_opponents_count}, can_check={can_check}"    )
-
-    # Check for pot commitment - if we've already invested or would invest significant portion of our stack
+        f"active_opponents_count={active_opponents_count}, can_check={can_check}"    )    # Check for pot commitment - if we've already invested or would invest significant portion of our stack
     committed_amount = my_player_data.get('current_bet', 0)
     total_commitment_if_call = committed_amount + bet_to_call
     pot_commitment_ratio = total_commitment_if_call / (my_stack + total_commitment_if_call) if (my_stack + total_commitment_if_call) > 0 else 0
-    is_pot_committed = pot_commitment_ratio >= 0.4  # If we've committed or would commit 40%+ of our stack
+    
+    # Adjust pot commitment thresholds based on hand strength
+    is_very_strong = numerical_hand_rank >= VERY_STRONG_HAND_THRESHOLD or win_probability > 0.85
+    is_strong = not is_very_strong and (numerical_hand_rank >= STRONG_HAND_THRESHOLD or win_probability > 0.65)
+    is_medium = not is_very_strong and not is_strong and (numerical_hand_rank >= MEDIUM_HAND_THRESHOLD or win_probability > 0.45)
+    
+    if is_very_strong or is_strong:
+        commitment_threshold = 0.6  # 60% for strong hands
+    elif is_medium:
+        commitment_threshold = 0.45  # 45% for medium hands  
+    else:
+        commitment_threshold = 0.35  # 35% for weak hands (with drawing equity)
+    is_pot_committed = pot_commitment_ratio >= commitment_threshold
     
     logger.debug(
         f"Pot commitment check: committed_amount={committed_amount}, bet_to_call={bet_to_call}, "
         f"total_commitment_if_call={total_commitment_if_call}, my_stack={my_stack}, "
-        f"pot_commitment_ratio={pot_commitment_ratio:.2%}, is_pot_committed={is_pot_committed}"
+        f"pot_commitment_ratio={pot_commitment_ratio:.2%}, commitment_threshold={commitment_threshold:.2%}, "
+        f"is_pot_committed={is_pot_committed}"
     )
     
-    # Adjust hand strength classification
+    # Adjust hand strength classification (moved after pot commitment logic)
     # For top pair weak kicker situations, be more conservative with win probability thresholds
-    is_very_strong = numerical_hand_rank >= VERY_STRONG_HAND_THRESHOLD or win_probability > 0.85    # Top pair with weak kicker (win prob 30-45%) should not be classified as strong or even medium
+    # Top pair with weak kicker (win prob 30-45%) should not be classified as strong or even medium
+    # especially when facing aggression - be more conservative with threshold    # Top pair with weak kicker (win prob 30-45%) should not be classified as strong or even medium
     # especially when facing aggression - be more conservative with threshold
     if numerical_hand_rank == 2 and win_probability < 0.60:  # One pair with modest win probability
         is_strong = False  # Don't classify weak top pairs as strong
         # Also don't classify as medium if win probability is very low
         if win_probability < 0.40:
-            is_medium_override = False  # Force to weak if win prob < 40%
-        else:
+            is_medium_override = False  # Force to weak if win prob < 40%        else:
             is_medium_override = None  # Let normal logic decide
     else:
+        # Recheck hand strength classification since we moved the initial classification
         is_strong = not is_very_strong and (numerical_hand_rank >= STRONG_HAND_THRESHOLD or win_probability > 0.65)
         is_medium_override = None
-    
+        
     if is_medium_override is False:
         is_medium = False
     else:
+        # Recheck medium classification since we moved the initial classification
         is_medium = not is_very_strong and not is_strong and (numerical_hand_rank >= MEDIUM_HAND_THRESHOLD or win_probability > 0.45)
     
     is_weak = not is_very_strong and not is_strong and not is_medium
 
     if can_check:
-        logger.debug("Option to check is available.")        
+        logger.debug("Option to check is available.")
+        
         if is_very_strong or (is_strong and win_probability > 0.75): # Value bet strong hands
-            bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=False)              # Adjust bet size for multiway pots - be more conservative with more opponents
+            bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
+            # Adjust bet size for multiway pots - be more conservative with more opponents
             if active_opponents_count > 1:
                 multiway_factor = max(0.5, 1.0 - (active_opponents_count - 1) * 0.3)  # More aggressive reduction
                 original_bet_amount = bet_amount
@@ -112,10 +208,10 @@ def make_postflop_decision(
                 return action_check_const, 0
         elif is_strong: # Check/bet with strong hands (less aggressive than very_strong)
             # This is for the "thin value" case where we want to bet if checked to.
-            # win_probability > 0.6 is a good candidate for thin value when checked to.
-            # The 'is_strong' condition already implies win_probability > 0.65 OR numerical_hand_rank >= STRONG_HAND_THRESHOLD
+            # win_probability > 0.6 is a good candidate for thin value when checked to.            # The 'is_strong' condition already implies win_probability > 0.65 OR numerical_hand_rank >= STRONG_HAND_THRESHOLD
             # So, if it's 'is_strong' and we can check, we should consider a value bet.
-            bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=False)              # Adjust bet size for multiway pots
+            bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
+            # Adjust bet size for multiway pots
             if active_opponents_count > 1:
                 multiway_factor = max(0.5, 1.0 - (active_opponents_count - 1) * 0.3)  # More aggressive reduction
                 original_bet_amount = bet_amount
@@ -128,20 +224,21 @@ def make_postflop_decision(
             if bet_amount > 0:
                 logger.info(f"Decision: BET (strong hand, thin value when checked to). Amount: {bet_amount:.2f}")
                 return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
-            
-            # If optimal bet is 0, or if we decided not to value bet, consider a bluff (though less likely for 'is_strong')
+              # If optimal bet is 0, or if we decided not to value bet, consider a bluff (though less likely for 'is_strong')
             if decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability): 
-                bluff_bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=True)
+                bluff_bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                 bluff_bet_amount = min(bluff_bet_amount, my_stack)
                 if bluff_bet_amount > 0:
                     logger.info(f"Decision: BET (strong hand, bluffing when can check). Amount: {bluff_bet_amount:.2f}")
-                    return action_raise_const, round(bluff_bet_amount, 2) # Changed action_bet_const to action_raise_const            logger.info("Decision: CHECK (strong hand, no value bet/bluff).")
+                    return action_raise_const, round(bluff_bet_amount, 2) # Changed action_bet_const to action_raise_const
+            
+            logger.info("Decision: CHECK (strong hand, no value bet/bluff).")
             return action_check_const, 0
         
-        elif is_medium: # Check/bet or check/bluff with medium hands
-            # For medium hands, consider a thin value bet if win_probability is decent.
+        elif is_medium: # Check/bet or check/bluff with medium hands            # For medium hands, consider a thin value bet if win_probability is decent.
             if win_probability > 0.5: # Threshold for thin value with medium hand
-                value_bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=False)                # Adjust bet size for multiway pots - medium hands should also be more conservative
+                value_bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
+                # Adjust bet size for multiway pots - medium hands should also be more conservative
                 if active_opponents_count > 1:
                     multiway_factor = max(0.4, 1.0 - (active_opponents_count - 1) * 0.4)  # Even more aggressive reduction
                     original_bet_amount = value_bet_amount
@@ -157,14 +254,15 @@ def make_postflop_decision(
             
             # If not value betting (either win_prob too low or optimal bet was 0), consider bluffing.
             if decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability): 
-                bluff_bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=True)
+                bluff_bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                 bluff_bet_amount = min(bluff_bet_amount, my_stack)
                 if bluff_bet_amount > 0:
                     logger.info(f"Decision: BET (medium hand, bluffing when can check). Amount: {bluff_bet_amount:.2f}")
                     return action_raise_const, round(bluff_bet_amount, 2) # Changed action_bet_const to action_raise_const
             
             logger.info("Decision: CHECK (medium hand, no value bet/bluff).")
-            return action_check_const, 0        
+            return action_check_const, 0
+        
         else: # Weak hand - Check or bluff
             # Don't bluff with weak hands when checked to on river - be conservative
             if street == 'river' and win_probability < 0.18:
@@ -172,27 +270,27 @@ def make_postflop_decision(
                 return action_check_const, 0
                 
             if street == 'river' and decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability):
-                 bet_amount = decision_engine_instance.get_optimal_bet_size_func(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, bluff=True)
-                 if my_stack <= pot_size:
-                     bet_amount = my_stack
-                 elif bet_amount < pot_size :
-                     bet_amount = min(pot_size, my_stack)
-                 else:
-                     bet_amount = min(bet_amount, my_stack)
-                 
-                 # Override for all-in river bluffs when pot is small relative to stack
-                 # This addresses scenarios like test_river_all_in_bluff_vs_small_stack.
-                 # If pot_size is less than 20% of my_stack (i.e., stack is > 5x pot),
-                 # and the current decision is to bluff bet (bet_amount > 0) but not already all-in (bet_amount < my_stack),
-                 # then escalate to an all-in bluff.
-                 if pot_size < my_stack * 0.20 and bet_amount > 0 and bet_amount < my_stack:
-                     logger.info(f"River bluff: Pot ({pot_size}) is < 20% of stack ({my_stack}). Current bet decision: {bet_amount}. Overriding to all-in ({my_stack}).")
-                     bet_amount = my_stack  # Go all-in
-                 
-                 if bet_amount > 0:
+                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
+                if my_stack <= pot_size:
+                    bet_amount = my_stack
+                elif bet_amount < pot_size:
+                    bet_amount = min(pot_size, my_stack)
+                else:
+                    bet_amount = min(bet_amount, my_stack)
+                
+                # Override for all-in river bluffs when pot is small relative to stack
+                # This addresses scenarios like test_river_all_in_bluff_vs_small_stack.
+                # If pot_size is less than 20% of my_stack (i.e., stack is > 5x pot),
+                # and the current decision is to bluff bet (bet_amount > 0) but not already all-in (bet_amount < my_stack),
+                # then escalate to an all-in bluff.
+                if pot_size < my_stack * 0.20 and bet_amount > 0 and bet_amount < my_stack:
+                    logger.info(f"River bluff: Pot ({pot_size}) is < 20% of stack ({my_stack}). Current bet decision: {bet_amount}. Overriding to all-in ({my_stack}).")
+                    bet_amount = my_stack  # Go all-in
+                
+                if bet_amount > 0:
                     logger.info(f"Decision: BET (weak hand, river bluff when checked to). Amount: {bet_amount:.2f}, Pot: {pot_size}, Stack: {my_stack}")
                     return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
-                 else: # If bet_amount resolved to 0 (e.g. stack is 0), check.
+                else: # If bet_amount resolved to 0 (e.g. stack is 0), check.
                     logger.info(f"Decision: CHECK (weak hand, intended bluff but bet_amount is 0). Pot: {pot_size}, Stack: {my_stack}")
                     return action_check_const, 0
 
@@ -282,8 +380,7 @@ def make_postflop_decision(
             
             if win_probability > pot_odds_to_call or (street == 'river' and win_probability > 0.7): # Good odds or strong river hand
                 # Consider raising if pot odds are very good or implied odds are high
-                # For now, just call with strong hands if odds are met.
-                call_amount = bet_to_call
+                # For now, just call with strong hands if odds are met.                call_amount = bet_to_call
                 logger.info(f"Decision: CALL (strong hand, good odds/river). Amount to call: {call_amount:.2f}")
                 return action_call_const, round(call_amount, 2)
             else: # Not good enough odds for a strong-ish hand
@@ -297,18 +394,32 @@ def make_postflop_decision(
                     calculated_raise_total_amount = max_bet_on_table * 2.5 # Smaller semi-bluff raise
                     if calculated_raise_total_amount < min_total_raise_to_amount:
                         calculated_raise_total_amount = min_total_raise_to_amount
-                    
                     final_raise_amount = min(calculated_raise_total_amount, my_stack + my_player_data.get('current_bet', 0))
                     is_all_in_raise = (final_raise_amount == my_stack + my_player_data.get('current_bet', 0))
 
                     if final_raise_amount > max_bet_on_table and (final_raise_amount >= min_total_raise_to_amount or is_all_in_raise):
                         logger.info(f"Decision: RAISE (strong hand, semi-bluff). Total Amount: {final_raise_amount:.2f}")
                         return action_raise_const, round(final_raise_amount, 2)
+                
                 logger.info(f"Decision: FOLD (strong hand, but odds not good enough, no semi-bluff). Bet_to_call: {bet_to_call}, Pot: {pot_size}")
                 return action_fold_const, 0
-
+        
         elif is_medium:
             logger.debug(f"Hand is_medium. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
+            
+            # Improved river calling logic for medium hands
+            if street == 'river':
+                # Consider stack-to-pot ratio for river decisions
+                spr_river = my_stack / pot_size if pot_size > 0 else 10
+                
+                # More liberal calling with medium hands when getting good odds
+                if (win_probability > pot_odds_to_call * 0.8 and  # Need 80% of required equity
+                    bet_to_call <= 0.75 * pot_size and            # Bet not too large
+                    spr_river > 0.5):                             # Not pot committed scenario
+                    call_amount = bet_to_call
+                    logger.info(f"Decision: CALL (medium hand, acceptable river odds). Amount: {call_amount:.2f}")
+                    return action_call_const, round(call_amount, 2)
+            
             # Call with medium strength if odds are good, especially with draws (not explicitly modeled here yet)
             if win_probability > pot_odds_to_call and bet_to_call <= 0.6 * pot_size : # Call if good odds and bet is not too large (e.g. up to 60% pot)
                 call_amount = bet_to_call
@@ -326,6 +437,10 @@ def make_postflop_decision(
                 logger.info(f"Decision: FOLD (marginal hand facing river raise). Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
                 return action_fold_const, 0
                 
+            if is_drawing_hand(win_probability, numerical_hand_rank, street):
+                logger.info(f"Decision: CALL (weak hand, but drawing hand with sufficient equity). Amount to call: {bet_to_call:.2f}, Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}")
+                return action_call_const, round(bet_to_call, 2)
+            
             if is_pot_committed and win_probability >= 0.35:  # Increased from 0.25 to 0.35
                 call_amount = bet_to_call
                 logger.info(f"Decision: CALL (pot committed with reasonable equity). Amount to call: {call_amount:.2f}, Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
