@@ -230,14 +230,15 @@ def make_preflop_decision(
                 if actual_raise_amount == my_stack and my_stack > bet_to_call: # All-in raise
                      print(f"Premium Pair, facing bet, re-raising ALL-IN. Action: RAISE, Amount: {my_stack}")
                      return action_raise_const, my_stack
-                
-                # Fallback if raise calculation is problematic
-                if bet_to_call < my_stack * 0.5: # Arbitrary threshold for calling with premium if raise sizing failed
-                    print(f"Premium Pair, facing bet, raise calc failed, calling. Action: CALL, Amount: {bet_to_call}")
+                  # Fallback if raise calculation is problematic
+                # Premium pairs (AA, KK, QQ) should almost never fold preflop
+                # Call with any premium pair if we can't raise properly
+                if bet_to_call < my_stack: # Can afford to call (not an impossible all-in for more than stack)
+                    print(f"Premium Pair, facing bet, raise calc failed, calling with premium hand. Action: CALL, Amount: {bet_to_call}")
                     return action_call_const, bet_to_call
-                else: # If too expensive to call after failed raise attempt
-                    print(f"Premium Pair, facing bet, raise calc failed, too expensive to call. Action: FOLD") # Should be rare
-                    return action_fold_const, 0
+                else: # Only fold if the bet is somehow more than our entire stack (should never happen)
+                    print(f"Premium Pair, facing bet larger than stack (impossible situation). Action: CALL ALL-IN, Amount: {my_stack}")
+                    return action_call_const, my_stack
             
             # If calculated raise is a significant portion of stack, consider it an all-in.
             if actual_raise_amount >= my_stack * 0.85 and actual_raise_amount > bet_to_call : 
