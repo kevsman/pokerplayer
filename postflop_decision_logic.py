@@ -160,17 +160,16 @@ def make_postflop_decision(
         f"pot_commitment_ratio={pot_commitment_ratio:.2%}, commitment_threshold={commitment_threshold:.2%}, "
         f"is_pot_committed={is_pot_committed}"
     )
-    
-    # Adjust hand strength classification (moved after pot commitment logic)
+      # Adjust hand strength classification (moved after pot commitment logic)
     # For top pair weak kicker situations, be more conservative with win probability thresholds
     # Top pair with weak kicker (win prob 30-45%) should not be classified as strong or even medium
-    # especially when facing aggression - be more conservative with threshold    # Top pair with weak kicker (win prob 30-45%) should not be classified as strong or even medium
     # especially when facing aggression - be more conservative with threshold
     if numerical_hand_rank == 2 and win_probability < 0.60:  # One pair with modest win probability
         is_strong = False  # Don't classify weak top pairs as strong
         # Also don't classify as medium if win probability is very low
         if win_probability < 0.40:
-            is_medium_override = False  # Force to weak if win prob < 40%        else:
+            is_medium_override = False  # Force to weak if win prob < 40%
+        else:
             is_medium_override = None  # Let normal logic decide
     else:
         # Recheck hand strength classification since we moved the initial classification
@@ -392,8 +391,7 @@ def make_postflop_decision(
                     if bet_to_call == 0: min_total_raise_to_amount = max_bet_on_table + big_blind_amount
                     
                     calculated_raise_total_amount = max_bet_on_table * 2.5 # Smaller semi-bluff raise
-                    if calculated_raise_total_amount < min_total_raise_to_amount:
-                        calculated_raise_total_amount = min_total_raise_to_amount
+                    if calculated_raise_total_amount < min_total_raise_to_amount:                    calculated_raise_total_amount = min_total_raise_to_amount
                     final_raise_amount = min(calculated_raise_total_amount, my_stack + my_player_data.get('current_bet', 0))
                     is_all_in_raise = (final_raise_amount == my_stack + my_player_data.get('current_bet', 0))
 
@@ -431,7 +429,8 @@ def make_postflop_decision(
         
         else: # Weak hand
             logger.debug(f"Hand is_weak. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
-              # Special handling for pot commitment with draws            # Special case for river raises
+            # Special handling for pot commitment with draws
+            # Special case for river raises
             if street == 'river' and max_bet_on_table > 0 and my_player_data.get('current_bet', 0) > 0 and win_probability < 0.4:
                 # We've already bet on the river and are facing a raise with low equity
                 logger.info(f"Decision: FOLD (marginal hand facing river raise). Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
