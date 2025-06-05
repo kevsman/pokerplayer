@@ -1007,3 +1007,249 @@
 2025-06-04 13:46:44,219 - postflop_decision_logic - DEBUG - Option to check is available.
 2025-06-04 13:46:44,219 - postflop_decision_logic - DEBUG - Heads-up (medium): 1 opponent, no adjustment
 2025-06-04 13:46:44,219 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 0.33
+2025-06-04 21:21:16,295 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.05, total_commitment_if_call=0.05, my_stack=1.95, pot_commitment_ratio=2.50%, is_pot_committed=False
+2025-06-04 21:21:16,295 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.05, pot_size: 0.13, my_stack: 1.95, max_bet_on_table: 0.05
+2025-06-04 21:21:16,295 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.2828, pot_odds: 0.2777777777777778
+2025-06-04 21:21:16,296 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=28.28%, pot_odds=27.78%, bet_to_call=0.05, pot_size=0.13, bet_to_pot_ratio=38.46%, my_stack=1.95
+2025-06-04 21:21:16,296 - postflop_decision_logic - INFO - Not calling with drawing hand (equity 28.28%). Reasons: Bet too large: 0.05 > 35% of pot (0.05)
+2025-06-04 21:21:16,296 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.05, Pot: 0.13
+2025-06-04 21:24:56,402 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=1.62, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:24:56,403 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:24:56,403 - postflop_decision_logic - INFO - Multiway adjustment: 5 opponents, factor: 0.50, original: 0.06, adjusted: 0.03
+2025-06-04 21:24:56,403 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 0.03
+2025-06-04 21:27:32,168 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=1.68, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:27:32,168 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:27:32,168 - postflop_decision_logic - INFO - Multiway adjustment (medium): 5 opponents, factor: 0.40, original: 0.04, adjusted: 0.02
+2025-06-04 21:27:32,168 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 0.02
+2025-06-04 21:27:43,519 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.11, total_commitment_if_call=0.11, my_stack=1.66, pot_commitment_ratio=6.21%, is_pot_committed=False
+2025-06-04 21:27:43,519 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.11, pot_size: 0.28, my_stack: 1.66, max_bet_on_table: 0.13
+2025-06-04 21:27:43,519 - postflop_decision_logic - DEBUG - Hand is_medium. win_probability: 0.5186, pot_odds: 0.28205128205128205
+2025-06-04 21:27:43,519 - postflop_decision_logic - INFO - Decision: CALL (medium hand, good odds and bet size). Amount to call: 0.11
+2025-06-04 21:27:52,208 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=1.55, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:27:52,208 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:27:52,208 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 21:28:00,923 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.27, total_commitment_if_call=0.27, my_stack=1.55, pot_commitment_ratio=14.84%, is_pot_committed=False
+2025-06-04 21:28:00,923 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.27, pot_size: 0.66, my_stack: 1.55, max_bet_on_table: 0.27
+2025-06-04 21:28:00,923 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.311, pot_odds: 0.2903225806451613
+2025-06-04 21:28:00,923 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=31.10%, pot_odds=29.03%, bet_to_call=0.27, pot_size=0.66, bet_to_pot_ratio=40.91%, my_stack=1.55
+2025-06-04 21:28:00,924 - postflop_decision_logic - INFO - Not calling with drawing hand (equity 31.10%). Reasons: Bet too large: 0.27 > 35% of pot (0.23); Bet/Pot ratio too high: 40.91% > 40%
+2025-06-04 21:28:00,924 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.27, Pot: 0.66
+2025-06-04 21:30:50,865 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.55, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:30:50,865 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:30:50,865 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 21:30:59,553 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.55, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:30:59,553 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:30:59,553 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 21:31:11,528 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.08, total_commitment_if_call=0.08, my_stack=0.55, pot_commitment_ratio=12.70%, is_pot_committed=False
+2025-06-04 21:31:11,529 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.08, pot_size: 0.21, my_stack: 0.55, max_bet_on_table: 0.08
+2025-06-04 21:31:11,529 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.2244, pot_odds: 0.2758620689655173
+2025-06-04 21:31:11,529 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=22.44%, pot_odds=27.59%, bet_to_call=0.08, pot_size=0.21, bet_to_pot_ratio=38.10%, my_stack=0.55
+2025-06-04 21:31:11,530 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.08, Pot: 0.21
+2025-06-04 21:34:44,748 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.48, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:34:44,748 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:34:44,749 - postflop_decision_logic - INFO - Multiway adjustment (medium): 5 opponents, factor: 0.40, original: 0.08, adjusted: 0.03
+2025-06-04 21:34:44,749 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 0.03
+2025-06-04 21:34:59,404 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.09, total_commitment_if_call=0.09, my_stack=0.45, pot_commitment_ratio=16.67%, is_pot_committed=False
+2025-06-04 21:34:59,404 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.09, pot_size: 0.3, my_stack: 0.45, max_bet_on_table: 0.12
+2025-06-04 21:34:59,404 - postflop_decision_logic - DEBUG - Hand is_medium. win_probability: 0.6248, pot_odds: 0.23076923076923075
+2025-06-04 21:34:59,404 - postflop_decision_logic - INFO - Decision: CALL (medium hand, good odds and bet size). Amount to call: 0.09
+2025-06-04 21:35:08,136 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.36, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:35:08,137 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:35:08,137 - postflop_decision_logic - INFO - Multiway adjustment (medium): 5 opponents, factor: 0.40, original: 0.25, adjusted: 0.10
+2025-06-04 21:35:08,137 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 0.10
+2025-06-04 21:35:19,410 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.26, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:35:19,411 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:35:19,411 - postflop_decision_logic - INFO - Multiway adjustment (medium): 5 opponents, factor: 0.40, original: 0.26, adjusted: 0.10
+2025-06-04 21:35:19,411 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 0.10
+2025-06-04 21:42:05,938 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=3.78, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:42:05,939 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:42:05,940 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 21:42:25,735 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.26, total_commitment_if_call=0.26, my_stack=3.78, pot_commitment_ratio=6.44%, is_pot_committed=False
+2025-06-04 21:42:25,735 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.26, pot_size: 0.64, my_stack: 3.78, max_bet_on_table: 0.26
+2025-06-04 21:42:25,736 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.1792, pot_odds: 0.2888888888888889
+2025-06-04 21:42:25,736 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=17.92%, pot_odds=28.89%, bet_to_call=0.26, pot_size=0.64, bet_to_pot_ratio=40.62%, my_stack=3.78
+2025-06-04 21:42:25,736 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.26, Pot: 0.64
+2025-06-04 21:46:35,787 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=3.36, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:46:35,788 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:46:35,788 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 21:46:51,926 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=3.36, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:46:51,926 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:46:51,926 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 21:47:18,414 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=1.64, total_commitment_if_call=1.64, my_stack=3.36, pot_commitment_ratio=32.80%, is_pot_committed=False
+2025-06-04 21:47:18,414 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 1.64, pot_size: 2.52, my_stack: 3.36, max_bet_on_table: 1.64
+2025-06-04 21:47:18,415 - postflop_decision_logic - DEBUG - Hand is_medium. win_probability: 0.4784, pot_odds: 0.3942307692307692
+2025-06-04 21:47:18,415 - postflop_decision_logic - INFO - Decision: FOLD (medium hand, odds not good or bet too large). Bet_to_call: 1.64, Pot: 2.52
+2025-06-04 21:48:00,448 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=3.24, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:48:00,448 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:48:00,449 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 21:48:09,480 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.18, total_commitment_if_call=0.18, my_stack=3.24, pot_commitment_ratio=5.26%, is_pot_committed=False
+2025-06-04 21:48:09,480 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.18, pot_size: 0.46, my_stack: 3.24, max_bet_on_table: 0.18
+2025-06-04 21:48:09,481 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.2118, pot_odds: 0.28125
+2025-06-04 21:48:09,481 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=21.18%, pot_odds=28.12%, bet_to_call=0.18, pot_size=0.46, bet_to_pot_ratio=39.13%, my_stack=3.24
+2025-06-04 21:48:09,481 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.18, Pot: 0.46
+2025-06-04 21:51:40,069 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.25, total_commitment_if_call=0.25, my_stack=3.08, pot_commitment_ratio=7.51%, is_pot_committed=False
+2025-06-04 21:51:40,069 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.25, pot_size: 0.86, my_stack: 3.08, max_bet_on_table: 0.25
+2025-06-04 21:51:40,069 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.2956, pot_odds: 0.22522522522522526
+2025-06-04 21:51:40,069 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=29.56%, pot_odds=22.52%, bet_to_call=0.25, pot_size=0.86, bet_to_pot_ratio=29.07%, my_stack=3.08
+2025-06-04 21:51:40,070 - postflop_decision_logic - INFO - Decision: CALL (weak hand with drawing equity, good pot odds). Amount to call: 0.25, Equity: 29.56%, Pot odds: 22.52%, Bet/Pot: 29.07%
+2025-06-04 21:51:56,277 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.55, total_commitment_if_call=0.55, my_stack=2.83, pot_commitment_ratio=16.27%, is_pot_committed=False
+2025-06-04 21:51:56,277 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.55, pot_size: 1.66, my_stack: 2.83, max_bet_on_table: 0.55
+2025-06-04 21:51:56,278 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.1272, pot_odds: 0.24886877828054302
+2025-06-04 21:51:56,278 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=12.72%, pot_odds=24.89%, bet_to_call=0.55, pot_size=1.66, bet_to_pot_ratio=33.13%, my_stack=2.83
+2025-06-04 21:51:56,279 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.55, Pot: 1.66
+2025-06-04 21:55:47,001 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=2.41, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:55:47,002 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:55:47,003 - postflop_decision_logic - INFO - Multiway adjustment: 5 opponents, factor: 0.50, original: 0.56, adjusted: 0.28
+2025-06-04 21:55:47,003 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 0.28
+2025-06-04 21:55:58,686 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=2.13, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:55:58,686 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:55:58,687 - postflop_decision_logic - INFO - Multiway adjustment: 5 opponents, factor: 0.50, original: 1.13, adjusted: 0.56
+2025-06-04 21:55:58,687 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 0.56
+2025-06-04 21:56:13,944 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=1.57, total_commitment_if_call=1.57, my_stack=1.57, pot_commitment_ratio=50.00%, is_pot_committed=True
+2025-06-04 21:56:13,945 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 1.57, pot_size: 4.02, my_stack: 1.57, max_bet_on_table: 2.12
+2025-06-04 21:56:13,945 - postflop_decision_logic - DEBUG - Hand is_very_strong. win_probability: 0.95
+2025-06-04 21:56:13,945 - postflop_decision_logic - WARNING - Calculated raise for very_strong hand was invalid or too small. final_raise_amount: 1.57, max_bet_on_table: 2.12, min_total_raise_to_amount: 3.6900000000000004. Defaulting to CALL.
+2025-06-04 21:56:13,945 - postflop_decision_logic - INFO - Decision: CALL (very_strong, but failed to make a valid raise). Amount to call: 1.57
+2025-06-04 21:56:52,589 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=5.11, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 21:56:52,589 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 21:56:52,590 - postflop_decision_logic - INFO - Multiway adjustment (strong): 5 opponents, factor: 0.50, original: 0.10, adjusted: 0.05
+2025-06-04 21:56:52,590 - postflop_decision_logic - INFO - Decision: BET (strong hand, thin value when checked to). Amount: 0.05
+2025-06-04 22:01:06,409 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=5.14, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:01:06,410 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:01:06,410 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 22:01:22,579 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.09, total_commitment_if_call=0.09, my_stack=5.14, pot_commitment_ratio=1.72%, is_pot_committed=False
+2025-06-04 22:01:22,580 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.09, pot_size: 0.37, my_stack: 5.14, max_bet_on_table: 0.09
+2025-06-04 22:01:22,580 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.222, pot_odds: 0.1956521739130435
+2025-06-04 22:01:22,580 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=22.20%, pot_odds=19.57%, bet_to_call=0.09, pot_size=0.37, bet_to_pot_ratio=24.32%, my_stack=5.14
+2025-06-04 22:01:22,580 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.09, Pot: 0.37
+2025-06-04 22:04:25,433 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=4.62, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:04:25,433 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:04:25,433 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 22:04:34,485 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=4.62, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:04:34,486 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:04:34,486 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 22:04:43,523 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=4.62, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:04:43,523 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:04:43,524 - postflop_decision_logic - INFO - Decision: CHECK (weak hand, checking behind on river).
+2025-06-04 22:05:32,923 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=4.5, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:05:32,923 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:05:32,923 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 22:05:41,983 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.25, total_commitment_if_call=0.25, my_stack=4.5, pot_commitment_ratio=5.26%, is_pot_committed=False
+2025-06-04 22:05:41,984 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.25, pot_size: 0.61, my_stack: 4.5, max_bet_on_table: 0.25
+2025-06-04 22:05:41,984 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.323, pot_odds: 0.29069767441860467
+2025-06-04 22:05:41,984 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=32.30%, pot_odds=29.07%, bet_to_call=0.25, pot_size=0.61, bet_to_pot_ratio=40.98%, my_stack=4.5
+2025-06-04 22:05:41,985 - postflop_decision_logic - INFO - Not calling with drawing hand (equity 32.30%). Reasons: Bet too large: 0.25 > 35% of pot (0.21); Bet/Pot ratio too high: 40.98% > 40%
+2025-06-04 22:05:41,985 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.25, Pot: 0.61
+2025-06-04 22:06:35,678 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=4.38, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:06:35,679 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:06:35,679 - postflop_decision_logic - INFO - Multiway adjustment (medium): 5 opponents, factor: 0.40, original: 0.10, adjusted: 0.04
+2025-06-04 22:06:35,679 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 0.04
+2025-06-04 22:06:50,970 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.12, total_commitment_if_call=0.12, my_stack=4.34, pot_commitment_ratio=2.69%, is_pot_committed=False
+2025-06-04 22:06:50,970 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.12, pot_size: 0.46, my_stack: 4.34, max_bet_on_table: 0.16
+2025-06-04 22:06:50,970 - postflop_decision_logic - DEBUG - Hand is_medium. win_probability: 0.549, pot_odds: 0.2068965517241379
+2025-06-04 22:06:50,971 - postflop_decision_logic - INFO - Decision: CALL (medium hand, good odds and bet size). Amount to call: 0.12
+2025-06-04 22:07:00,011 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=4.22, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:07:00,011 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:07:00,012 - postflop_decision_logic - INFO - Multiway adjustment (medium): 5 opponents, factor: 0.40, original: 0.29, adjusted: 0.12
+2025-06-04 22:07:00,012 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 0.12
+2025-06-04 22:07:15,161 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.12, total_commitment_if_call=0.12, my_stack=4.1, pot_commitment_ratio=2.84%, is_pot_committed=False
+2025-06-04 22:07:15,161 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.12, pot_size: 0.94, my_stack: 4.1, max_bet_on_table: 0.24
+2025-06-04 22:07:15,161 - postflop_decision_logic - DEBUG - Hand is_medium. win_probability: 0.59, pot_odds: 0.11320754716981131
+2025-06-04 22:07:15,161 - postflop_decision_logic - INFO - Decision: CALL (medium hand, good odds and bet size). Amount to call: 0.12
+2025-06-04 22:07:24,132 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=3.98, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:07:24,132 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:07:24,133 - postflop_decision_logic - INFO - Multiway adjustment (strong): 5 opponents, factor: 0.50, original: 0.58, adjusted: 0.29
+2025-06-04 22:07:24,133 - postflop_decision_logic - INFO - Decision: BET (strong hand, thin value when checked to). Amount: 0.29
+2025-06-04 22:09:42,126 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=4.42, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:09:42,126 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:09:42,126 - postflop_decision_logic - INFO - Multiway adjustment: 5 opponents, factor: 0.50, original: 0.11, adjusted: 0.06
+2025-06-04 22:09:42,126 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 0.06
+2025-06-04 22:10:00,887 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=4.36, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:10:00,887 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:10:00,888 - postflop_decision_logic - INFO - Multiway adjustment (strong): 5 opponents, factor: 0.50, original: 0.20, adjusted: 0.10
+2025-06-04 22:10:00,888 - postflop_decision_logic - INFO - Decision: BET (strong hand, thin value when checked to). Amount: 0.10
+2025-06-04 22:10:26,566 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=4.26, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:10:26,566 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:10:26,566 - postflop_decision_logic - INFO - Multiway adjustment (strong): 5 opponents, factor: 0.50, original: 0.30, adjusted: 0.15
+2025-06-04 22:10:26,567 - postflop_decision_logic - INFO - Decision: BET (strong hand, thin value when checked to). Amount: 0.15
+2025-06-04 22:12:26,413 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=4.72, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:12:26,414 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:12:26,414 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 22:12:35,513 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=4.72, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-04 22:12:35,513 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-04 22:12:35,513 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-04 22:12:48,085 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.24, total_commitment_if_call=0.24, my_stack=4.72, pot_commitment_ratio=4.84%, is_pot_committed=False
+2025-06-04 22:12:48,085 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.24, pot_size: 0.56, my_stack: 4.72, max_bet_on_table: 0.24
+2025-06-04 22:12:48,085 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.3508, pot_odds: 0.3
+2025-06-04 22:12:48,086 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=35.08%, pot_odds=30.00%, bet_to_call=0.24, pot_size=0.56, bet_to_pot_ratio=42.86%, my_stack=4.72
+2025-06-04 22:12:48,086 - postflop_decision_logic - INFO - Not calling with drawing hand (equity 35.08%). Reasons: Bet too large: 0.24 > 35% of pot (0.20); Bet/Pot ratio too high: 42.86% > 40%
+2025-06-04 22:12:48,086 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.24, Pot: 0.56
+2025-06-05 07:20:09,963 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=3.96, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-05 07:20:09,963 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-05 07:20:09,964 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-05 07:20:18,409 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.09, total_commitment_if_call=0.09, my_stack=3.96, pot_commitment_ratio=2.22%, is_pot_committed=False
+2025-06-05 07:20:18,409 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.09, pot_size: 0.23, my_stack: 3.96, max_bet_on_table: 0.09
+2025-06-05 07:20:18,410 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.346, pot_odds: 0.28125
+2025-06-05 07:20:18,410 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=34.60%, pot_odds=28.12%, bet_to_call=0.09, pot_size=0.23, bet_to_pot_ratio=39.13%, my_stack=3.96
+2025-06-05 07:20:18,410 - postflop_decision_logic - INFO - Not calling with drawing hand (equity 34.60%). Reasons: Bet too large: 0.09 > 35% of pot (0.08)
+2025-06-05 07:20:18,410 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.09, Pot: 0.23
+2025-06-05 07:21:37,144 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=3.92, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-05 07:21:37,145 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-05 07:21:37,145 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-05 07:21:48,624 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.11, total_commitment_if_call=0.11, my_stack=3.92, pot_commitment_ratio=2.73%, is_pot_committed=False
+2025-06-05 07:21:48,624 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.11, pot_size: 0.27, my_stack: 3.92, max_bet_on_table: 0.11
+2025-06-05 07:21:48,624 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.297, pot_odds: 0.2894736842105263
+2025-06-05 07:21:48,624 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=29.70%, pot_odds=28.95%, bet_to_call=0.11, pot_size=0.27, bet_to_pot_ratio=40.74%, my_stack=3.92
+2025-06-05 07:21:48,624 - postflop_decision_logic - INFO - Not calling with drawing hand (equity 29.70%). Reasons: Bet too large: 0.11 > 35% of pot (0.09); Bet/Pot ratio too high: 40.74% > 40%
+2025-06-05 07:21:48,624 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.11, Pot: 0.27
+2025-06-05 07:23:10,217 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=3.74, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-05 07:23:10,217 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-05 07:23:10,217 - postflop_decision_logic - INFO - Multiway adjustment: 5 opponents, factor: 0.50, original: 0.19, adjusted: 0.10
+2025-06-05 07:23:10,217 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 0.10
+2025-06-05 07:23:24,223 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.12, total_commitment_if_call=0.12, my_stack=3.64, pot_commitment_ratio=3.19%, is_pot_committed=False
+2025-06-05 07:23:24,223 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.12, pot_size: 0.7, my_stack: 3.64, max_bet_on_table: 0.12
+2025-06-05 07:23:24,224 - postflop_decision_logic - DEBUG - Hand is_very_strong. win_probability: 0.8726
+2025-06-05 07:23:24,224 - postflop_decision_logic - INFO - Decision: RAISE (very_strong). Total Amount: 0.36 (bet_to_call: 0.12, max_bet: 0.12, min_raise_to: 0.24)
+2025-06-05 07:23:38,236 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.75, total_commitment_if_call=0.75, my_stack=3.28, pot_commitment_ratio=18.61%, is_pot_committed=False
+2025-06-05 07:23:38,236 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.75, pot_size: 2.05, my_stack: 3.28, max_bet_on_table: 0.75
+2025-06-05 07:23:38,237 - postflop_decision_logic - DEBUG - Hand is_very_strong. win_probability: 0.9472
+2025-06-05 07:23:38,237 - postflop_decision_logic - INFO - Decision: RAISE (very_strong). Total Amount: 2.25 (bet_to_call: 0.75, max_bet: 0.75, min_raise_to: 1.5)
+2025-06-05 07:25:09,936 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.18, total_commitment_if_call=0.18, my_stack=5.03, pot_commitment_ratio=3.45%, is_pot_committed=False
+2025-06-05 07:25:09,937 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.18, pot_size: 0.54, my_stack: 5.03, max_bet_on_table: 0.18
+2025-06-05 07:25:09,937 - postflop_decision_logic - DEBUG - Hand is_strong. win_probability: 0.756, pot_odds: 0.25
+2025-06-05 07:25:09,937 - postflop_decision_logic - INFO - Decision: CALL (strong hand, good odds/river). Amount to call: 0.18
+2025-06-05 07:25:18,671 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=4.85, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-05 07:25:18,671 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-05 07:25:18,671 - postflop_decision_logic - INFO - Multiway adjustment: 5 opponents, factor: 0.50, original: 0.45, adjusted: 0.23
+2025-06-05 07:25:18,671 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 0.23
+2025-06-05 07:30:18,810 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=5.53, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-05 07:30:18,811 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-05 07:30:18,811 - postflop_decision_logic - INFO - Multiway adjustment (medium): 5 opponents, factor: 0.40, original: 0.13, adjusted: 0.05
+2025-06-05 07:30:18,811 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 0.05
+2025-06-05 07:30:30,204 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.05, total_commitment_if_call=0.05, my_stack=5.48, pot_commitment_ratio=0.90%, is_pot_committed=False
+2025-06-05 07:30:30,204 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.05, pot_size: 0.52, my_stack: 5.48, max_bet_on_table: 0.1
+2025-06-05 07:30:30,204 - postflop_decision_logic - DEBUG - Hand is_medium. win_probability: 0.6206, pot_odds: 0.08771929824561403
+2025-06-05 07:30:30,204 - postflop_decision_logic - INFO - Decision: CALL (medium hand, good odds and bet size). Amount to call: 0.05
+2025-06-05 07:30:42,259 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=5.43, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-05 07:30:42,259 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-05 07:30:42,259 - postflop_decision_logic - INFO - Multiway adjustment (medium): 5 opponents, factor: 0.40, original: 0.31, adjusted: 0.12
+2025-06-05 07:30:42,259 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 0.12
+2025-06-05 07:30:53,610 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=5.31, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-05 07:30:53,610 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-05 07:30:53,610 - postflop_decision_logic - INFO - Multiway adjustment (medium): 5 opponents, factor: 0.40, original: 0.49, adjusted: 0.20
+2025-06-05 07:30:53,610 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 0.20
+2025-06-05 07:31:14,654 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=1.05, total_commitment_if_call=1.05, my_stack=5.11, pot_commitment_ratio=17.05%, is_pot_committed=False
+2025-06-05 07:31:14,654 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 1.05, pot_size: 2.43, my_stack: 5.11, max_bet_on_table: 0.2
+2025-06-05 07:31:14,654 - postflop_decision_logic - DEBUG - Hand is_medium. win_probability: 0.5204, pot_odds: 0.3017241379310345
+2025-06-05 07:31:14,655 - postflop_decision_logic - INFO - Decision: CALL (medium hand, good odds and bet size). Amount to call: 1.05
+2025-06-05 07:34:06,197 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=3.88, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-05 07:34:06,198 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-05 07:34:06,198 - postflop_decision_logic - INFO - Decision: CHECK (medium hand, no value bet/bluff).
+2025-06-05 07:34:14,919 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=3.88, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-05 07:34:14,919 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-05 07:34:14,919 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-05 07:34:26,804 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.08, total_commitment_if_call=0.08, my_stack=3.88, pot_commitment_ratio=2.02%, is_pot_committed=False
+2025-06-05 07:34:26,804 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.08, pot_size: 0.32, my_stack: 3.88, max_bet_on_table: 0.08
+2025-06-05 07:34:26,804 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.1726, pot_odds: 0.19999999999999998
+2025-06-05 07:34:26,805 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=17.26%, pot_odds=20.00%, bet_to_call=0.08, pot_size=0.32, bet_to_pot_ratio=25.00%, my_stack=3.88
+2025-06-05 07:34:26,805 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 0.08, Pot: 0.32
