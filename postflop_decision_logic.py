@@ -377,10 +377,10 @@ def make_postflop_decision(
             if win_probability < 0.40 and bet_to_stack_ratio > 0.35:
                 logger.info(f"Decision: FOLD (strong hand but low win_prob {win_probability:.2f} and large bet {bet_to_stack_ratio:.2f} of stack).")
                 return action_fold_const, 0
-            
-            if win_probability > pot_odds_to_call or (street == 'river' and win_probability > 0.7): # Good odds or strong river hand
+              if win_probability > pot_odds_to_call or (street == 'river' and win_probability > 0.7): # Good odds or strong river hand
                 # Consider raising if pot odds are very good or implied odds are high
-                # For now, just call with strong hands if odds are met.                call_amount = bet_to_call
+                # For now, just call with strong hands if odds are met.
+                call_amount = bet_to_call
                 logger.info(f"Decision: CALL (strong hand, good odds/river). Amount to call: {call_amount:.2f}")
                 return action_call_const, round(call_amount, 2)
             else: # Not good enough odds for a strong-ish hand
