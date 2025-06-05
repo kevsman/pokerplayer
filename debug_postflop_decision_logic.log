@@ -1374,3 +1374,7 @@
 2025-06-05 08:30:02,226 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.64, pot_size: 1.51, my_stack: 0.64, max_bet_on_table: 0.81
 2025-06-05 08:30:02,226 - postflop_decision_logic - DEBUG - Hand is_medium. win_probability: 0.531, pot_odds: 0.29767441860465116
 2025-06-05 08:30:02,226 - postflop_decision_logic - INFO - Decision: CALL (medium hand, good odds and bet size). Amount to call: 0.64
+2025-06-05 09:14:49,732 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=1.93, pot_commitment_ratio=0.00%, is_pot_committed=False
+2025-06-05 09:14:49,732 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-05 09:14:49,733 - postflop_decision_logic - INFO - Multiway adjustment: 5 opponents, factor: 0.50, original: 0.04, adjusted: 0.02
+2025-06-05 09:14:49,733 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 0.02

@@ -48,8 +48,8 @@ class PokerBot:
         self.logger.propagate = False # Prevent logging to root logger if it has handlers
 
         self.config = config if config is not None else {}
-        self.big_blind = self.config.get('big_blind', 0.04)
-        self.small_blind = self.config.get('small_blind', 0.02)
+        self.big_blind = self.config.get('big_blind', 0.02)
+        self.small_blind = self.config.get('small_blind', 0.01)
         
         # Ensure big_blind and small_blind are in self.config for DecisionEngine and other parts
         if 'big_blind' not in self.config: self.config['big_blind'] = self.big_blind
