@@ -2,39 +2,48 @@
     "positions": {
         "positions": {},
         "html_capture_point": {
-            "x": 1267,
-            "y": 472
+            "x": 1220,
+            "y": 363
+        },
+        "html_search_start_point": {
+            "x": 1220,
+            "y": 363
         },
         "fold_button": {
-            "x": 792,
-            "y": 1060
+            "x": 774,
+            "y": 1072
         },
         "check_call_button": {
-            "x": 909,
-            "y": 1062
+            "x": 906,
+            "y": 1067
         },
         "all_in_button": {
-            "x": 1023,
+            "x": 1038,
             "y": 1053
         },
         "raise_button": {
-            "x": 747,
-            "y": 1003
+            "x": 762,
+            "y": 1011
         },
         "raise_input_field": {
-            "x": 747,
-            "y": 1003
+            "x": 762,
+            "y": 1011
         },
         "confirm_raise_button": {
-            "x": 1034,
-            "y": 1053
+            "x": 1026,
+            "y": 1048
         }
     },
     "delays": {
         "main_loop_general_delay": 0.5,
-        "after_action_delay": 2.5,
+        "after_action_delay": 1.5,
         "short_pause": 0.25,
         "medium_pause": 0.5,
         "long_pause": 1.0
+    },
+    "auto_search": {
+        "enabled": true,
+        "step_size": 5,
+        "max_attempts": 60
     }
 }

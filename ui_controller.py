@@ -10,7 +10,7 @@ import random # Added for click randomization
 CONFIG_FILE = "config.json"
 DEFAULT_DELAYS = {
     "main_loop_general_delay": 0.5, # seconds
-    "after_action_delay": 2.5, # seconds
+    "after_action_delay": 1.5, # seconds
     "short_pause": 0.25, # seconds
     "medium_pause": 0.5, # seconds
     "long_pause": 1.0 # seconds
@@ -20,12 +20,14 @@ class UIController:
     def __init__(self):
         self.positions = {}
         self.delays = DEFAULT_DELAYS.copy() # Initialize with defaults
+        self.config = {} # Initialize config dictionary
         self.load_config()
 
     def load_config(self):
         try:
             with open(CONFIG_FILE, 'r') as f:
                 config_data = json.load(f)
+                self.config = config_data.copy() # Store the full config
                 self.positions = config_data.get("positions", {})
                 # Load delays, merging with defaults to ensure all keys are present
                 loaded_delays = config_data.get("delays", {})
@@ -34,21 +36,37 @@ class UIController:
                         self.delays[key] = value
         except FileNotFoundError:
             print(f"Info: {CONFIG_FILE} not found. Using default positions and delays. Calibration needed.")
+            self.config = {}
             self.positions = {}
             self.delays = DEFAULT_DELAYS.copy()
         except json.JSONDecodeError:
             print(f"Error: Could not decode {CONFIG_FILE}. Using default positions and delays.")
+            self.config = {}
             self.positions = {}
             self.delays = DEFAULT_DELAYS.copy()
 
     def save_config(self):
-        config_data = {
-            "positions": self.positions,
-            "delays": self.delays
-        }
+        # Start with existing config to preserve all settings
+        config_data = self.config.copy() if self.config else {}
+        
+        # Update with current positions and delays
+        config_data["positions"] = self.positions
+        config_data["delays"] = self.delays
+        
+        # Ensure auto_search has default values if not present
+        if "auto_search" not in config_data:
+            config_data["auto_search"] = {
+                "enabled": True,
+                "step_size": 5,
+                "max_attempts": 60
+            }
+        
         with open(CONFIG_FILE, 'w') as f:
             json.dump(config_data, f, indent=4)
-        print(f"Configuration (positions and delays) saved to {CONFIG_FILE}")
+        print(f"Configuration saved to {CONFIG_FILE}")
+        
+        # Update our internal config to match what was saved
+        self.config = config_data
 
     def calibrate_position(self, name):
         input(f"Move mouse to '{name}' and press Enter...")
@@ -61,7 +79,15 @@ class UIController:
 
     def calibrate_all(self):
         print("Starting UI calibration process...")
+        
+        # Enhanced calibration: ask for both HTML capture point and starting search point
         self.calibrate_position("html_capture_point") # Point to click for copying HTML
+        
+        # Ask for starting search point for automatic recalibration
+        print("\nFor automatic recalibration when HTML capture fails:")
+        print("This should be a point above the HTML capture point where we can start searching downward.")
+        self.calibrate_position("html_search_start_point")
+        
         self.calibrate_position("fold_button")
         self.calibrate_position("check_call_button") # Assumes check and call are the same button
         self.calibrate_position("all_in_button") # Added for the all-in scenario
@@ -72,6 +98,150 @@ class UIController:
         # Optionally, prompt for delay configuration or inform about defaults
         print(f"Current delays (loaded from config or default): {self.delays}")
         print(f"You can manually edit '{CONFIG_FILE}' to change delay values if needed.")
+
+    def auto_search_for_valid_html_capture_point(self, step_size=None, max_attempts=None):
+        """
+        Automatically search for a valid HTML capture point by moving downward from the starting search point.
+        
+        Args:
+            step_size (int): Number of pixels to move down in each attempt (uses config default if None)
+            max_attempts (int): Maximum number of attempts before giving up (uses config default if None)
+            
+        Returns:
+            bool: True if a valid capture point was found and saved, False otherwise
+        """
+        # Use config values if parameters not provided
+        if step_size is None:
+            step_size = self.config.get('auto_search', {}).get('step_size', 5)
+        if max_attempts is None:
+            max_attempts = self.config.get('auto_search', {}).get('max_attempts', 60)
+        if "html_search_start_point" not in self.positions:
+            print("Error: Starting search point not calibrated. Cannot perform automatic search.")
+            return False
+        
+        start_pos = self.positions["html_search_start_point"]
+        start_x, start_y = start_pos["x"], start_pos["y"]
+        
+        print(f"Starting automatic search for valid HTML capture point from ({start_x}, {start_y})")
+        
+        # Import html_parser to test HTML validity
+        try:
+            from html_parser import PokerPageParser
+            parser = PokerPageParser()
+        except ImportError:
+            print("Error: Could not import html_parser for validation.")
+            return False
+        
+        for attempt in range(max_attempts):
+            test_y = start_y + (attempt * step_size)
+            test_pos = {"x": start_x, "y": test_y}
+            
+            print(f"Attempt {attempt + 1}/{max_attempts}: Testing capture point at ({start_x}, {test_y})")
+            
+            # Temporarily update the html_capture_point for testing
+            original_capture_point = self.positions.get("html_capture_point")
+            self.positions["html_capture_point"] = test_pos
+            
+            # Try to get HTML from this position
+            html_content = self.get_html_from_screen()
+            
+            if html_content:
+                # Test if HTML contains player areas
+                try:
+                    parsed_result = parser.parse_html(html_content)
+                    players_data = parsed_result.get('all_players_data', [])
+                    
+                    # Check if we found player areas and they're not all empty
+                    valid_players = [p for p in players_data if not p.get('is_empty', True)]
+                    
+                    if valid_players:
+                        print(f"SUCCESS: Found valid capture point at ({start_x}, {test_y}) with {len(valid_players)} active players!")
+                        
+                        # Save the new capture point to config
+                        self.save_config()
+                        print("New HTML capture point saved to configuration.")
+                        return True
+                    else:
+                        print(f"  HTML captured but no active players found.")
+                        
+                except Exception as e:
+                    print(f"  Error parsing HTML: {e}")
+            else:
+                print(f"  No valid HTML captured.")
+            
+            # Restore original capture point for next attempt if this one failed
+            if original_capture_point:
+                self.positions["html_capture_point"] = original_capture_point
+            else:
+                self.positions.pop("html_capture_point", None)
+        
+        print(f"Failed to find valid HTML capture point after {max_attempts} attempts.")
+        
+        # Restore original capture point
+        if original_capture_point:
+            self.positions["html_capture_point"] = original_capture_point
+        
+        return False
+
+    def get_html_from_screen_with_auto_retry(self, auto_retry=True):
+        """
+        Enhanced version of get_html_from_screen that automatically attempts to find a new capture point
+        when "No 'div.player-area' elements found" occurs.
+        
+        Args:
+            auto_retry (bool): Whether to attempt automatic recalibration on failure
+            
+        Returns:
+            str: HTML content if successful, None if failed
+        """
+        if "html_capture_point" not in self.positions:
+            print("Error: HTML capture point not calibrated.")
+            return None
+        
+        # Check if auto-retry is enabled in config
+        auto_search_enabled = self.config.get('auto_search', {}).get('enabled', True)
+        if not auto_search_enabled:
+            auto_retry = False
+        
+        # First, try the normal capture
+        html_content = self.get_html_from_screen()
+        
+        if not html_content:
+            if auto_retry:
+                print("Initial HTML capture failed. Attempting automatic search for new capture point...")
+                if self.auto_search_for_valid_html_capture_point():
+                    # Try again with the new capture point
+                    html_content = self.get_html_from_screen()
+                    if html_content:
+                        print("Successfully captured HTML with new capture point!")
+                        return html_content
+            return None
+        
+        # Test if the captured HTML contains player areas
+        if auto_retry:
+            try:
+                from html_parser import PokerPageParser
+                parser = PokerPageParser()
+                parsed_result = parser.parse_html(html_content)
+                players_data = parsed_result.get('all_players_data', [])
+                
+                # Check if we have valid player data
+                valid_players = [p for p in players_data if not p.get('is_empty', True)]
+                
+                if not valid_players:
+                    print("Warning: HTML captured but no active players found. Attempting automatic recalibration...")
+                    if self.auto_search_for_valid_html_capture_point():
+                        # Try again with the new capture point
+                        new_html_content = self.get_html_from_screen()
+                        if new_html_content:
+                            print("Successfully captured HTML with new capture point after recalibration!")
+                            return new_html_content
+                    print("Automatic recalibration failed. Using original HTML content.")
+                    
+            except Exception as e:
+                print(f"Error during HTML validation: {e}")
+        
+        return html_content
 
     def get_html_from_screen(self):
         if "html_capture_point" not in self.positions:

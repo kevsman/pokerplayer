@@ -439,7 +439,7 @@ class PokerBot:
         
         if not self.ui_controller.positions:
             self.logger.warning("UI positions not calibrated. Please run calibration first or ensure config.json exists.")
-            choice = input("Would you like to run calibration now? (yes/no): ").strip().lower()
+            choice = input("Would you like to run calibration now? (yes/no): ").strip().lower()            
             if choice == 'yes':
                 self.run_calibration()
             else:
@@ -450,7 +450,7 @@ class PokerBot:
             while self.running:
                 self.logger.info("\n--- New Decision Cycle ---")
                 self.logger.debug("Attempting to retrieve game HTML from screen...")
-                current_html = self.ui_controller.get_html_from_screen()
+                current_html = self.ui_controller.get_html_from_screen_with_auto_retry()
                 if current_html:
                     self.logger.debug(f"HTML length: {len(current_html)}") # Added print
                 else:
