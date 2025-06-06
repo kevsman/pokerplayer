@@ -10,6 +10,7 @@ Tests the integration of:
 
 import sys
 import os
+import logging
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from preflop_decision_logic import make_preflop_decision, adjust_for_implied_odds
@@ -143,7 +144,7 @@ def test_dynamic_bet_sizing_integration():
     for test_case in test_cases:
         try:
             # Test the dynamic bet sizing function
-            bet_size = calculate_dynamic_bet_size(
+            bet_size = get_dynamic_bet_size(
                 hand_strength=test_case['hand_strength'],
                 pot_size=test_case['pot_size'],
                 my_stack=test_case['my_stack'],

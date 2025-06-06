@@ -1,6 +1,7 @@
 # postflop_decision_logic.py
 
 import logging
+from implied_odds import should_call_with_draws
 
 # Setup debug logging
 logger = logging.getLogger(__name__)
@@ -128,7 +129,8 @@ def make_postflop_decision(
     big_blind_amount,
     base_aggression_factor,
     max_bet_on_table, # Added this parameter
-    active_opponents_count=1 # Add opponent count for multiway considerations
+    active_opponents_count=1, # Add opponent count for multiway considerations
+    opponent_tracker=None  # Add opponent tracking data
 ):
     street = game_stage # Use game_stage as street
 
@@ -149,9 +151,9 @@ def make_postflop_decision(
     if is_very_strong or is_strong:
         commitment_threshold = 0.6  # 60% for strong hands
     elif is_medium:
-        commitment_threshold = 0.45  # 45% for medium hands  
-    else:
+        commitment_threshold = 0.45  # 45% for medium hands    else:
         commitment_threshold = 0.35  # 35% for weak hands (with drawing equity)
+    
     is_pot_committed = pot_commitment_ratio >= commitment_threshold
     
     logger.debug(
@@ -160,7 +162,30 @@ def make_postflop_decision(
         f"pot_commitment_ratio={pot_commitment_ratio:.2%}, commitment_threshold={commitment_threshold:.2%}, "
         f"is_pot_committed={is_pot_committed}"
     )
-      # Adjust hand strength classification (moved after pot commitment logic)
+    
+    # Enhanced opponent analysis using tracking data
+    opponent_context = {}
+    if opponent_tracker and active_opponents_count > 0:
+        # Get table dynamics
+        table_dynamics = opponent_tracker.get_table_dynamics()
+        
+        # Analyze each opponent (simplified for first implementation)
+        for opponent_name, profile in opponent_tracker.opponents.items():
+            if profile.hands_seen > 5:  # Only consider opponents with sufficient data
+                player_type = profile.classify_player_type()
+                fold_equity = profile.get_fold_equity_estimate('unknown', bet_to_call / pot_size if pot_size > 0 else 0.5)
+                
+                opponent_context[opponent_name] = {
+                    'type': player_type,
+                    'fold_equity': fold_equity,
+                    'vpip': profile.get_vpip(),
+                    'pfr': profile.get_pfr(),
+                    'can_value_bet_thin': profile.should_value_bet_thin('unknown')
+                }
+        
+        logger.debug(f"Opponent analysis: {len(opponent_context)} opponents tracked, table type: {table_dynamics.get('table_type', 'unknown')}")
+      
+    # Adjust hand strength classification (moved after pot commitment logic)
     # For top pair weak kicker situations, be more conservative with win probability thresholds
     # Top pair with weak kicker (win prob 30-45%) should not be classified as strong or even medium
     # especially when facing aggression - be more conservative with threshold
@@ -189,6 +214,18 @@ def make_postflop_decision(
         
         if is_very_strong or (is_strong and win_probability > 0.75): # Value bet strong hands
             bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
+            
+            # Adjust bet size based on opponent types
+            if opponent_context:
+                # Against loose players, can bet larger for value
+                avg_vpip = sum(opp['vpip'] for opp in opponent_context.values()) / len(opponent_context)
+                if avg_vpip > 30:  # Loose table
+                    bet_amount *= 1.15  # 15% larger bets
+                    logger.debug(f"Loose opponents detected (avg VPIP {avg_vpip:.1f}%), increasing bet size by 15%")
+                elif avg_vpip < 20:  # Tight table
+                    bet_amount *= 0.9   # 10% smaller bets
+                    logger.debug(f"Tight opponents detected (avg VPIP {avg_vpip:.1f}%), decreasing bet size by 10%")
+            
             # Adjust bet size for multiway pots - be more conservative with more opponents
             if active_opponents_count > 1:
                 multiway_factor = max(0.5, 1.0 - (active_opponents_count - 1) * 0.3)  # More aggressive reduction
@@ -201,10 +238,11 @@ def make_postflop_decision(
             bet_amount = min(bet_amount, my_stack)
             if bet_amount > 0:
                 logger.info(f"Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: {bet_amount:.2f}")
-                return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
+                return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const            
             else:
                 logger.info("Decision: CHECK (very_strong/strong, but optimal bet is 0).")
                 return action_check_const, 0
+                
         elif is_strong: # Check/bet with strong hands (less aggressive than very_strong)
             # This is for the "thin value" case where we want to bet if checked to.
             # win_probability > 0.6 is a good candidate for thin value when checked to.            # The 'is_strong' condition already implies win_probability > 0.65 OR numerical_hand_rank >= STRONG_HAND_THRESHOLD
@@ -221,10 +259,11 @@ def make_postflop_decision(
             
             bet_amount = min(bet_amount, my_stack)
             if bet_amount > 0:
-                logger.info(f"Decision: BET (strong hand, thin value when checked to). Amount: {bet_amount:.2f}")
+                logger.info(f"Decision: BET (strong hand, thin value when checked to). Amount: {bet_amount:.2f}")                
                 return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
-              # If optimal bet is 0, or if we decided not to value bet, consider a bluff (though less likely for 'is_strong')
-            if decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability): 
+            
+            # If optimal bet is 0, or if we decided not to value bet, consider a bluff (though less likely for 'is_strong')
+            if decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability):
                 bluff_bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                 bluff_bet_amount = min(bluff_bet_amount, my_stack)
                 if bluff_bet_amount > 0:
@@ -233,8 +272,9 @@ def make_postflop_decision(
             
             logger.info("Decision: CHECK (strong hand, no value bet/bluff).")
             return action_check_const, 0
-        
-        elif is_medium: # Check/bet or check/bluff with medium hands            # For medium hands, consider a thin value bet if win_probability is decent.
+            
+        elif is_medium: # Check/bet or check/bluff with medium hands
+            # For medium hands, consider a thin value bet if win_probability is decent.
             if win_probability > 0.5: # Threshold for thin value with medium hand
                 value_bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
                 # Adjust bet size for multiway pots - medium hands should also be more conservative
@@ -261,7 +301,7 @@ def make_postflop_decision(
             
             logger.info("Decision: CHECK (medium hand, no value bet/bluff).")
             return action_check_const, 0
-        
+            
         else: # Weak hand - Check or bluff
             # Don't bluff with weak hands when checked to on river - be conservative
             if street == 'river' and win_probability < 0.18:
@@ -291,10 +331,10 @@ def make_postflop_decision(
                     return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
                 else: # If bet_amount resolved to 0 (e.g. stack is 0), check.
                     logger.info(f"Decision: CHECK (weak hand, intended bluff but bet_amount is 0). Pot: {pot_size}, Stack: {my_stack}")
-                    return action_check_const, 0
-
+                    return action_check_const, 0            
             logger.info("Decision: CHECK (weak hand).")
             return action_check_const, 0
+            
     else:  # Facing a bet
         logger.debug(f"Facing a bet. bet_to_call: {bet_to_call}, pot_size: {pot_size}, my_stack: {my_stack}, max_bet_on_table: {max_bet_on_table}")
         if is_very_strong:
@@ -435,10 +475,41 @@ def make_postflop_decision(
                 # We've already bet on the river and are facing a raise with low equity
                 logger.info(f"Decision: FOLD (marginal hand facing river raise). Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
                 return action_fold_const, 0
-                
             if is_drawing_hand(win_probability, numerical_hand_rank, street):
-                logger.info(f"Decision: CALL (weak hand, but drawing hand with sufficient equity). Amount to call: {bet_to_call:.2f}, Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}")
-                return action_call_const, round(bet_to_call, 2)
+                # Enhanced drawing hand analysis with implied odds
+                if opponent_tracker and active_opponents_count > 0:
+                    # Estimate opponent stack for implied odds calculation
+                    avg_opponent_stack = my_stack  # Conservative estimate
+                    for opponent_name, profile in opponent_tracker.opponents.items():
+                        if profile.hands_seen > 5:
+                            # Use average stack as proxy (could be improved with actual stack tracking)
+                            break
+                    
+                    # Calculate implied odds for drawing hands
+                    draw_analysis = should_call_with_draws(
+                        hand=my_player_data.get('hand', []),
+                        community_cards=my_player_data.get('community_cards', []),
+                        win_probability=win_probability,
+                        pot_size=pot_size,
+                        bet_to_call=bet_to_call,
+                        opponent_stack=avg_opponent_stack,
+                        my_stack=my_stack,
+                        street=street
+                    )
+                    
+                    if draw_analysis['should_call']:
+                        logger.info(f"Decision: CALL (drawing hand with good implied odds). Amount: {bet_to_call:.2f}, "
+                                  f"Equity: {win_probability:.2%}, Outs: {draw_analysis.get('outs', 'unknown')}, "
+                                  f"Reason: {draw_analysis['reason']}")
+                        return action_call_const, round(bet_to_call, 2)
+                    else:
+                        logger.info(f"Decision: FOLD (drawing hand with poor implied odds). "
+                                  f"Equity: {win_probability:.2%}, Reason: {draw_analysis['reason']}")
+                        return action_fold_const, 0               
+                else:
+                    # Fallback to simple equity-based decision
+                    logger.info(f"Decision: CALL (weak hand, but drawing hand with sufficient equity). Amount to call: {bet_to_call:.2f}, Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}")
+                    return action_call_const, round(bet_to_call, 2)
             
             if is_pot_committed and win_probability >= 0.35:  # Increased from 0.25 to 0.35
                 call_amount = bet_to_call
@@ -514,3 +585,163 @@ def make_postflop_decision(
     # Fallback, should not be reached if logic is complete
     logger.error("Fell through all decision logic in postflop. Defaulting to FOLD.")
     return action_fold_const, 0
+
+# NEW FUNCTIONS FOR ENHANCED POSTFLOP PLAY
+
+def estimate_opponent_range(position, preflop_action, bet_size, pot_size, street, board_texture):
+    """
+    Estimate opponent's likely hand range based on their actions.
+    Returns a simplified range description for decision making.
+    """
+    if preflop_action == 'raise':
+        if position in ['UTG', 'MP']:
+            base_range = 'tight'  # Premium pairs, AK, AQ, suited broadways
+        elif position in ['CO', 'BTN']:
+            base_range = 'wide'   # All pairs, broadway, suited connectors
+        elif position in ['SB', 'BB']:
+            base_range = 'defend' # Wide defending range
+        else:
+            base_range = 'medium' # Default
+    elif preflop_action == 'call':
+        base_range = 'speculative'  # Drawing hands, medium pairs, suited aces
+    else:
+        base_range = 'unknown'
+    
+    # Adjust based on postflop betting
+    if street != 'preflop' and bet_size > 0:
+        bet_ratio = bet_size / pot_size if pot_size > 0 else 1
+        if bet_ratio > 0.8:  # Large bet
+            if board_texture == 'dry':
+                return f"{base_range}_strong"  # Likely strong hand on dry board
+            else:
+                return f"{base_range}_polarized"  # Could be strong or bluff on wet board
+        elif bet_ratio < 0.5:  # Small bet
+            return f"{base_range}_weak"  # Likely weak hand or small value bet
+    
+    return base_range
+
+def calculate_fold_equity(opponent_range, board_texture, bet_size, pot_size):
+    """
+    Estimate fold equity against opponent's estimated range.
+    Returns probability that opponent will fold to our bet.
+    """
+    if opponent_range.endswith('_strong'):
+        base_fold_equity = 0.2  # Strong hands rarely fold
+    elif opponent_range.endswith('_weak'):
+        base_fold_equity = 0.7  # Weak hands fold often
+    elif opponent_range.endswith('_polarized'):
+        base_fold_equity = 0.5  # Mixed range
+    elif 'tight' in opponent_range:
+        base_fold_equity = 0.6  # Tight players fold more
+    elif 'wide' in opponent_range:
+        base_fold_equity = 0.4  # Wide ranges call more
+    else:
+        base_fold_equity = 0.5  # Default
+    
+    # Adjust for bet size
+    bet_ratio = bet_size / pot_size if pot_size > 0 else 1
+    if bet_ratio > 1.0:  # Overbet
+        base_fold_equity += 0.2
+    elif bet_ratio > 0.75:  # Large bet
+        base_fold_equity += 0.1
+    elif bet_ratio < 0.5:  # Small bet
+        base_fold_equity -= 0.1
+    
+    # Adjust for board texture
+    if board_texture == 'wet':
+        base_fold_equity -= 0.1  # Less fold equity on wet boards
+    elif board_texture == 'dry':
+        base_fold_equity += 0.1  # More fold equity on dry boards
+    
+    return max(0.1, min(0.9, base_fold_equity))
+
+def is_thin_value_spot(hand_strength, win_probability, opponent_range, position):
+    """
+    Determine if this is a good spot for thin value betting.
+    """
+    if hand_strength < 2:  # Need at least a pair for thin value
+        return False
+    
+    if win_probability < 0.55:  # Need reasonable equity
+        return False
+    
+    # More liberal thin value in position
+    if position in ['CO', 'BTN']:
+        threshold = 0.55
+    else:
+        threshold = 0.60
+    
+    # Against weak ranges, can value bet thinner
+    if 'weak' in opponent_range or 'speculative' in opponent_range:
+        threshold -= 0.05
+    
+    return win_probability > threshold
+
+def should_call_bluff(hand_strength, win_probability, pot_odds, opponent_range, bet_size, pot_size):
+    """
+    Determine if we should call a suspected bluff.
+    """
+    if hand_strength < 1:  # Need some made hand or strong draw
+        return False
+    
+    # Calculate minimum defense frequency (MDF)
+    bet_ratio = bet_size / pot_size if pot_size > 0 else 1
+    mdf = 1 / (1 + bet_ratio)  # Minimum frequency to not be exploitable
+    
+    # Adjust based on opponent range
+    if 'polarized' in opponent_range:
+        # Against polarized ranges, need stronger hands to call
+        required_equity = mdf + 0.1
+    elif 'bluff_heavy' in opponent_range:
+        # Against bluff-heavy ranges, can call lighter
+        required_equity = mdf - 0.1
+    else:
+        required_equity = mdf
+    
+    # Compare our equity to required equity
+    return win_probability >= required_equity
+
+def calculate_spr_adjustments(spr, hand_strength, drawing_potential):
+    """
+    Adjust strategy based on Stack-to-Pot Ratio (SPR).
+    """
+    if spr < 2:  # Low SPR - commitment threshold
+        # With low SPR, commit with top pair or better
+        if hand_strength >= 2:
+            return 'commit'
+        else:
+            return 'fold_or_shove'
+    elif spr > 10:  # High SPR - play for stacks
+        # With high SPR, need stronger hands to commit
+        if hand_strength >= 4:  # Two pair or better
+            return 'value_build_pot'
+        elif drawing_potential:
+            return 'speculative_call'
+        else:
+            return 'fold_weak'
+    else:  # Medium SPR - standard play
+        return 'standard'
+
+# Enhanced opponent analysis using tracking data
+    opponent_context = {}
+    if opponent_tracker and active_opponents_count > 0:
+        # Get table dynamics
+        table_dynamics = opponent_tracker.get_table_dynamics()
+        
+        # Analyze each opponent (simplified for first implementation)
+        for opponent_name, profile in opponent_tracker.opponents.items():
+            if profile.hands_seen > 5:  # Only consider opponents with sufficient data
+                player_type = profile.classify_player_type()
+                fold_equity = profile.get_fold_equity_estimate('unknown', bet_to_call / pot_size if pot_size > 0 else 0.5)
+                
+                opponent_context[opponent_name] = {
+                    'type': player_type,
+                    'fold_equity': fold_equity,
+                    'vpip': profile.get_vpip(),
+                    'pfr': profile.get_pfr(),
+                    'can_value_bet_thin': profile.should_value_bet_thin('unknown')
+                }
+        
+        logger.debug(f"Opponent analysis: {len(opponent_context)} opponents tracked, table type: {table_dynamics.get('table_type', 'unknown')}")
+    
+    # Use opponent data to adjust strategy

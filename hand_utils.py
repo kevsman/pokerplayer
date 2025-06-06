@@ -119,11 +119,10 @@ def get_preflop_hand_category(hole_cards, position): # Renamed parameters for cl
     # Playable Broadway suited (KQs specifically)
     if is_suited and rank1_val == 13 and rank2_val == 12: # KQs
         return "Playable Broadway"
-        
-    # Suited Connectors / Gappers
-    if is_suited and (rank1_val - rank2_val) == 1 and rank1_val >= 7: # e.g. QJs, JTs, ..., 76s (excluding KQs which is Playable Broadway)
+          # Suited Connectors / Gappers
+    if is_suited and (rank1_val - rank2_val) == 1 and rank1_val >= 6: # e.g. 76s, 87s, 98s, ..., QJs (excluding KQs which is Playable Broadway)
         return "Suited Connector"
-    if is_suited and (rank1_val - rank2_val) == 2 and rank1_val >= 9: # e.g. KJs, QTs, ..., 97s
+    if is_suited and (rank1_val - rank2_val) == 2 and rank1_val >= 8: # e.g. 86s, 97s, T8s, ..., QTs
         return "Suited Connector" # Or "Suited Gapper"
     
     # Offsuit Broadway hands (excluding AKo, which is Strong Pair)
@@ -155,13 +154,12 @@ def get_preflop_hand_category(hole_cards, position): # Renamed parameters for cl
         # 9xs (98s, 97s are connectors/gappers)
         elif rank1_val == 9 and rank2_val <= 7 and not (rank1_val - rank2_val <= 2): # 96s down to 92s
             if rank2_val >= 4: return "Suited Playable" # 94s+
-            
-    # Offsuit Playable hands (e.g. A9o, KTo, QTo, JTo, T9o that are not "Offsuit Broadway")
+              # Offsuit Playable hands (e.g. A9o, KTo, QTo, JTo, T9o that are not "Offsuit Broadway")
     # These are hands with a high card and a decent offsuit kicker.
     if not is_suited:
         # Axs (AKo, AQo are "Strong Pair")
         if rank1_val == 14 and rank2_val <= 11: # AJo, ATo, A9o...A2o
-            if rank2_val >= 7: return "Offsuit Playable" # A7o+
+            if rank2_val >= 5: return "Offsuit Playable" # A5o+ (widened for late position)
         # Kxs (KQo, KJo, KTo are "Offsuit Broadway")
         elif rank1_val == 13 and rank2_val <= 9: # K9o...K2o
             if rank2_val >= 7: return "Offsuit Playable" # K7o+

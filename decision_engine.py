@@ -3,6 +3,8 @@ from equity_calculator import EquityCalculator
 from ev_utils import calculate_expected_value, should_bluff, _estimate_fold_equity
 from bet_utils import get_optimal_bet_size
 from opponent_model_utils import update_opponent_model, get_opponent_tendencies
+from opponent_tracking import OpponentTracker
+from tournament_adjustments import get_tournament_adjustment_factor, adjust_preflop_range_for_tournament, adjust_bet_size_for_tournament
 from hand_utils import get_hand_strength_value, calculate_stack_to_pot_ratio, get_preflop_hand_category, normalize_card_list
 from preflop_decision_logic import make_preflop_decision
 from postflop_decision_logic import make_postflop_decision
@@ -35,6 +37,12 @@ class DecisionEngine:
         self.big_blind_amount = self.config.get('big_blind', 0.02) # Renamed for clarity
         self.small_blind_amount = self.config.get('small_blind', 0.01) # Renamed for clarity
         self.base_aggression_factor = self.config.get('base_aggression_factor_postflop', 1.0) # Renamed for clarity
+        
+        # Initialize opponent tracking system
+        self.opponent_tracker = OpponentTracker()
+        
+        # Tournament settings (default to cash game)
+        self.tournament_level = self.config.get('tournament_level', 0)  # 0 = cash game, 1-3 = tournament levels
         
         # Make helper functions available as instance methods or attributes
         self.get_optimal_bet_size_func = get_optimal_bet_size
@@ -103,10 +111,12 @@ class DecisionEngine:
         if my_stack_raw is None:
             logger.warning(f"Player stack not found for player {player_index}, defaulting to 0.0.")
             my_stack = 0.0
-        else:
-            my_stack = parse_monetary_value(my_stack_raw)
+        else:            my_stack = parse_monetary_value(my_stack_raw)
 
         community_cards = game_state['community_cards']
+        
+        # Update opponent tracking before making decision
+        self.update_opponents_from_game_state(game_state, player_index)
 
         # Evaluate hand for the current player
         hand_eval_dict = self.hand_evaluator.evaluate_hand(my_player['hand'], community_cards)
@@ -168,8 +178,7 @@ class DecisionEngine:
         
         logger.debug(f"Make_decision: UI_bet_to_call_val: {parsed_ui_bet_to_call_for_log}, Calculated_bet_to_call: {bet_to_call_calculated}, Final_bet_to_call: {final_bet_to_call}, Max_bet_on_table: {max_bet_on_table}, My_current_bet: {my_current_bet}")        
         can_check = final_bet_to_call == 0
-        active_opponents_count = sum(1 for i, p in enumerate(all_players) if p and not p.get('isFolded', False) and i != player_index)
-
+        active_opponents_count = sum(1 for i, p in enumerate(all_players) if p and not p.get('isFolded', False) and i != player_index)        
         if current_round == 'preflop':
             logger.debug(f"  DEBUG ENGINE: PRE-CALL to make_preflop_decision: final_bet_to_call={final_bet_to_call}, max_bet_on_table={max_bet_on_table}")
             # sys.stderr.flush() # Not needed with logger
@@ -202,6 +211,24 @@ class DecisionEngine:
                 action_call_const=ACTION_CALL,
                 action_raise_const=ACTION_RAISE
             )
+            
+            # Apply tournament adjustments if in tournament mode
+            if self.tournament_level > 0:
+                tournament_adjustments = get_tournament_adjustment_factor(
+                    my_stack, self.big_blind_amount, self.tournament_level
+                )
+                adjusted_action = adjust_preflop_range_for_tournament(action, hand_category, tournament_adjustments)
+                if adjusted_action != action:
+                    logger.debug(f"Tournament adjustment: Changed {action} to {adjusted_action} for {hand_category}")
+                    action = adjusted_action
+                    if action == ACTION_FOLD:
+                        amount = 0
+                    elif action == ACTION_CALL:
+                        amount = final_bet_to_call
+                  # Adjust bet size for tournament if raising
+                if action == ACTION_RAISE and amount > 0:
+                    amount = adjust_bet_size_for_tournament(amount, pot_size, tournament_adjustments)
+            
         else: # postflop
             pot_odds_to_call = 0
             if (pot_size + final_bet_to_call) > 0: # Ensure denominator is not zero
@@ -210,10 +237,12 @@ class DecisionEngine:
             spr = 0
             if pot_size > 0:
                 spr = my_stack / pot_size # Use converted float stack
-            else:                spr = float('inf') if my_stack > 0 else 0
+            else:
+                spr = float('inf') if my_stack > 0 else 0
             
             logger.debug(f"  DEBUG ENGINE: PRE-CALL to make_postflop_decision: final_bet_to_call={final_bet_to_call}, max_bet_on_table={max_bet_on_table}")
-            # sys.stderr.flush() # Not needed with logger            
+            # sys.stderr.flush() # Not needed with logger
+            
             action, amount = make_postflop_decision(
                 decision_engine_instance=self,
                 numerical_hand_rank=numerical_hand_rank,
@@ -234,7 +263,8 @@ class DecisionEngine:
                 big_blind_amount=self.big_blind_amount,
                 base_aggression_factor=self.base_aggression_factor,
                 max_bet_on_table=max_bet_on_table,
-                active_opponents_count=active_opponents_count
+                active_opponents_count=active_opponents_count,
+                opponent_tracker=self.opponent_tracker  # Pass opponent tracking data
             )
         
         # Ensure amount is a float before returning
@@ -263,3 +293,38 @@ class DecisionEngine:
 
 
         return action, round(amount, 2)
+
+    def update_opponents_from_game_state(self, game_state, player_index):
+        """Update opponent tracking based on current game state and recent actions."""
+        try:
+            all_players = game_state.get('players', [])
+            current_round = game_state.get('current_round', 'unknown')
+            pot_size = parse_monetary_value(game_state.get('pot_size', game_state.get('pot', 0)))
+            
+            # Update opponent actions based on their current state
+            for i, player in enumerate(all_players):
+                if i == player_index or not player:  # Skip self and empty slots
+                    continue
+                    
+                player_name = player.get('name', f'Player_{i}')
+                position = player.get('position', 'unknown')
+                
+                # Check if player made an action this round
+                if player.get('has_acted', False):
+                    last_action = player.get('last_action', 'unknown')
+                    bet_amount = parse_monetary_value(player.get('current_bet', 0))
+                    
+                    # Update opponent profile
+                    self.opponent_tracker.update_opponent_action(
+                        player_name=player_name,
+                        action=last_action,
+                        street=current_round.lower(),
+                        position=position,
+                        bet_size=bet_amount,
+                        pot_size=pot_size
+                    )
+                    
+                    logger.debug(f"Updated opponent {player_name}: {last_action} for {bet_amount} on {current_round}")
+                    
+        except Exception as e:
+            logger.warning(f"Error updating opponent tracking: {e}")

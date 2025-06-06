@@ -30,6 +30,25 @@ def adjust_for_implied_odds(hand_category, position, my_stack, effective_stack, 
             return True
     return False
 
+def should_play_wider_in_position(hand_category, position, num_limpers, bet_to_call, big_blind):
+    """
+    Determine if we should play wider ranges based on position.
+    This implements the key recommendation to play more hands in late position.
+    """
+    if position in ['CO', 'BTN']:
+        # Late position - play wider ranges
+        if hand_category in ['Offsuit Playable', 'Suited Playable', 'Medium Pair', 'Small Pair']:
+            # More liberal in late position
+            if bet_to_call <= big_blind * 3:  # Up to 3bb
+                return True
+        
+        # Button steal spots - even wider
+        if position == 'BTN' and num_limpers == 0 and bet_to_call <= big_blind:
+            if hand_category in ['Suited Connector', 'Offsuit Playable', 'Small Pair']:
+                return True
+                
+    return False
+
 def make_preflop_decision(
     my_player, hand_category, position, bet_to_call, can_check, 
     my_stack, pot_size, active_opponents_count, 
@@ -126,49 +145,70 @@ def make_preflop_decision(
     print(f"Preflop Logic: Pos: {position}, Cat: {preflop_category}, B2Call: {bet_to_call}, CanChk: {can_check}, CalcRaise: {raise_amount_calculated}, MyStack: {my_stack}, MyBet: {my_current_bet_this_street}, MaxOppBet: {max_bet_on_table}, Pot: {pot_size}, Opps: {active_opponents_count}, BB: {big_blind}, is_bb: {is_bb}, NumLimpers: {num_limpers}")
 
     # --- Decision Logic ---
-
+    
     if preflop_category == "Weak":
         if can_check and is_bb and bet_to_call == 0:
             print(f"Weak hand in BB, option to check. Action: CHECK")
             return action_check_const, 0
-        # If SB limps and BB has a weak hand, BB should check (already covered by can_check and bet_to_call == 0)        # If facing a raise, fold weak hands.
-        # Exception: BTN steal situations with suited weak hands like K4s
+        
+        # Enhanced BTN stealing with wider range
+        if position == 'BTN' and num_limpers == 0 and max_bet_on_table <= big_blind:
+            # BTN should attempt steals with wider range including suited weak hands and some offsuit hands
+            hand = my_player['hand']
+            card1_suit = hand[0][-1]
+            card2_suit = hand[1][-1]
+            is_suited = card1_suit == card2_suit
+            
+            # Get card ranks
+            card1_rank = hand[0][:-1] if hand[0][:-1] != '10' else 'T'
+            card2_rank = hand[1][:-1] if hand[1][:-1] != '10' else 'T'
+            
+            # Expand steal range: suited kings, suited queens, any suited connector
+            has_high_card = card1_rank in ['K', 'Q', 'J'] or card2_rank in ['K', 'Q', 'J']
+            
+            # Check for suited connectors or gappers
+            from hand_utils import RANK_TO_VALUE
+            rank1_val = RANK_TO_VALUE.get(card1_rank, 0)
+            rank2_val = RANK_TO_VALUE.get(card2_rank, 0)
+            if rank1_val < rank2_val:
+                rank1_val, rank2_val = rank2_val, rank1_val
+            
+            is_connector = is_suited and (rank1_val - rank2_val) <= 2 and rank1_val >= 6
+            
+            # Steal with: suited high cards, suited connectors, some offsuit broadways
+            should_steal = False
+            if is_suited and (has_high_card or is_connector):
+                should_steal = True
+            elif not is_suited and has_high_card and (rank1_val >= 11 and rank2_val >= 9):  # J9o+
+                should_steal = True
+                
+            if should_steal:
+                steal_amount = raise_amount_calculated
+                steal_amount = max(steal_amount, min_raise)
+                steal_amount = round(min(steal_amount, my_stack), 2)
+                if steal_amount > bet_to_call:
+                    print(f"BTN steal with weak hand ({card1_rank}{card1_suit}, {card2_rank}{card2_suit}). Action: RAISE, Amount: {steal_amount}")
+                    return action_raise_const, steal_amount
+        
+        # CO late position play - more liberal than early position
+        if position == 'CO' and num_limpers == 0 and max_bet_on_table <= big_blind:
+            hand = my_player['hand']
+            card1_rank = hand[0][:-1] if hand[0][:-1] != '10' else 'T'
+            card2_rank = hand[1][:-1] if hand[1][:-1] != '10' else 'T'
+            
+            # More conservative than BTN but still wider than early position
+            has_king_queen = card1_rank in ['K', 'Q'] or card2_rank in ['K', 'Q']
+            if has_king_queen and (hand[0][-1] == hand[1][-1]):  # Suited K or Q
+                steal_amount = raise_amount_calculated
+                steal_amount = max(steal_amount, min_raise)
+                steal_amount = round(min(steal_amount, my_stack), 2)
+                if steal_amount > bet_to_call:
+                    print(f"CO open with suited high card. Action: RAISE, Amount: {steal_amount}")
+                    return action_raise_const, steal_amount
+                    
+        # If facing a raise, fold weak hands (with some exceptions)
         if bet_to_call > 0:
-            # Exception: If it's a very small completion bet in BB vs SB limp, and pot odds are amazing.
-            # However, for "Weak" category, folding is generally safer.
-            if is_bb and max_bet_on_table == small_blind and bet_to_call == (small_blind - my_current_bet_this_street):
-                 # This is SB limping, BB has option to complete. With a truly weak hand, check if possible, else fold to raise.
-                 # If bet_to_call is small_blind (meaning SB limped and we are BB with BB already in), this is effectively a check.
-                 # The issue is if SB limps, BB's bet_to_call is 0 if SB just posted SB.
-                 # If SB completes to BB, then BB's bet_to_call is 0.
-                 # This specific logic for SB limp completion needs to be handled by `can_check` and `bet_to_call == 0` for BB.
-                 pass # Covered by general check/fold logic
-
-            # BTN steal situation: facing only blinds (max_bet_on_table <= big_blind)
-            if position == 'BTN' and max_bet_on_table <= big_blind and num_limpers == 0:
-                # BTN should attempt steals with wider range including suited kings
-                # Check if it's a suited hand that could be a steal candidate
-                hand = my_player['hand']
-                card1_suit = hand[0][-1]
-                card2_suit = hand[1][-1]
-                is_suited = card1_suit == card2_suit
-                
-                # Get card ranks
-                card1_rank = hand[0][:-1] if hand[0][:-1] != '10' else 'T'
-                card2_rank = hand[1][:-1] if hand[1][:-1] != '10' else 'T'
-                
-                # Check if it contains a King and is suited (like K4s)
-                has_king = card1_rank == 'K' or card2_rank == 'K'
-                
-                if is_suited and has_king:
-                    steal_amount = raise_amount_calculated
-                    steal_amount = max(steal_amount, min_raise)
-                    steal_amount = round(min(steal_amount, my_stack), 2)
-                    if steal_amount > bet_to_call:
-                        print(f"Weak suited King in BTN steal situation, raise over blinds. Action: RAISE, Amount: {steal_amount}")
-                        return action_raise_const, steal_amount
-
-            print(f"Weak hand facing bet > SB completion. Action: FOLD")
+            print(f"Weak hand facing bet. Action: FOLD")
             return action_fold_const, 0
           # If no bet to call, and cannot check (e.g., UTG must act), fold weak hands.
         # Exception: BTN steal attempts with suited weak hands like K4s
