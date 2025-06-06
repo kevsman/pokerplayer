@@ -472,15 +472,31 @@ def make_postflop_decision(
                 return action_fold_const, 0
         
         else: # Weak hand
-            logger.debug(f"Hand is_weak. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
-            # Special handling for pot commitment with draws
+            logger.debug(f"Hand is_weak. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")            # Special handling for pot commitment with draws
             # Special case for river raises
             if street == 'river' and max_bet_on_table > 0 and my_player_data.get('current_bet', 0) > 0 and win_probability < 0.4:
                 # We've already bet on the river and are facing a raise with low equity
                 logger.info(f"Decision: FOLD (marginal hand facing river raise). Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
                 return action_fold_const, 0
+                
             if is_drawing_hand(win_probability, numerical_hand_rank, street):
-                # Enhanced drawing hand analysis with implied odds
+                # Check if this is an all-in situation (no implied odds possible)
+                is_all_in_call = (bet_to_call >= my_stack) or my_player_data.get('is_all_in_call_available', False)
+                is_facing_all_in = (bet_to_call >= my_stack * 0.9)  # Consider 90%+ of stack as all-in equivalent
+                
+                if is_all_in_call or is_facing_all_in:
+                    # No implied odds in all-in situations - use strict equity requirements
+                    required_equity = 0.45  # Need at least 45% equity for all-in calls with draws
+                    if win_probability >= required_equity:
+                        logger.info(f"Decision: CALL (drawing hand all-in with sufficient equity). Amount: {bet_to_call:.2f}, "
+                                  f"Equity: {win_probability:.2%}, Required: {required_equity:.2%}")
+                        return action_call_const, round(bet_to_call, 2)
+                    else:
+                        logger.info(f"Decision: FOLD (drawing hand all-in with insufficient equity). "
+                                  f"Equity: {win_probability:.2%}, Required: {required_equity:.2%}")
+                        return action_fold_const, 0
+                
+                # Regular drawing hand analysis with implied odds (non all-in)
                 if opponent_tracker and active_opponents_count > 0:
                     # Estimate opponent stack for implied odds calculation
                     avg_opponent_stack = my_stack  # Conservative estimate
@@ -511,9 +527,13 @@ def make_postflop_decision(
                                   f"Equity: {win_probability:.2%}, Reason: {draw_analysis['reason']}")
                         return action_fold_const, 0               
                 else:
-                    # Fallback to simple equity-based decision
-                    logger.info(f"Decision: CALL (weak hand, but drawing hand with sufficient equity). Amount to call: {bet_to_call:.2f}, Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}")
-                    return action_call_const, round(bet_to_call, 2)
+                    # Fallback to simple equity-based decision for non all-in situations
+                    if win_probability > pot_odds_to_call and bet_to_call <= 0.3 * pot_size:
+                        logger.info(f"Decision: CALL (weak hand, but drawing hand with sufficient equity). Amount to call: {bet_to_call:.2f}, Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}")
+                        return action_call_const, round(bet_to_call, 2)
+                    else:
+                        logger.info(f"Decision: FOLD (drawing hand with insufficient equity or large bet). Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}")
+                        return action_fold_const, 0
             
             if is_pot_committed and win_probability >= 0.35:  # Increased from 0.25 to 0.35
                 call_amount = bet_to_call
