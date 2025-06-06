@@ -1629,3 +1629,8 @@
 2025-06-05 21:43:53,026 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=1.81, pot_commitment_ratio=0.00%, commitment_threshold=45.00%, is_pot_committed=False
 2025-06-05 21:43:53,027 - postflop_decision_logic - DEBUG - Option to check is available.
 2025-06-05 21:43:53,027 - postflop_decision_logic - INFO - Decision: CHECK (medium hand, no value bet/bluff).
+2025-06-06 07:45:35,304 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.78, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-06 07:45:35,305 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown
+2025-06-06 07:45:35,305 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-06 07:45:35,305 - postflop_decision_logic - INFO - Multiway adjustment (strong): 5 opponents, factor: 0.50, original: 0.04, adjusted: 0.02
+2025-06-06 07:45:35,305 - postflop_decision_logic - INFO - Decision: BET (strong hand, thin value when checked to). Amount: 0.02

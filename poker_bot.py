@@ -40,9 +40,25 @@ class PokerBot:
         self.fh.setLevel(logging.DEBUG)
         self.ch = logging.StreamHandler(sys.stdout)
         self.ch.setLevel(logging.INFO)
+        
+        # Configure formatter to handle Unicode characters
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         self.fh.setFormatter(formatter)
         self.ch.setFormatter(formatter)
+          # Set encoding for StreamHandler to handle Unicode on Windows
+        if hasattr(self.ch, 'stream') and hasattr(self.ch.stream, 'reconfigure'):
+            try:
+                self.ch.stream.reconfigure(encoding='utf-8')
+            except Exception:
+                # Fallback: create a new StreamHandler with proper encoding
+                import io
+                if sys.platform.startswith('win'):
+                    # For Windows, wrap stdout to handle Unicode properly
+                    utf8_stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+                    self.ch = logging.StreamHandler(utf8_stdout)
+                    self.ch.setLevel(logging.INFO)
+                    self.ch.setFormatter(formatter)
+        
         self.logger.addHandler(self.fh)
         self.logger.addHandler(self.ch)
         self.logger.propagate = False # Prevent logging to root logger if it has handlers
@@ -222,49 +238,25 @@ class PokerBot:
         cc_text = ' '.join(cc_list) if cc_list else "None"
         summary.append(f"Community Cards: {cc_text}")
         summary.append(f"Dealer Position: Seat {self.table_data.get('dealer_position', 'N/A')}")
+          # Show only essential player info - my player and active player
+        my_player = self.get_my_player()
+        active_player = self.get_active_player()
         
-        summary.append("\n--- Players ---")
-        if not self.player_data:
-            summary.append("  No player data found or analyzed.")
+        if my_player:
+            summary.append("\n--- My Player ---")
+            hand_rank_str = my_player.get('hand_rank', 'N/A')
+            cards_text = f" Cards: {' '.join(my_player.get('cards', []))}" if my_player.get('cards') else ""
+            hand_text = f" Hand: {hand_rank_str}" if hand_rank_str and hand_rank_str != 'N/A' else ""
+            summary.append(f"  Seat {my_player.get('seat', 'N/A')}: {my_player.get('name', 'N/A')} - Stack: {my_player.get('stack', 'N/A')}, Bet: {my_player.get('bet', '0')}{cards_text}{hand_text}")
         
-        sorted_players = sorted(
-            [p for p in self.player_data if p.get('seat') is not None], 
-            key=lambda p: int(p['seat']) if p['seat'].isdigit() else 999
-        )
-
-        for player in sorted_players:
-            if player.get('is_empty', False):
-                summary.append(f"  Seat {player.get('seat', 'N/A')}: Empty")
-                continue
-                
-            name = player.get('name', 'N/A')
-            stack = player.get('stack', 'N/A')
-            bet = player.get('bet', '0') 
-            
-            status = []
-            if player.get('is_my_player', False):
-                status.append("ME")
-                # hand_rank_str is already set from hand_evaluation[1] above
-                hand_rank_str = player.get('hand_rank', 'N/A') 
-                if hand_rank_str and hand_rank_str != 'N/A':
-                    status.append(f"Hand: {hand_rank_str}")
-
-            if player.get('has_turn', False): status.append("ACTIVE TURN")
-            status_text = f" ({', '.join(status)})" if status else ""
-            
-            cards_text = ""
-            if player.get('cards') and player['cards']:
-                cards_text = f" Cards: {' '.join(player.get('cards'))}"
-            elif player.get('has_hidden_cards', False):
-                cards_text = " (Has hidden cards)"
-                
-            summary.append(f"  Seat {player.get('seat', 'N/A')}: {name}{status_text} - Stack: {stack}, Bet: {bet}{cards_text}")
-        
+        # Count total active players
+        active_players_count = len([p for p in self.player_data if not p.get('is_empty', False)])
+        summary.append(f"\n--- Players: {active_players_count} active ---")        
         active_player = self.get_active_player()
         if active_player:
-            summary.append(f"\nIt is currently Seat {active_player['seat']} ({active_player['name']})'s turn.")
+            summary.append(f"It is currently Seat {active_player['seat']} ({active_player['name']})'s turn.")
         else:
-            summary.append("\nNo player currently has the turn (or turn detection failed).")
+            summary.append("No player currently has the turn (or turn detection failed).")
             
         my_player = self.get_my_player()
         if my_player and my_player.get('has_turn'):
@@ -618,14 +610,30 @@ class PokerBot:
             # self.close_logger() # Call close_logger here when main_loop finishes
 
 if __name__ == "__main__":
-    # Basic logging setup for the __main__ block, PokerBot will set up its own logger instance
-    # Ensure the root logger also handles UTF-8 for any prints that might go through it,
-    # though PokerBot class uses its own configured logger.
+    # Basic logging setup for the __main__ block with Unicode support
+    import io
+    
+    # Create Unicode-safe console handler for Windows
+    console_handler = logging.StreamHandler()
+    if sys.platform.startswith('win'):
+        try:
+            # Try to reconfigure stdout encoding
+            if hasattr(sys.stdout, 'reconfigure'):
+                sys.stdout.reconfigure(encoding='utf-8')
+        except Exception:
+            # Fallback: wrap stdout for Unicode support
+            try:
+                utf8_stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+                console_handler = logging.StreamHandler(utf8_stdout)
+            except Exception:
+                # Final fallback: just use regular StreamHandler
+                console_handler = logging.StreamHandler(sys.stdout)
+    
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', handlers=[
-        logging.FileHandler("poker_bot_main.log", mode='a', encoding='utf-8'), # Log main block to a separate file or same with different logger name
-        logging.StreamHandler(sys.stdout) # Ensure console output from basicConfig also attempts to use sys.stdout
+        logging.FileHandler("poker_bot_main.log", mode='a', encoding='utf-8'),
+        console_handler
     ])
-    logger = logging.getLogger(__name__) # Get a logger for the main block
+    logger = logging.getLogger(__name__)
     bot = None # Initialize bot to None
     try:
         if len(sys.argv) > 1 and sys.argv[1] == 'calibrate': # Added calibrate command

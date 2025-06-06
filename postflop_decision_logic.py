@@ -138,7 +138,10 @@ def make_postflop_decision(
         f"make_postflop_decision: street={street}, my_player_data={my_player_data}, "
         f"pot_size={pot_size}, win_prob={win_probability}, pot_odds={pot_odds_to_call}, "
         f"bet_to_call={bet_to_call}, max_bet_on_table={max_bet_on_table}, "
-        f"active_opponents_count={active_opponents_count}, can_check={can_check}"    )    # Check for pot commitment - if we've already invested or would invest significant portion of our stack
+        f"active_opponents_count={active_opponents_count}, can_check={can_check}"
+    )
+    
+    # Check for pot commitment - if we've already invested or would invest significant portion of our stack
     committed_amount = my_player_data.get('current_bet', 0)
     total_commitment_if_call = committed_amount + bet_to_call
     pot_commitment_ratio = total_commitment_if_call / (my_stack + total_commitment_if_call) if (my_stack + total_commitment_if_call) > 0 else 0
@@ -151,7 +154,8 @@ def make_postflop_decision(
     if is_very_strong or is_strong:
         commitment_threshold = 0.6  # 60% for strong hands
     elif is_medium:
-        commitment_threshold = 0.45  # 45% for medium hands    else:
+        commitment_threshold = 0.45  # 45% for medium hands
+    else:
         commitment_threshold = 0.35  # 35% for weak hands (with drawing equity)
     
     is_pot_committed = pot_commitment_ratio >= commitment_threshold

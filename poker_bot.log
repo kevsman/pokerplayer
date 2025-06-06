@@ -1703,3 +1703,103 @@
 2025-06-05 21:44:32,867 - __main__ - INFO - PokerBot stopped by user.
 2025-06-05 21:44:32,867 - __main__ - INFO - PokerBot main_loop ended.
 2025-06-05 21:44:32,867 - __main__ - INFO - Closing logger handlers.
+2025-06-06 07:34:39,713 - __main__ - INFO - PokerBot started. Press Ctrl+C to stop.
+2025-06-06 07:34:39,714 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-06 07:34:39,714 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-06 07:34:41,101 - __main__ - DEBUG - HTML length: 25799
+2025-06-06 07:34:41,713 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-06 07:34:42,713 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-06 07:34:42,714 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-06 07:34:44,094 - __main__ - DEBUG - HTML length: 25158
+2025-06-06 07:34:44,737 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-06 07:34:45,738 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-06 07:34:45,739 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-06 07:34:47,126 - __main__ - DEBUG - HTML length: 23336
+2025-06-06 07:34:48,280 - __main__ - INFO - Not my turn. My Hand: ['A♦', 'J♣']. Stack: €1.98. Waiting...
+2025-06-06 07:34:49,281 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-06 07:34:49,281 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-06 07:34:50,668 - __main__ - DEBUG - HTML length: 25238
+2025-06-06 07:34:51,778 - __main__ - INFO - My turn. Hand: ['A♦', 'J♣'], Rank: AJ offsuit, Stack: €1.98, Bet to call: 0.00
+2025-06-06 07:34:51,778 - __main__ - INFO - Pot: €0.05, Community Cards: []
+2025-06-06 07:34:51,778 - __main__ - INFO - Decision: fold Amount: 0.00
+2025-06-06 07:34:58,236 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-06 07:34:58,237 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-06 07:34:59,624 - __main__ - DEBUG - HTML length: 25916
+2025-06-06 07:35:00,723 - __main__ - INFO - My turn. Hand: ['A♦', 'J♣'], Rank: High Card, Stack: €1.98, Bet to call: 0.00
+2025-06-06 07:35:00,723 - __main__ - INFO - Pot: €0.05, Community Cards: ['8♥', '4♥', '9♠']
+2025-06-06 07:35:00,748 - __main__ - INFO - PokerBot main_loop ended.
+2025-06-06 07:35:00,749 - __main__ - ERROR - An error occurred in __main__: cannot access local variable 'commitment_threshold' where it is not associated with a value
+Traceback (most recent call last):
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 630, in <module>
+    bot.main_loop()
+    ~~~~~~~~~~~~~^^
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 524, in main_loop
+    action_tuple = self.decision_engine.make_decision(game_state_for_decision, my_player_index)
+  File "C:\GitRepositories\pokerplayer\decision_engine.py", line 246, in make_decision
+    action, amount = make_postflop_decision(
+                     ~~~~~~~~~~~~~~~~~~~~~~^
+        decision_engine_instance=self,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<19 lines>...
+        opponent_tracker=self.opponent_tracker  # Pass opponent tracking data
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\GitRepositories\pokerplayer\postflop_decision_logic.py", line 157, in make_postflop_decision
+    is_pot_committed = pot_commitment_ratio >= commitment_threshold
+                                               ^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'commitment_threshold' where it is not associated with a value
+2025-06-06 07:35:00,750 - __main__ - INFO - Closing logger handlers.
+2025-06-06 07:45:06,957 - __main__ - INFO - --- Running Test with File: examples\test.html ---
+2025-06-06 07:45:06,957 - __main__ - INFO - HTML length: 26020
+2025-06-06 07:45:14,525 - __main__ - INFO - --- Running Test with File: examples\test.html ---
+2025-06-06 07:45:14,526 - __main__ - INFO - HTML length: 26020
+2025-06-06 07:45:15,099 - __main__ - INFO - \n--- Game Summary from Test File ---
+2025-06-06 07:45:15,099 - __main__ - INFO - --- Table --- Hand ID: N/A
+Pot: €0.21
+Game Stage: Flop
+Community Cards: K♦ K♣ Q♥
+Dealer Position: Seat 2
+
+--- My Player ---
+  Seat 4: warriorwonder25 - Stack: €0.78, Bet: 0 Cards: 8♠ 2♦ Hand: One Pair, Ks
+
+--- Players: 6 active ---
+It is currently Seat 5 (N/A)'s turn.
+2025-06-06 07:45:15,100 - __main__ - INFO - --- End Game Summary ---
+2025-06-06 07:45:15,100 - __main__ - INFO - Not my turn. My Hand: ['8♠', '2♦']. Stack: €0.78. Waiting...
+2025-06-06 07:45:15,100 - __main__ - INFO - --- Test File Run Finished for: examples\test.html ---
+2025-06-06 07:45:15,100 - __main__ - INFO - Closing logger handlers.
+2025-06-06 07:45:26,089 - __main__ - INFO - --- Running Test with File: examples\river_my_turn_opponent_bets_medium_hand.html ---
+2025-06-06 07:45:26,090 - __main__ - INFO - HTML length: 705
+2025-06-06 07:45:26,091 - __main__ - ERROR - Essential game data missing after self.analyze() from test file.
+2025-06-06 07:45:26,091 - __main__ - INFO - --- Test File Run Finished for: examples\river_my_turn_opponent_bets_medium_hand.html ---
+2025-06-06 07:45:26,091 - __main__ - INFO - Closing logger handlers.
+2025-06-06 07:45:34,713 - __main__ - INFO - --- Running Test with File: examples\flop_my_turn_check.html ---
+2025-06-06 07:45:34,714 - __main__ - INFO - HTML length: 71776
+2025-06-06 07:45:35,302 - __main__ - INFO - \n--- Game Summary from Test File ---
+2025-06-06 07:45:35,302 - __main__ - INFO - --- Table --- Hand ID: 11449346077
+Pot: €0.12
+Game Stage: Flop
+Community Cards: 2♣ 4♦ 9♠
+Dealer Position: Seat 1
+
+--- My Player ---
+  Seat 4: warriorwonder25 - Stack: €0.78, Bet: 0 Cards: 8♦ 8♣ Hand: One Pair, 8s
+
+--- Players: 3 active ---
+It is currently Seat 4 (warriorwonder25)'s turn.
+It is YOUR turn to act.
+2025-06-06 07:45:35,302 - __main__ - INFO - --- End Game Summary ---
+2025-06-06 07:45:35,302 - __main__ - INFO - My turn. Hand: ['8♦', '8♣'], Rank: One Pair, 8s, Stack: €0.78
+2025-06-06 07:45:35,302 - __main__ - INFO - Pot: €0.12, Community Cards: ['2♣', '4♦', '9♠']
+2025-06-06 07:45:35,302 - __main__ - DEBUG - Detected available actions: ['fold', 'check', 'bet']
+2025-06-06 07:45:35,305 - __main__ - INFO - Decision: raise Amount: 0.02
+2025-06-06 07:45:35,305 - __main__ - INFO - --- Test File Run Finished for: examples\flop_my_turn_check.html ---
+2025-06-06 07:45:35,305 - __main__ - INFO - Closing logger handlers.
+2025-06-06 07:46:27,851 - poker_bot - INFO - Closing logger handlers.
