@@ -380,15 +380,24 @@ def make_preflop_decision(
                 # bet_to_call here would be 0.18 - 0.06 = 0.12 (6BB)
                 # max_bet_on_table is 0.18 (9BB)
                 # This condition (bet_to_call <= big_blind * 4) is (6BB <= 4BB) which is false.
-                # So it correctly goes to this else block for folding AJo UTG vs 3bet.
-                print(f"{preflop_category} in {position}, facing large raise > 4BB. Action: FOLD")
+                # So it correctly goes to this else block for folding AJo UTG vs 3bet.                print(f"{preflop_category} in {position}, facing large raise > 4BB. Action: FOLD")
                 return action_fold_const, 0
         elif position in ['CO', 'BTN']:
             # Facing a raise (max_bet_on_table > big_blind)
-            # Fold AJo/ATo facing UTG raise + MP 3-bet
-            if preflop_category in ["Offsuit Ace", "Offsuit Broadway"] and max_bet_on_table > 7 * big_blind:
+            # Fold weak offsuit aces facing large raises, but check pot odds for strong hands like AQ offsuit
+            if preflop_category == "Offsuit Ace" and max_bet_on_table > 7 * big_blind:
                 print(f"{preflop_category} in {position}, facing large raise or 3-bet. Action: FOLD")
                 return action_fold_const, 0
+            # For Offsuit Broadway (like AQ offsuit), check pot odds before folding to large raises
+            elif preflop_category == "Offsuit Broadway" and max_bet_on_table > 7 * big_blind:
+                # Calculate pot odds to decide if we should call with a strong hand
+                pot_odds_needed = bet_to_call / (pot_size + bet_to_call)
+                if pot_odds_needed <= 0.40:  # AQ offsuit should call with good pot odds
+                    print(f"{preflop_category} in {position}, facing large raise but good pot odds ({pot_odds_needed:.1%} equity needed). Action: CALL, Amount: {bet_to_call}")
+                    return action_call_const, bet_to_call
+                else:
+                    print(f"{preflop_category} in {position}, facing large raise with poor pot odds ({pot_odds_needed:.1%} equity needed). Action: FOLD")
+                    return action_fold_const, 0
             # Squeeze logic: if pot_size > 2*max_bet_on_table, treat as squeeze
             if pot_size > 2 * max_bet_on_table and preflop_category in ["Strong Pair", "Playable Broadway"]:
                 squeeze_amount = round(4.5 * max_bet_on_table, 2)
@@ -482,15 +491,22 @@ def make_preflop_decision(
                     else: # 3-bet calculation failed to be a raise, fallback to call
                         print(f"{preflop_category} in {position}, 3-bet calc failed, calling. Action: CALL, Amount: {bet_to_call}")
                         return action_call_const, bet_to_call
-            # Call wider if not 3-betting or if it's a weaker hand in this category
-            # test_preflop_co_call_3bet_kqs_vs_btn_6max: CO KQs, BTN 3bets to 0.18. bet_to_call is 0.12 (6BB).
+            # Call wider if not 3-betting or if it's a weaker hand in this category            # test_preflop_co_call_3bet_kqs_vs_btn_6max: CO KQs, BTN 3bets to 0.18. bet_to_call is 0.12 (6BB).
             # Condition: (6BB <= 5BB) is FALSE. So it goes to FOLD. This is why it fails.
             # Need to adjust this for calling 3-bets.
             elif bet_to_call <= big_blind * 10: # Call 3-bets up to 10BB deep effectively (e.g. calling a 3x open that was 3-bet to 9x)
-                # Specifically for KQs CO vs BTN 3bet: Hand is Playable Broadway.
-                if preflop_category in ["Playable Broadway", "Suited Ace", "Strong Pair"] or (preflop_category == "Offsuit Broadway" and position == 'BTN'): # Call 3bets with these
-                    print(f"{preflop_category} in {position}, facing 3-bet, calling. Action: CALL, Amount: {bet_to_call}")
-                    return action_call_const, bet_to_call
+                # Calculate pot odds to help with decision
+                pot_odds_needed = bet_to_call / (pot_size + bet_to_call)
+                
+                # Strong hands should call with good pot odds, regardless of position
+                if preflop_category in ["Playable Broadway", "Suited Ace", "Strong Pair", "Offsuit Broadway"]: # Allow Offsuit Broadway from any position
+                    # AQ offsuit should call with good pot odds (< 40% equity needed)
+                    if pot_odds_needed <= 0.40 or preflop_category in ["Strong Pair", "Playable Broadway"]:
+                        print(f"{preflop_category} in {position}, facing bet with good pot odds ({pot_odds_needed:.1%} equity needed). Action: CALL, Amount: {bet_to_call}")
+                        return action_call_const, bet_to_call
+                    else:
+                        print(f"{preflop_category} in {position}, facing bet with poor pot odds ({pot_odds_needed:.1%} equity needed). Action: FOLD")
+                        return action_fold_const, 0
                 # For other hands in this block facing a 3-bet, might be a fold.
                 # This path is for CO/BTN. If it's a Medium Pair facing a 3bet, it's likely a fold.
                 if preflop_category == "Medium Pair":
