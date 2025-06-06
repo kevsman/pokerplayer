@@ -124,18 +124,23 @@ class EquityCalculator:
                 required_cards_for_sim = 2 + max(0, num_board_cards_needed)
                 if len(current_deck_sim_strings) < required_cards_for_sim:
                     logger.debug(f"Sim {i}: Not enough cards in deck ({len(current_deck_sim_strings)}) for simulation. Need {required_cards_for_sim}. Skipping.")
+                    continue                # Deal opponent hand (strings) - use random.sample without modifying deck
+                import random
+                if len(current_deck_sim_strings) < 2:
+                    logger.debug(f"Sim {i}: Not enough cards for opponent hand. Deck: {len(current_deck_sim_strings)}. Skipping.")
                     continue
-
-                # Deal opponent hand (strings)
-                opponent_hole_cards_strings = self.hand_evaluator.deal_random_cards(current_deck_sim_strings, 2)
+                opponent_hole_cards_strings = random.sample(current_deck_sim_strings, 2)
+                
+                # Remove opponent cards from available deck for board dealing
+                remaining_deck = [c for c in current_deck_sim_strings if c not in opponent_hole_cards_strings]
                 
                 # Deal remaining board cards (strings)
                 additional_board_cards_strings = []
                 if num_board_cards_needed > 0:
-                    if len(current_deck_sim_strings) < num_board_cards_needed:
-                        logger.debug(f"Sim {i}: Not enough cards for additional board. Deck: {len(current_deck_sim_strings)}, Need: {num_board_cards_needed}. Skipping.")
+                    if len(remaining_deck) < num_board_cards_needed:
+                        logger.debug(f"Sim {i}: Not enough cards for additional board. Deck: {len(remaining_deck)}, Need: {num_board_cards_needed}. Skipping.")
                         continue
-                    additional_board_cards_strings = self.hand_evaluator.deal_random_cards(current_deck_sim_strings, num_board_cards_needed)
+                    additional_board_cards_strings = random.sample(remaining_deck, num_board_cards_needed)
                 
                 # Convert dealt string cards to HandEvaluator's object format for evaluation
                 opponent_hole_cards_sim_obj = [self.hand_evaluator._convert_card_to_value(c) for c in opponent_hole_cards_strings]
@@ -293,6 +298,68 @@ class EquityCalculator:
     def get_hand_strength_percentile(self, hero_cards, community_cards, num_opponents=1):
         # Normalization will happen inside calculate_equity_monte_carlo
         win_prob, _, _ = self.calculate_equity_monte_carlo(
-            hero_cards, community_cards, num_opponents, simulations=500 # Using a fixed reasonable number of sims
+            hero_cards, community_cards, num_opponents, simulations=500  # Using a fixed reasonable number of sims
+        )
+        return win_prob
+    
+    def calculate_win_probability(self, hole_cards, community_cards, num_opponents=1):
+        """
+        Calculate win probability against random opponents.
+        This is a wrapper method around calculate_equity_monte_carlo for compatibility.
+        
+        Args:
+            hole_cards: Hero's hole cards (tuple or list format)
+            community_cards: Community cards (list)
+            num_opponents: Number of opponents (default 1)
+            
+        Returns:
+            float: Win probability (0.0 to 1.0)
+        """
+        def convert_tuple_cards_to_strings(cards):
+            """Convert tuple format cards to string format"""
+            if not cards:
+                return []
+            
+            converted_cards = []
+            for card in cards:
+                if isinstance(card, tuple) and len(card) == 2:
+                    rank, suit = card
+                    # Convert suit names to symbols
+                    suit_map = {
+                        'SPADES': '♠', 'HEARTS': '♥', 'DIAMONDS': '♦', 'CLUBS': '♣',
+                        'SPADE': '♠', 'HEART': '♥', 'DIAMOND': '♦', 'CLUB': '♣'
+                    }
+                    suit_symbol = suit_map.get(suit.upper(), suit)
+                    # Handle 10 vs T representation
+                    rank_str = '10' if rank == 'T' else rank
+                    converted_cards.append(rank_str + suit_symbol)
+                elif isinstance(card, str):
+                    # Already in string format
+                    converted_cards.append(card)
+                else:
+                    logger.warning(f"Unexpected card format: {card}")
+            return converted_cards
+        
+        # Convert hole cards from tuple format if needed
+        if isinstance(hole_cards, (list, tuple)):
+            hole_cards = convert_tuple_cards_to_strings(hole_cards)
+        else:
+            logger.error(f"Unexpected hole_cards format: {type(hole_cards)} - {hole_cards}")
+            return 0.0
+        
+        # Convert community cards from tuple format if needed
+        if isinstance(community_cards, (list, tuple)):
+            community_cards = convert_tuple_cards_to_strings(community_cards)
+        else:
+            community_cards = []
+        
+        # Validate that we have exactly 2 hole cards
+        if len(hole_cards) != 2:
+            logger.error(f"Invalid number of hole cards: {len(hole_cards)} - {hole_cards}")
+            return 0.0
+        
+        # The monte carlo method expects [hole_cards_list], community_cards, opponent_range, num_simulations
+        win_prob, _, _ = self.calculate_equity_monte_carlo(
+            [hole_cards], community_cards, None, 500  # 500 simulations for reasonable speed
         )
         return win_prob

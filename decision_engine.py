@@ -30,13 +30,16 @@ def parse_monetary_value(value_str_or_float):
         logger.error(f"Could not convert monetary value '{value_str_or_float}' to float. Defaulting to 0.0.")
         return 0.0
 
-class DecisionEngine:
+class DecisionEngine:    
     def __init__(self, hand_evaluator, config=None): 
         self.hand_evaluator = hand_evaluator
         self.config = config if config is not None else {}
         self.big_blind_amount = self.config.get('big_blind', 0.02) # Renamed for clarity
         self.small_blind_amount = self.config.get('small_blind', 0.01) # Renamed for clarity
         self.base_aggression_factor = self.config.get('base_aggression_factor_postflop', 1.0) # Renamed for clarity
+        
+        # Initialize equity calculator system
+        self.equity_calculator = EquityCalculator()
         
         # Initialize opponent tracking system
         self.opponent_tracker = OpponentTracker()
@@ -126,8 +129,24 @@ class DecisionEngine:
         # Ensure win_probability is a float
         raw_win_probability = my_player.get('win_probability', hand_eval_dict.get('win_probability'))
         if raw_win_probability is None:
-            logger.warning(f"win_probability not found for player {player_index} or in hand_eval_dict, defaulting to 0.5.")
-            win_probability = 0.5 # Default if not found
+            # Use equity calculator to compute win probability when not available
+            logger.info(f"win_probability not found for player {player_index}, calculating using equity calculator.")
+            try:
+                # Calculate number of active opponents
+                num_opponents = len([p for p in all_players if p and p.get('is_active', False) and not p.get('is_my_player', False)])
+                if num_opponents == 0:
+                    num_opponents = 1  # Default to 1 opponent if none found
+                
+                # Use equity calculator to compute win probability
+                win_probability = self.equity_calculator.calculate_win_probability(
+                    my_player['hand'], 
+                    community_cards, 
+                    num_opponents
+                )
+                logger.info(f"Calculated win probability using equity calculator: {win_probability:.3f} ({win_probability*100:.1f}%) vs {num_opponents} opponents")
+            except Exception as e:
+                logger.error(f"Error calculating win probability with equity calculator: {e}")
+                win_probability = 0.5 # Fallback to default
         else:
             try:
                 win_probability = float(raw_win_probability)
