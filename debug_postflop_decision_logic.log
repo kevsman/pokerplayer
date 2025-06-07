@@ -48,3 +48,31 @@
 2025-06-07 12:22:52,791 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.85, strategy=standard, drawing_potential=False
 2025-06-07 12:22:52,791 - postflop_decision_logic - DEBUG - Option to check is available.
 2025-06-07 12:22:52,791 - postflop_decision_logic - INFO - Decision: CHECK (medium hand, no value bet/bluff).
+2025-06-07 12:31:55,402 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'name': 'Hero', 'hand': [('A', 'SPADES'), ('K', 'HEARTS')], 'position': 'BTN', 'stack': 100.0, 'current_bet': 0.0, 'has_turn': True, 'is_active': True, 'is_my_player': True}, pot_size=4.0, win_prob=0.914, pot_odds=0.3333333333333333, bet_to_call=2.0, max_bet_on_table=2.0, active_opponents_count=1, can_check=False
+2025-06-07 12:31:55,403 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0.0, bet_to_call=2.0, total_commitment_if_call=2.0, my_stack=100.0, pot_commitment_ratio=1.96%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 12:31:55,403 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 12:31:55,403 - postflop_decision_logic - DEBUG - SPR analysis: spr=25.00, strategy=value_build_pot, drawing_potential=False
+2025-06-07 12:31:55,403 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 2.0, pot_size: 4.0, my_stack: 100.0, max_bet_on_table: 2.0
+2025-06-07 12:31:55,403 - postflop_decision_logic - DEBUG - Hand is_very_strong. win_probability: 0.914
+2025-06-07 12:31:55,404 - postflop_decision_logic - INFO - Decision: RAISE (very_strong). Total Amount: 6.00 (bet_to_call: 2.0, max_bet: 2.0, min_raise_to: 4.0)
+2025-06-07 12:31:55,555 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'name': 'Hero', 'hand': [('K', 'SPADES'), ('K', 'HEARTS')], 'position': 'BTN', 'stack': 100.0, 'current_bet': 0.0, 'has_turn': True, 'is_active': True, 'is_my_player': True}, pot_size=8.0, win_prob=0.776, pot_odds=0.2, bet_to_call=2.0, max_bet_on_table=2.0, active_opponents_count=3, can_check=False
+2025-06-07 12:31:55,556 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0.0, bet_to_call=2.0, total_commitment_if_call=2.0, my_stack=100.0, pot_commitment_ratio=1.96%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 12:31:55,556 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 12:31:55,556 - postflop_decision_logic - DEBUG - SPR analysis: spr=12.50, strategy=value_build_pot, drawing_potential=False
+2025-06-07 12:31:55,556 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 2.0, pot_size: 8.0, my_stack: 100.0, max_bet_on_table: 2.0
+2025-06-07 12:31:55,556 - postflop_decision_logic - DEBUG - Hand is_very_strong. win_probability: 0.776
+2025-06-07 12:31:55,556 - postflop_decision_logic - INFO - Decision: RAISE (very_strong). Total Amount: 6.00 (bet_to_call: 2.0, max_bet: 2.0, min_raise_to: 4.0)
+2025-06-07 12:31:55,651 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'name': 'Hero', 'hand': [('Q', 'SPADES'), ('Q', 'HEARTS')], 'position': 'BTN', 'stack': 100.0, 'current_bet': 0.0, 'has_turn': True, 'is_active': True, 'is_my_player': True}, pot_size=4.0, win_prob=0.782, pot_odds=0.3333333333333333, bet_to_call=2.0, max_bet_on_table=2.0, active_opponents_count=1, can_check=False
+2025-06-07 12:31:55,652 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0.0, bet_to_call=2.0, total_commitment_if_call=2.0, my_stack=100.0, pot_commitment_ratio=1.96%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 12:31:55,652 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 12:31:55,652 - postflop_decision_logic - DEBUG - SPR analysis: spr=25.00, strategy=value_build_pot, drawing_potential=False
+2025-06-07 12:31:55,652 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 2.0, pot_size: 4.0, my_stack: 100.0, max_bet_on_table: 2.0
+2025-06-07 12:31:55,652 - postflop_decision_logic - DEBUG - Hand is_very_strong. win_probability: 0.782
+2025-06-07 12:31:55,652 - postflop_decision_logic - INFO - Decision: RAISE (very_strong). Total Amount: 6.00 (bet_to_call: 2.0, max_bet: 2.0, min_raise_to: 4.0)
+2025-06-07 12:32:01,432 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'name': 'Hero', 'hand': [('A', 'SPADES'), ('A', 'HEARTS')], 'position': 'BTN', 'stack': 100.0, 'current_bet': 0.0, 'has_turn': True, 'is_active': True, 'is_my_player': True, 'win_probability': 0.85}, pot_size=4.0, win_prob=0.85, pot_odds=0.0, bet_to_call=0.0, max_bet_on_table=0.0, active_opponents_count=1, can_check=True
+2025-06-07 12:32:01,433 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0.0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=100.0, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 12:32:01,433 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 12:32:01,434 - postflop_decision_logic - DEBUG - SPR analysis: spr=25.00, strategy=value_build_pot, drawing_potential=False
+2025-06-07 12:32:01,434 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-07 12:32:01,434 - postflop_decision_logic - DEBUG - High SPR (25.00) strategy: value build pot
+2025-06-07 12:32:01,435 - postflop_decision_logic - INFO - Decision: BET (SPR value build pot strategy). Amount: 3.70

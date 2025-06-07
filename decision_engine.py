@@ -194,10 +194,9 @@ class DecisionEngine:
                     logger.debug(f"Make_decision: Using explicit bet_to_call ({parsed_ui_bet_to_call_for_log}) instead of calculated ({bet_to_call_calculated})")
             elif parsed_ui_bet_to_call_for_log != bet_to_call_calculated and logger.isEnabledFor(logging.DEBUG):
                 logger.debug(f"Make_decision: UI bet_to_call ({parsed_ui_bet_to_call_for_log}) differs from calculated ({bet_to_call_calculated}). Using calculated.")
-        
         logger.debug(f"Make_decision: UI_bet_to_call_val: {parsed_ui_bet_to_call_for_log}, Calculated_bet_to_call: {bet_to_call_calculated}, Final_bet_to_call: {final_bet_to_call}, Max_bet_on_table: {max_bet_on_table}, My_current_bet: {my_current_bet}")        
         can_check = final_bet_to_call == 0
-        active_opponents_count = sum(1 for i, p in enumerate(all_players) if p and not p.get('isFolded', False) and i != player_index)        
+        active_opponents_count = sum(1 for i, p in enumerate(all_players) if p and p.get('is_active', False) and i != player_index)
         if current_round == 'preflop':
             logger.debug(f"  DEBUG ENGINE: PRE-CALL to make_preflop_decision: final_bet_to_call={final_bet_to_call}, max_bet_on_table={max_bet_on_table}")
             # sys.stderr.flush() # Not needed with logger
