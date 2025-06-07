@@ -1,0 +1,105 @@
+2025-06-06 23:09:08,326 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.62, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-06 23:09:08,327 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown
+2025-06-06 23:09:08,327 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-06 23:09:08,328 - postflop_decision_logic - INFO - Multiway adjustment: 5 opponents, factor: 0.50, original: 0.05, adjusted: 0.03
+2025-06-06 23:09:08,328 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 0.03
+2025-06-06 23:09:23,357 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.59, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-06 23:09:23,357 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown
+2025-06-06 23:09:23,357 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-06 23:09:23,357 - postflop_decision_logic - INFO - Multiway adjustment (strong): 5 opponents, factor: 0.50, original: 0.07, adjusted: 0.04
+2025-06-06 23:09:23,358 - postflop_decision_logic - INFO - Decision: BET (strong hand, thin value when checked to). Amount: 0.04
+2025-06-06 23:09:34,846 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.55, total_commitment_if_call=0.55, my_stack=0.55, pot_commitment_ratio=50.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-06 23:09:34,846 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown
+2025-06-06 23:09:34,847 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.55, pot_size: 0.56, my_stack: 0.55, max_bet_on_table: 0.32
+2025-06-06 23:09:34,847 - postflop_decision_logic - DEBUG - Hand is_strong. win_probability: 0.6818, pot_odds: 0.4954954954954955
+2025-06-06 23:09:34,847 - postflop_decision_logic - INFO - Decision: CALL (strong hand, good odds/river). Amount to call: 0.55
+2025-06-07 08:29:00,240 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0.0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=88.0, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 08:29:00,241 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 08:29:00,241 - postflop_decision_logic - DEBUG - SPR analysis: spr=7.33, strategy=standard, drawing_potential=False
+2025-06-07 08:29:00,242 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-07 08:29:00,242 - postflop_decision_logic - DEBUG - Heads-up: 1 opponent, no adjustment
+2025-06-07 08:29:00,242 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 6.72
+2025-06-07 08:29:00,380 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0.0, bet_to_call=8.0, total_commitment_if_call=8.0, my_stack=82.0, pot_commitment_ratio=8.89%, commitment_threshold=35.00%, is_pot_committed=False
+2025-06-07 08:29:00,380 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 08:29:00,380 - postflop_decision_logic - DEBUG - SPR analysis: spr=4.56, strategy=standard, drawing_potential=True
+2025-06-07 08:29:00,380 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 8.0, pot_size: 18.0, my_stack: 82.0, max_bet_on_table: 8.0
+2025-06-07 08:29:00,380 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.434, pot_odds: 0.3076923076923077
+2025-06-07 08:29:00,380 - postflop_decision_logic - INFO - Decision: CALL (drawing hand with good implied odds). Amount: 8.00, Equity: 43.40%, Outs: 4, Reason: Implied odds analysis with 4 outs
+2025-06-07 08:29:00,484 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0.0, bet_to_call=12.0, total_commitment_if_call=12.0, my_stack=76.0, pot_commitment_ratio=13.64%, commitment_threshold=35.00%, is_pot_committed=False
+2025-06-07 08:29:00,485 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 08:29:00,485 - postflop_decision_logic - DEBUG - SPR analysis: spr=3.17, strategy=standard, drawing_potential=False
+2025-06-07 08:29:00,486 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 12.0, pot_size: 24.0, my_stack: 76.0, max_bet_on_table: 12.0
+2025-06-07 08:29:00,487 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.13, pot_odds: 0.3333333333333333
+2025-06-07 08:29:00,488 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=13.00%, pot_odds=33.33%, bet_to_call=12.0, pot_size=24.0, bet_to_pot_ratio=50.00%, my_stack=76.0
+2025-06-07 08:29:00,488 - postflop_decision_logic - INFO - Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: 12.0, Pot: 24.0
+2025-06-07 10:29:35,303 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={}, pot_size=100, win_prob=0.8, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-07 10:29:35,303 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=500, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 10:29:35,303 - postflop_decision_logic - DEBUG - SPR analysis: spr=5.00, strategy=standard, drawing_potential=False
+2025-06-07 10:29:35,303 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-07 10:29:35,303 - postflop_decision_logic - DEBUG - Heads-up: 1 opponent, no adjustment
+2025-06-07 10:29:35,303 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 77.00
+2025-06-07 10:39:03,176 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'hand': ['Kh', 'Ks'], 'community_cards': ['Ah', '7c', '2d']}, pot_size=100, win_prob=0.9, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-07 10:39:03,176 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=500, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 10:39:03,176 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 10:39:03,176 - postflop_decision_logic - DEBUG - SPR analysis: spr=5.00, strategy=standard, drawing_potential=False
+2025-06-07 10:39:03,176 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-07 10:39:03,176 - postflop_decision_logic - DEBUG - Heads-up: 1 opponent, no adjustment
+2025-06-07 10:39:03,176 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 77.00
+2025-06-07 10:39:03,176 - postflop_decision_logic - DEBUG - make_postflop_decision: street=turn, my_player_data={'current_bet': 0, 'hand': ['Kh', 'Ks'], 'community_cards': ['Ah', '7c', '2d']}, pot_size=100, win_prob=0.55, pot_odds=0.33, bet_to_call=50, max_bet_on_table=50, active_opponents_count=1, can_check=False
+2025-06-07 10:39:03,177 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=50, total_commitment_if_call=50, my_stack=400, pot_commitment_ratio=11.11%, commitment_threshold=45.00%, is_pot_committed=False
+2025-06-07 10:39:03,177 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 10:39:03,177 - postflop_decision_logic - DEBUG - SPR analysis: spr=4.00, strategy=standard, drawing_potential=False
+2025-06-07 10:39:03,177 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 50, pot_size: 100, my_stack: 400, max_bet_on_table: 50
+2025-06-07 10:39:03,177 - postflop_decision_logic - DEBUG - Hand is_medium. win_probability: 0.55, pot_odds: 0.33
+2025-06-07 10:39:03,177 - postflop_decision_logic - INFO - Decision: CALL (medium hand, good odds and bet size). Amount to call: 50.00
+2025-06-07 10:39:10,404 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0.0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=80.0, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 10:39:10,404 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 10:39:10,405 - postflop_decision_logic - DEBUG - SPR analysis: spr=4.00, strategy=standard, drawing_potential=False
+2025-06-07 10:39:10,405 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-07 10:39:10,405 - postflop_decision_logic - DEBUG - Heads-up: 1 opponent, no adjustment
+2025-06-07 10:39:10,405 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 11.20
+2025-06-07 10:41:22,028 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0}, pot_size=0.2, win_prob=0.8, pot_odds=0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-07 10:41:22,028 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=1.8, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 10:41:22,028 - postflop_decision_logic - DEBUG - SPR analysis: spr=9.00, strategy=standard, drawing_potential=False
+2025-06-07 10:41:22,028 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-07 10:41:22,029 - postflop_decision_logic - DEBUG - Heads-up: 1 opponent, no adjustment
+2025-06-07 10:41:22,029 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 0.15
+2025-06-07 12:15:08,490 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'name': 'Hero', 'hand': ['9h', '10h'], 'stack': 45.0, 'current_bet': 2.0, 'position': 'CO', 'has_turn': True, 'win_probability': 0.31, 'bet_to_call': 6.0}, pot_size=18.0, win_prob=0.31, pot_odds=0.25, bet_to_call=6.0, max_bet_on_table=8.0, active_opponents_count=1, can_check=False
+2025-06-07 12:15:08,490 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=2.0, bet_to_call=6.0, total_commitment_if_call=8.0, my_stack=45.0, pot_commitment_ratio=15.09%, commitment_threshold=35.00%, is_pot_committed=False
+2025-06-07 12:15:08,491 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 12:15:08,491 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.50, strategy=standard, drawing_potential=True
+2025-06-07 12:15:08,492 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 6.0, pot_size: 18.0, my_stack: 45.0, max_bet_on_table: 8.0
+2025-06-07 12:15:08,492 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.31, pot_odds: 0.25
+2025-06-07 12:15:08,492 - postflop_decision_logic - INFO - Decision: CALL (drawing hand with good implied odds). Amount: 6.00, Equity: 31.00%, Outs: 8, Reason: Implied odds analysis with 8 outs
+2025-06-07 12:15:08,496 - postflop_decision_logic - DEBUG - make_postflop_decision: street=turn, my_player_data={'name': 'Hero', 'hand': ['As', 'Qc'], 'stack': 85.0, 'current_bet': 0.0, 'position': 'BTN', 'has_turn': True, 'win_probability': 0.68, 'bet_to_call': 0.0}, pot_size=24.0, win_prob=0.68, pot_odds=0.0, bet_to_call=0.0, max_bet_on_table=0.0, active_opponents_count=1, can_check=True
+2025-06-07 12:15:08,497 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0.0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=85.0, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 12:15:08,497 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 12:15:08,498 - postflop_decision_logic - DEBUG - SPR analysis: spr=3.54, strategy=standard, drawing_potential=False
+2025-06-07 12:15:08,498 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-07 12:15:08,498 - postflop_decision_logic - INFO - Decision: BET (strong hand, thin value when checked to). Amount: 14.40
+2025-06-07 12:15:08,499 - postflop_decision_logic - DEBUG - make_postflop_decision: street=river, my_player_data={'name': 'Hero', 'hand': ['As', 'Qc'], 'stack': 85.0, 'current_bet': 0.0, 'position': 'BTN', 'has_turn': True, 'win_probability': 0.45, 'bet_to_call': 18.0}, pot_size=24.0, win_prob=0.45, pot_odds=0.42857142857142855, bet_to_call=18.0, max_bet_on_table=18.0, active_opponents_count=1, can_check=False
+2025-06-07 12:15:08,500 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0.0, bet_to_call=18.0, total_commitment_if_call=18.0, my_stack=85.0, pot_commitment_ratio=17.48%, commitment_threshold=45.00%, is_pot_committed=False
+2025-06-07 12:15:08,500 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 12:15:08,500 - postflop_decision_logic - DEBUG - SPR analysis: spr=3.54, strategy=standard, drawing_potential=False
+2025-06-07 12:15:08,501 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 18.0, pot_size: 24.0, my_stack: 85.0, max_bet_on_table: 18.0
+2025-06-07 12:15:08,501 - postflop_decision_logic - DEBUG - Hand is_medium. win_probability: 0.45, pot_odds: 0.42857142857142855
+2025-06-07 12:15:08,502 - postflop_decision_logic - INFO - Decision: CALL (medium hand, acceptable river odds). Amount: 18.00
+2025-06-07 12:15:08,504 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'name': 'Hero', 'hand': ['Ah', 'Kc'], 'stack': 40.0, 'current_bet': 0.0, 'position': 'CO', 'has_turn': True, 'win_probability': 0.82, 'bet_to_call': 0.0}, pot_size=15.0, win_prob=0.82, pot_odds=0.0, bet_to_call=0.0, max_bet_on_table=0.0, active_opponents_count=1, can_check=True
+2025-06-07 12:15:08,504 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0.0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=40.0, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 12:15:08,505 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 12:15:08,505 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.67, strategy=standard, drawing_potential=False
+2025-06-07 12:15:08,505 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-07 12:15:08,506 - postflop_decision_logic - DEBUG - Heads-up: 1 opponent, no adjustment
+2025-06-07 12:15:08,506 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 8.40
+2025-06-07 12:15:17,232 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0.0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=85.0, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 12:15:17,232 - postflop_decision_logic - DEBUG - Opponent analysis: 0 opponents tracked, table type: unknown, estimated_range: unknown
+2025-06-07 12:15:17,233 - postflop_decision_logic - DEBUG - SPR analysis: spr=4.25, strategy=standard, drawing_potential=False
+2025-06-07 12:15:17,233 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-07 12:15:17,233 - postflop_decision_logic - DEBUG - Heads-up: 1 opponent, no adjustment
+2025-06-07 12:15:17,234 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 11.20
+2025-06-07 12:15:23,776 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0}, pot_size=0.2, win_prob=0.8, pot_odds=0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-07 12:15:23,777 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=1.8, pot_commitment_ratio=0.00%, commitment_threshold=60.00%, is_pot_committed=False
+2025-06-07 12:15:23,777 - postflop_decision_logic - DEBUG - SPR analysis: spr=9.00, strategy=standard, drawing_potential=False
+2025-06-07 12:15:23,777 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-07 12:15:23,777 - postflop_decision_logic - DEBUG - Heads-up: 1 opponent, no adjustment
+2025-06-07 12:15:23,777 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 0.15

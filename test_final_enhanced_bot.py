@@ -33,9 +33,8 @@ def test_opponent_tracking():
     
     for player_name, action, street, position, bet_size, pot_size in test_actions:
         tracker.update_opponent_action(player_name, action, street, position, bet_size, pot_size)
-    
-    # Test opponent analysis
-    player1_profile = tracker.get_opponent_profile("Player1")
+      # Test opponent analysis
+    player1_profile = tracker.get_or_create_profile("Player1")
     if player1_profile:
         print(f"Player1 VPIP: {player1_profile.get_vpip():.1%}")
         print(f"Player1 PFR: {player1_profile.get_pfr():.1%}")
@@ -64,8 +63,8 @@ def test_tournament_adjustments():
     for stack, bb, level in test_scenarios:
         adjustments = get_tournament_adjustment_factor(stack, bb, level)
         stage = ["Cash", "Early", "Mid", "Late"][level]
-        print(f"{stage} - Stack: {stack}bb, Tightness: {adjustments['tightness_factor']:.2f}, "
-              f"Aggression: {adjustments['aggression_factor']:.2f}")
+        print(f"{stage} - Stack: {stack}bb, Tightness: {adjustments['preflop_tightness']:.2f}, "
+              f"Aggression: {adjustments['postflop_aggression']:.2f}")
     
     print("✓ Tournament adjustments working correctly")
 

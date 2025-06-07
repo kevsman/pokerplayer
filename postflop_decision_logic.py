@@ -169,6 +169,9 @@ def make_postflop_decision(
     
     # Enhanced opponent analysis using tracking data
     opponent_context = {}
+    estimated_opponent_range = 'unknown'
+    fold_equity_estimate = 0.5  # Default fold equity
+    
     if opponent_tracker and active_opponents_count > 0:
         # Get table dynamics
         table_dynamics = opponent_tracker.get_table_dynamics()
@@ -186,35 +189,76 @@ def make_postflop_decision(
                     'pfr': profile.get_pfr(),
                     'can_value_bet_thin': profile.should_value_bet_thin('unknown')
                 }
+                
+                # Use first opponent's data for range estimation (could be improved for multiple opponents)
+                estimated_opponent_range = estimate_opponent_range(
+                    position='unknown',  # Would need position tracking
+                    preflop_action='unknown',  # Would need action tracking
+                    bet_size=bet_to_call,
+                    pot_size=pot_size,
+                    street=street,
+                    board_texture='unknown'  # Would need board texture analysis
+                )
+                
+                fold_equity_estimate = fold_equity
+                break  # Use first opponent for now
         
-        logger.debug(f"Opponent analysis: {len(opponent_context)} opponents tracked, table type: {table_dynamics.get('table_type', 'unknown')}")
-      
+        logger.debug(f"Opponent analysis: {len(opponent_context)} opponents tracked, table type: {table_dynamics.get('table_type', 'unknown')}, estimated_range: {estimated_opponent_range}")
+    
+    # Calculate SPR adjustments for strategy
+    drawing_potential = is_drawing_hand(win_probability, numerical_hand_rank, street)
+    spr_strategy = calculate_spr_adjustments(spr, numerical_hand_rank, drawing_potential)
+    
+    logger.debug(f"SPR analysis: spr={spr:.2f}, strategy={spr_strategy}, drawing_potential={drawing_potential}")
+    
     # Adjust hand strength classification (moved after pot commitment logic)
-    # For top pair weak kicker situations, be more conservative with win probability thresholds
-    # Top pair with weak kicker (win prob 30-45%) should not be classified as strong or even medium
+    # For top pair weak kicker situations, be more conservative with win probability thresholds    # Top pair with weak kicker (win prob 30-45%) should not be classified as strong or even medium
     # especially when facing aggression - be more conservative with threshold
     if numerical_hand_rank == 2 and win_probability < 0.60:  # One pair with modest win probability
         is_strong = False  # Don't classify weak top pairs as strong
         # Also don't classify as medium if win probability is very low
         if win_probability < 0.40:
-            is_medium_override = False  # Force to weak if win prob < 40%
-        else:
-            is_medium_override = None  # Let normal logic decide
-    else:
-        # Recheck hand strength classification since we moved the initial classification
-        is_strong = not is_very_strong and (numerical_hand_rank >= STRONG_HAND_THRESHOLD or win_probability > 0.65)
-        is_medium_override = None
-        
-    if is_medium_override is False:
-        is_medium = False
-    else:
-        # Recheck medium classification since we moved the initial classification
-        is_medium = not is_very_strong and not is_strong and (numerical_hand_rank >= MEDIUM_HAND_THRESHOLD or win_probability > 0.45)
+            is_medium = False  # Force to weak if win prob < 40%
     
+    # Recheck hand strength classification
+    is_strong = not is_very_strong and (numerical_hand_rank >= STRONG_HAND_THRESHOLD or win_probability > 0.65)
+    is_medium = not is_very_strong and not is_strong and (numerical_hand_rank >= MEDIUM_HAND_THRESHOLD or win_probability > 0.45)
     is_weak = not is_very_strong and not is_strong and not is_medium
 
     if can_check:
         logger.debug("Option to check is available.")
+        
+        # Apply SPR strategy adjustments before betting decisions
+        if spr_strategy == 'commit' and (is_very_strong or is_strong):
+            # Low SPR - commit with strong hands
+            logger.debug(f"Low SPR ({spr:.2f}) strategy: commit with strong hand")
+            bet_amount = min(my_stack, pot_size * 1.5)  # Aggressive betting to build pot/commit
+            if bet_amount > 0:
+                logger.info(f"Decision: BET (SPR commit strategy). Amount: {bet_amount:.2f}")
+                return action_raise_const, round(bet_amount, 2)
+            else:
+                logger.info("Decision: CHECK (SPR commit but optimal bet is 0).")
+                return action_check_const, 0
+                
+        elif spr_strategy == 'value_build_pot' and is_very_strong:
+            # High SPR - build pot with very strong hands
+            logger.debug(f"High SPR ({spr:.2f}) strategy: value build pot")
+            bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
+            bet_amount *= 1.2  # 20% larger bets to build pot
+            bet_amount = min(bet_amount, my_stack)
+            if bet_amount > 0:
+                logger.info(f"Decision: BET (SPR value build pot strategy). Amount: {bet_amount:.2f}")
+                return action_raise_const, round(bet_amount, 2)
+            else:
+                logger.info("Decision: CHECK (SPR value build pot but optimal bet is 0).")
+                return action_check_const, 0
+                
+        elif spr_strategy == 'fold_weak' and not is_very_strong:
+            # High SPR - fold weak hands more readily
+            logger.debug(f"High SPR ({spr:.2f}) strategy: fold weak hands")
+            if not is_strong and bet_to_call > 0:
+                logger.info(f"Decision: CHECK (SPR fold weak strategy when can check).")
+                return action_check_const, 0
         
         if is_very_strong or (is_strong and win_probability > 0.75): # Value bet strong hands
             bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
@@ -235,7 +279,7 @@ def make_postflop_decision(
                 multiway_factor = max(0.5, 1.0 - (active_opponents_count - 1) * 0.3)  # More aggressive reduction
                 original_bet_amount = bet_amount
                 bet_amount *= multiway_factor
-                logger.info(f"Multiway adjustment: {active_opponents_count} opponents, factor: {multiway_factor:.2f}, original: {original_bet_amount:.2f}, adjusted: {bet_amount:.2f}")
+                logger.info(f"Multiway adjustment: {active_opponents_count} opponents, factor: {multiway_factor:.2f}, original: {original_bet_amount:.2f}, adjusted: {bet_amount:.2f}")            
             else:
                 logger.debug(f"Heads-up: {active_opponents_count} opponent, no adjustment")
             
@@ -249,15 +293,26 @@ def make_postflop_decision(
                 
         elif is_strong: # Check/bet with strong hands (less aggressive than very_strong)
             # This is for the "thin value" case where we want to bet if checked to.
-            # win_probability > 0.6 is a good candidate for thin value when checked to.            # The 'is_strong' condition already implies win_probability > 0.65 OR numerical_hand_rank >= STRONG_HAND_THRESHOLD
-            # So, if it's 'is_strong' and we can check, we should consider a value bet.
-            bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
-            # Adjust bet size for multiway pots
-            if active_opponents_count > 1:
-                multiway_factor = max(0.5, 1.0 - (active_opponents_count - 1) * 0.3)  # More aggressive reduction
-                original_bet_amount = bet_amount
-                bet_amount *= multiway_factor
-                logger.info(f"Multiway adjustment (strong): {active_opponents_count} opponents, factor: {multiway_factor:.2f}, original: {original_bet_amount:.2f}, adjusted: {bet_amount:.2f}")
+            # Check if this is a good thin value spot using advanced analysis
+            is_thin_value = is_thin_value_spot(numerical_hand_rank, win_probability, estimated_opponent_range, 'unknown')
+            
+            if is_thin_value or win_probability > 0.65:
+                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
+                
+                # Adjust bet size based on opponent tendencies for thin value
+                if opponent_context:
+                    # Against tight players, bet smaller for thin value
+                    avg_vpip = sum(opp['vpip'] for opp in opponent_context.values()) / len(opponent_context)
+                    if avg_vpip < 20:  # Very tight
+                        bet_amount *= 0.8  # 20% smaller for thin value against tight players
+                        logger.debug(f"Thin value against tight opponents (VPIP {avg_vpip:.1f}%), reducing bet size by 20%")
+                
+                # Adjust bet size for multiway pots
+                if active_opponents_count > 1:
+                    multiway_factor = max(0.5, 1.0 - (active_opponents_count - 1) * 0.3)  # More aggressive reduction
+                    original_bet_amount = bet_amount
+                    bet_amount *= multiway_factor
+                    logger.info(f"Multiway adjustment (strong): {active_opponents_count} opponents, factor: {multiway_factor:.2f}, original: {original_bet_amount:.2f}, adjusted: {bet_amount:.2f}")
             else:
                 logger.debug(f"Heads-up (strong): {active_opponents_count} opponent, no adjustment")
             
@@ -296,12 +351,22 @@ def make_postflop_decision(
                     return action_raise_const, round(value_bet_amount, 2) # Changed action_bet_const to action_raise_const
             
             # If not value betting (either win_prob too low or optimal bet was 0), consider bluffing.
+            # Calculate fold equity for bluffing decision
+            potential_bluff_size = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
+            calculated_fold_equity = calculate_fold_equity(estimated_opponent_range, 'unknown', potential_bluff_size, pot_size)
+            
+            # Use fold equity in bluffing decision
             if decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability): 
-                bluff_bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
-                bluff_bet_amount = min(bluff_bet_amount, my_stack)
-                if bluff_bet_amount > 0:
-                    logger.info(f"Decision: BET (medium hand, bluffing when can check). Amount: {bluff_bet_amount:.2f}")
-                    return action_raise_const, round(bluff_bet_amount, 2) # Changed action_bet_const to action_raise_const
+                # Additional check: only bluff if we have sufficient fold equity
+                if calculated_fold_equity > 0.4 or not opponent_context:  # Need 40%+ fold equity or no opponent data
+                    bluff_bet_amount = potential_bluff_size
+                    bluff_bet_amount = min(bluff_bet_amount, my_stack)
+                    if bluff_bet_amount > 0:
+                        logger.info(f"Decision: BET (medium hand, bluffing when can check, fold equity: {calculated_fold_equity:.2%}). Amount: {bluff_bet_amount:.2f}")
+                        return action_raise_const, round(bluff_bet_amount, 2)
+                else:
+                    logger.info(f"Decision: CHECK (medium hand, insufficient fold equity for bluff: {calculated_fold_equity:.2%}).")
+                    return action_check_const, 0
             
             logger.info("Decision: CHECK (medium hand, no value bet/bluff).")
             return action_check_const, 0
@@ -410,7 +475,7 @@ def make_postflop_decision(
               call_amount = bet_to_call # Amount to add to current bet
               logger.info(f"Decision: CALL (very_strong, but failed to make a valid raise). Amount to call: {call_amount:.2f}")
               return action_call_const, round(call_amount, 2)
-        
+          
         elif is_strong:
             logger.debug(f"Hand is_strong. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
             
@@ -420,22 +485,28 @@ def make_postflop_decision(
             if win_probability < 0.40 and bet_to_stack_ratio > 0.35:
                 logger.info(f"Decision: FOLD (strong hand but low win_prob {win_probability:.2f} and large bet {bet_to_stack_ratio:.2f} of stack).")
                 return action_fold_const, 0
-            if win_probability > pot_odds_to_call or (street == 'river' and win_probability > 0.7): # Good odds or strong river hand
+            
+            # Check if this might be a bluff we should call
+            should_call_as_bluff_catcher = should_call_bluff(
+                numerical_hand_rank, win_probability, pot_odds_to_call, 
+                estimated_opponent_range, bet_to_call, pot_size
+            )
+            
+            if win_probability > pot_odds_to_call or should_call_as_bluff_catcher or (street == 'river' and win_probability > 0.7): # Good odds or strong river hand
                 # Consider raising if pot odds are very good or implied odds are high
                 # For now, just call with strong hands if odds are met.
                 call_amount = bet_to_call
-                logger.info(f"Decision: CALL (strong hand, good odds/river). Amount to call: {call_amount:.2f}")
+                logger.info(f"Decision: CALL (strong hand, good odds/river{'/bluff-catcher' if should_call_as_bluff_catcher else ''}). Amount to call: {call_amount:.2f}")
                 return action_call_const, round(call_amount, 2)
             else: # Not good enough odds for a strong-ish hand
                 # Calculate bet_to_pot_ratio for this specific bluff scenario
                 current_bet_to_pot_ratio = bet_to_call / pot_size if pot_size > 0 else 0.5
-                if decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability, bet_to_pot_ratio_for_bluff=current_bet_to_pot_ratio):
-                    # Min raise logic from above
+                if decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability, bet_to_pot_ratio_for_bluff=current_bet_to_pot_ratio):                    # Min raise logic from above
                     min_total_raise_to_amount = max_bet_on_table + bet_to_call
                     if bet_to_call == 0: min_total_raise_to_amount = max_bet_on_table + big_blind_amount
-                    
                     calculated_raise_total_amount = max_bet_on_table * 2.5 # Smaller semi-bluff raise
-                    if calculated_raise_total_amount < min_total_raise_to_amount:                    calculated_raise_total_amount = min_total_raise_to_amount
+                    if calculated_raise_total_amount < min_total_raise_to_amount:
+                        calculated_raise_total_amount = min_total_raise_to_amount
                     final_raise_amount = min(calculated_raise_total_amount, my_stack + my_player_data.get('current_bet', 0))
                     is_all_in_raise = (final_raise_amount == my_stack + my_player_data.get('current_bet', 0))
 
@@ -747,6 +818,11 @@ def calculate_spr_adjustments(spr, hand_strength, drawing_potential):
         return 'standard'
 
 # Enhanced opponent analysis using tracking data
+def analyze_opponents(opponent_tracker, active_opponents_count, bet_to_call, pot_size):
+    """
+    Analyze opponents using tracking data for enhanced decision making.
+    This function is called within make_postflop_decision to provide opponent context.
+    """
     opponent_context = {}
     if opponent_tracker and active_opponents_count > 0:
         # Get table dynamics
@@ -768,4 +844,4 @@ def calculate_spr_adjustments(spr, hand_strength, drawing_potential):
         
         logger.debug(f"Opponent analysis: {len(opponent_context)} opponents tracked, table type: {table_dynamics.get('table_type', 'unknown')}")
     
-    # Use opponent data to adjust strategy
+    return opponent_context
