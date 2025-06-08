@@ -1074,23 +1074,18 @@ def make_postflop_decision(
                     reasons.append(f"Bet/Pot ratio too high: {bet_to_pot_ratio:.2%} > 40%")
                 if bet_to_call > 0.25 * my_stack:
                     reasons.append(f"Bet too large vs stack: {bet_to_call:.2f} > 25% of stack ({0.25 * my_stack:.2f})")
-                
-                logger.info(f"Not calling with drawing hand (equity {win_probability:.2%}). Reasons: {'; '.join(reasons)}")
-              # Consider bluff-raising if conditions are right (e.g., specific opponent, board texture)
+                logger.info(f"Not calling with drawing hand (equity {win_probability:.2%}). Reasons: {'; '.join(reasons)}")            # Consider bluff-raising if conditions are right (e.g., specific opponent, board texture)
             try:
                 from enhanced_postflop_improvements import enhanced_bluffing_strategy
-                
                 # Get enhanced bluffing decision
                 bluff_decision = enhanced_bluffing_strategy(
-                    win_probability=win_probability,
                     pot_size=pot_size,
-                    bet_to_call=bet_to_call,
                     my_stack=my_stack,
                     street=street,
+                    win_probability=win_probability,
                     position=my_player_data.get('position', 'BB'),
-                    opponent_tracker=opponent_tracker,
-                    active_opponents_count=active_opponents_count,
-                    board_texture=my_player_data.get('community_cards', [])
+                    board_texture=my_player_data.get('community_cards', []),
+                    opponent_analysis=opponent_context
                 )
                 
                 if bluff_decision['should_bluff']:
