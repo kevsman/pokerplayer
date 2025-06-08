@@ -210,20 +210,36 @@ def make_postflop_decision(
     spr_strategy = calculate_spr_adjustments(spr, numerical_hand_rank, drawing_potential)
     
     logger.debug(f"SPR analysis: spr={spr:.2f}, strategy={spr_strategy}, drawing_potential={drawing_potential}")
+      # Enhanced hand strength classification with more conservative thresholds
+    # The issue: KQ with pair of 9s (numerical_hand_rank=2) was being classified as "medium"
+    # but it's actually a weak hand (just bottom pair with medium kicker)
     
-    # Adjust hand strength classification (moved after pot commitment logic)
-    # For top pair weak kicker situations, be more conservative with win probability thresholds    # Top pair with weak kicker (win prob 30-45%) should not be classified as strong or even medium
-    # especially when facing aggression - be more conservative with threshold
-    if numerical_hand_rank == 2 and win_probability < 0.60:  # One pair with modest win probability
-        is_strong = False  # Don't classify weak top pairs as strong
-        # Also don't classify as medium if win probability is very low
-        if win_probability < 0.40:
-            is_medium = False  # Force to weak if win prob < 40%
+    # For one pair hands, be much more conservative about classification
+    if numerical_hand_rank == 2:  # One pair
+        if win_probability >= 0.70:
+            # Very strong one pair (like top pair with good kicker vs weak range)
+            is_strong = not is_very_strong
+            is_medium = False
+        elif win_probability >= 0.50:
+            # Decent one pair (like top pair vs moderate range)
+            is_strong = False
+            is_medium = not is_very_strong and not is_strong
+        else:
+            # Weak one pair (like bottom pair, weak top pair, or facing aggression)
+            # This includes the KQ with pair of 9s scenario
+            is_strong = False
+            is_medium = False
+    else:
+        # For non-one-pair hands, use original logic
+        is_strong = not is_very_strong and (numerical_hand_rank >= STRONG_HAND_THRESHOLD or win_probability > 0.65)
+        is_medium = not is_very_strong and not is_strong and (numerical_hand_rank >= MEDIUM_HAND_THRESHOLD or win_probability > 0.45)
     
-    # Recheck hand strength classification
-    is_strong = not is_very_strong and (numerical_hand_rank >= STRONG_HAND_THRESHOLD or win_probability > 0.65)
-    is_medium = not is_very_strong and not is_strong and (numerical_hand_rank >= MEDIUM_HAND_THRESHOLD or win_probability > 0.45)
+    # Final classification
     is_weak = not is_very_strong and not is_strong and not is_medium
+    
+    logger.debug(f"Hand strength classification: is_very_strong={is_very_strong}, is_strong={is_strong}, "
+                f"is_medium={is_medium}, is_weak={is_weak}, numerical_hand_rank={numerical_hand_rank}, "
+                f"win_probability={win_probability:.2%}")
 
     if can_check:
         logger.debug("Option to check is available.")
@@ -533,8 +549,7 @@ def make_postflop_decision(
                     logger.info(f"Decision: CALL (medium hand, acceptable river odds). Amount: {call_amount:.2f}")
                     return action_call_const, round(call_amount, 2)
             
-            # Call with medium strength if odds are good, especially with draws (not explicitly modeled here yet)
-            if win_probability > pot_odds_to_call and bet_to_call <= 0.6 * pot_size : # Call if good odds and bet is not too large (e.g. up to 60% pot)
+            # Call with medium strength if odds are good, especially with draws (not explicitly modeled here yet)            if win_probability > pot_odds_to_call and bet_to_call <= 0.6 * pot_size : # Call if good odds and bet is not too large (e.g. up to 60% pot)
                 call_amount = bet_to_call
                 logger.info(f"Decision: CALL (medium hand, good odds and bet size). Amount to call: {call_amount:.2f}")
                 return action_call_const, round(call_amount, 2)
@@ -543,7 +558,47 @@ def make_postflop_decision(
                 return action_fold_const, 0
         
         else: # Weak hand
-            logger.debug(f"Hand is_weak. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")            # Special handling for pot commitment with draws
+            logger.debug(f"Hand is_weak. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
+            
+            # Special handling for weak pairs (like KQ with pair of 9s)
+            # These hands have minimal equity and should be very conservative about calling
+            if numerical_hand_rank == 2:  # One pair (now classified as weak)
+                bet_to_pot_ratio = bet_to_call / pot_size if pot_size > 0 else 1.0
+                
+                # Be extra conservative with weak pairs
+                # Only call if we have good equity AND the bet is small
+                equity_cushion = win_probability - pot_odds_to_call
+                
+                # For weak pairs, require:
+                # 1. At least 5% equity cushion over pot odds
+                # 2. Bet size <= 40% of pot 
+                # 3. Not facing a large bet relative to stack
+                if (equity_cushion >= 0.05 and 
+                    bet_to_call <= 0.4 * pot_size and 
+                    bet_to_call <= 0.3 * my_stack and
+                    street != 'river'):  # Don't call river bets with weak pairs
+                    
+                    call_amount = bet_to_call
+                    logger.info(f"Decision: CALL (weak pair with sufficient cushion). Amount: {call_amount:.2f}, "
+                              f"Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}, "
+                              f"Cushion: {equity_cushion:.2%}, Bet/Pot: {bet_to_pot_ratio:.2%}")
+                    return action_call_const, round(call_amount, 2)
+                else:
+                    # Log why we're folding the weak pair
+                    reasons = []
+                    if equity_cushion < 0.05:
+                        reasons.append(f"Insufficient equity cushion: {equity_cushion:.2%} < 5%")
+                    if bet_to_call > 0.4 * pot_size:
+                        reasons.append(f"Bet too large: {bet_to_call:.2f} > 40% pot ({0.4 * pot_size:.2f})")
+                    if bet_to_call > 0.3 * my_stack:
+                        reasons.append(f"Bet too large vs stack: {bet_to_call:.2f} > 30% stack ({0.3 * my_stack:.2f})")
+                    if street == 'river':
+                        reasons.append("No river calls with weak pairs")
+                    
+                    logger.info(f"Decision: FOLD (weak pair). Reasons: {'; '.join(reasons)}")
+                    return action_fold_const, 0
+            
+            # Special handling for pot commitment with draws
             # Special case for river raises
             if street == 'river' and max_bet_on_table > 0 and my_player_data.get('current_bet', 0) > 0 and win_probability < 0.4:
                 # We've already bet on the river and are facing a raise with low equity
