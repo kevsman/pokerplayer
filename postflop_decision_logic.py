@@ -601,14 +601,13 @@ def make_postflop_decision(
                     multiway_factor = max(0.5, 1.0 - (active_opponents_count - 1) * 0.3)  # More aggressive reduction
                     original_bet_amount = bet_amount
                     bet_amount *= multiway_factor
-                    logger.info(f"Multiway adjustment: {active_opponents_count} opponents, factor: {multiway_factor:.2f}, original: {original_bet_amount:.2f}, adjusted: {bet_amount:.2f}")            
+                    logger.info(f"Multiway adjustment: {active_opponents_count} opponents, factor: {multiway_factor:.2f}, original: {original_bet_amount:.2f}, adjusted: {bet_amount:.2f}")
                 else:
                     logger.debug(f"Heads-up: {active_opponents_count} opponent, no adjustment")
-            
-            bet_amount = min(bet_amount, my_stack)
+                bet_amount = min(bet_amount, my_stack)
             if bet_amount > 0:
                 logger.info(f"Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: {bet_amount:.2f}")
-                return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const            
+                return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
             else:
                 logger.info("Decision: CHECK (very_strong/strong, but optimal bet is 0).")
                 return action_check_const, 0
@@ -623,8 +622,7 @@ def make_postflop_decision(
                 
                 # Adjust bet size based on opponent tendencies for thin value
                 if opponent_context:
-                    # Against tight players, bet smaller for thin value
-                    valid_opponents = [opp for opp in opponent_context.values() if isinstance(opp, dict) and 'vpip' in opp]
+                    # Against tight players, bet smaller for thin value                    valid_opponents = [opp for opp in opponent_context.values() if isinstance(opp, dict) and 'vpip' in opp]
                     if valid_opponents:
                         avg_vpip = sum(opp['vpip'] for opp in valid_opponents) / len(valid_opponents)
                         if avg_vpip < 20:  # Very tight
@@ -637,14 +635,15 @@ def make_postflop_decision(
                     original_bet_amount = bet_amount
                     bet_amount *= multiway_factor
                     logger.info(f"Multiway adjustment (strong): {active_opponents_count} opponents, factor: {multiway_factor:.2f}, original: {original_bet_amount:.2f}, adjusted: {bet_amount:.2f}")
-            else:
-                logger.debug(f"Heads-up (strong): {active_opponents_count} opponent, no adjustment")
+                else:
+                    logger.debug(f"Heads-up (strong): {active_opponents_count} opponent, no adjustment")
+                
+                bet_amount = min(bet_amount, my_stack)
+                if bet_amount > 0:
+                    logger.info(f"Decision: BET (strong hand, thin value when checked to). Amount: {bet_amount:.2f}")                
+                    return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
             
-            bet_amount = min(bet_amount, my_stack)
-            if bet_amount > 0:
-                logger.info(f"Decision: BET (strong hand, thin value when checked to). Amount: {bet_amount:.2f}")                
-                return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
-              # If optimal bet is 0, or if we decided not to value bet, consider a bluff (though less likely for 'is_strong')
+            # If optimal bet is 0, or if we decided not to value bet, consider a bluff (though less likely for 'is_strong')
             if decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability):
                 bluff_bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                 bluff_bet_amount = min(bluff_bet_amount, my_stack)
