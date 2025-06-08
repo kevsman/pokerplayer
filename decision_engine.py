@@ -173,22 +173,35 @@ class DecisionEngine:
                     max_bet_on_table = player_current_bet
                     logger.debug(f"  DEBUG ENGINE: New max_bet_on_table: {max_bet_on_table} from player at seat/index {player_seat}")
             else:
-                logger.debug(f"  DEBUG ENGINE: Player data at index {i} is None or empty.")
+                logger.debug(f"  DEBUG ENGINE: Player data at index {i} is None or empty.")       
         logger.debug(f"  DEBUG ENGINE: Final calculated max_bet_on_table before use: {max_bet_on_table}")
-
+        
         my_current_bet = parse_monetary_value(my_player.get('current_bet', 0.0))
-        # This is the actual amount required to call the highest bet on the table.
+        # Debug BB bet calculation issue
+        logger.info(f"DEBUG ENGINE: BB bet calculation details:")
+        logger.info(f"  my_player raw current_bet: {repr(my_player.get('current_bet'))}")
+        logger.info(f"  my_current_bet parsed: {my_current_bet}")
+        logger.info(f"  my_player position: {my_player.get('position')}")
+        logger.info(f"  my_player name: {my_player.get('name')}")
+        # This is the actual amount required to call the highest bet on the table.        
         bet_to_call_calculated = max(0.0, max_bet_on_table - my_current_bet)
 
+        # Debug BB bet calculation issue
+        logger.info(f"DEBUG ENGINE: BB bet calculation details:")
+        logger.info(f"  my_player raw current_bet: {repr(my_player.get('current_bet'))}")
+        logger.info(f"  my_current_bet parsed: {my_current_bet}")
+        logger.info(f"  max_bet_on_table: {max_bet_on_table}")
+        logger.info(f"  bet_to_call_calculated: {bet_to_call_calculated}")
+        logger.info(f"  my_player position: {my_player.get('position')}")
+        logger.info(f"  my_player name: {my_player.get('name')}")        
         bet_to_call_str = my_player.get('bet_to_call')
         parsed_ui_bet_to_call_for_log = "N/A" # Initialize for logging
         final_bet_to_call = bet_to_call_calculated  # Default to calculated value
-        
         if bet_to_call_str is not None:
             parsed_ui_bet_to_call_for_log = parse_monetary_value(bet_to_call_str)
             # Use explicit bet_to_call when provided (especially important for test scenarios)
-            # and when it makes sense (i.e., is positive when we don't have the max bet)
-            if parsed_ui_bet_to_call_for_log > 0:
+            # Always trust the UI bet_to_call value when it's provided (including 0.0 for BB check scenarios)
+            if parsed_ui_bet_to_call_for_log >= 0:
                 final_bet_to_call = parsed_ui_bet_to_call_for_log
                 if parsed_ui_bet_to_call_for_log != bet_to_call_calculated and logger.isEnabledFor(logging.DEBUG):
                     logger.debug(f"Make_decision: Using explicit bet_to_call ({parsed_ui_bet_to_call_for_log}) instead of calculated ({bet_to_call_calculated})")
@@ -196,6 +209,12 @@ class DecisionEngine:
                 logger.debug(f"Make_decision: UI bet_to_call ({parsed_ui_bet_to_call_for_log}) differs from calculated ({bet_to_call_calculated}). Using calculated.")
         logger.debug(f"Make_decision: UI_bet_to_call_val: {parsed_ui_bet_to_call_for_log}, Calculated_bet_to_call: {bet_to_call_calculated}, Final_bet_to_call: {final_bet_to_call}, Max_bet_on_table: {max_bet_on_table}, My_current_bet: {my_current_bet}")        
         can_check = final_bet_to_call == 0
+        logger.info(f"DEBUG ENGINE: can_check calculation:")
+        logger.info(f"  final_bet_to_call = {final_bet_to_call} (type: {type(final_bet_to_call)})")
+        logger.info(f"  final_bet_to_call == 0 = {final_bet_to_call == 0}")
+        logger.info(f"  final_bet_to_call == 0.0 = {final_bet_to_call == 0.0}")
+        logger.info(f"  abs(final_bet_to_call) < 1e-10 = {abs(final_bet_to_call) < 1e-10}")
+        logger.info(f"  can_check = {can_check}")
         active_opponents_count = sum(1 for i, p in enumerate(all_players) if p and p.get('is_active', False) and i != player_index)
         if current_round == 'preflop':
             logger.debug(f"  DEBUG ENGINE: PRE-CALL to make_preflop_decision: final_bet_to_call={final_bet_to_call}, max_bet_on_table={max_bet_on_table}")
@@ -206,8 +225,14 @@ class DecisionEngine:
             
             # Determine if player is SB or BB
             is_sb = my_player['position'] == 'SB'
-            is_bb = my_player['position'] == 'BB'
-
+            is_bb = my_player['position'] == 'BB'            # Debug logging for BB check issue
+            logger.info(f"DEBUG ENGINE: Calling make_preflop_decision with:")
+            logger.info(f"  - position: {my_player['position']}")
+            logger.info(f"  - bet_to_call: {final_bet_to_call}")
+            logger.info(f"  - can_check: {can_check}")
+            logger.info(f"  - is_bb: {is_bb}")
+            logger.info(f"  - hand: {my_player['hand']}")
+            
             action, amount = make_preflop_decision(
                 my_player=my_player, 
                 hand_category=hand_category,
@@ -229,6 +254,8 @@ class DecisionEngine:
                 action_call_const=ACTION_CALL,
                 action_raise_const=ACTION_RAISE
             )
+            
+            logger.info(f"DEBUG ENGINE: make_preflop_decision returned: action={action}, amount={amount}")
             
             # Apply tournament adjustments if in tournament mode
             if self.tournament_level > 0:

@@ -619,10 +619,10 @@ def make_postflop_decision(
             
             if is_thin_value or win_probability > 0.65:
                 bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
-                
-                # Adjust bet size based on opponent tendencies for thin value
+                  # Adjust bet size based on opponent tendencies for thin value
                 if opponent_context:
-                    # Against tight players, bet smaller for thin value                    valid_opponents = [opp for opp in opponent_context.values() if isinstance(opp, dict) and 'vpip' in opp]
+                    # Against tight players, bet smaller for thin value
+                    valid_opponents = [opp for opp in opponent_context.values() if isinstance(opp, dict) and 'vpip' in opp]
                     if valid_opponents:
                         avg_vpip = sum(opp['vpip'] for opp in valid_opponents) / len(valid_opponents)
                         if avg_vpip < 20:  # Very tight

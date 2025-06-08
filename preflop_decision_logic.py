@@ -141,14 +141,17 @@ def make_preflop_decision(
     #    raise_amount_calculated = min_raise
     # This should be covered by max(raise_amount_calculated, min_raise) if min_raise is correctly the total bet.
     # Let's refine: if we intend to raise, the amount must be >= min_raise.
-    # The decision to raise comes later. This is just the 'default' calculated raise.
-    print(f"Preflop Logic: Pos: {position}, Cat: {preflop_category}, B2Call: {bet_to_call}, CanChk: {can_check}, CalcRaise: {raise_amount_calculated}, MyStack: {my_stack}, MyBet: {my_current_bet_this_street}, MaxOppBet: {max_bet_on_table}, Pot: {pot_size}, Opps: {active_opponents_count}, BB: {big_blind}, is_bb: {is_bb}, NumLimpers: {num_limpers}")
+    # The decision to raise comes later. This is just the 'default' calculated raise.    print(f"Preflop Logic: Pos: {position}, Cat: {preflop_category}, B2Call: {bet_to_call}, CanChk: {can_check}, CalcRaise: {raise_amount_calculated}, MyStack: {my_stack}, MyBet: {my_current_bet_this_street}, MaxOppBet: {max_bet_on_table}, Pot: {pot_size}, Opps: {active_opponents_count}, BB: {big_blind}, is_bb: {is_bb}, NumLimpers: {num_limpers}")
 
     # --- Decision Logic ---
     
+    print(f"DEBUG PREFLOP: Starting decision logic with hand_category='{preflop_category}'")
+    
     if preflop_category == "Weak":
+        print(f"DEBUG PREFLOP: Entered Weak hand category")
+        
         if can_check and is_bb and bet_to_call == 0:
-            print(f"Weak hand in BB, option to check. Action: CHECK")
+            print(f"DEBUG PREFLOP: BB can check with no bet to call. Action: CHECK")
             return action_check_const, 0
         
         # Enhanced BTN stealing with wider range
@@ -205,48 +208,57 @@ def make_preflop_decision(
                 if steal_amount > bet_to_call:
                     print(f"CO open with suited high card. Action: RAISE, Amount: {steal_amount}")
                     return action_raise_const, steal_amount
-                    
-        # If facing a raise, fold weak hands (with some exceptions)
+                      # If facing a raise, fold weak hands (with some exceptions)
         if bet_to_call > 0:
-            print(f"Weak hand facing bet. Action: FOLD")
+            print(f"DEBUG PREFLOP: Weak hand facing bet (bet_to_call={bet_to_call}). Action: FOLD")
             return action_fold_const, 0
-          # If no bet to call, and cannot check (e.g., UTG must act), fold weak hands.
+            # If no bet to call, and cannot check (e.g., UTG must act), fold weak hands.
         # Exception: BTN steal attempts with suited weak hands like K4s
         if bet_to_call == 0:
-             # Check if this is a BTN steal spot (no limpers, first to act)
-             if position == 'BTN' and num_limpers == 0:
-                 # BTN should attempt steals with wider range including suited kings
-                 # Check if it's a suited hand that could be a steal candidate
-                 hand = my_player['hand']
-                 card1_suit = hand[0][-1]
-                 card2_suit = hand[1][-1]
-                 is_suited = card1_suit == card2_suit
+            print(f"DEBUG PREFLOP: bet_to_call == 0, checking for BTN steal scenarios")
+            # Check if this is a BTN steal spot (no limpers, first to act)
+            if position == 'BTN' and num_limpers == 0:                # BTN should attempt steals with wider range including suited kings
+                # Check if it's a suited hand that could be a steal candidate
+                hand = my_player['hand']
+                card1_suit = hand[0][-1]
+                card2_suit = hand[1][-1]
+                is_suited = card1_suit == card2_suit
                  
-                 # Get card ranks
-                 card1_rank = hand[0][:-1] if hand[0][:-1] != '10' else 'T'
-                 card2_rank = hand[1][:-1] if hand[1][:-1] != '10' else 'T'
+                # Get card ranks
+                card1_rank = hand[0][:-1] if hand[0][:-1] != '10' else 'T'
+                card2_rank = hand[1][:-1] if hand[1][:-1] != '10' else 'T'
                  
-                 # Check if it contains a King and is suited (like K4s)
-                 has_king = card1_rank == 'K' or card2_rank == 'K'
+                # Check if it contains a King and is suited (like K4s)
+                has_king = card1_rank == 'K' or card2_rank == 'K'
                  
-                 if is_suited and has_king:
-                     steal_amount = raise_amount_calculated
-                     steal_amount = max(steal_amount, min_raise)
-                     steal_amount = round(min(steal_amount, my_stack), 2)
-                     if steal_amount > bet_to_call:
-                         print(f"Weak suited King in BTN, steal attempt. Action: RAISE, Amount: {steal_amount}")
-                         return action_raise_const, steal_amount             # If not a steal situation and cannot check, fold
-             if not can_check:
-                 print(f"Weak hand, cannot check (e.g. UTG open), no bet to call. Action: FOLD")
-                 return action_fold_const, 0
-          # If no bet to call and can check (e.g. UTG limp, later position check through, or BB with no raise)
+                if is_suited and has_king:
+                    steal_amount = raise_amount_calculated
+                    steal_amount = max(steal_amount, min_raise)
+                    steal_amount = round(min(steal_amount, my_stack), 2)
+                    if steal_amount > bet_to_call:
+                        print(f"Weak suited King in BTN, steal attempt. Action: RAISE, Amount: {steal_amount}")
+                        return action_raise_const, steal_amount
+            
+            # If not a steal situation and cannot check, fold
+            if not can_check:
+                print(f"DEBUG PREFLOP: Weak hand, cannot check (e.g. UTG open), no bet to call. Action: FOLD")
+                print(f"DEBUG PREFLOP: Details - can_check={can_check}, position={position}, bet_to_call={bet_to_call}")
+                return action_fold_const, 0# Debug logging for BB check issue investigation
+        print(f"DEBUG PREFLOP: At check/fold decision point:")
+        print(f"  - position: {position}")
+        print(f"  - bet_to_call: {bet_to_call}")
+        print(f"  - can_check: {can_check}")
+        print(f"  - is_bb: {is_bb}")
+        print(f"  - hand_category: {hand_category}")
+        
+        # If no bet to call and can check (e.g. UTG limp, later position check through, or BB with no raise)
         if bet_to_call == 0 and can_check:
-            print(f"Weak hand, can check (limp/check through or BB facing no bet). Action: CHECK")
+            print(f"DEBUG PREFLOP: Weak hand, can check (limp/check through or BB facing no bet). Action: CHECK")
             return action_check_const, 0
         
         # Default for weak hands: if can check, check. Otherwise, fold.
         # This covers the BB case where it's checked to them (bet_to_call == 0, can_check == True)
-        print(f"Weak hand, default. Action: CHECK if can_check else FOLD. (can_check={can_check}, bet_to_call={bet_to_call})")
+        print(f"DEBUG PREFLOP: Weak hand, default. Action: CHECK if can_check else FOLD. (can_check={can_check}, bet_to_call={bet_to_call})")
         return action_check_const if can_check else action_fold_const, 0
 
 
