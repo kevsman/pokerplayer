@@ -609,3 +609,99 @@
 2025-06-08 21:02:42,912 - postflop_decision_logic - DEBUG - SPR analysis: spr=5.85, strategy=standard, drawing_potential=False
 2025-06-08 21:02:42,912 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=2, win_probability=72.32%
 2025-06-08 21:02:42,913 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 21:12:44,394 - postflop_decision_logic - INFO - Cash game enhancements applied: position=BTN, hand_strength=strong, confidence=0.85
+2025-06-08 21:12:44,395 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: AdvancedOpponentAnalyzer.get_exploitative_strategy() got an unexpected keyword argument 'active_opponents'
+2025-06-08 21:12:44,395 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'performance_tracker', 'decision_context']
+2025-06-08 21:12:44,397 - postflop_decision_logic - DEBUG - Enhanced classification: medium, commitment_threshold: 40.00%
+2025-06-08 21:12:44,397 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.63, pot_commitment_ratio=0.00%, commitment_threshold=40.00%, is_pot_committed=False
+2025-06-08 21:12:44,397 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=tracker_not_working_properly
+2025-06-08 21:12:44,398 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.33, strategy=standard, drawing_potential=False
+2025-06-08 21:12:44,398 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=True, is_weak=False, numerical_hand_rank=2, win_probability=67.78%
+2025-06-08 21:12:44,398 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 21:12:44,398 - postflop_decision_logic - DEBUG - Enhanced medium hand bet sizing: 0.50 of pot = 0.14
+2025-06-08 21:12:44,398 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 0.14
+2025-06-08 21:14:54,515 - postflop_decision_logic - INFO - Cash game enhancements applied: position=BB, hand_strength=very_strong, confidence=0.85
+2025-06-08 21:14:54,516 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: AdvancedOpponentAnalyzer.get_exploitative_strategy() got an unexpected keyword argument 'active_opponents'
+2025-06-08 21:14:54,516 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'performance_tracker', 'decision_context']
+2025-06-08 21:14:54,516 - postflop_decision_logic - DEBUG - Enhanced classification: very_strong, commitment_threshold: 20.00%
+2025-06-08 21:14:54,516 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.75, pot_commitment_ratio=0.00%, commitment_threshold=20.00%, is_pot_committed=False
+2025-06-08 21:14:54,517 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=tracker_not_working_properly
+2025-06-08 21:14:54,517 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.68, strategy=standard, drawing_potential=False
+2025-06-08 21:14:54,517 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=True, is_strong=False, is_medium=False, is_weak=False, numerical_hand_rank=4, win_probability=96.14%
+2025-06-08 21:14:54,517 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 21:14:54,518 - postflop_decision_logic - DEBUG - Cash game position adjustment (BB): 0.99
+2025-06-08 21:14:54,518 - postflop_decision_logic - DEBUG - Short stack strategy - decreasing bet size
+2025-06-08 21:14:54,518 - postflop_decision_logic - DEBUG - Enhanced bet sizing: 0.75 of pot * 0.94 adjustment = 0.20
+2025-06-08 21:14:54,518 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 0.20
+2025-06-08 21:15:34,187 - postflop_decision_logic - INFO - Cash game enhancements applied: position=SB, hand_strength=weak_made, confidence=0.85
+2025-06-08 21:15:34,188 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: AdvancedOpponentAnalyzer.get_exploitative_strategy() got an unexpected keyword argument 'active_opponents'
+2025-06-08 21:15:34,188 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'performance_tracker', 'decision_context']
+2025-06-08 21:15:34,188 - postflop_decision_logic - DEBUG - Enhanced classification: drawing, commitment_threshold: 70.00%
+2025-06-08 21:15:34,188 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.96, pot_commitment_ratio=0.00%, commitment_threshold=70.00%, is_pot_committed=False
+2025-06-08 21:15:34,188 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=tracker_not_working_properly
+2025-06-08 21:15:34,188 - postflop_decision_logic - DEBUG - SPR analysis: spr=8.00, strategy=standard, drawing_potential=True
+2025-06-08 21:15:34,188 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=1, win_probability=30.66%
+2025-06-08 21:15:34,189 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 21:15:34,189 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-08 21:15:42,955 - postflop_decision_logic - INFO - Cash game enhancements applied: position=SB, hand_strength=very_weak, confidence=0.85
+2025-06-08 21:15:42,955 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: AdvancedOpponentAnalyzer.get_exploitative_strategy() got an unexpected keyword argument 'active_opponents'
+2025-06-08 21:15:42,956 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'performance_tracker', 'decision_context']
+2025-06-08 21:15:42,956 - postflop_decision_logic - DEBUG - Enhanced classification: very_weak, commitment_threshold: 72.00%
+2025-06-08 21:15:42,956 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.96, pot_commitment_ratio=0.00%, commitment_threshold=72.00%, is_pot_committed=False
+2025-06-08 21:15:42,957 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=tracker_not_working_properly
+2025-06-08 21:15:42,957 - postflop_decision_logic - DEBUG - SPR analysis: spr=8.00, strategy=standard, drawing_potential=False
+2025-06-08 21:15:42,957 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=1, win_probability=14.68%
+2025-06-08 21:15:42,957 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 21:15:42,958 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-08 21:15:51,754 - postflop_decision_logic - INFO - Cash game enhancements applied: position=SB, hand_strength=very_weak, confidence=0.85
+2025-06-08 21:15:51,754 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: AdvancedOpponentAnalyzer.get_exploitative_strategy() got an unexpected keyword argument 'active_opponents'
+2025-06-08 21:15:51,754 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'performance_tracker', 'decision_context']
+2025-06-08 21:15:51,754 - postflop_decision_logic - DEBUG - Enhanced classification: very_weak, commitment_threshold: 64.00%
+2025-06-08 21:15:51,754 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.96, pot_commitment_ratio=0.00%, commitment_threshold=64.00%, is_pot_committed=False
+2025-06-08 21:15:51,755 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=tracker_not_working_properly
+2025-06-08 21:15:51,755 - postflop_decision_logic - DEBUG - SPR analysis: spr=8.00, strategy=standard, drawing_potential=False
+2025-06-08 21:15:51,755 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=2, win_probability=23.26%
+2025-06-08 21:15:51,755 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 21:15:51,755 - postflop_decision_logic - INFO - River bluff: Pot (0.12) is < 20% of stack (0.96). Current bet decision: 0.12. Overriding to all-in (0.96).
+2025-06-08 21:15:51,755 - postflop_decision_logic - INFO - Decision: BET (weak hand, river bluff when checked to). Amount: 0.96, Pot: 0.12, Stack: 0.96
+2025-06-08 21:17:15,547 - postflop_decision_logic - INFO - Cash game enhancements applied: position=MP, hand_strength=very_weak, confidence=0.85
+2025-06-08 21:17:15,547 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: AdvancedOpponentAnalyzer.get_exploitative_strategy() got an unexpected keyword argument 'active_opponents'
+2025-06-08 21:17:15,547 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'performance_tracker', 'decision_context']
+2025-06-08 21:17:15,547 - postflop_decision_logic - DEBUG - Enhanced classification: very_weak, commitment_threshold: 80.00%
+2025-06-08 21:17:15,547 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.91, pot_commitment_ratio=0.00%, commitment_threshold=80.00%, is_pot_committed=False
+2025-06-08 21:17:15,547 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=tracker_not_working_properly
+2025-06-08 21:17:15,548 - postflop_decision_logic - DEBUG - SPR analysis: spr=6.07, strategy=standard, drawing_potential=False
+2025-06-08 21:17:15,548 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=1, win_probability=15.38%
+2025-06-08 21:17:15,548 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 21:17:15,548 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-08 21:17:24,321 - postflop_decision_logic - INFO - Cash game enhancements applied: position=MP, hand_strength=very_weak, confidence=0.85
+2025-06-08 21:17:24,321 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: AdvancedOpponentAnalyzer.get_exploitative_strategy() got an unexpected keyword argument 'active_opponents'
+2025-06-08 21:17:24,321 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'performance_tracker', 'decision_context']
+2025-06-08 21:17:24,322 - postflop_decision_logic - DEBUG - Enhanced classification: very_weak, commitment_threshold: 72.00%
+2025-06-08 21:17:24,322 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.91, pot_commitment_ratio=0.00%, commitment_threshold=72.00%, is_pot_committed=False
+2025-06-08 21:17:24,322 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=tracker_not_working_properly
+2025-06-08 21:17:24,322 - postflop_decision_logic - DEBUG - SPR analysis: spr=6.07, strategy=standard, drawing_potential=False
+2025-06-08 21:17:24,322 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=1, win_probability=6.42%
+2025-06-08 21:17:24,322 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 21:17:24,323 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-08 21:17:33,064 - postflop_decision_logic - INFO - Cash game enhancements applied: position=MP, hand_strength=very_weak, confidence=0.85
+2025-06-08 21:17:33,064 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: AdvancedOpponentAnalyzer.get_exploitative_strategy() got an unexpected keyword argument 'active_opponents'
+2025-06-08 21:17:33,065 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'performance_tracker', 'decision_context']
+2025-06-08 21:17:33,065 - postflop_decision_logic - DEBUG - Enhanced classification: very_weak, commitment_threshold: 64.00%
+2025-06-08 21:17:33,065 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.91, pot_commitment_ratio=0.00%, commitment_threshold=64.00%, is_pot_committed=False
+2025-06-08 21:17:33,066 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=tracker_not_working_properly
+2025-06-08 21:17:33,066 - postflop_decision_logic - DEBUG - SPR analysis: spr=6.07, strategy=standard, drawing_potential=False
+2025-06-08 21:17:33,066 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=1, win_probability=0.00%
+2025-06-08 21:17:33,066 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 21:17:33,066 - postflop_decision_logic - INFO - Decision: CHECK (weak hand, checking behind on river).
+2025-06-08 21:17:45,191 - postflop_decision_logic - INFO - Cash game enhancements applied: position=MP, hand_strength=very_weak, confidence=0.85
+2025-06-08 21:17:45,191 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: AdvancedOpponentAnalyzer.get_exploitative_strategy() got an unexpected keyword argument 'active_opponents'
+2025-06-08 21:17:45,191 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'performance_tracker', 'decision_context']
+2025-06-08 21:17:45,191 - postflop_decision_logic - DEBUG - Enhanced classification: very_weak, commitment_threshold: 64.00%
+2025-06-08 21:17:45,192 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.04, total_commitment_if_call=0.04, my_stack=0.91, pot_commitment_ratio=4.21%, commitment_threshold=64.00%, is_pot_committed=False
+2025-06-08 21:17:45,192 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=tracker_not_working_properly
+2025-06-08 21:17:45,192 - postflop_decision_logic - DEBUG - SPR analysis: spr=4.79, strategy=standard, drawing_potential=False
+2025-06-08 21:17:45,192 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=1, win_probability=0.00%
+2025-06-08 21:17:45,192 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.04, pot_size: 0.19, my_stack: 0.91, max_bet_on_table: 0.04
+2025-06-08 21:17:45,193 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.0, pot_odds: 0.17391304347826086
+2025-06-08 21:17:45,193 - postflop_decision_logic - DEBUG - Drawing hand check: win_prob=0.00%, pot_odds=17.39%, bet_to_call=0.04, pot_size=0.19, bet_to_pot_ratio=21.05%, my_stack=0.91

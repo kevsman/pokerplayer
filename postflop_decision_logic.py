@@ -1082,8 +1082,7 @@ def make_postflop_decision(
                     my_stack=my_stack,
                     street=street,
                     win_probability=win_probability,
-                    position=my_player_data.get('position', 'BB'),
-                    board_texture=my_player_data.get('community_cards', []),
+                    position=my_player_data.get('position', 'BB'),                board_texture=my_player_data.get('community_cards', []),
                     opponent_analysis=opponent_context
                 )
                 
@@ -1092,7 +1091,9 @@ def make_postflop_decision(
                     if bet_to_call == 0: 
                         min_total_raise_to_amount = max_bet_on_table + big_blind_amount
 
-                    calculated_raise_total_amount = bluff_decision['raise_size']
+                    # Calculate raise size from the pot fraction returned by enhanced bluffing strategy
+                    bluff_size_fraction = bluff_decision.get('bluff_size_pot_fraction', 0.6)
+                    calculated_raise_total_amount = max_bet_on_table + (pot_size * bluff_size_fraction)
                     if calculated_raise_total_amount < min_total_raise_to_amount:
                         calculated_raise_total_amount = min_total_raise_to_amount
                     
@@ -1101,7 +1102,7 @@ def make_postflop_decision(
 
                     if final_raise_amount > max_bet_on_table and (final_raise_amount >= min_total_raise_to_amount or is_all_in_raise):
                         logger.info(f"Decision: RAISE (enhanced bluff strategy). Amount: {final_raise_amount:.2f}, "
-                                  f"Reason: {bluff_decision['reason']}")
+                                  f"Reason: {bluff_decision.get('reasoning', 'enhanced_bluff')}")
                         return action_raise_const, round(final_raise_amount, 2)
                         
             except ImportError:
