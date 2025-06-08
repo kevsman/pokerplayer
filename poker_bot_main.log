@@ -19970,3 +19970,1538 @@
 2025-06-08 14:12:42,324 - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=5, win_probability=58.54%
 2025-06-08 14:12:42,325 - DEBUG - Option to check is available.
 2025-06-08 14:12:42,325 - DEBUG - Heads-up (strong): 0 opponent, no adjustment
+2025-06-08 14:35:52,906 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:35:52,907 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:35:52,909 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:35:52,909 - INFO - Found 0 potential action elements.
+2025-06-08 14:35:52,910 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:35:52,910 - INFO - Using dealer position: 2
+2025-06-08 14:35:52,910 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:35:52,910 - INFO - Player Player 3 in seat 1 assigned position: CO
+2025-06-08 14:35:52,910 - INFO - Player Player 5 in seat 2 assigned position: BTN
+2025-06-08 14:35:52,911 - INFO - Player Player 6 in seat 3 assigned position: SB
+2025-06-08 14:35:52,911 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:35:52,911 - INFO - Player Player 10 in seat 5 assigned position: UTG
+2025-06-08 14:35:52,911 - INFO - Player Player 1 in seat 6 assigned position: MP
+2025-06-08 14:35:52,919 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:35:52,920 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:35:52,922 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:35:52,922 - INFO - Found 0 potential action elements.
+2025-06-08 14:35:52,922 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:35:52,922 - INFO - Using dealer position: 2
+2025-06-08 14:35:52,923 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:35:52,923 - INFO - Player Player 3 in seat 1 assigned position: CO
+2025-06-08 14:35:52,923 - INFO - Player Player 5 in seat 2 assigned position: BTN
+2025-06-08 14:35:52,923 - INFO - Player Player 6 in seat 3 assigned position: SB
+2025-06-08 14:35:52,923 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:35:52,923 - INFO - Player Player 10 in seat 5 assigned position: UTG
+2025-06-08 14:35:52,924 - INFO - Player Player 1 in seat 6 assigned position: MP
+2025-06-08 14:35:52,925 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:35:52,926 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:35:52,928 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:35:52,928 - INFO - Found 0 potential action elements.
+2025-06-08 14:35:52,928 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:35:52,928 - INFO - Using dealer position: 2
+2025-06-08 14:35:52,928 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:35:52,929 - INFO - Player Player 3 in seat 1 assigned position: CO
+2025-06-08 14:35:52,929 - INFO - Player Player 5 in seat 2 assigned position: BTN
+2025-06-08 14:35:52,929 - INFO - Player Player 6 in seat 3 assigned position: SB
+2025-06-08 14:35:52,929 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:35:52,929 - INFO - Player Player 10 in seat 5 assigned position: UTG
+2025-06-08 14:35:52,929 - INFO - Player Player 1 in seat 6 assigned position: MP
+2025-06-08 14:35:55,307 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:35:55,308 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:35:55,309 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:35:55,310 - INFO - Found 0 potential action elements.
+2025-06-08 14:35:55,310 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:35:55,310 - INFO - Using dealer position: 2
+2025-06-08 14:35:55,310 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:35:55,310 - INFO - Player Player 3 in seat 1 assigned position: CO
+2025-06-08 14:35:55,310 - INFO - Player Player 5 in seat 2 assigned position: BTN
+2025-06-08 14:35:55,311 - INFO - Player Player 6 in seat 3 assigned position: SB
+2025-06-08 14:35:55,311 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:35:55,311 - INFO - Player Player 10 in seat 5 assigned position: UTG
+2025-06-08 14:35:55,311 - INFO - Player Player 1 in seat 6 assigned position: MP
+2025-06-08 14:35:55,316 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:35:55,317 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:35:55,318 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:35:55,318 - INFO - Found 0 potential action elements.
+2025-06-08 14:35:55,319 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:35:55,319 - INFO - Using dealer position: 2
+2025-06-08 14:35:55,319 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:35:55,319 - INFO - Player Player 3 in seat 1 assigned position: CO
+2025-06-08 14:35:55,320 - INFO - Player Player 5 in seat 2 assigned position: BTN
+2025-06-08 14:35:55,320 - INFO - Player Player 6 in seat 3 assigned position: SB
+2025-06-08 14:35:55,320 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:35:55,320 - INFO - Player Player 10 in seat 5 assigned position: UTG
+2025-06-08 14:35:55,320 - INFO - Player Player 1 in seat 6 assigned position: MP
+2025-06-08 14:35:55,322 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:35:55,323 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:35:55,325 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:35:55,325 - INFO - Found 0 potential action elements.
+2025-06-08 14:35:55,326 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:35:55,326 - INFO - Using dealer position: 2
+2025-06-08 14:35:55,326 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:35:55,326 - INFO - Player Player 3 in seat 1 assigned position: CO
+2025-06-08 14:35:55,326 - INFO - Player Player 5 in seat 2 assigned position: BTN
+2025-06-08 14:35:55,327 - INFO - Player Player 6 in seat 3 assigned position: SB
+2025-06-08 14:35:55,327 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:35:55,327 - INFO - Player Player 10 in seat 5 assigned position: UTG
+2025-06-08 14:35:55,327 - INFO - Player Player 1 in seat 6 assigned position: MP
+2025-06-08 14:35:57,705 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:35:57,706 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:35:57,709 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:35:57,709 - INFO - Found 0 potential action elements.
+2025-06-08 14:35:57,710 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:35:57,710 - INFO - Using dealer position: 5
+2025-06-08 14:35:57,710 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:35:57,710 - INFO - Player EricHassli1 in seat 1 assigned position: BB
+2025-06-08 14:35:57,710 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-08 14:35:57,711 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:35:57,711 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:35:57,711 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:35:57,711 - INFO - Player sharksharp936 in seat 6 assigned position: SB
+2025-06-08 14:35:57,724 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:35:57,725 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:35:57,728 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:35:57,729 - INFO - Found 0 potential action elements.
+2025-06-08 14:35:57,729 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:35:57,730 - INFO - Using dealer position: 5
+2025-06-08 14:35:57,730 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:35:57,730 - INFO - Player EricHassli1 in seat 1 assigned position: BB
+2025-06-08 14:35:57,730 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-08 14:35:57,730 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:35:57,731 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:35:57,731 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:35:57,731 - INFO - Player sharksharp936 in seat 6 assigned position: SB
+2025-06-08 14:35:57,734 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:35:57,735 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:35:57,738 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:35:57,738 - INFO - Found 0 potential action elements.
+2025-06-08 14:35:57,739 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:35:57,739 - INFO - Using dealer position: 5
+2025-06-08 14:35:57,739 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:35:57,739 - INFO - Player EricHassli1 in seat 1 assigned position: BB
+2025-06-08 14:35:57,740 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-08 14:35:57,740 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:35:57,740 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:35:57,740 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:35:57,740 - INFO - Player sharksharp936 in seat 6 assigned position: SB
+2025-06-08 14:35:58,758 - INFO - Equity calculation complete for ['8♣', '3♣'] vs random. Win: 37.02%, Tie: 10.04%, Equity: 42.04% (5000 simulations)
+2025-06-08 14:36:01,146 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:36:01,147 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:01,152 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:01,153 - INFO - Found 3 potential action elements.
+2025-06-08 14:36:01,154 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:01,154 - INFO - Using dealer position: 5
+2025-06-08 14:36:01,154 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:36:01,154 - INFO - Player EricHassli1 in seat 1 assigned position: BB
+2025-06-08 14:36:01,154 - INFO - Player bettingman in seat 2 assigned position: UTG
+2025-06-08 14:36:01,155 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:36:01,155 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:36:01,155 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:36:01,155 - INFO - Player sharksharp936 in seat 6 assigned position: SB
+2025-06-08 14:36:01,171 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:36:01,172 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:01,176 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:01,176 - INFO - Found 3 potential action elements.
+2025-06-08 14:36:01,177 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:01,177 - INFO - Using dealer position: 5
+2025-06-08 14:36:01,178 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:36:01,178 - INFO - Player EricHassli1 in seat 1 assigned position: BB
+2025-06-08 14:36:01,178 - INFO - Player bettingman in seat 2 assigned position: UTG
+2025-06-08 14:36:01,178 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:36:01,178 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:36:01,179 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:36:01,179 - INFO - Player sharksharp936 in seat 6 assigned position: SB
+2025-06-08 14:36:01,181 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:36:01,183 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:01,187 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:01,188 - INFO - Found 3 potential action elements.
+2025-06-08 14:36:01,189 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:01,189 - INFO - Using dealer position: 5
+2025-06-08 14:36:01,190 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:36:01,190 - INFO - Player EricHassli1 in seat 1 assigned position: BB
+2025-06-08 14:36:01,190 - INFO - Player bettingman in seat 2 assigned position: UTG
+2025-06-08 14:36:01,190 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:36:01,190 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:36:01,191 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:36:01,191 - INFO - Player sharksharp936 in seat 6 assigned position: SB
+2025-06-08 14:36:02,263 - INFO - Equity calculation complete for ['8♣', '3♣'] vs random. Win: 37.70%, Tie: 10.88%, Equity: 43.14% (5000 simulations)
+2025-06-08 14:36:10,108 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:36:10,109 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:10,113 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:10,113 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:10,114 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:10,114 - INFO - Using dealer position: 5
+2025-06-08 14:36:10,114 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:36:10,115 - INFO - Player EricHassli1 in seat 1 assigned position: BB
+2025-06-08 14:36:10,115 - INFO - Player bettingman in seat 2 assigned position: UTG
+2025-06-08 14:36:10,115 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:36:10,115 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:36:10,115 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:36:10,116 - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-08 14:36:10,130 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:36:10,132 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:10,135 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:10,136 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:10,137 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:10,137 - INFO - Using dealer position: 5
+2025-06-08 14:36:10,137 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:36:10,138 - INFO - Player EricHassli1 in seat 1 assigned position: BB
+2025-06-08 14:36:10,138 - INFO - Player bettingman in seat 2 assigned position: UTG
+2025-06-08 14:36:10,138 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:36:10,138 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:36:10,139 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:36:10,139 - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-08 14:36:10,142 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:36:10,144 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:10,148 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:10,149 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:10,149 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:10,150 - INFO - Using dealer position: 5
+2025-06-08 14:36:10,150 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:36:10,150 - INFO - Player EricHassli1 in seat 1 assigned position: BB
+2025-06-08 14:36:10,151 - INFO - Player bettingman in seat 2 assigned position: UTG
+2025-06-08 14:36:10,151 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:36:10,151 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:36:10,151 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:36:10,151 - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-08 14:36:11,224 - INFO - Equity calculation complete for ['8♣', '3♣'] vs random. Win: 35.90%, Tie: 10.94%, Equity: 41.37% (5000 simulations)
+2025-06-08 14:36:13,608 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:36:13,609 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:13,612 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:13,612 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:13,614 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:13,614 - INFO - Using dealer position: 5
+2025-06-08 14:36:13,614 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:36:13,614 - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-08 14:36:13,614 - INFO - Player bettingman in seat 2 assigned position: UTG
+2025-06-08 14:36:13,615 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:36:13,615 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:36:13,615 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:36:13,615 - INFO - Player sharksharp936 in seat 6 assigned position: SB
+2025-06-08 14:36:13,638 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:36:13,640 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:13,644 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:13,644 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:13,645 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:13,645 - INFO - Using dealer position: 5
+2025-06-08 14:36:13,646 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:36:13,646 - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-08 14:36:13,646 - INFO - Player bettingman in seat 2 assigned position: UTG
+2025-06-08 14:36:13,646 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:36:13,646 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:36:13,646 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:36:13,646 - INFO - Player sharksharp936 in seat 6 assigned position: SB
+2025-06-08 14:36:13,649 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:36:13,651 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:13,655 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:13,656 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:13,656 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:13,657 - INFO - Using dealer position: 5
+2025-06-08 14:36:13,657 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:36:13,657 - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-08 14:36:13,657 - INFO - Player bettingman in seat 2 assigned position: UTG
+2025-06-08 14:36:13,658 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:36:13,658 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:36:13,658 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:36:13,658 - INFO - Player sharksharp936 in seat 6 assigned position: SB
+2025-06-08 14:36:14,770 - INFO - Equity calculation complete for ['8♣', '3♣'] vs random. Win: 37.66%, Tie: 10.64%, Equity: 42.98% (5000 simulations)
+2025-06-08 14:36:17,151 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:36:17,153 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:17,156 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:17,156 - INFO - Found 3 potential action elements.
+2025-06-08 14:36:17,157 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:17,157 - INFO - Using dealer position: 5
+2025-06-08 14:36:17,158 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:36:17,158 - INFO - Player EricHassli1 in seat 1 assigned position: BB
+2025-06-08 14:36:17,158 - INFO - Player bettingman in seat 2 assigned position: UTG
+2025-06-08 14:36:17,158 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:36:17,158 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:36:17,158 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:36:17,159 - INFO - Player sharksharp936 in seat 6 assigned position: SB
+2025-06-08 14:36:17,172 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:36:17,174 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:17,177 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:17,178 - INFO - Found 3 potential action elements.
+2025-06-08 14:36:17,179 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:17,179 - INFO - Using dealer position: 5
+2025-06-08 14:36:17,180 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:36:17,180 - INFO - Player EricHassli1 in seat 1 assigned position: BB
+2025-06-08 14:36:17,180 - INFO - Player bettingman in seat 2 assigned position: UTG
+2025-06-08 14:36:17,180 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:36:17,181 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:36:17,181 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:36:17,181 - INFO - Player sharksharp936 in seat 6 assigned position: SB
+2025-06-08 14:36:17,184 - INFO - Found visible dealer button at seat 5
+2025-06-08 14:36:17,186 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:17,190 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:17,190 - INFO - Found 3 potential action elements.
+2025-06-08 14:36:17,191 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:17,191 - INFO - Using dealer position: 5
+2025-06-08 14:36:17,192 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-08 14:36:17,192 - INFO - Player EricHassli1 in seat 1 assigned position: BB
+2025-06-08 14:36:17,192 - INFO - Player bettingman in seat 2 assigned position: UTG
+2025-06-08 14:36:17,192 - INFO - Player Rokky76 in seat 3 assigned position: MP
+2025-06-08 14:36:17,192 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-08 14:36:17,192 - INFO - Player sprrrrg in seat 5 assigned position: BTN
+2025-06-08 14:36:17,193 - INFO - Player sharksharp936 in seat 6 assigned position: SB
+2025-06-08 14:36:18,339 - INFO - Equity calculation complete for ['8♣', '3♣'] vs random. Win: 37.76%, Tie: 10.84%, Equity: 43.18% (5000 simulations)
+2025-06-08 14:36:26,184 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:26,186 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:26,189 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:26,190 - INFO - Found 3 potential action elements.
+2025-06-08 14:36:26,191 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:26,191 - INFO - Using dealer position: 6
+2025-06-08 14:36:26,191 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:26,191 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:26,192 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:26,192 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:26,192 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:26,192 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:26,192 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:26,207 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:26,209 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:26,213 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:26,213 - INFO - Found 3 potential action elements.
+2025-06-08 14:36:26,215 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:26,215 - INFO - Using dealer position: 6
+2025-06-08 14:36:26,215 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:26,216 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:26,216 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:26,216 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:26,216 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:26,216 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:26,216 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:26,218 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:26,220 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:26,225 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:26,225 - INFO - Found 3 potential action elements.
+2025-06-08 14:36:26,226 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:26,226 - INFO - Using dealer position: 6
+2025-06-08 14:36:26,227 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:26,227 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:26,227 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:26,227 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:26,228 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:26,228 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:26,228 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:27,312 - INFO - Equity calculation complete for ['4♠', '5♣'] vs random. Win: 35.12%, Tie: 10.98%, Equity: 40.61% (5000 simulations)
+2025-06-08 14:36:35,151 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:35,152 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:35,156 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:35,156 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:35,157 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:35,158 - INFO - Using dealer position: 6
+2025-06-08 14:36:35,158 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:35,158 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:35,158 - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-08 14:36:35,158 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:35,158 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:35,158 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:35,159 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:35,171 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:35,173 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:35,177 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:35,178 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:35,179 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:35,179 - INFO - Using dealer position: 6
+2025-06-08 14:36:35,179 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:35,180 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:35,180 - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-08 14:36:35,180 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:35,180 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:35,180 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:35,180 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:35,183 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:35,185 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:35,189 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:35,189 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:35,191 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:35,191 - INFO - Using dealer position: 6
+2025-06-08 14:36:35,192 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:35,192 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:35,192 - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-08 14:36:35,193 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:35,193 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:35,193 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:35,193 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:36,276 - INFO - Equity calculation complete for ['4♠', '5♣'] vs random. Win: 34.46%, Tie: 10.90%, Equity: 39.91% (5000 simulations)
+2025-06-08 14:36:38,655 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:38,656 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:38,660 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:38,660 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:38,661 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:38,662 - INFO - Using dealer position: 6
+2025-06-08 14:36:38,662 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:38,662 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:38,662 - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-08 14:36:38,662 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:38,663 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:38,663 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:38,663 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:38,677 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:38,678 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:38,682 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:38,683 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:38,684 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:38,684 - INFO - Using dealer position: 6
+2025-06-08 14:36:38,685 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:38,685 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:38,685 - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-08 14:36:38,685 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:38,685 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:38,685 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:38,685 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:38,689 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:38,690 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:38,695 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:38,696 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:38,697 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:38,697 - INFO - Using dealer position: 6
+2025-06-08 14:36:38,697 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:38,697 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:38,697 - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-08 14:36:38,698 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:38,698 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:38,698 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:38,698 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:39,782 - INFO - Equity calculation complete for ['4♠', '5♣'] vs random. Win: 34.62%, Tie: 11.14%, Equity: 40.19% (5000 simulations)
+2025-06-08 14:36:42,169 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:42,171 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:42,174 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:42,175 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:42,176 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:42,176 - INFO - Using dealer position: 6
+2025-06-08 14:36:42,177 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:42,177 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:42,177 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:42,177 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:42,177 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:42,177 - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-08 14:36:42,177 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:42,189 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:42,191 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:42,196 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:42,196 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:42,198 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:42,198 - INFO - Using dealer position: 6
+2025-06-08 14:36:42,198 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:42,198 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:42,199 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:42,199 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:42,199 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:42,199 - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-08 14:36:42,199 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:42,203 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:42,205 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:42,210 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:42,210 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:42,212 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:42,213 - INFO - Using dealer position: 6
+2025-06-08 14:36:42,213 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:42,213 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:42,213 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:42,213 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:42,213 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:42,214 - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-08 14:36:42,214 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:43,268 - INFO - Equity calculation complete for ['4♠', '5♣'] vs random. Win: 29.80%, Tie: 14.92%, Equity: 37.26% (5000 simulations)
+2025-06-08 14:36:45,659 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:45,661 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:45,665 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:45,665 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:45,667 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:45,667 - INFO - Using dealer position: 6
+2025-06-08 14:36:45,668 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:45,668 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:45,668 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:45,668 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:45,668 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:45,669 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:45,669 - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-08 14:36:45,682 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:45,684 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:45,688 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:45,688 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:45,690 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:45,690 - INFO - Using dealer position: 6
+2025-06-08 14:36:45,690 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:45,690 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:45,691 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:45,691 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:45,691 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:45,691 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:45,691 - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-08 14:36:45,695 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:45,696 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:45,701 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:45,701 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:45,703 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:45,703 - INFO - Using dealer position: 6
+2025-06-08 14:36:45,703 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:45,704 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:45,704 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:45,704 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:45,704 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:45,704 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:45,704 - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-08 14:36:46,750 - INFO - Equity calculation complete for ['4♠', '5♣'] vs random. Win: 29.42%, Tie: 14.60%, Equity: 36.72% (5000 simulations)
+2025-06-08 14:36:49,130 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:49,131 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:49,134 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:49,134 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:49,135 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:49,136 - INFO - Using dealer position: 6
+2025-06-08 14:36:49,136 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:49,136 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:49,136 - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-08 14:36:49,137 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:49,137 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:49,137 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:49,137 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:49,152 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:49,153 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:49,158 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:49,158 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:49,160 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:49,160 - INFO - Using dealer position: 6
+2025-06-08 14:36:49,160 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:49,161 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:49,161 - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-08 14:36:49,161 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:49,161 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:49,161 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:49,161 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:49,165 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:49,167 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:49,172 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:49,172 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:49,174 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:49,174 - INFO - Using dealer position: 6
+2025-06-08 14:36:49,174 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:49,174 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:49,175 - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-08 14:36:49,175 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:49,175 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:49,175 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:49,175 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:50,245 - INFO - Equity calculation complete for ['4♠', '5♣'] vs random. Win: 29.52%, Tie: 14.00%, Equity: 36.52% (5000 simulations)
+2025-06-08 14:36:52,627 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:52,629 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:52,632 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:52,632 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:52,633 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:52,634 - INFO - Using dealer position: 6
+2025-06-08 14:36:52,634 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:52,634 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:52,634 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:52,634 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:52,635 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:52,635 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:52,635 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:52,649 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:52,650 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:52,655 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:52,655 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:52,656 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:52,657 - INFO - Using dealer position: 6
+2025-06-08 14:36:52,657 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:52,657 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:52,657 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:52,658 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:52,658 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:52,658 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:52,658 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:52,662 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:52,663 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:52,668 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:52,669 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:52,670 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:52,671 - INFO - Using dealer position: 6
+2025-06-08 14:36:52,671 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:52,671 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:52,671 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:52,671 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:52,672 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:52,672 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:36:52,672 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:53,737 - INFO - Equity calculation complete for ['4♠', '5♣'] vs random. Win: 28.80%, Tie: 14.56%, Equity: 36.08% (5000 simulations)
+2025-06-08 14:36:56,123 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:56,124 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:56,129 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:56,129 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:56,131 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:56,131 - INFO - Using dealer position: 6
+2025-06-08 14:36:56,131 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:56,131 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:56,131 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:56,132 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:56,132 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:56,132 - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-08 14:36:56,132 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:56,149 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:56,150 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:56,155 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:56,155 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:56,157 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:56,157 - INFO - Using dealer position: 6
+2025-06-08 14:36:56,157 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:56,158 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:56,158 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:56,158 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:56,158 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:56,158 - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-08 14:36:56,159 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:56,162 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:56,164 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:56,168 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:56,169 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:56,170 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:56,170 - INFO - Using dealer position: 6
+2025-06-08 14:36:56,170 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:56,171 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:56,171 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:56,171 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:56,171 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:56,171 - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-08 14:36:56,171 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:57,276 - INFO - Equity calculation complete for ['4♠', '5♣'] vs random. Win: 15.54%, Tie: 21.78%, Equity: 26.43% (5000 simulations)
+2025-06-08 14:36:59,664 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:59,665 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:59,668 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:59,669 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:59,670 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:59,670 - INFO - Using dealer position: 6
+2025-06-08 14:36:59,670 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:59,671 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:59,671 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:59,671 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:59,671 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:59,672 - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-08 14:36:59,672 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:59,686 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:59,687 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:59,691 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:59,691 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:59,693 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:59,693 - INFO - Using dealer position: 6
+2025-06-08 14:36:59,693 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:59,694 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:59,694 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:59,694 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:59,694 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:59,694 - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-08 14:36:59,695 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:36:59,699 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:36:59,701 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:36:59,705 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:36:59,705 - INFO - Found 0 potential action elements.
+2025-06-08 14:36:59,707 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:36:59,707 - INFO - Using dealer position: 6
+2025-06-08 14:36:59,707 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:36:59,707 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:36:59,708 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:36:59,708 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:36:59,708 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:36:59,708 - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-08 14:36:59,708 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:37:00,758 - INFO - Equity calculation complete for ['4♠', '5♣'] vs random. Win: 0.00%, Tie: 38.72%, Equity: 19.36% (5000 simulations)
+2025-06-08 14:37:03,142 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:37:03,143 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:03,148 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:03,148 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:03,150 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:03,150 - INFO - Using dealer position: 6
+2025-06-08 14:37:03,150 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:37:03,150 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:37:03,151 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:37:03,151 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:37:03,151 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:37:03,151 - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-08 14:37:03,151 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:37:03,166 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:37:03,168 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:03,172 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:03,172 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:03,174 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:03,174 - INFO - Using dealer position: 6
+2025-06-08 14:37:03,174 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:37:03,175 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:37:03,175 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:37:03,175 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:37:03,175 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:37:03,176 - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-08 14:37:03,176 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:37:03,180 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:37:03,182 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:03,186 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:03,186 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:03,187 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:03,187 - INFO - Using dealer position: 6
+2025-06-08 14:37:03,187 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:37:03,188 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:37:03,188 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:37:03,188 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:37:03,189 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:37:03,189 - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-08 14:37:03,189 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:37:04,228 - INFO - Equity calculation complete for ['4♠', '5♣'] vs random. Win: 0.00%, Tie: 38.28%, Equity: 19.14% (5000 simulations)
+2025-06-08 14:37:06,611 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:37:06,613 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:06,617 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:06,617 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:06,619 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:06,620 - INFO - Using dealer position: 6
+2025-06-08 14:37:06,620 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:37:06,620 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:37:06,620 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:37:06,621 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:37:06,621 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:37:06,621 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:37:06,621 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:37:06,637 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:37:06,638 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:06,643 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:06,643 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:06,645 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:06,645 - INFO - Using dealer position: 6
+2025-06-08 14:37:06,645 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:37:06,645 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:37:06,645 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:37:06,645 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:37:06,646 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:37:06,646 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:37:06,646 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:37:06,649 - INFO - Found visible dealer button at seat 6
+2025-06-08 14:37:06,651 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:06,655 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:06,656 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:06,657 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:06,658 - INFO - Using dealer position: 6
+2025-06-08 14:37:06,658 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-08 14:37:06,658 - INFO - Player EricHassli1 in seat 1 assigned position: SB
+2025-06-08 14:37:06,658 - INFO - Player bettingman in seat 2 assigned position: BB
+2025-06-08 14:37:06,658 - INFO - Player Rokky76 in seat 3 assigned position: UTG
+2025-06-08 14:37:06,658 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-08 14:37:06,659 - INFO - Player sprrrrg in seat 5 assigned position: CO
+2025-06-08 14:37:06,659 - INFO - Player sharksharp936 in seat 6 assigned position: BTN
+2025-06-08 14:37:07,648 - INFO - Equity calculation complete for ['4♠', '5♣'] vs random. Win: 0.00%, Tie: 38.88%, Equity: 19.44% (5000 simulations)
+2025-06-08 14:37:10,032 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:10,035 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:10,035 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:10,036 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:10,036 - INFO - Using dealer position: N/A
+2025-06-08 14:37:10,036 - WARNING - No dealer position available, positions will not be assigned.
+2025-06-08 14:37:10,049 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:10,052 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:10,052 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:10,053 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:10,053 - INFO - Using dealer position: N/A
+2025-06-08 14:37:10,053 - WARNING - No dealer position available, positions will not be assigned.
+2025-06-08 14:37:10,057 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:10,061 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:10,061 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:10,062 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:10,062 - INFO - Using dealer position: N/A
+2025-06-08 14:37:10,062 - WARNING - No dealer position available, positions will not be assigned.
+2025-06-08 14:37:12,445 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:12,446 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:12,449 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:12,450 - INFO - Found 3 potential action elements.
+2025-06-08 14:37:12,450 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:12,450 - INFO - Using dealer position: 1
+2025-06-08 14:37:12,451 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:12,451 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:12,451 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:12,451 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:12,451 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:12,452 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:12,452 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:12,474 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:12,476 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:12,480 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:12,481 - INFO - Found 3 potential action elements.
+2025-06-08 14:37:12,481 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:12,482 - INFO - Using dealer position: 1
+2025-06-08 14:37:12,482 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:12,482 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:12,482 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:12,482 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:12,482 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:12,483 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:12,483 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:12,486 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:12,487 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:12,491 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:12,491 - INFO - Found 3 potential action elements.
+2025-06-08 14:37:12,492 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:12,492 - INFO - Using dealer position: 1
+2025-06-08 14:37:12,492 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:12,493 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:12,493 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:12,493 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:12,493 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:12,494 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:12,494 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:13,564 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 32.74%, Tie: 12.16%, Equity: 38.82% (5000 simulations)
+2025-06-08 14:37:21,408 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:21,409 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:21,413 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:21,413 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:21,415 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:21,416 - INFO - Using dealer position: 1
+2025-06-08 14:37:21,416 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:21,416 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:21,416 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:21,416 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:21,417 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:21,417 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:21,417 - INFO - Player N/A in seat 6 assigned position: CO
+2025-06-08 14:37:21,431 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:21,432 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:21,436 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:21,437 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:21,438 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:21,439 - INFO - Using dealer position: 1
+2025-06-08 14:37:21,439 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:21,439 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:21,439 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:21,440 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:21,440 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:21,440 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:21,440 - INFO - Player N/A in seat 6 assigned position: CO
+2025-06-08 14:37:21,443 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:21,445 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:21,450 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:21,451 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:21,452 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:21,453 - INFO - Using dealer position: 1
+2025-06-08 14:37:21,453 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:21,453 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:21,453 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:21,453 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:21,454 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:21,454 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:21,454 - INFO - Player N/A in seat 6 assigned position: CO
+2025-06-08 14:37:22,552 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 31.60%, Tie: 11.74%, Equity: 37.47% (5000 simulations)
+2025-06-08 14:37:24,933 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:24,934 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:24,938 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:24,938 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:24,940 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:24,940 - INFO - Using dealer position: 1
+2025-06-08 14:37:24,940 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:24,941 - INFO - Player N/A in seat 1 assigned position: BTN
+2025-06-08 14:37:24,941 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:24,941 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:24,941 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:24,941 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:24,942 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:24,955 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:24,957 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:24,961 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:24,961 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:24,963 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:24,963 - INFO - Using dealer position: 1
+2025-06-08 14:37:24,963 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:24,964 - INFO - Player N/A in seat 1 assigned position: BTN
+2025-06-08 14:37:24,964 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:24,964 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:24,964 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:24,964 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:24,964 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:24,968 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:24,969 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:24,974 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:24,974 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:24,975 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:24,976 - INFO - Using dealer position: 1
+2025-06-08 14:37:24,976 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:24,976 - INFO - Player N/A in seat 1 assigned position: BTN
+2025-06-08 14:37:24,976 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:24,977 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:24,977 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:24,977 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:24,977 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:26,044 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 33.22%, Tie: 11.34%, Equity: 38.89% (5000 simulations)
+2025-06-08 14:37:28,427 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:28,428 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:28,432 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:28,433 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:28,435 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:28,435 - INFO - Using dealer position: 1
+2025-06-08 14:37:28,435 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:28,435 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:28,435 - INFO - Player N/A in seat 2 assigned position: SB
+2025-06-08 14:37:28,436 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:28,436 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:28,436 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:28,436 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:28,449 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:28,451 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:28,454 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:28,455 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:28,456 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:28,456 - INFO - Using dealer position: 1
+2025-06-08 14:37:28,457 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:28,457 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:28,457 - INFO - Player N/A in seat 2 assigned position: SB
+2025-06-08 14:37:28,457 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:28,457 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:28,457 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:28,457 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:28,461 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:28,462 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:28,467 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:28,467 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:28,469 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:28,469 - INFO - Using dealer position: 1
+2025-06-08 14:37:28,469 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:28,470 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:28,470 - INFO - Player N/A in seat 2 assigned position: SB
+2025-06-08 14:37:28,470 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:28,470 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:28,471 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:28,471 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:29,554 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 32.78%, Tie: 10.86%, Equity: 38.21% (5000 simulations)
+2025-06-08 14:37:31,938 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:31,940 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:31,944 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:31,944 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:31,946 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:31,946 - INFO - Using dealer position: 1
+2025-06-08 14:37:31,946 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:31,946 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:31,947 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:31,947 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:31,947 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:31,947 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:31,947 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:31,961 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:31,962 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:31,966 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:31,967 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:31,968 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:31,969 - INFO - Using dealer position: 1
+2025-06-08 14:37:31,969 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:31,969 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:31,969 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:31,969 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:31,970 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:31,970 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:31,970 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:31,973 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:31,975 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:31,979 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:31,979 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:31,981 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:31,981 - INFO - Using dealer position: 1
+2025-06-08 14:37:31,981 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:31,981 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:31,982 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:31,982 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:31,982 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:31,982 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:31,982 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:33,060 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 33.62%, Tie: 11.78%, Equity: 39.51% (5000 simulations)
+2025-06-08 14:37:35,441 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:35,443 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:35,446 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:35,447 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:35,448 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:35,448 - INFO - Using dealer position: 1
+2025-06-08 14:37:35,449 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:35,449 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:35,449 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:35,449 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:35,449 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:35,449 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:35,450 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:35,474 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:35,476 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:35,480 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:35,480 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:35,482 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:35,482 - INFO - Using dealer position: 1
+2025-06-08 14:37:35,482 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:35,482 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:35,483 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:35,483 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:35,483 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:35,483 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:35,484 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:35,487 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:35,489 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:35,494 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:35,494 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:35,496 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:35,496 - INFO - Using dealer position: 1
+2025-06-08 14:37:35,496 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:35,496 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:35,497 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:35,497 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:35,497 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:35,497 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:35,498 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:36,565 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 12.24%, Tie: 19.24%, Equity: 21.86% (5000 simulations)
+2025-06-08 14:37:38,952 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:38,954 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:38,958 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:38,958 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:38,959 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:38,960 - INFO - Using dealer position: 1
+2025-06-08 14:37:38,960 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:38,960 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:38,960 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:38,960 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:38,961 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:38,961 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:38,961 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:38,975 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:38,977 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:38,981 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:38,981 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:38,983 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:38,983 - INFO - Using dealer position: 1
+2025-06-08 14:37:38,983 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:38,983 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:38,984 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:38,984 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:38,984 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:38,984 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:38,984 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:38,988 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:38,989 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:38,994 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:38,994 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:38,996 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:38,996 - INFO - Using dealer position: 1
+2025-06-08 14:37:38,997 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:38,997 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:38,997 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:38,997 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:38,998 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:38,998 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:38,998 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:40,118 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 11.28%, Tie: 20.14%, Equity: 21.35% (5000 simulations)
+2025-06-08 14:37:42,499 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:42,500 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:42,503 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:42,504 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:42,505 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:42,505 - INFO - Using dealer position: 1
+2025-06-08 14:37:42,505 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:42,505 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:42,505 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:42,506 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:42,506 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:42,506 - INFO - Player N/A in seat 5 assigned position: MP
+2025-06-08 14:37:42,506 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:42,520 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:42,522 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:42,526 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:42,527 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:42,528 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:42,528 - INFO - Using dealer position: 1
+2025-06-08 14:37:42,528 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:42,529 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:42,529 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:42,529 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:42,529 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:42,529 - INFO - Player N/A in seat 5 assigned position: MP
+2025-06-08 14:37:42,530 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:42,533 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:42,534 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:42,539 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:42,539 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:42,540 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:42,541 - INFO - Using dealer position: 1
+2025-06-08 14:37:42,541 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:42,541 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:42,541 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:42,541 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:42,542 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:42,542 - INFO - Player N/A in seat 5 assigned position: MP
+2025-06-08 14:37:42,542 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:43,604 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 11.88%, Tie: 20.54%, Equity: 22.15% (5000 simulations)
+2025-06-08 14:37:45,987 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:45,988 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:45,992 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:45,992 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:45,993 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:45,993 - INFO - Using dealer position: 1
+2025-06-08 14:37:45,994 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:45,994 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:45,994 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:45,994 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:45,994 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:45,994 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:45,994 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:46,008 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:46,010 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:46,014 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:46,015 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:46,016 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:46,016 - INFO - Using dealer position: 1
+2025-06-08 14:37:46,017 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:46,017 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:46,017 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:46,017 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:46,017 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:46,018 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:46,018 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:46,022 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:46,023 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:46,028 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:46,028 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:46,029 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:46,030 - INFO - Using dealer position: 1
+2025-06-08 14:37:46,030 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:46,030 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:46,031 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:46,031 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:46,031 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:46,031 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:46,031 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:47,059 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 4.32%, Tie: 25.04%, Equity: 16.84% (5000 simulations)
+2025-06-08 14:37:49,442 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:49,443 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:49,446 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:49,446 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:49,447 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:49,448 - INFO - Using dealer position: 1
+2025-06-08 14:37:49,448 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:49,448 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:49,448 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:49,449 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:49,449 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:49,449 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:49,449 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:49,464 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:49,465 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:49,470 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:49,470 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:49,472 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:49,472 - INFO - Using dealer position: 1
+2025-06-08 14:37:49,472 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:49,472 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:49,473 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:49,473 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:49,473 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:49,473 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:49,473 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:49,477 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:49,478 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:49,483 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:49,484 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:49,485 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:49,485 - INFO - Using dealer position: 1
+2025-06-08 14:37:49,485 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:49,486 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:49,486 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:49,486 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:49,486 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:49,486 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:49,486 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:50,517 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 4.06%, Tie: 25.92%, Equity: 17.02% (5000 simulations)
+2025-06-08 14:37:52,904 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:52,906 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:52,911 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:52,912 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:52,913 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:52,913 - INFO - Using dealer position: 1
+2025-06-08 14:37:52,914 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:52,914 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:52,914 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:52,915 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:52,915 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:52,915 - INFO - Player N/A in seat 5 assigned position: MP
+2025-06-08 14:37:52,915 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:52,929 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:52,930 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:52,934 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:52,935 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:52,936 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:52,936 - INFO - Using dealer position: 1
+2025-06-08 14:37:52,936 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:52,936 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:52,937 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:52,937 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:52,937 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:52,937 - INFO - Player N/A in seat 5 assigned position: MP
+2025-06-08 14:37:52,937 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:52,941 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:52,943 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:52,947 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:52,947 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:52,949 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:52,949 - INFO - Using dealer position: 1
+2025-06-08 14:37:52,949 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:52,949 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:52,950 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:52,950 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:52,950 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:52,950 - INFO - Player N/A in seat 5 assigned position: MP
+2025-06-08 14:37:52,950 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:53,976 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 4.44%, Tie: 24.12%, Equity: 16.50% (5000 simulations)
+2025-06-08 14:37:56,357 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:56,359 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:56,362 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:56,362 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:56,364 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:56,364 - INFO - Using dealer position: 1
+2025-06-08 14:37:56,364 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:56,365 - INFO - Player N/A in seat 1 assigned position: BTN
+2025-06-08 14:37:56,365 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:56,365 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:56,365 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:56,366 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:56,366 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:56,380 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:56,381 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:56,386 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:56,387 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:56,388 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:56,389 - INFO - Using dealer position: 1
+2025-06-08 14:37:56,389 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:56,389 - INFO - Player N/A in seat 1 assigned position: BTN
+2025-06-08 14:37:56,389 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:56,389 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:56,390 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:56,390 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:56,390 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:56,394 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:56,396 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:56,400 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:56,400 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:56,402 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:56,402 - INFO - Using dealer position: 1
+2025-06-08 14:37:56,402 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:56,402 - INFO - Player N/A in seat 1 assigned position: BTN
+2025-06-08 14:37:56,402 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:56,403 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:37:56,403 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:56,403 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:56,403 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:57,446 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 4.16%, Tie: 25.44%, Equity: 16.88% (5000 simulations)
+2025-06-08 14:37:59,831 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:59,832 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:59,835 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:59,836 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:59,837 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:59,838 - INFO - Using dealer position: 1
+2025-06-08 14:37:59,838 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:59,838 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:59,838 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:59,839 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:59,839 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:59,839 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:59,839 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:59,855 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:59,857 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:59,861 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:59,862 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:59,863 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:59,864 - INFO - Using dealer position: 1
+2025-06-08 14:37:59,864 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:59,864 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:59,864 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:59,865 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:59,865 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:59,865 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:59,865 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:37:59,868 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:37:59,870 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:37:59,874 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:37:59,874 - INFO - Found 0 potential action elements.
+2025-06-08 14:37:59,876 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:37:59,876 - INFO - Using dealer position: 1
+2025-06-08 14:37:59,876 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:37:59,877 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:37:59,877 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:37:59,877 - INFO - Player N/A in seat 3 assigned position: BB
+2025-06-08 14:37:59,877 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:37:59,877 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:37:59,878 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:38:00,872 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 0.00%, Tie: 19.52%, Equity: 9.76% (5000 simulations)
+2025-06-08 14:38:03,253 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:38:03,255 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:03,258 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:03,258 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:03,259 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:03,260 - INFO - Using dealer position: 1
+2025-06-08 14:38:03,260 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:38:03,260 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:38:03,260 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:38:03,261 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:38:03,261 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:38:03,261 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:38:03,261 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:38:03,275 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:38:03,277 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:03,281 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:03,282 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:03,283 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:03,283 - INFO - Using dealer position: 1
+2025-06-08 14:38:03,283 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:38:03,284 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:38:03,284 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:38:03,284 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:38:03,284 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:38:03,285 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:38:03,285 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:38:03,288 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:38:03,290 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:03,295 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:03,295 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:03,297 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:03,297 - INFO - Using dealer position: 1
+2025-06-08 14:38:03,297 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:38:03,297 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:38:03,298 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:38:03,298 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:38:03,298 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:38:03,298 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:38:03,298 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:38:04,309 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 0.00%, Tie: 20.52%, Equity: 10.26% (5000 simulations)
+2025-06-08 14:38:06,690 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:38:06,692 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:06,694 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:06,695 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:06,696 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:06,696 - INFO - Using dealer position: 1
+2025-06-08 14:38:06,696 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:38:06,696 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:38:06,697 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:38:06,697 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:38:06,697 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:38:06,698 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:38:06,698 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:38:06,719 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:38:06,720 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:06,724 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:06,724 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:06,726 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:06,727 - INFO - Using dealer position: 1
+2025-06-08 14:38:06,727 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:38:06,727 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:38:06,727 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:38:06,727 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:38:06,728 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:38:06,728 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:38:06,728 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:38:06,732 - INFO - Found visible dealer button at seat 1
+2025-06-08 14:38:06,733 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:06,737 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:06,737 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:06,739 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:06,739 - INFO - Using dealer position: 1
+2025-06-08 14:38:06,739 - INFO - Position calculation: 6 active players, dealer at seat 1
+2025-06-08 14:38:06,739 - INFO - Player EricHassli1 in seat 1 assigned position: BTN
+2025-06-08 14:38:06,740 - INFO - Player bettingman in seat 2 assigned position: SB
+2025-06-08 14:38:06,740 - INFO - Player Rokky76 in seat 3 assigned position: BB
+2025-06-08 14:38:06,740 - INFO - Player warriorwonder25 in seat 4 assigned position: UTG
+2025-06-08 14:38:06,740 - INFO - Player sprrrrg in seat 5 assigned position: MP
+2025-06-08 14:38:06,740 - INFO - Player sharksharp936 in seat 6 assigned position: CO
+2025-06-08 14:38:07,724 - INFO - Equity calculation complete for ['3♦', '7♥'] vs random. Win: 0.00%, Tie: 20.12%, Equity: 10.06% (5000 simulations)
+2025-06-08 14:38:10,102 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:10,104 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:10,106 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:10,107 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:10,107 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:10,107 - INFO - Using dealer position: 2
+2025-06-08 14:38:10,108 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:10,108 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:10,108 - INFO - Player bettingman in seat 2 assigned position: BTN
+2025-06-08 14:38:10,108 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:10,108 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:10,109 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:10,109 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:10,123 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:10,125 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:10,128 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:10,129 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:10,129 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:10,130 - INFO - Using dealer position: 2
+2025-06-08 14:38:10,130 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:10,130 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:10,130 - INFO - Player bettingman in seat 2 assigned position: BTN
+2025-06-08 14:38:10,131 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:10,131 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:10,131 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:10,131 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:10,134 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:10,136 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:10,139 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:10,140 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:10,141 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:10,141 - INFO - Using dealer position: 2
+2025-06-08 14:38:10,141 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:10,141 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:10,141 - INFO - Player bettingman in seat 2 assigned position: BTN
+2025-06-08 14:38:10,142 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:10,142 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:10,142 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:10,142 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:11,183 - INFO - Equity calculation complete for ['A♥', '4♠'] vs random. Win: 51.10%, Tie: 9.06%, Equity: 55.63% (5000 simulations)
+2025-06-08 14:38:13,566 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:13,568 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:13,572 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:13,572 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:13,573 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:13,573 - INFO - Using dealer position: 2
+2025-06-08 14:38:13,574 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:13,574 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:13,574 - INFO - Player N/A in seat 2 assigned position: BTN
+2025-06-08 14:38:13,574 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:13,574 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:13,574 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:13,574 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:13,588 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:13,590 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:13,594 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:13,595 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:13,596 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:13,596 - INFO - Using dealer position: 2
+2025-06-08 14:38:13,596 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:13,596 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:13,596 - INFO - Player N/A in seat 2 assigned position: BTN
+2025-06-08 14:38:13,597 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:13,597 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:13,597 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:13,597 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:13,600 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:13,602 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:13,606 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:13,607 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:13,608 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:13,608 - INFO - Using dealer position: 2
+2025-06-08 14:38:13,608 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:13,608 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:13,609 - INFO - Player N/A in seat 2 assigned position: BTN
+2025-06-08 14:38:13,609 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:13,609 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:13,609 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:13,609 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:14,654 - INFO - Equity calculation complete for ['A♥', '4♠'] vs random. Win: 49.32%, Tie: 9.68%, Equity: 54.16% (5000 simulations)
+2025-06-08 14:38:17,036 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:17,037 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:17,040 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:17,040 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:17,041 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:17,041 - INFO - Using dealer position: 2
+2025-06-08 14:38:17,041 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:17,041 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:17,041 - INFO - Player bettingman in seat 2 assigned position: BTN
+2025-06-08 14:38:17,042 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:17,042 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:17,042 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:17,042 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:17,055 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:17,056 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:17,060 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:17,060 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:17,061 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:17,062 - INFO - Using dealer position: 2
+2025-06-08 14:38:17,062 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:17,062 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:17,062 - INFO - Player bettingman in seat 2 assigned position: BTN
+2025-06-08 14:38:17,063 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:17,063 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:17,063 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:17,063 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:17,066 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:17,067 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:17,071 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:17,072 - INFO - Found 0 potential action elements.
+2025-06-08 14:38:17,073 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:17,073 - INFO - Using dealer position: 2
+2025-06-08 14:38:17,074 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:17,074 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:17,074 - INFO - Player bettingman in seat 2 assigned position: BTN
+2025-06-08 14:38:17,074 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:17,074 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:17,074 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:17,075 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:18,133 - INFO - Equity calculation complete for ['A♥', '4♠'] vs random. Win: 51.62%, Tie: 9.34%, Equity: 56.29% (5000 simulations)
+2025-06-08 14:38:20,515 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:20,516 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:20,519 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:20,519 - INFO - Found 3 potential action elements.
+2025-06-08 14:38:20,520 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:20,520 - INFO - Using dealer position: 2
+2025-06-08 14:38:20,520 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:20,520 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:20,520 - INFO - Player bettingman in seat 2 assigned position: BTN
+2025-06-08 14:38:20,521 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:20,521 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:20,521 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:20,521 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:20,534 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:20,536 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:20,539 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:20,540 - INFO - Found 3 potential action elements.
+2025-06-08 14:38:20,541 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:20,541 - INFO - Using dealer position: 2
+2025-06-08 14:38:20,542 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:20,542 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:20,542 - INFO - Player bettingman in seat 2 assigned position: BTN
+2025-06-08 14:38:20,542 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:20,542 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:20,543 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:20,543 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:20,546 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:20,547 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:20,551 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:20,551 - INFO - Found 3 potential action elements.
+2025-06-08 14:38:20,553 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:20,553 - INFO - Using dealer position: 2
+2025-06-08 14:38:20,553 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:20,553 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:20,553 - INFO - Player bettingman in seat 2 assigned position: BTN
+2025-06-08 14:38:20,554 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:20,554 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:20,554 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:20,554 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:21,589 - INFO - Equity calculation complete for ['A♥', '4♠'] vs random. Win: 49.94%, Tie: 9.92%, Equity: 54.90% (5000 simulations)
+2025-06-08 14:38:29,438 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:29,440 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:29,444 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:29,445 - INFO - Found 3 potential action elements.
+2025-06-08 14:38:29,446 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:29,447 - INFO - Using dealer position: 2
+2025-06-08 14:38:29,447 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:29,447 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:29,448 - INFO - Player bettingman in seat 2 assigned position: BTN
+2025-06-08 14:38:29,448 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:29,448 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:29,449 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:29,449 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:29,467 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:29,469 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:29,471 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:29,472 - INFO - Found 3 potential action elements.
+2025-06-08 14:38:29,473 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:29,473 - INFO - Using dealer position: 2
+2025-06-08 14:38:29,474 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:29,474 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:29,474 - INFO - Player bettingman in seat 2 assigned position: BTN
+2025-06-08 14:38:29,474 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:29,475 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:29,475 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:29,475 - INFO - Player sharksharp936 in seat 6 assigned position: MP
+2025-06-08 14:38:29,479 - INFO - Found visible dealer button at seat 2
+2025-06-08 14:38:29,480 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-08 14:38:29,485 - INFO - Found actions area. Analyzing buttons...
+2025-06-08 14:38:29,485 - INFO - Found 3 potential action elements.
+2025-06-08 14:38:29,486 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-08 14:38:29,487 - INFO - Using dealer position: 2
+2025-06-08 14:38:29,487 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-08 14:38:29,487 - INFO - Player EricHassli1 in seat 1 assigned position: CO
+2025-06-08 14:38:29,487 - INFO - Player bettingman in seat 2 assigned position: BTN
+2025-06-08 14:38:29,488 - INFO - Player Rokky76 in seat 3 assigned position: SB
+2025-06-08 14:38:29,488 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-08 14:38:29,488 - INFO - Player sprrrrg in seat 5 assigned position: UTG
+2025-06-08 14:38:29,488 - INFO - Player sharksharp936 in seat 6 assigned position: MP

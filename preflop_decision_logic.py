@@ -239,10 +239,9 @@ def make_preflop_decision(
              if not can_check:
                  print(f"Weak hand, cannot check (e.g. UTG open), no bet to call. Action: FOLD")
                  return action_fold_const, 0
-        
-        # If no bet to call, can check, and not BB (e.g. UTG limp is allowed by rules, or later position check through)
-        if bet_to_call == 0 and can_check and not is_bb:
-            print(f"Weak hand, not BB, can check (limp/check through). Action: CHECK")
+          # If no bet to call and can check (e.g. UTG limp, later position check through, or BB with no raise)
+        if bet_to_call == 0 and can_check:
+            print(f"Weak hand, can check (limp/check through or BB facing no bet). Action: CHECK")
             return action_check_const, 0
         
         # Default for weak hands: if can check, check. Otherwise, fold.
