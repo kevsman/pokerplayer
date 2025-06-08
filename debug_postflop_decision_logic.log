@@ -841,3 +841,541 @@
 2025-06-08 08:45:42,265 - postflop_decision_logic - DEBUG - Hand is_very_strong. win_probability: 0.8642
 2025-06-08 08:45:42,265 - postflop_decision_logic - WARNING - Calculated raise for very_strong hand was invalid or too small. final_raise_amount: 0.47, max_bet_on_table: 3.05, min_total_raise_to_amount: 3.5199999999999996. Defaulting to CALL.
 2025-06-08 08:45:42,265 - postflop_decision_logic - INFO - Decision: CALL (very_strong, but failed to make a valid raise). Amount to call: 0.47
+2025-06-08 12:41:58,669 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Kh', 'Qd'], 'community_cards': ['9c', '7s', '2h']}, pot_size=100, win_prob=0.35, pot_odds=0.33, bet_to_call=50, max_bet_on_table=50, active_opponents_count=1, can_check=False
+2025-06-08 12:41:58,669 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: []
+2025-06-08 12:41:58,671 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 52.00%
+2025-06-08 12:41:58,671 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=50, total_commitment_if_call=50, my_stack=200, pot_commitment_ratio=20.00%, commitment_threshold=52.00%, is_pot_committed=False
+2025-06-08 12:41:58,671 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=25.0, reasoning=analyzed_1_opponents
+2025-06-08 12:41:58,671 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: tight, estimated_range: unknown
+2025-06-08 12:41:58,671 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:41:58,671 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=2, win_probability=35.00%
+2025-06-08 12:41:58,671 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 50, pot_size: 100, my_stack: 200, max_bet_on_table: 50
+2025-06-08 12:41:58,671 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.35, pot_odds: 0.33
+2025-06-08 12:41:58,671 - postflop_decision_logic - INFO - Decision: FOLD (weak pair). Reasons: Insufficient equity cushion: 2.00% < 5%; Bet too large: 50.00 > 40% pot (40.00)
+2025-06-08 12:41:58,675 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ac', 'Kd'], 'community_cards': ['As', '7s', '2s']}, pot_size=80, win_prob=0.75, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:41:58,675 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: []
+2025-06-08 12:41:58,675 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 28.00%
+2025-06-08 12:41:58,675 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=150, pot_commitment_ratio=0.00%, commitment_threshold=28.00%, is_pot_committed=False
+2025-06-08 12:41:58,675 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=35.0, reasoning=analyzed_1_opponents
+2025-06-08 12:41:58,675 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: loose, estimated_range: unknown
+2025-06-08 12:41:58,675 - postflop_decision_logic - DEBUG - SPR analysis: spr=1.88, strategy=commit, drawing_potential=False
+2025-06-08 12:41:58,675 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=4, win_probability=75.00%
+2025-06-08 12:41:58,675 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:41:58,676 - postflop_decision_logic - DEBUG - Low SPR (1.88) strategy: commit with strong hand
+2025-06-08 12:41:58,676 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 120.00
+2025-06-08 12:41:58,678 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BB', 'hand': ['7h', '6h'], 'community_cards': ['5c', '4s', '2h']}, pot_size=60, win_prob=0.32, pot_odds=0.33, bet_to_call=30, max_bet_on_table=30, active_opponents_count=1, can_check=False
+2025-06-08 12:41:58,678 - postflop_decision_logic - WARNING - Enhanced board analysis failed: EnhancedBoardAnalyzer.__init__() takes 1 positional argument but 2 were given
+2025-06-08 12:41:58,678 - postflop_decision_logic - WARNING - Performance monitoring setup failed: name 'PerformanceTracker' is not defined
+2025-06-08 12:41:58,679 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: []
+2025-06-08 12:41:58,679 - postflop_decision_logic - DEBUG - Enhanced classification: drawing, commitment_threshold: 56.00%
+2025-06-08 12:41:58,679 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=30, total_commitment_if_call=30, my_stack=120, pot_commitment_ratio=20.00%, commitment_threshold=56.00%, is_pot_committed=False
+2025-06-08 12:41:58,679 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:41:58,679 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:41:58,679 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=0, win_probability=32.00%
+2025-06-08 12:41:58,679 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 30, pot_size: 60, my_stack: 120, max_bet_on_table: 30
+2025-06-08 12:41:58,679 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.32, pot_odds: 0.33
+2025-06-08 12:41:58,820 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'CO', 'hand': ['Ah', 'Ac'], 'community_cards': ['Ts', '9h', '8c']}, pot_size=45, win_prob=0.8, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:41:58,820 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: []
+2025-06-08 12:41:58,820 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 35.00%
+2025-06-08 12:41:58,820 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=200, pot_commitment_ratio=0.00%, commitment_threshold=35.00%, is_pot_committed=False
+2025-06-08 12:41:58,820 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=28.0, reasoning=analyzed_1_opponents
+2025-06-08 12:41:58,821 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: balanced, estimated_range: unknown
+2025-06-08 12:41:58,821 - postflop_decision_logic - DEBUG - SPR analysis: spr=4.44, strategy=standard, drawing_potential=False
+2025-06-08 12:41:58,821 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=6, win_probability=80.00%
+2025-06-08 12:41:58,821 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:41:58,821 - postflop_decision_logic - DEBUG - Enhanced bet sizing: 0.65 of pot * 1.00 adjustment = 29.25
+2025-06-08 12:41:58,821 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 29.25
+2025-06-08 12:41:58,823 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 10, 'position': 'SB', 'hand': ['Jc', 'Td'], 'community_cards': ['Jh', '5d', '3s']}, pot_size=30, win_prob=0.68, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:41:58,824 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: []
+2025-06-08 12:41:58,824 - postflop_decision_logic - DEBUG - Enhanced classification: medium, commitment_threshold: 50.00%
+2025-06-08 12:41:58,824 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=10, bet_to_call=0, total_commitment_if_call=10, my_stack=100, pot_commitment_ratio=9.09%, commitment_threshold=50.00%, is_pot_committed=False
+2025-06-08 12:41:58,824 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:41:58,824 - postflop_decision_logic - DEBUG - SPR analysis: spr=3.33, strategy=standard, drawing_potential=False
+2025-06-08 12:41:58,824 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=True, is_weak=False, numerical_hand_rank=2, win_probability=68.00%
+2025-06-08 12:41:58,824 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:41:58,824 - postflop_decision_logic - DEBUG - Enhanced medium hand bet sizing: 0.50 of pot = 15.00
+2025-06-08 12:41:58,824 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 15.00
+2025-06-08 12:42:44,569 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Kh', 'Qd'], 'community_cards': ['9c', '7s', '2h']}, pot_size=100, win_prob=0.35, pot_odds=0.33, bet_to_call=50, max_bet_on_table=50, active_opponents_count=1, can_check=False
+2025-06-08 12:42:44,569 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: []
+2025-06-08 12:42:44,571 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 52.00%
+2025-06-08 12:42:44,571 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=50, total_commitment_if_call=50, my_stack=200, pot_commitment_ratio=20.00%, commitment_threshold=52.00%, is_pot_committed=False
+2025-06-08 12:42:44,572 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=25.0, reasoning=analyzed_1_opponents
+2025-06-08 12:42:44,572 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: tight, estimated_range: unknown
+2025-06-08 12:42:44,572 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:42:44,572 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=2, win_probability=35.00%
+2025-06-08 12:42:44,573 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 50, pot_size: 100, my_stack: 200, max_bet_on_table: 50
+2025-06-08 12:42:44,573 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.35, pot_odds: 0.33
+2025-06-08 12:42:44,573 - postflop_decision_logic - INFO - Decision: FOLD (weak pair). Reasons: Insufficient equity cushion: 2.00% < 5%; Bet too large: 50.00 > 40% pot (40.00)
+2025-06-08 12:42:44,574 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ac', 'Kd'], 'community_cards': ['As', '7s', '2s']}, pot_size=80, win_prob=0.75, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:42:44,575 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: []
+2025-06-08 12:42:44,576 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 28.00%
+2025-06-08 12:42:44,576 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=150, pot_commitment_ratio=0.00%, commitment_threshold=28.00%, is_pot_committed=False
+2025-06-08 12:42:44,576 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=35.0, reasoning=analyzed_1_opponents
+2025-06-08 12:42:44,577 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: loose, estimated_range: unknown
+2025-06-08 12:42:44,577 - postflop_decision_logic - DEBUG - SPR analysis: spr=1.88, strategy=commit, drawing_potential=False
+2025-06-08 12:42:44,578 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=4, win_probability=75.00%
+2025-06-08 12:42:44,578 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:42:44,578 - postflop_decision_logic - DEBUG - Low SPR (1.88) strategy: commit with strong hand
+2025-06-08 12:42:44,579 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 120.00
+2025-06-08 12:42:44,580 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BB', 'hand': ['7h', '6h'], 'community_cards': ['5c', '4s', '2h']}, pot_size=60, win_prob=0.32, pot_odds=0.33, bet_to_call=30, max_bet_on_table=30, active_opponents_count=1, can_check=False
+2025-06-08 12:42:44,580 - postflop_decision_logic - WARNING - Enhanced board analysis failed: EnhancedBoardAnalyzer.__init__() takes 1 positional argument but 2 were given
+2025-06-08 12:42:44,581 - postflop_decision_logic - WARNING - Performance monitoring setup failed: name 'PerformanceTracker' is not defined
+2025-06-08 12:42:44,581 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: []
+2025-06-08 12:42:44,582 - postflop_decision_logic - DEBUG - Enhanced classification: drawing, commitment_threshold: 56.00%
+2025-06-08 12:42:44,582 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=30, total_commitment_if_call=30, my_stack=120, pot_commitment_ratio=20.00%, commitment_threshold=56.00%, is_pot_committed=False
+2025-06-08 12:42:44,582 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:42:44,583 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:42:44,583 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=0, win_probability=32.00%
+2025-06-08 12:42:44,583 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 30, pot_size: 60, my_stack: 120, max_bet_on_table: 30
+2025-06-08 12:42:44,583 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.32, pot_odds: 0.33
+2025-06-08 12:45:30,431 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Kh', 'Qd'], 'community_cards': ['9c', '7s', '2h']}, pot_size=100, win_prob=0.35, pot_odds=0.33, bet_to_call=50, max_bet_on_table=50, active_opponents_count=1, can_check=False
+2025-06-08 12:45:30,432 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: 'AdvancedOpponentAnalyzer' object has no attribute 'update_opponent_profile'
+2025-06-08 12:45:30,433 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:45:30,434 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:45:30,436 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 52.00%
+2025-06-08 12:45:30,436 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=50, total_commitment_if_call=50, my_stack=200, pot_commitment_ratio=20.00%, commitment_threshold=52.00%, is_pot_committed=False
+2025-06-08 12:45:30,437 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=25.0, reasoning=analyzed_1_opponents
+2025-06-08 12:45:30,437 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: tight, estimated_range: unknown
+2025-06-08 12:45:30,437 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:45:30,438 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=2, win_probability=35.00%
+2025-06-08 12:45:30,438 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 50, pot_size: 100, my_stack: 200, max_bet_on_table: 50
+2025-06-08 12:45:30,438 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.35, pot_odds: 0.33
+2025-06-08 12:45:30,439 - postflop_decision_logic - INFO - Decision: FOLD (weak pair). Reasons: Insufficient equity cushion: 2.00% < 5%; Bet too large: 50.00 > 40% pot (40.00)
+2025-06-08 12:45:30,439 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ac', 'Kd'], 'community_cards': ['As', '7s', '2s']}, pot_size=80, win_prob=0.75, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:45:30,440 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: 'AdvancedOpponentAnalyzer' object has no attribute 'update_opponent_profile'
+2025-06-08 12:45:30,440 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:45:30,441 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:45:30,441 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 28.00%
+2025-06-08 12:45:30,442 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=150, pot_commitment_ratio=0.00%, commitment_threshold=28.00%, is_pot_committed=False
+2025-06-08 12:45:30,442 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=35.0, reasoning=analyzed_1_opponents
+2025-06-08 12:45:30,442 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: loose, estimated_range: unknown
+2025-06-08 12:45:30,443 - postflop_decision_logic - DEBUG - SPR analysis: spr=1.88, strategy=commit, drawing_potential=False
+2025-06-08 12:45:30,443 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=4, win_probability=75.00%
+2025-06-08 12:45:30,443 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:45:30,443 - postflop_decision_logic - DEBUG - Low SPR (1.88) strategy: commit with strong hand
+2025-06-08 12:45:30,443 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 120.00
+2025-06-08 12:45:30,444 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BB', 'hand': ['7h', '6h'], 'community_cards': ['5c', '4s', '2h']}, pot_size=60, win_prob=0.32, pot_odds=0.33, bet_to_call=30, max_bet_on_table=30, active_opponents_count=1, can_check=False
+2025-06-08 12:45:30,445 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:45:30,445 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:45:30,446 - postflop_decision_logic - DEBUG - Enhanced classification: drawing, commitment_threshold: 56.00%
+2025-06-08 12:45:30,446 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=30, total_commitment_if_call=30, my_stack=120, pot_commitment_ratio=20.00%, commitment_threshold=56.00%, is_pot_committed=False
+2025-06-08 12:45:30,447 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:45:30,447 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:45:30,447 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=0, win_probability=32.00%
+2025-06-08 12:45:30,448 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 30, pot_size: 60, my_stack: 120, max_bet_on_table: 30
+2025-06-08 12:45:30,448 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.32, pot_odds: 0.33
+2025-06-08 12:45:30,448 - postflop_decision_logic - INFO - Decision: CALL (enhanced drawing hand analysis). Amount: 30.00, Equity: 32.00%, Outs: unknown, Reason: draw_analysis_call_True
+2025-06-08 12:46:18,901 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Kh', 'Qd'], 'community_cards': ['9c', '7s', '2h']}, pot_size=100, win_prob=0.35, pot_odds=0.33, bet_to_call=50, max_bet_on_table=50, active_opponents_count=1, can_check=False
+2025-06-08 12:46:18,902 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: 'AdvancedOpponentAnalyzer' object has no attribute 'update_opponent_profile'
+2025-06-08 12:46:18,903 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:46:18,903 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:46:18,906 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 52.00%
+2025-06-08 12:46:18,906 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=50, total_commitment_if_call=50, my_stack=200, pot_commitment_ratio=20.00%, commitment_threshold=52.00%, is_pot_committed=False
+2025-06-08 12:46:18,906 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=25.0, reasoning=analyzed_1_opponents
+2025-06-08 12:46:18,907 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: tight, estimated_range: unknown
+2025-06-08 12:46:18,907 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:46:18,907 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=2, win_probability=35.00%
+2025-06-08 12:46:18,908 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 50, pot_size: 100, my_stack: 200, max_bet_on_table: 50
+2025-06-08 12:46:18,908 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.35, pot_odds: 0.33
+2025-06-08 12:46:18,908 - postflop_decision_logic - INFO - Decision: FOLD (weak pair). Reasons: Insufficient equity cushion: 2.00% < 5%; Bet too large: 50.00 > 40% pot (40.00)
+2025-06-08 12:46:18,909 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ac', 'Kd'], 'community_cards': ['As', '7s', '2s']}, pot_size=80, win_prob=0.75, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:46:18,909 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: 'AdvancedOpponentAnalyzer' object has no attribute 'update_opponent_profile'
+2025-06-08 12:46:18,910 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:46:18,910 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:46:18,911 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 28.00%
+2025-06-08 12:46:18,911 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=150, pot_commitment_ratio=0.00%, commitment_threshold=28.00%, is_pot_committed=False
+2025-06-08 12:46:18,911 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=35.0, reasoning=analyzed_1_opponents
+2025-06-08 12:46:18,912 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: loose, estimated_range: unknown
+2025-06-08 12:46:18,912 - postflop_decision_logic - DEBUG - SPR analysis: spr=1.88, strategy=commit, drawing_potential=False
+2025-06-08 12:46:18,912 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=4, win_probability=75.00%
+2025-06-08 12:46:18,913 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:46:18,913 - postflop_decision_logic - DEBUG - Low SPR (1.88) strategy: commit with strong hand
+2025-06-08 12:46:18,913 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 120.00
+2025-06-08 12:46:18,914 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BB', 'hand': ['7h', '6h'], 'community_cards': ['5c', '4s', '2h']}, pot_size=60, win_prob=0.32, pot_odds=0.33, bet_to_call=30, max_bet_on_table=30, active_opponents_count=1, can_check=False
+2025-06-08 12:46:18,915 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:46:18,915 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:46:18,916 - postflop_decision_logic - DEBUG - Enhanced classification: drawing, commitment_threshold: 56.00%
+2025-06-08 12:46:18,917 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=30, total_commitment_if_call=30, my_stack=120, pot_commitment_ratio=20.00%, commitment_threshold=56.00%, is_pot_committed=False
+2025-06-08 12:46:18,917 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:46:18,918 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:46:18,918 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=0, win_probability=32.00%
+2025-06-08 12:46:18,918 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 30, pot_size: 60, my_stack: 120, max_bet_on_table: 30
+2025-06-08 12:46:18,919 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.32, pot_odds: 0.33
+2025-06-08 12:46:18,919 - postflop_decision_logic - INFO - Decision: CALL (enhanced drawing hand analysis). Amount: 30.00, Equity: 32.00%, Outs: unknown, Reason: draw_analysis_call_True
+2025-06-08 12:46:18,920 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'CO', 'hand': ['Ah', 'Ac'], 'community_cards': ['Ts', '9h', '8c']}, pot_size=45, win_prob=0.8, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:46:18,920 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: 'AdvancedOpponentAnalyzer' object has no attribute 'update_opponent_profile'
+2025-06-08 12:46:18,921 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:46:18,921 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:46:18,922 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 35.00%
+2025-06-08 12:46:18,922 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=200, pot_commitment_ratio=0.00%, commitment_threshold=35.00%, is_pot_committed=False
+2025-06-08 12:46:18,923 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=28.0, reasoning=analyzed_1_opponents
+2025-06-08 12:46:18,923 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: balanced, estimated_range: unknown
+2025-06-08 12:46:18,924 - postflop_decision_logic - DEBUG - SPR analysis: spr=4.44, strategy=standard, drawing_potential=False
+2025-06-08 12:46:18,924 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=6, win_probability=80.00%
+2025-06-08 12:46:18,924 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:46:18,924 - postflop_decision_logic - DEBUG - Enhanced bet sizing: 0.65 of pot * 1.00 adjustment = 29.25
+2025-06-08 12:46:18,924 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 29.25
+2025-06-08 12:46:18,925 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 10, 'position': 'SB', 'hand': ['Jc', 'Td'], 'community_cards': ['Jh', '5d', '3s']}, pot_size=30, win_prob=0.68, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:46:18,925 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:46:18,926 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:46:18,927 - postflop_decision_logic - DEBUG - Enhanced classification: medium, commitment_threshold: 50.00%
+2025-06-08 12:46:18,927 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=10, bet_to_call=0, total_commitment_if_call=10, my_stack=100, pot_commitment_ratio=9.09%, commitment_threshold=50.00%, is_pot_committed=False
+2025-06-08 12:46:18,927 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:46:18,927 - postflop_decision_logic - DEBUG - SPR analysis: spr=3.33, strategy=standard, drawing_potential=False
+2025-06-08 12:46:18,928 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=True, is_weak=False, numerical_hand_rank=2, win_probability=68.00%
+2025-06-08 12:46:18,928 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:46:18,928 - postflop_decision_logic - DEBUG - Enhanced medium hand bet sizing: 0.50 of pot = 15.00
+2025-06-08 12:46:18,928 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 15.00
+2025-06-08 12:48:08,550 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Kh', 'Qd'], 'community_cards': ['9c', '7s', '2h']}, pot_size=100, win_prob=0.35, pot_odds=0.33, bet_to_call=50, max_bet_on_table=50, active_opponents_count=1, can_check=False
+2025-06-08 12:48:08,551 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:48:08,551 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:48:08,553 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 52.00%
+2025-06-08 12:48:08,553 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=50, total_commitment_if_call=50, my_stack=200, pot_commitment_ratio=20.00%, commitment_threshold=52.00%, is_pot_committed=False
+2025-06-08 12:48:08,553 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:48:08,553 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:48:08,553 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=2, win_probability=35.00%
+2025-06-08 12:48:08,553 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 50, pot_size: 100, my_stack: 200, max_bet_on_table: 50
+2025-06-08 12:48:08,553 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.35, pot_odds: 0.33
+2025-06-08 12:48:08,553 - postflop_decision_logic - INFO - Decision: FOLD (weak pair). Reasons: Insufficient equity cushion: 2.00% < 5%; Bet too large: 50.00 > 40% pot (40.00)
+2025-06-08 12:48:08,554 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ac', 'Kd'], 'community_cards': ['As', '7s', '2s']}, pot_size=80, win_prob=0.75, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:48:08,555 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:48:08,555 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:48:08,555 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 28.00%
+2025-06-08 12:48:08,555 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=150, pot_commitment_ratio=0.00%, commitment_threshold=28.00%, is_pot_committed=False
+2025-06-08 12:48:08,555 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:48:08,556 - postflop_decision_logic - DEBUG - SPR analysis: spr=1.88, strategy=commit, drawing_potential=False
+2025-06-08 12:48:08,556 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=4, win_probability=75.00%
+2025-06-08 12:48:08,556 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:48:08,556 - postflop_decision_logic - DEBUG - Low SPR (1.88) strategy: commit with strong hand
+2025-06-08 12:48:08,556 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 120.00
+2025-06-08 12:48:08,557 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BB', 'hand': ['7h', '6h'], 'community_cards': ['5c', '4s', '2h']}, pot_size=60, win_prob=0.32, pot_odds=0.33, bet_to_call=30, max_bet_on_table=30, active_opponents_count=1, can_check=False
+2025-06-08 12:48:08,557 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:48:08,558 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:48:08,558 - postflop_decision_logic - DEBUG - Enhanced classification: drawing, commitment_threshold: 56.00%
+2025-06-08 12:48:08,558 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=30, total_commitment_if_call=30, my_stack=120, pot_commitment_ratio=20.00%, commitment_threshold=56.00%, is_pot_committed=False
+2025-06-08 12:48:08,558 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:48:08,558 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:48:08,558 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=0, win_probability=32.00%
+2025-06-08 12:48:08,558 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 30, pot_size: 60, my_stack: 120, max_bet_on_table: 30
+2025-06-08 12:48:08,558 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.32, pot_odds: 0.33
+2025-06-08 12:48:08,558 - postflop_decision_logic - INFO - Decision: CALL (enhanced drawing hand analysis). Amount: 30.00, Equity: 32.00%, Outs: unknown, Reason: draw_analysis_call_True
+2025-06-08 12:48:08,559 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'EP', 'hand': ['Jh', 'Td'], 'community_cards': ['Js', '7c', '3h']}, pot_size=100, win_prob=0.6, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=5, can_check=True
+2025-06-08 12:48:08,559 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:48:08,560 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:48:08,560 - postflop_decision_logic - DEBUG - Enhanced classification: medium, commitment_threshold: 40.00%
+2025-06-08 12:48:08,560 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=200, pot_commitment_ratio=0.00%, commitment_threshold=40.00%, is_pot_committed=False
+2025-06-08 12:48:08,560 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:48:08,560 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=False
+2025-06-08 12:48:08,560 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=True, is_weak=False, numerical_hand_rank=2, win_probability=60.00%
+2025-06-08 12:48:08,560 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:48:08,560 - postflop_decision_logic - INFO - Decision: CHECK (multiway adjustment - check_medium_vs_5_opponents)
+2025-06-08 12:48:08,561 - postflop_decision_logic - DEBUG - make_postflop_decision: street=turn, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ah', 'Ad'], 'community_cards': ['As', 'Ac', '7s', '2h']}, pot_size=120, win_prob=0.85, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:48:08,561 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:48:08,561 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:48:08,561 - postflop_decision_logic - DEBUG - Enhanced classification: very_strong, commitment_threshold: 18.00%
+2025-06-08 12:48:08,561 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=80, pot_commitment_ratio=0.00%, commitment_threshold=18.00%, is_pot_committed=False
+2025-06-08 12:48:08,561 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:48:08,561 - postflop_decision_logic - DEBUG - SPR analysis: spr=0.67, strategy=commit, drawing_potential=False
+2025-06-08 12:48:08,561 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=True, is_strong=False, is_medium=False, is_weak=False, numerical_hand_rank=5, win_probability=85.00%
+2025-06-08 12:48:08,561 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:48:08,561 - postflop_decision_logic - DEBUG - Low SPR (0.67) strategy: commit with strong hand
+2025-06-08 12:48:08,562 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 80.00
+2025-06-08 12:49:20,481 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Kh', 'Qd'], 'community_cards': ['9c', '7s', '2h']}, pot_size=100, win_prob=0.35, pot_odds=0.33, bet_to_call=50, max_bet_on_table=50, active_opponents_count=1, can_check=False
+2025-06-08 12:49:20,481 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: 'AdvancedOpponentAnalyzer' object has no attribute 'update_opponent_profile'
+2025-06-08 12:49:20,482 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:49:20,482 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:49:20,483 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 52.00%
+2025-06-08 12:49:20,484 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=50, total_commitment_if_call=50, my_stack=200, pot_commitment_ratio=20.00%, commitment_threshold=52.00%, is_pot_committed=False
+2025-06-08 12:49:20,484 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=25.0, reasoning=analyzed_1_opponents
+2025-06-08 12:49:20,484 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: tight, estimated_range: unknown
+2025-06-08 12:49:20,485 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:49:20,485 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=2, win_probability=35.00%
+2025-06-08 12:49:20,486 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 50, pot_size: 100, my_stack: 200, max_bet_on_table: 50
+2025-06-08 12:49:20,486 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.35, pot_odds: 0.33
+2025-06-08 12:49:20,486 - postflop_decision_logic - INFO - Decision: FOLD (weak pair). Reasons: Insufficient equity cushion: 2.00% < 5%; Bet too large: 50.00 > 40% pot (40.00)
+2025-06-08 12:49:20,487 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ac', 'Kd'], 'community_cards': ['As', '7s', '2s']}, pot_size=80, win_prob=0.75, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:49:20,488 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: 'AdvancedOpponentAnalyzer' object has no attribute 'update_opponent_profile'
+2025-06-08 12:49:20,488 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:49:20,489 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:49:20,489 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 28.00%
+2025-06-08 12:49:20,490 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=150, pot_commitment_ratio=0.00%, commitment_threshold=28.00%, is_pot_committed=False
+2025-06-08 12:49:20,490 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=35.0, reasoning=analyzed_1_opponents
+2025-06-08 12:49:20,491 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: loose, estimated_range: unknown
+2025-06-08 12:49:20,491 - postflop_decision_logic - DEBUG - SPR analysis: spr=1.88, strategy=commit, drawing_potential=False
+2025-06-08 12:49:20,491 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=4, win_probability=75.00%
+2025-06-08 12:49:20,491 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:49:20,491 - postflop_decision_logic - DEBUG - Low SPR (1.88) strategy: commit with strong hand
+2025-06-08 12:49:20,492 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 120.00
+2025-06-08 12:49:20,493 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BB', 'hand': ['7h', '6h'], 'community_cards': ['5c', '4s', '2h']}, pot_size=60, win_prob=0.32, pot_odds=0.33, bet_to_call=30, max_bet_on_table=30, active_opponents_count=1, can_check=False
+2025-06-08 12:49:20,493 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:49:20,494 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:49:20,494 - postflop_decision_logic - DEBUG - Enhanced classification: drawing, commitment_threshold: 56.00%
+2025-06-08 12:49:20,495 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=30, total_commitment_if_call=30, my_stack=120, pot_commitment_ratio=20.00%, commitment_threshold=56.00%, is_pot_committed=False
+2025-06-08 12:49:20,495 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:49:20,495 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:49:20,496 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=0, win_probability=32.00%
+2025-06-08 12:49:20,496 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 30, pot_size: 60, my_stack: 120, max_bet_on_table: 30
+2025-06-08 12:49:20,497 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.32, pot_odds: 0.33
+2025-06-08 12:49:20,497 - postflop_decision_logic - INFO - Decision: CALL (enhanced drawing hand analysis). Amount: 30.00, Equity: 32.00%, Outs: unknown, Reason: draw_analysis_call_True
+2025-06-08 12:49:20,498 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'CO', 'hand': ['Ah', 'Ac'], 'community_cards': ['Ts', '9h', '8c']}, pot_size=45, win_prob=0.8, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:49:20,498 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: 'AdvancedOpponentAnalyzer' object has no attribute 'update_opponent_profile'
+2025-06-08 12:49:20,499 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:49:20,499 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:49:20,500 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 35.00%
+2025-06-08 12:49:20,500 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=200, pot_commitment_ratio=0.00%, commitment_threshold=35.00%, is_pot_committed=False
+2025-06-08 12:49:20,501 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=standard, avg_vpip=28.0, reasoning=analyzed_1_opponents
+2025-06-08 12:49:20,501 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: balanced, estimated_range: unknown
+2025-06-08 12:49:20,501 - postflop_decision_logic - DEBUG - SPR analysis: spr=4.44, strategy=standard, drawing_potential=False
+2025-06-08 12:49:20,501 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=6, win_probability=80.00%
+2025-06-08 12:49:20,501 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:49:20,502 - postflop_decision_logic - DEBUG - Enhanced bet sizing: 0.65 of pot * 1.00 adjustment = 29.25
+2025-06-08 12:49:20,502 - postflop_decision_logic - INFO - Decision: BET (very_strong/strong with win_prob > 0.75, can check). Amount: 29.25
+2025-06-08 12:49:20,503 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 10, 'position': 'SB', 'hand': ['Jc', 'Td'], 'community_cards': ['Jh', '5d', '3s']}, pot_size=30, win_prob=0.68, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:49:20,503 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:49:20,504 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:49:20,505 - postflop_decision_logic - DEBUG - Enhanced classification: medium, commitment_threshold: 50.00%
+2025-06-08 12:49:20,505 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=10, bet_to_call=0, total_commitment_if_call=10, my_stack=100, pot_commitment_ratio=9.09%, commitment_threshold=50.00%, is_pot_committed=False
+2025-06-08 12:49:20,505 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:49:20,506 - postflop_decision_logic - DEBUG - SPR analysis: spr=3.33, strategy=standard, drawing_potential=False
+2025-06-08 12:49:20,506 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=True, is_weak=False, numerical_hand_rank=2, win_probability=68.00%
+2025-06-08 12:49:20,506 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:49:20,507 - postflop_decision_logic - DEBUG - Enhanced medium hand bet sizing: 0.50 of pot = 15.00
+2025-06-08 12:49:20,507 - postflop_decision_logic - INFO - Decision: BET (medium hand, thin value when checked to). Amount: 15.00
+2025-06-08 12:49:20,742 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Kh', 'Qd'], 'community_cards': ['9c', '7s', '2h']}, pot_size=100, win_prob=0.35, pot_odds=0.33, bet_to_call=50, max_bet_on_table=50, active_opponents_count=1, can_check=False
+2025-06-08 12:49:20,743 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:49:20,743 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:49:20,745 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 52.00%
+2025-06-08 12:49:20,745 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=50, total_commitment_if_call=50, my_stack=200, pot_commitment_ratio=20.00%, commitment_threshold=52.00%, is_pot_committed=False
+2025-06-08 12:49:20,745 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:49:20,745 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:49:20,745 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=2, win_probability=35.00%
+2025-06-08 12:49:20,745 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 50, pot_size: 100, my_stack: 200, max_bet_on_table: 50
+2025-06-08 12:49:20,745 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.35, pot_odds: 0.33
+2025-06-08 12:49:20,745 - postflop_decision_logic - INFO - Decision: FOLD (weak pair). Reasons: Insufficient equity cushion: 2.00% < 5%; Bet too large: 50.00 > 40% pot (40.00)
+2025-06-08 12:49:20,747 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ac', 'Kd'], 'community_cards': ['As', '7s', '2s']}, pot_size=80, win_prob=0.75, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:49:20,747 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:49:20,747 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:49:20,748 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 28.00%
+2025-06-08 12:49:20,748 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=150, pot_commitment_ratio=0.00%, commitment_threshold=28.00%, is_pot_committed=False
+2025-06-08 12:49:20,748 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:49:20,748 - postflop_decision_logic - DEBUG - SPR analysis: spr=1.88, strategy=commit, drawing_potential=False
+2025-06-08 12:49:20,748 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=4, win_probability=75.00%
+2025-06-08 12:49:20,748 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:49:20,748 - postflop_decision_logic - DEBUG - Low SPR (1.88) strategy: commit with strong hand
+2025-06-08 12:49:20,748 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 120.00
+2025-06-08 12:49:20,749 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BB', 'hand': ['7h', '6h'], 'community_cards': ['5c', '4s', '2h']}, pot_size=60, win_prob=0.32, pot_odds=0.33, bet_to_call=30, max_bet_on_table=30, active_opponents_count=1, can_check=False
+2025-06-08 12:49:20,750 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:49:20,750 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:49:20,750 - postflop_decision_logic - DEBUG - Enhanced classification: drawing, commitment_threshold: 56.00%
+2025-06-08 12:49:20,750 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=30, total_commitment_if_call=30, my_stack=120, pot_commitment_ratio=20.00%, commitment_threshold=56.00%, is_pot_committed=False
+2025-06-08 12:49:20,750 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:49:20,750 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:49:20,750 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=0, win_probability=32.00%
+2025-06-08 12:49:20,750 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 30, pot_size: 60, my_stack: 120, max_bet_on_table: 30
+2025-06-08 12:49:20,750 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.32, pot_odds: 0.33
+2025-06-08 12:49:20,750 - postflop_decision_logic - INFO - Decision: CALL (enhanced drawing hand analysis). Amount: 30.00, Equity: 32.00%, Outs: unknown, Reason: draw_analysis_call_True
+2025-06-08 12:49:20,752 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'EP', 'hand': ['Jh', 'Td'], 'community_cards': ['Js', '7c', '3h']}, pot_size=100, win_prob=0.6, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=5, can_check=True
+2025-06-08 12:49:20,752 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:49:20,753 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:49:20,753 - postflop_decision_logic - DEBUG - Enhanced classification: medium, commitment_threshold: 40.00%
+2025-06-08 12:49:20,753 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=200, pot_commitment_ratio=0.00%, commitment_threshold=40.00%, is_pot_committed=False
+2025-06-08 12:49:20,753 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:49:20,753 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=False
+2025-06-08 12:49:20,753 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=True, is_weak=False, numerical_hand_rank=2, win_probability=60.00%
+2025-06-08 12:49:20,753 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:49:20,753 - postflop_decision_logic - INFO - Decision: CHECK (multiway adjustment - check_medium_vs_5_opponents)
+2025-06-08 12:49:20,755 - postflop_decision_logic - DEBUG - make_postflop_decision: street=turn, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ah', 'Ad'], 'community_cards': ['As', 'Ac', '7s', '2h']}, pot_size=120, win_prob=0.85, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:49:20,755 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:49:20,755 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:49:20,756 - postflop_decision_logic - DEBUG - Enhanced classification: very_strong, commitment_threshold: 18.00%
+2025-06-08 12:49:20,756 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=80, pot_commitment_ratio=0.00%, commitment_threshold=18.00%, is_pot_committed=False
+2025-06-08 12:49:20,756 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:49:20,756 - postflop_decision_logic - DEBUG - SPR analysis: spr=0.67, strategy=commit, drawing_potential=False
+2025-06-08 12:49:20,756 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=True, is_strong=False, is_medium=False, is_weak=False, numerical_hand_rank=5, win_probability=85.00%
+2025-06-08 12:49:20,756 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:49:20,756 - postflop_decision_logic - DEBUG - Low SPR (0.67) strategy: commit with strong hand
+2025-06-08 12:49:20,756 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 80.00
+2025-06-08 12:50:23,227 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Kh', 'Qd'], 'community_cards': ['9c', '7s', '2h']}, pot_size=100, win_prob=0.35, pot_odds=0.33, bet_to_call=50, max_bet_on_table=50, active_opponents_count=1, can_check=False
+2025-06-08 12:50:23,227 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:50:23,227 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:50:23,228 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 52.00%
+2025-06-08 12:50:23,229 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=50, total_commitment_if_call=50, my_stack=200, pot_commitment_ratio=20.00%, commitment_threshold=52.00%, is_pot_committed=False
+2025-06-08 12:50:23,229 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:50:23,229 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:50:23,229 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=2, win_probability=35.00%
+2025-06-08 12:50:23,229 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 50, pot_size: 100, my_stack: 200, max_bet_on_table: 50
+2025-06-08 12:50:23,229 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.35, pot_odds: 0.33
+2025-06-08 12:50:23,229 - postflop_decision_logic - INFO - Decision: FOLD (weak pair). Reasons: Insufficient equity cushion: 2.00% < 5%; Bet too large: 50.00 > 40% pot (40.00)
+2025-06-08 12:50:23,230 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ac', 'Kd'], 'community_cards': ['As', '7s', '2s']}, pot_size=80, win_prob=0.75, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:50:23,230 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:50:23,230 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:50:23,231 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 28.00%
+2025-06-08 12:50:23,231 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=150, pot_commitment_ratio=0.00%, commitment_threshold=28.00%, is_pot_committed=False
+2025-06-08 12:50:23,231 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:50:23,231 - postflop_decision_logic - DEBUG - SPR analysis: spr=1.88, strategy=commit, drawing_potential=False
+2025-06-08 12:50:23,231 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=4, win_probability=75.00%
+2025-06-08 12:50:23,231 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:50:23,231 - postflop_decision_logic - DEBUG - Low SPR (1.88) strategy: commit with strong hand
+2025-06-08 12:50:23,231 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 120.00
+2025-06-08 12:50:23,232 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BB', 'hand': ['7h', '6h'], 'community_cards': ['5c', '4s', '2h']}, pot_size=60, win_prob=0.32, pot_odds=0.33, bet_to_call=30, max_bet_on_table=30, active_opponents_count=1, can_check=False
+2025-06-08 12:50:23,232 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:50:23,232 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:50:23,232 - postflop_decision_logic - DEBUG - Enhanced classification: drawing, commitment_threshold: 56.00%
+2025-06-08 12:50:23,232 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=30, total_commitment_if_call=30, my_stack=120, pot_commitment_ratio=20.00%, commitment_threshold=56.00%, is_pot_committed=False
+2025-06-08 12:50:23,232 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:50:23,232 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:50:23,232 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=0, win_probability=32.00%
+2025-06-08 12:50:23,232 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 30, pot_size: 60, my_stack: 120, max_bet_on_table: 30
+2025-06-08 12:50:23,233 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.32, pot_odds: 0.33
+2025-06-08 12:50:23,233 - postflop_decision_logic - INFO - Decision: CALL (enhanced drawing hand analysis). Amount: 30.00, Equity: 32.00%, Outs: unknown, Reason: draw_analysis_call_True
+2025-06-08 12:50:23,234 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'EP', 'hand': ['Jh', 'Td'], 'community_cards': ['Js', '7c', '3h']}, pot_size=100, win_prob=0.6, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=5, can_check=True
+2025-06-08 12:50:23,234 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:50:23,234 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:50:23,234 - postflop_decision_logic - DEBUG - Enhanced classification: medium, commitment_threshold: 40.00%
+2025-06-08 12:50:23,234 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=200, pot_commitment_ratio=0.00%, commitment_threshold=40.00%, is_pot_committed=False
+2025-06-08 12:50:23,234 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:50:23,234 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=False
+2025-06-08 12:50:23,234 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=True, is_weak=False, numerical_hand_rank=2, win_probability=60.00%
+2025-06-08 12:50:23,235 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:50:23,235 - postflop_decision_logic - INFO - Decision: CHECK (multiway adjustment - check_medium_vs_5_opponents)
+2025-06-08 12:50:23,236 - postflop_decision_logic - DEBUG - make_postflop_decision: street=turn, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ah', 'Ad'], 'community_cards': ['As', 'Ac', '7s', '2h']}, pot_size=120, win_prob=0.85, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:50:23,236 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:50:23,237 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:50:23,237 - postflop_decision_logic - DEBUG - Enhanced classification: very_strong, commitment_threshold: 18.00%
+2025-06-08 12:50:23,237 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=80, pot_commitment_ratio=0.00%, commitment_threshold=18.00%, is_pot_committed=False
+2025-06-08 12:50:23,237 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:50:23,237 - postflop_decision_logic - DEBUG - SPR analysis: spr=0.67, strategy=commit, drawing_potential=False
+2025-06-08 12:50:23,237 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=True, is_strong=False, is_medium=False, is_weak=False, numerical_hand_rank=5, win_probability=85.00%
+2025-06-08 12:50:23,237 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:50:23,237 - postflop_decision_logic - DEBUG - Low SPR (0.67) strategy: commit with strong hand
+2025-06-08 12:50:23,237 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 80.00
+2025-06-08 12:51:35,276 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Kh', 'Qd'], 'community_cards': ['9c', '7s', '2h']}, pot_size=100, win_prob=0.35, pot_odds=0.33, bet_to_call=50, max_bet_on_table=50, active_opponents_count=1, can_check=False
+2025-06-08 12:51:35,277 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:51:35,277 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:51:35,278 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 52.00%
+2025-06-08 12:51:35,278 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=50, total_commitment_if_call=50, my_stack=200, pot_commitment_ratio=20.00%, commitment_threshold=52.00%, is_pot_committed=False
+2025-06-08 12:51:35,278 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:51:35,278 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:51:35,278 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=2, win_probability=35.00%
+2025-06-08 12:51:35,278 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 50, pot_size: 100, my_stack: 200, max_bet_on_table: 50
+2025-06-08 12:51:35,278 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.35, pot_odds: 0.33
+2025-06-08 12:51:35,279 - postflop_decision_logic - INFO - Decision: FOLD (weak pair). Reasons: Insufficient equity cushion: 2.00% < 5%; Bet too large: 50.00 > 40% pot (40.00)
+2025-06-08 12:51:35,279 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ac', 'Kd'], 'community_cards': ['As', '7s', '2s']}, pot_size=80, win_prob=0.75, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:51:35,280 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:51:35,280 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:51:35,280 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 28.00%
+2025-06-08 12:51:35,280 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=150, pot_commitment_ratio=0.00%, commitment_threshold=28.00%, is_pot_committed=False
+2025-06-08 12:51:35,281 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:51:35,281 - postflop_decision_logic - DEBUG - SPR analysis: spr=1.88, strategy=commit, drawing_potential=False
+2025-06-08 12:51:35,281 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=4, win_probability=75.00%
+2025-06-08 12:51:35,281 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:51:35,281 - postflop_decision_logic - DEBUG - Low SPR (1.88) strategy: commit with strong hand
+2025-06-08 12:51:35,281 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 120.00
+2025-06-08 12:51:35,282 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BB', 'hand': ['7h', '6h'], 'community_cards': ['5c', '4s', '2h']}, pot_size=60, win_prob=0.32, pot_odds=0.33, bet_to_call=30, max_bet_on_table=30, active_opponents_count=1, can_check=False
+2025-06-08 12:51:35,282 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:51:35,282 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:51:35,283 - postflop_decision_logic - DEBUG - Enhanced classification: drawing, commitment_threshold: 56.00%
+2025-06-08 12:51:35,283 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=30, total_commitment_if_call=30, my_stack=120, pot_commitment_ratio=20.00%, commitment_threshold=56.00%, is_pot_committed=False
+2025-06-08 12:51:35,283 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:51:35,283 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:51:35,283 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=0, win_probability=32.00%
+2025-06-08 12:51:35,283 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 30, pot_size: 60, my_stack: 120, max_bet_on_table: 30
+2025-06-08 12:51:35,283 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.32, pot_odds: 0.33
+2025-06-08 12:51:35,283 - postflop_decision_logic - INFO - Decision: CALL (enhanced drawing hand analysis). Amount: 30.00, Equity: 32.00%, Outs: unknown, Reason: draw_analysis_call_True
+2025-06-08 12:51:35,284 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'EP', 'hand': ['Jh', 'Td'], 'community_cards': ['Js', '7c', '3h']}, pot_size=100, win_prob=0.6, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=5, can_check=True
+2025-06-08 12:51:35,285 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:51:35,285 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:51:35,285 - postflop_decision_logic - DEBUG - Enhanced classification: medium, commitment_threshold: 40.00%
+2025-06-08 12:51:35,285 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=200, pot_commitment_ratio=0.00%, commitment_threshold=40.00%, is_pot_committed=False
+2025-06-08 12:51:35,285 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:51:35,285 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=False
+2025-06-08 12:51:35,285 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=True, is_weak=False, numerical_hand_rank=2, win_probability=60.00%
+2025-06-08 12:51:35,285 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:51:35,285 - postflop_decision_logic - INFO - Decision: CHECK (multiway adjustment - check_medium_vs_5_opponents)
+2025-06-08 12:51:35,286 - postflop_decision_logic - DEBUG - make_postflop_decision: street=turn, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ah', 'Ad'], 'community_cards': ['As', 'Ac', '7s', '2h']}, pot_size=120, win_prob=0.85, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:51:35,286 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:51:35,286 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:51:35,287 - postflop_decision_logic - DEBUG - Enhanced classification: very_strong, commitment_threshold: 18.00%
+2025-06-08 12:51:35,287 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=80, pot_commitment_ratio=0.00%, commitment_threshold=18.00%, is_pot_committed=False
+2025-06-08 12:51:35,287 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:51:35,287 - postflop_decision_logic - DEBUG - SPR analysis: spr=0.67, strategy=commit, drawing_potential=False
+2025-06-08 12:51:35,287 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=True, is_strong=False, is_medium=False, is_weak=False, numerical_hand_rank=5, win_probability=85.00%
+2025-06-08 12:51:35,287 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:51:35,287 - postflop_decision_logic - DEBUG - Low SPR (0.67) strategy: commit with strong hand
+2025-06-08 12:51:35,287 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 80.00
+2025-06-08 12:53:09,015 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Kh', 'Qd'], 'community_cards': ['9c', '7s', '2h']}, pot_size=100, win_prob=0.35, pot_odds=0.33, bet_to_call=50, max_bet_on_table=50, active_opponents_count=1, can_check=False
+2025-06-08 12:53:09,015 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:53:09,016 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:53:09,017 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 52.00%
+2025-06-08 12:53:09,017 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=50, total_commitment_if_call=50, my_stack=200, pot_commitment_ratio=20.00%, commitment_threshold=52.00%, is_pot_committed=False
+2025-06-08 12:53:09,017 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:53:09,017 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:53:09,017 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=2, win_probability=35.00%
+2025-06-08 12:53:09,017 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 50, pot_size: 100, my_stack: 200, max_bet_on_table: 50
+2025-06-08 12:53:09,017 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.35, pot_odds: 0.33
+2025-06-08 12:53:09,017 - postflop_decision_logic - INFO - Decision: FOLD (weak pair). Reasons: Insufficient equity cushion: 2.00% < 5%; Bet too large: 50.00 > 40% pot (40.00)
+2025-06-08 12:53:09,018 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ac', 'Kd'], 'community_cards': ['As', '7s', '2s']}, pot_size=80, win_prob=0.75, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:53:09,018 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:53:09,018 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:53:09,019 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 28.00%
+2025-06-08 12:53:09,019 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=150, pot_commitment_ratio=0.00%, commitment_threshold=28.00%, is_pot_committed=False
+2025-06-08 12:53:09,019 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:53:09,019 - postflop_decision_logic - DEBUG - SPR analysis: spr=1.88, strategy=commit, drawing_potential=False
+2025-06-08 12:53:09,019 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=4, win_probability=75.00%
+2025-06-08 12:53:09,019 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:53:09,019 - postflop_decision_logic - DEBUG - Low SPR (1.88) strategy: commit with strong hand
+2025-06-08 12:53:09,019 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 120.00
+2025-06-08 12:53:09,020 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BB', 'hand': ['7h', '6h'], 'community_cards': ['5c', '4s', '2h']}, pot_size=60, win_prob=0.32, pot_odds=0.33, bet_to_call=30, max_bet_on_table=30, active_opponents_count=1, can_check=False
+2025-06-08 12:53:09,020 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:53:09,020 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:53:09,021 - postflop_decision_logic - DEBUG - Enhanced classification: drawing, commitment_threshold: 56.00%
+2025-06-08 12:53:09,021 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=30, total_commitment_if_call=30, my_stack=120, pot_commitment_ratio=20.00%, commitment_threshold=56.00%, is_pot_committed=False
+2025-06-08 12:53:09,021 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:53:09,021 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=True
+2025-06-08 12:53:09,021 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=False, is_weak=True, numerical_hand_rank=0, win_probability=32.00%
+2025-06-08 12:53:09,021 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 30, pot_size: 60, my_stack: 120, max_bet_on_table: 30
+2025-06-08 12:53:09,021 - postflop_decision_logic - DEBUG - Hand is_weak. win_probability: 0.32, pot_odds: 0.33
+2025-06-08 12:53:09,021 - postflop_decision_logic - INFO - Decision: CALL (enhanced drawing hand analysis). Amount: 30.00, Equity: 32.00%, Outs: unknown, Reason: draw_analysis_call_True
+2025-06-08 12:53:09,022 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'EP', 'hand': ['Jh', 'Td'], 'community_cards': ['Js', '7c', '3h']}, pot_size=100, win_prob=0.6, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=5, can_check=True
+2025-06-08 12:53:09,022 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:53:09,022 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:53:09,022 - postflop_decision_logic - DEBUG - Enhanced classification: medium, commitment_threshold: 40.00%
+2025-06-08 12:53:09,022 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=200, pot_commitment_ratio=0.00%, commitment_threshold=40.00%, is_pot_committed=False
+2025-06-08 12:53:09,022 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:53:09,022 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.00, strategy=standard, drawing_potential=False
+2025-06-08 12:53:09,022 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=False, is_medium=True, is_weak=False, numerical_hand_rank=2, win_probability=60.00%
+2025-06-08 12:53:09,022 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:53:09,022 - postflop_decision_logic - INFO - Decision: CHECK (multiway adjustment - check_medium_vs_5_opponents)
+2025-06-08 12:53:09,023 - postflop_decision_logic - DEBUG - make_postflop_decision: street=turn, my_player_data={'current_bet': 0, 'position': 'BTN', 'hand': ['Ah', 'Ad'], 'community_cards': ['As', 'Ac', '7s', '2h']}, pot_size=120, win_prob=0.85, pot_odds=0.0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:53:09,023 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 12:53:09,023 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 12:53:09,023 - postflop_decision_logic - DEBUG - Enhanced classification: very_strong, commitment_threshold: 18.00%
+2025-06-08 12:53:09,023 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=80, pot_commitment_ratio=0.00%, commitment_threshold=18.00%, is_pot_committed=False
+2025-06-08 12:53:09,023 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_tracker_available
+2025-06-08 12:53:09,023 - postflop_decision_logic - DEBUG - SPR analysis: spr=0.67, strategy=commit, drawing_potential=False
+2025-06-08 12:53:09,023 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=True, is_strong=False, is_medium=False, is_weak=False, numerical_hand_rank=5, win_probability=85.00%
+2025-06-08 12:53:09,023 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 12:53:09,023 - postflop_decision_logic - DEBUG - Low SPR (0.67) strategy: commit with strong hand
+2025-06-08 12:53:09,023 - postflop_decision_logic - INFO - Decision: BET (SPR commit strategy). Amount: 80.00
+2025-06-08 12:59:50,128 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN'}, pot_size=100, win_prob=0.7, pot_odds=0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 12:59:50,128 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: AdvancedOpponentAnalyzer.get_exploitative_strategy() got an unexpected keyword argument 'active_opponents'
+2025-06-08 12:59:50,128 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['performance_tracker', 'decision_context']
+2025-06-08 12:59:50,129 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 35.00%
+2025-06-08 12:59:50,129 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=800, pot_commitment_ratio=0.00%, commitment_threshold=35.00%, is_pot_committed=False
+2025-06-08 12:59:50,129 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=tracker_not_working_properly
+2025-06-08 12:59:50,129 - postflop_decision_logic - DEBUG - Opponent analysis: 1 opponents tracked, table type: <Mock name='mock.get_table_dynamics().get()' id='1966457974336'>, estimated_range: unknown
+2025-06-08 12:59:50,129 - postflop_decision_logic - DEBUG - SPR analysis: spr=8.00, strategy=standard, drawing_potential=False
+2025-06-08 12:59:50,129 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=5, win_probability=70.00%
+2025-06-08 12:59:50,129 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-08 13:20:37,852 - postflop_decision_logic - DEBUG - make_postflop_decision: street=flop, my_player_data={'current_bet': 0, 'position': 'BTN', 'community_cards': ['Ah', '9c', '7s']}, pot_size=100, win_prob=0.68, pot_odds=0, bet_to_call=0, max_bet_on_table=0, active_opponents_count=1, can_check=True
+2025-06-08 13:20:37,854 - postflop_decision_logic - WARNING - Cash game enhancements failed: invalid syntax (cash_game_enhancements.py, line 115)
+2025-06-08 13:20:37,854 - postflop_decision_logic - WARNING - Advanced opponent modeling failed: 'AdvancedOpponentAnalyzer' object has no attribute 'update_opponent_profile'
+2025-06-08 13:20:37,854 - postflop_decision_logic - WARNING - Enhanced board analysis failed: 'texture'
+2025-06-08 13:20:37,854 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['board_analysis', 'performance_tracker', 'decision_context']
+2025-06-08 13:20:37,873 - postflop_decision_logic - DEBUG - Enhanced classification: strong, commitment_threshold: 35.00%
+2025-06-08 13:20:37,873 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0, total_commitment_if_call=0, my_stack=800, pot_commitment_ratio=0.00%, commitment_threshold=35.00%, is_pot_committed=False
+2025-06-08 13:20:37,873 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=1, table_type=loose, avg_vpip=45.0, reasoning=analyzed_1_opponents
+2025-06-08 13:20:37,873 - postflop_decision_logic - DEBUG - Opponent analysis: 2 opponents tracked, table type: <Mock name='mock.get_table_dynamics().get()' id='2555096235520'>, estimated_range: unknown
+2025-06-08 13:20:37,873 - postflop_decision_logic - DEBUG - SPR analysis: spr=8.00, strategy=standard, drawing_potential=False
+2025-06-08 13:20:37,873 - postflop_decision_logic - DEBUG - Hand strength classification: is_very_strong=False, is_strong=True, is_medium=False, is_weak=False, numerical_hand_rank=5, win_probability=68.00%
+2025-06-08 13:20:37,873 - postflop_decision_logic - DEBUG - Option to check is available.
