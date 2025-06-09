@@ -149,6 +149,22 @@ class AdvancedOpponentAnalyzer:
             self.profiles[player_name] = OpponentProfile(player_name)
         return self.profiles[player_name]
     
+    def update_opponent_profile(self, player_name: str, stats_data: Dict) -> None:
+        """Update or create opponent profile with statistics from existing tracker."""
+        profile = self.get_or_create_profile(player_name)
+        
+        # Update basic stats if available
+        if 'vpip' in stats_data:
+            profile.vpip = stats_data['vpip'] / 100.0 if stats_data['vpip'] > 1.0 else stats_data['vpip']
+        if 'pfr' in stats_data:
+            profile.pfr = stats_data['pfr'] / 100.0 if stats_data['pfr'] > 1.0 else stats_data['pfr']
+        if 'hands_seen' in stats_data:
+            profile.hands_observed = max(profile.hands_observed, stats_data['hands_seen'])
+        
+        # Calculate derived stats
+        if profile.vpip > 0 and profile.pfr > 0:
+            profile.aggression_factor = profile.pfr / profile.vpip
+    
     def analyze_betting_pattern(self, player_name: str, action_sequence: List[Tuple[str, str, float]]) -> Dict:
         """Analyze a sequence of betting actions."""
         profile = self.get_or_create_profile(player_name)
