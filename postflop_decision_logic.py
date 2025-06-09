@@ -262,9 +262,12 @@ def make_postflop_decision(
                 'position': my_player_data.get('position', 'BB'),
                 'situation': 'facing_bet' if bet_to_call > 0 else 'checked_to'
             }
+              # Get the primary opponent to analyze (first active opponent)
+            opponent_list = list(opponent_tracker.opponents.keys())[:active_opponents_count]
+            primary_opponent = opponent_list[0] if opponent_list else "Unknown"
             
             exploitative_strategy = analyzer.get_exploitative_strategy(
-                active_opponents=list(opponent_tracker.opponents.keys())[:active_opponents_count],
+                player_name=primary_opponent,
                 current_situation=current_situation
             )
             

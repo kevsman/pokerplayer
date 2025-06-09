@@ -144,16 +144,14 @@ def get_preflop_hand_category(hole_cards, position): # Renamed parameters for cl
             if rank2_val >= 5: return "Suited Playable" # K5s+ (K2s-K4s are weak)
         # Qxs (QJs, QTs are connectors)
         elif rank1_val == 12 and rank2_val <= 10 and not (rank1_val - rank2_val <= 2): # Q9s down to Q2s
-            if rank2_val >= 5: return "Suited Playable" # Q5s+
-        # Jxs (JTs, J9s are connectors/gappers)
+            if rank2_val >= 5: return "Suited Playable" # Q5s+        # Jxs (JTs, J9s are connectors/gappers)
         elif rank1_val == 11 and rank2_val <= 9 and not (rank1_val - rank2_val <= 2): # J8s down to J2s
-            if rank2_val >= 4: return "Suited Playable" # J4s+
-        # Txs (T9s, T8s are connectors/gappers)
+            if rank2_val >= 6: return "Suited Playable" # J6s+ (J4s and J5s are too weak)        # Txs (T9s, T8s are connectors/gappers)
         elif rank1_val == 10 and rank2_val <= 8 and not (rank1_val - rank2_val <= 2): # T7s down to T2s
-            if rank2_val >= 4: return "Suited Playable" # T4s+ (T3s should be weak by falling through)
+            if rank2_val >= 6: return "Suited Playable" # T6s+ (T4s and T5s are too weak)
         # 9xs (98s, 97s are connectors/gappers)
         elif rank1_val == 9 and rank2_val <= 7 and not (rank1_val - rank2_val <= 2): # 96s down to 92s
-            if rank2_val >= 4: return "Suited Playable" # 94s+
+            if rank2_val >= 6: return "Suited Playable" # 96s+ (94s and 95s are too weak)
               # Offsuit Playable hands (e.g. A9o, KTo, QTo, JTo, T9o that are not "Offsuit Broadway")
     # These are hands with a high card and a decent offsuit kicker.
     if not is_suited:

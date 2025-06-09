@@ -202,8 +202,7 @@ class AdvancedOpponentAnalyzer:
                 
                 if amount > avg_size * 1.5:
                     size_analysis[street] = 'overbet_pattern'
-                elif amount < avg_size * 0.7:
-                    size_analysis[street] = 'small_bet_pattern'
+                elif amount < avg_size * 0.7:                    size_analysis[street] = 'small_bet_pattern'
                 else:
                     size_analysis[street] = 'standard_sizing'
         
@@ -225,8 +224,14 @@ class AdvancedOpponentAnalyzer:
     
     def get_exploitative_strategy(self, player_name: str, current_situation: Dict) -> Dict[str, str]:
         """Get exploitative strategy recommendations."""
-        if player_name not in self.profiles:
-            return {'strategy': 'balanced_default'}
+        if player_name not in self.profiles or player_name == "Unknown":
+            return {
+                'recommended_action': 'balanced_default',
+                'reasoning': 'insufficient_opponent_data',
+                'strategy': 'balanced_default',
+                'sizing_adjustment': 'standard_sizing',
+                'bluff_frequency': 'standard_bluffing'
+            }
         
         profile = self.profiles[player_name]
         adjustments = profile.get_exploitative_adjustments()
@@ -236,7 +241,23 @@ class AdvancedOpponentAnalyzer:
         street = current_situation.get('street', 'flop')
         position = current_situation.get('position', 'unknown')
         
+        # Generate exploitative recommendations
+        recommended_action = 'balanced_default'
+        reasoning = 'standard_play'
+        
+        if profile.is_tight_player() and situation == 'facing_bet':
+            recommended_action = 'bluff_more'
+            reasoning = 'tight_opponent_folds_often'
+        elif profile.is_aggressive_player() and situation == 'checked_to':
+            recommended_action = 'bet_thin_value'
+            reasoning = 'aggressive_opponent_calls_light'
+        elif profile.fold_to_cbet > 0.65:
+            recommended_action = 'cbet_more'
+            reasoning = 'opponent_folds_to_cbets_frequently'
+        
         strategy = {
+            'recommended_action': recommended_action,
+            'reasoning': reasoning,
             'primary': adjustments.get(street, 'balanced'),
             'secondary': adjustments.get('postflop', 'standard'),
             'sizing_adjustment': self._get_sizing_adjustment(profile, street),

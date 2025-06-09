@@ -35,32 +35,77 @@ def classify_hand_strength_enhanced(numerical_hand_rank, win_probability, board_
         logger.debug("Classified as strong") 
         return 'strong'
     
-    # Special handling for one-pair hands (the main issue identified)
+    # Enhanced one-pair classification with more granular boundaries
     if numerical_hand_rank == 2:  # One pair
+        # Analyze the hand description for more context
+        hand_desc_lower = hand_description.lower()
+        
+        # Very strong one pair (top pair good kicker, overpair vs tight range)
         if win_probability >= 0.70:
             logger.debug("Classified one pair as strong (high equity)")
             return 'strong'
-        elif win_probability >= 0.55:
-            logger.debug("Classified one pair as medium (decent equity)")
-            return 'medium'
-        elif win_probability >= 0.35:
-            logger.debug("Classified one pair as weak_made (low equity)")
+        
+        # Strong-medium one pair (top pair decent kicker) 
+        elif win_probability >= 0.60:
+            # Additional context checks for more accurate classification
+            if any(phrase in hand_desc_lower for phrase in ['top pair', 'overpair', 'aces', 'kings']):
+                logger.debug("Classified one pair as medium (decent top pair)")
+                return 'medium'
+            else:
+                logger.debug("Classified one pair as weak_made (marginal equity)")
+                return 'weak_made'
+        
+        # Medium one pair (decent middle pair, weak top pair)
+        elif win_probability >= 0.45:
+            # Check for signs of decent pair vs weak kicker scenarios
+            if any(phrase in hand_desc_lower for phrase in ['middle pair', 'second pair', 'top pair']):
+                logger.debug("Classified one pair as medium (marginal)")
+                return 'medium'
+            else:
+                logger.debug("Classified one pair as weak_made (low-medium equity)")
+                return 'weak_made'
+        
+        # Weak made hands (bottom pair, weak middle pair, dominated pairs)
+        elif win_probability >= 0.30:
+            logger.debug("Classified one pair as weak_made (dominated or weak)")
             return 'weak_made'
+        
+        # Very weak pairs (dominated, facing aggression)
         else:
-            logger.debug("Classified one pair as very_weak (very low equity)")
+            logger.debug("Classified one pair as very_weak (heavily dominated)")
             return 'very_weak'
+    
+    # Enhanced three-of-a-kind and two-pair classification  
+    elif numerical_hand_rank == 3:  # Two pair
+        if win_probability >= 0.80:
+            return 'strong'
+        elif win_probability >= 0.65:
+            return 'medium'
+        else:
+            return 'weak_made'
     
     # Drawing hands - typically 25-45% equity
     if 0.25 <= win_probability <= 0.45 and numerical_hand_rank < 2:
+        # Enhanced drawing hand detection with board context
+        if board_texture:
+            if board_texture.get('draw_heavy', False):
+                logger.debug("Classified as drawing hand (on draw-heavy board)")
+                return 'drawing'
+        
+        # Position-based drawing hand adjustments
+        if position in ['BTN', 'CO']:
+            logger.debug("Classified as drawing hand (good position)")
+            return 'drawing'
+        
         logger.debug("Classified as drawing hand")
         return 'drawing'
     
-    # Medium hands - decent but not great
+    # Medium hands - decent but not great (high cards, weak pairs)
     if numerical_hand_rank >= 1 and win_probability >= 0.50:
         logger.debug("Classified as medium")
         return 'medium'
     
-    # Weak made hands
+    # Weak made hands (any pair, ace high vs tight ranges)
     if win_probability >= 0.25:
         logger.debug("Classified as weak_made")
         return 'weak_made'
@@ -226,7 +271,7 @@ def get_consistent_bet_sizing(hand_strength, pot_size, street, spr, board_textur
 
 def standardize_pot_commitment_thresholds(hand_strength, street, spr):
     """
-    Standardize pot commitment thresholds (addresses issue #5).
+    Standardize pot commitment thresholds with enhanced logic (addresses issue #5).
     
     Args:
         hand_strength: String classification
@@ -237,33 +282,51 @@ def standardize_pot_commitment_thresholds(hand_strength, street, spr):
         float: Commitment threshold (0.0-1.0)
     """
     
-    # Base thresholds by hand strength
+    # Enhanced base thresholds by hand strength with better granularity
     base_thresholds = {
-        'very_strong': 0.25,  # Commit with 25% of stack
-        'strong': 0.35,       # Commit with 35% of stack
-        'medium': 0.50,       # Commit with 50% of stack
-        'weak_made': 0.65,    # Commit with 65% of stack (drawing equity)
-        'very_weak': 0.80,    # Only commit if already pot stuck
-        'drawing': 0.70       # Commit with draws if getting right price
+        'very_strong': 0.20,  # Commit with 20% of stack (nuts/near-nuts)
+        'strong': 0.30,       # Commit with 30% of stack (two pair+, strong pairs)
+        'medium': 0.45,       # Commit with 45% of stack (decent pairs, good draws)
+        'weak_made': 0.60,    # Commit with 60% of stack (weak pairs with equity)
+        'very_weak': 0.75,    # Only commit at 75% (pot stuck scenarios)
+        'drawing': 0.55       # Commit at 55% with draws (implied odds factor)
     }
     
     threshold = base_thresholds.get(hand_strength, 0.50)
     
-    # Street adjustments - be more willing to commit later in hand
-    if street == 'turn':
-        threshold *= 0.9
-    elif street == 'river':
-        threshold *= 0.8
+    # Enhanced street adjustments - theory-based commitment progression
+    street_multipliers = {
+        'flop': 1.1,    # Slightly higher threshold on flop (more streets to play)
+        'turn': 1.0,    # Standard threshold on turn
+        'river': 0.85   # Lower threshold on river (no future streets)
+    }
     
-    # SPR adjustments
-    if spr < 3:
-        # Low SPR - should be committed more easily
-        threshold *= 0.8
-    elif spr > 10:
-        # High SPR - need stronger hands to commit
+    threshold *= street_multipliers.get(street, 1.0)
+    
+    # Enhanced SPR adjustments with better scaling
+    if spr < 1.5:
+        # Very low SPR - commit very easily (pot committed territory)
+        threshold *= 0.7
+    elif spr < 3:
+        # Low SPR - commit more easily
+        threshold *= 0.85
+    elif spr > 15:
+        # Very high SPR - much more conservative
+        threshold *= 1.4
+    elif spr > 8:
+        # High SPR - more conservative
         threshold *= 1.2
     
-    return min(max(threshold, 0.15), 0.85)  # Keep between 15% and 85%
+    # Additional context-based adjustments
+    
+    # Multiway pot adjustment (passed via hand_strength context if available)
+    # This would need opponent count data, but for now use hand strength as proxy
+    if hand_strength in ['weak_made', 'very_weak']:
+        # Be more conservative with marginal hands in complex spots
+        threshold *= 1.1
+    
+    # Ensure reasonable bounds with better limits
+    return min(max(threshold, 0.12), 0.85)  # Keep between 12% and 85%
 
 
 def fix_opponent_tracker_integration(opponent_tracker, active_opponents_count):
