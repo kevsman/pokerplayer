@@ -67,12 +67,11 @@ class OpponentProfile:
         self.position_stats[position]['hands'] += 1
         self.recent_actions.append({
             'street': 'preflop',
-            'action': action,
-            'position': position,
+            'action': action,            'position': position,
             'bet_size_ratio': bet_size / pot_size if pot_size > 0 else 0
         })
         
-    def update_postflop_action(self, action: str, street: str, bet_size: float = 0, pot_size: float = 0):
+    def update_postflop_action(self, action: str, street: str, bet_size: float = 0, pot_size: float = 0, position: str = 'unknown'):
         """Update postflop statistics for this opponent."""
         if action == 'bet':
             self.postflop_bets += 1
@@ -90,6 +89,7 @@ class OpponentProfile:
         self.recent_actions.append({
             'street': street,
             'action': action,
+            'position': position,
             'bet_size_ratio': bet_size / pot_size if pot_size > 0 else 0
         })
         
@@ -232,7 +232,7 @@ class OpponentTracker:
         if street == 'preflop':
             profile.update_preflop_action(action, position, bet_size, pot_size)
         else:
-            profile.update_postflop_action(action, street, bet_size, pot_size)
+            profile.update_postflop_action(action, street, bet_size, pot_size, position)
             
     def get_table_dynamics(self) -> Dict[str, float]:
         """Analyze overall table dynamics."""

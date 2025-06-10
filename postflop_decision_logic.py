@@ -451,12 +451,22 @@ def make_postflop_decision(
         fold_equity_estimate = opponent_analysis['fold_equity_estimate']
         
     except ImportError:
-        logger.warning("Enhanced opponent analysis not available, using original logic")
-        opponent_context = {}
-        estimated_opponent_range = 'unknown'
-        fold_equity_estimate = 0.5  # Default fold equity
+        logger.warning("Enhanced opponent analysis not available, using improved tracking fix")
+        
+        # Use the new opponent tracking fix
+        try:
+            from opponent_tracking_fix import get_enhanced_opponent_context
+            opponent_context, estimated_opponent_range, fold_equity_estimate = get_enhanced_opponent_context(
+                opponent_tracker, active_opponents_count, bet_to_call, pot_size, community_cards
+            )
+        except ImportError:
+            logger.warning("Opponent tracking fix not available, using original logic")
+            opponent_context = {}
+            estimated_opponent_range = 'unknown'
+            fold_equity_estimate = 0.5  # Default fold equity
     
-    if opponent_tracker and active_opponents_count > 0:
+    # Legacy opponent analysis for compatibility (if the above failed)
+    if not opponent_context and opponent_tracker and active_opponents_count > 0:
         # Get table dynamics
         table_dynamics = opponent_tracker.get_table_dynamics()
         
@@ -472,17 +482,85 @@ def make_postflop_decision(
                     'vpip': profile.get_vpip(),
                     'pfr': profile.get_pfr(),
                     'can_value_bet_thin': profile.should_value_bet_thin('unknown')
-                }
+                }                # Use first opponent's data for range estimation (could be improved for multiple opponents)
+                # Extract actual opponent data from recent actions
+                opponent_position = 'unknown'
+                opponent_preflop_action = 'unknown'
                 
-                # Use first opponent's data for range estimation (could be improved for multiple opponents)
+                # Try to get position and preflop action from recent actions
+                if hasattr(profile, 'recent_actions') and profile.recent_actions:
+                    for action_data in reversed(profile.recent_actions):  # Check most recent first
+                        if isinstance(action_data, dict):
+                            if action_data.get('street') == 'preflop' and opponent_preflop_action == 'unknown':
+                                opponent_preflop_action = action_data.get('action', 'unknown')
+                            if action_data.get('position') and opponent_position == 'unknown':
+                                opponent_position = action_data.get('position', 'unknown')
+                
+                # If no recent actions, infer from player type
+                if opponent_preflop_action == 'unknown':
+                    player_type = profile.classify_player_type()
+                    if 'aggressive' in player_type:
+                        opponent_preflop_action = 'raise'  # Likely raiser
+                    elif 'passive' in player_type:
+                        opponent_preflop_action = 'call'   # Likely caller
+                    else:
+                        opponent_preflop_action = 'call'   # Default
+                
+                # Get board texture from community cards if available
+                board_texture = 'unknown'
+                if community_cards and len(community_cards) >= 3:
+                    # Simple board texture analysis
+                    suits = [card[-1] for card in community_cards[:3]]  # Check flop
+                    ranks = [card[:-1] for card in community_cards[:3]]
+                    
+                    # Check for draws and coordination
+                    suit_counts = {suit: suits.count(suit) for suit in suits}
+                    max_suit_count = max(suit_counts.values()) if suit_counts else 0
+                    
+                    # Simple heuristic for board texture
+                    if max_suit_count >= 2:  # Two suited
+                        board_texture = 'wet'
+                    elif len(set(ranks)) == len(ranks):  # All different ranks
+                        # Check for straight possibilities
+                        rank_values = []
+                        for rank in ranks:
+                            if rank.isdigit():
+                                rank_values.append(int(rank))
+                            elif rank == 'A':
+                                rank_values.append(14)
+                            elif rank == 'K':
+                                rank_values.append(13)
+                            elif rank == 'Q':
+                                rank_values.append(12)
+                            elif rank == 'J':
+                                rank_values.append(11)
+                        
+                        if rank_values:
+                            rank_values.sort()
+                            # Check for consecutive or near-consecutive
+                            if len(rank_values) >= 2:
+                                max_gap = max(rank_values[i+1] - rank_values[i] for i in range(len(rank_values)-1))
+                                if max_gap <= 4:  # Some straight possibility
+                                    board_texture = 'wet'
+                                else:
+                                    board_texture = 'dry'
+                            else:
+                                board_texture = 'dry'
+                    else:
+                        board_texture = 'dry'
+                
                 estimated_opponent_range = estimate_opponent_range(
-                    position='unknown',  # Would need position tracking
-                    preflop_action='unknown',  # Would need action tracking
+                    position=opponent_position,
+                    preflop_action=opponent_preflop_action,
                     bet_size=bet_to_call,
                     pot_size=pot_size,
                     street=street,
-                    board_texture='unknown'  # Would need board texture analysis
+                    board_texture=board_texture
                 )
+                
+                logger.debug(f"Opponent range estimation: position={opponent_position}, "
+                            f"preflop_action={opponent_preflop_action}, bet_size={bet_to_call}, "
+                            f"board_texture={board_texture}, estimated_range={estimated_opponent_range}")
                 
                 fold_equity_estimate = fold_equity
                 break  # Use first opponent for now
@@ -864,8 +942,7 @@ def make_postflop_decision(
           # So our raise must be to at least M + (M-P).
           # If there was no P (M is the first bet), then increment is M. Our raise is to M + M = 2M.
           # This needs the bet that occurred *before* max_bet_on_table.
-          # For now, let's assume a simpler rule: min raise is to double the current bet if it's the first bet, or add the last raise amount.
-          # The most straightforward rule for min raise: must raise to at least (max_bet_on_table + bet_to_call).
+          # For now, let's assume a simpler rule: must raise to at least (max_bet_on_table + bet_to_call).
           # This means if opponent bet 10 (max_bet_on_table=10, bet_to_call=10 if we had 0 in), we raise to at least 20.
           # If we had 5 in, opponent makes it 15 (max_bet_on_table=15, bet_to_call=10), we raise to at least 15+10=25.
           min_total_raise_to_amount = max_bet_on_table + bet_to_call 
