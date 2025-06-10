@@ -390,3 +390,85 @@
 2025-06-10 21:27:12,352 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.06, pot_size: 0.36, my_stack: 0.63, max_bet_on_table: 0.06
 2025-06-10 21:27:12,353 - postflop_decision_logic - INFO - Facing bet: win_probability=44.12%, pot_odds_to_call=14.29%, bet_to_call=0.06, pot_size=0.36
 2025-06-10 21:27:12,353 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-10 21:37:27,803 - postflop_decision_logic - INFO - Enhanced hand classification: weak_made (rank=2, win_prob=45.9%, threshold=65.0%)
+2025-06-10 21:37:27,803 - postflop_decision_logic - INFO - Fixed opponent analysis: tracked=0, table_type=tight, avg_vpip=20.0%, fold_equity=65.0%
+2025-06-10 21:37:27,803 - postflop_decision_logic - DEBUG - SPR strategy: pot_control_check_call (SPR=4.9, medium)
+2025-06-10 21:37:27,803 - postflop_decision_logic - DEBUG - Pot commitment: committed=0.00, call=0.00, total=0.00, stack=0.88, ratio=0.0%, threshold=65.0%, is_committed=False
+2025-06-10 21:37:27,805 - postflop_decision_logic - INFO - Cash game enhancements applied: position=MP, hand_strength=medium, confidence=0.85
+2025-06-10 21:37:27,805 - postflop_decision_logic - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-10 21:37:27,805 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'opponent_analysis', 'performance_tracker', 'decision_context']
+2025-06-10 21:37:27,852 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 72.60%
+2025-06-10 21:37:27,852 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.88, pot_commitment_ratio=0.00%, commitment_threshold=72.60%, is_pot_committed=False
+2025-06-10 21:37:27,853 - postflop_decision_logic - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-10 21:37:27,854 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_active_opponents_or_no_profiles_to_track
+2025-06-10 21:37:27,854 - postflop_decision_logic - DEBUG - SPR analysis: spr=4.89, strategy=standard, drawing_potential=True
+2025-06-10 21:37:27,855 - postflop_decision_logic - DEBUG - Final Hand strength for decision: medium (is_weak=False). Original numerical_rank=2, win_prob=45.94%
+2025-06-10 21:37:27,855 - postflop_decision_logic - INFO - Post-adjustment hand strength: very_strong=False, strong=False, medium=True, weak=False (Final Category: medium)
+2025-06-10 21:37:27,856 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-10 21:37:27,856 - postflop_decision_logic - INFO - Decision: CHECK (medium hand, no value bet/bluff).
+2025-06-10 21:37:40,683 - postflop_decision_logic - INFO - Enhanced hand classification: weak (rank=2, win_prob=24.4%, threshold=68.0%)
+2025-06-10 21:37:40,683 - postflop_decision_logic - INFO - Fixed opponent analysis: tracked=0, table_type=tight, avg_vpip=20.0%, fold_equity=65.0%
+2025-06-10 21:37:40,683 - postflop_decision_logic - DEBUG - SPR strategy: bluff_with_equity_fold_without (SPR=4.9, medium)
+2025-06-10 21:37:40,684 - postflop_decision_logic - DEBUG - Pot commitment: committed=0.00, call=0.00, total=0.00, stack=0.88, ratio=0.0%, threshold=68.0%, is_committed=False
+2025-06-10 21:37:40,684 - postflop_decision_logic - INFO - Cash game enhancements applied: position=MP, hand_strength=very_weak, confidence=0.85
+2025-06-10 21:37:40,684 - postflop_decision_logic - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-10 21:37:40,684 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'opponent_analysis', 'performance_tracker', 'decision_context']
+2025-06-10 21:37:40,685 - postflop_decision_logic - DEBUG - Enhanced classification: very_weak, commitment_threshold: 82.50%
+2025-06-10 21:37:40,685 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.88, pot_commitment_ratio=0.00%, commitment_threshold=82.50%, is_pot_committed=False
+2025-06-10 21:37:40,685 - postflop_decision_logic - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-10 21:37:40,685 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_active_opponents_or_no_profiles_to_track
+2025-06-10 21:37:40,686 - postflop_decision_logic - DEBUG - SPR analysis: spr=4.89, strategy=standard, drawing_potential=False
+2025-06-10 21:37:40,686 - postflop_decision_logic - DEBUG - Final Hand strength for decision: weak_made (is_weak=True). Original numerical_rank=2, win_prob=24.36%
+2025-06-10 21:37:40,686 - postflop_decision_logic - INFO - Post-adjustment hand strength: very_strong=False, strong=False, medium=False, weak=True (Final Category: weak_made)
+2025-06-10 21:37:40,687 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-10 21:37:40,687 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-10 21:37:53,496 - postflop_decision_logic - INFO - Enhanced hand classification: weak (rank=2, win_prob=28.1%, threshold=56.0%)
+2025-06-10 21:37:53,496 - postflop_decision_logic - INFO - Fixed opponent analysis: tracked=0, table_type=tight, avg_vpip=20.0%, fold_equity=65.0%
+2025-06-10 21:37:53,496 - postflop_decision_logic - DEBUG - SPR strategy: bluff_with_equity_fold_without (SPR=4.9, medium)
+2025-06-10 21:37:53,496 - postflop_decision_logic - DEBUG - Pot commitment: committed=0.00, call=0.00, total=0.00, stack=0.88, ratio=0.0%, threshold=56.0%, is_committed=False
+2025-06-10 21:37:53,497 - postflop_decision_logic - INFO - Cash game enhancements applied: position=MP, hand_strength=very_weak, confidence=0.85
+2025-06-10 21:37:53,497 - postflop_decision_logic - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-10 21:37:53,497 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'opponent_analysis', 'performance_tracker', 'decision_context']
+2025-06-10 21:37:53,497 - postflop_decision_logic - DEBUG - Enhanced classification: very_weak, commitment_threshold: 70.12%
+2025-06-10 21:37:53,497 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.0, total_commitment_if_call=0.0, my_stack=0.88, pot_commitment_ratio=0.00%, commitment_threshold=70.12%, is_pot_committed=False
+2025-06-10 21:37:53,498 - postflop_decision_logic - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-10 21:37:53,498 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_active_opponents_or_no_profiles_to_track
+2025-06-10 21:37:53,498 - postflop_decision_logic - DEBUG - SPR analysis: spr=4.89, strategy=standard, drawing_potential=False
+2025-06-10 21:37:53,498 - postflop_decision_logic - DEBUG - Final Hand strength for decision: weak_made (is_weak=True). Original numerical_rank=2, win_prob=28.08%
+2025-06-10 21:37:53,498 - postflop_decision_logic - INFO - Post-adjustment hand strength: very_strong=False, strong=False, medium=False, weak=True (Final Category: weak_made)
+2025-06-10 21:37:53,499 - postflop_decision_logic - DEBUG - Option to check is available.
+2025-06-10 21:37:53,499 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-10 21:40:11,536 - postflop_decision_logic - INFO - Enhanced hand classification: weak_made (rank=2, win_prob=44.5%, threshold=65.0%)
+2025-06-10 21:40:11,538 - postflop_decision_logic - INFO - Fixed opponent analysis: tracked=0, table_type=tight, avg_vpip=20.0%, fold_equity=65.0%
+2025-06-10 21:40:11,539 - postflop_decision_logic - DEBUG - SPR strategy: fold_to_aggression (SPR=2.9, low)
+2025-06-10 21:40:11,539 - postflop_decision_logic - DEBUG - Pot commitment: committed=0.00, call=0.12, total=0.12, stack=0.79, ratio=13.2%, threshold=65.0%, is_committed=False
+2025-06-10 21:40:11,540 - postflop_decision_logic - INFO - Cash game enhancements applied: position=BTN, hand_strength=weak_made, confidence=0.85
+2025-06-10 21:40:11,540 - postflop_decision_logic - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-10 21:40:11,540 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'opponent_analysis', 'performance_tracker', 'decision_context']
+2025-06-10 21:40:11,540 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 61.71%
+2025-06-10 21:40:11,540 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.12, total_commitment_if_call=0.12, my_stack=0.79, pot_commitment_ratio=13.19%, commitment_threshold=61.71%, is_pot_committed=False
+2025-06-10 21:40:11,540 - postflop_decision_logic - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-10 21:40:11,541 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_active_opponents_or_no_profiles_to_track
+2025-06-10 21:40:11,541 - postflop_decision_logic - DEBUG - SPR analysis: spr=2.93, strategy=standard, drawing_potential=True
+2025-06-10 21:40:11,541 - postflop_decision_logic - DEBUG - Final Hand strength for decision: weak_made (is_weak=True). Original numerical_rank=2, win_prob=44.46%
+2025-06-10 21:40:11,542 - postflop_decision_logic - INFO - Post-adjustment hand strength: very_strong=False, strong=False, medium=False, weak=True (Final Category: weak_made)
+2025-06-10 21:40:11,542 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.12, pot_size: 0.27, my_stack: 0.79, max_bet_on_table: 0.12
+2025-06-10 21:40:11,542 - postflop_decision_logic - INFO - Facing bet: win_probability=44.46%, pot_odds_to_call=30.77%, bet_to_call=0.12, pot_size=0.27
+2025-06-10 21:40:11,543 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
+2025-06-10 21:40:20,664 - postflop_decision_logic - INFO - Enhanced hand classification: weak_made (rank=2, win_prob=43.9%, threshold=55.2%)
+2025-06-10 21:40:20,665 - postflop_decision_logic - INFO - Fixed opponent analysis: tracked=0, table_type=tight, avg_vpip=20.0%, fold_equity=65.0%
+2025-06-10 21:40:20,665 - postflop_decision_logic - DEBUG - SPR strategy: fold_to_aggression (SPR=0.7, very_low)
+2025-06-10 21:40:20,665 - postflop_decision_logic - DEBUG - Pot commitment: committed=0.00, call=0.67, total=0.67, stack=0.67, ratio=50.0%, threshold=55.2%, is_committed=False
+2025-06-10 21:40:20,666 - postflop_decision_logic - INFO - Cash game enhancements applied: position=BTN, hand_strength=weak_made, confidence=0.85
+2025-06-10 21:40:20,666 - postflop_decision_logic - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-10 21:40:20,666 - postflop_decision_logic - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'opponent_analysis', 'performance_tracker', 'decision_context']
+2025-06-10 21:40:20,666 - postflop_decision_logic - DEBUG - Enhanced classification: weak_made, commitment_threshold: 46.20%
+2025-06-10 21:40:20,667 - postflop_decision_logic - DEBUG - Pot commitment check: committed_amount=0, bet_to_call=0.67, total_commitment_if_call=0.67, my_stack=0.67, pot_commitment_ratio=50.00%, commitment_threshold=46.20%, is_pot_committed=True
+2025-06-10 21:40:20,667 - postflop_decision_logic - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-10 21:40:20,667 - postflop_decision_logic - INFO - Enhanced opponent analysis: tracked=0, table_type=unknown, avg_vpip=25.0, reasoning=no_active_opponents_or_no_profiles_to_track
+2025-06-10 21:40:20,667 - postflop_decision_logic - DEBUG - SPR analysis: spr=0.72, strategy=commit, drawing_potential=True
+2025-06-10 21:40:20,667 - postflop_decision_logic - DEBUG - Final Hand strength for decision: weak_made (is_weak=True). Original numerical_rank=2, win_prob=43.86%
+2025-06-10 21:40:20,667 - postflop_decision_logic - INFO - Post-adjustment hand strength: very_strong=False, strong=False, medium=False, weak=True (Final Category: weak_made)
+2025-06-10 21:40:20,667 - postflop_decision_logic - DEBUG - Facing a bet. bet_to_call: 0.67, pot_size: 0.93, my_stack: 0.67, max_bet_on_table: 0.54
+2025-06-10 21:40:20,668 - postflop_decision_logic - INFO - Facing bet: win_probability=43.86%, pot_odds_to_call=41.88%, bet_to_call=0.67, pot_size=0.93
+2025-06-10 21:40:20,668 - postflop_decision_logic - INFO - Decision: CHECK (weak hand).
