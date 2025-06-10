@@ -325,7 +325,7 @@ def make_preflop_decision(
     # Strong Pair (JJ, TT)
     # Suited Playable (KJs, KTs, QJs, QTs, JTs)
     # Medium Pair (99, 88, 77) - Added
-    if preflop_category in ["Suited Ace", "Offsuit Ace", "Suited King", "Offsuit King", "Playable Broadway", "Offsuit Broadway", "Strong Pair", "Suited Playable", "Medium Pair"]:
+    if preflop_category in ["Suited Ace", "Offsuit Ace", "Suited King", "Offsuit King", "Playable Broadway", "Offsuit Broadway", "Strong Pair", "Suited Playable", "Medium Pair", "Offsuit Playable"]: # Added "Offsuit Playable"
         if position in ['UTG', 'MP']:
             # Facing a real raise (max_bet_on_table > big_blind)
             # Fold AJo/ATo facing UTG raise + MP 3-bet
@@ -570,3 +570,7 @@ def make_preflop_decision(
             if can_check:
                 return action_check_const, 0
             return action_fold_const, 0
+    
+    # Fallback for unhandled preflop categories or logic fall-through
+    print(f"WARNING: Unhandled preflop_category '{preflop_category}' or major logic fall-through in make_preflop_decision. Defaulting to FOLD.")
+    return action_fold_const, 0

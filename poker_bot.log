@@ -5406,3 +5406,82 @@
 2025-06-10 21:53:57,491 - __main__ - INFO - PokerBot stopped by user.
 2025-06-10 21:53:57,491 - __main__ - INFO - PokerBot main_loop ended.
 2025-06-10 21:53:57,492 - __main__ - INFO - Closing logger handlers.
+2025-06-10 22:01:45,417 - __main__ - INFO - PokerBot started. Press Ctrl+C to stop.
+2025-06-10 22:01:45,417 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-10 22:01:45,417 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-10 22:01:46,823 - __main__ - DEBUG - HTML length: 48515
+2025-06-10 22:01:47,725 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-10 22:01:48,726 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-10 22:01:48,727 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-10 22:01:50,135 - __main__ - DEBUG - HTML length: 47224
+2025-06-10 22:01:51,229 - __main__ - INFO - Not my turn. My Hand: ['3♠', '7♠']. Stack: €1.55. Waiting...
+2025-06-10 22:01:52,230 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-10 22:01:52,231 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-10 22:01:53,643 - __main__ - DEBUG - HTML length: 50533
+2025-06-10 22:01:55,077 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-10 22:01:56,078 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-10 22:01:56,080 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-10 22:01:57,498 - __main__ - DEBUG - HTML length: 51517
+2025-06-10 22:01:58,832 - __main__ - INFO - My turn. Hand: ['2♥', '8♦'], Rank: 82 offsuit, Stack: €1.55, Bet to call: 0.07
+2025-06-10 22:01:58,832 - __main__ - INFO - Pot: €0.10, Community Cards: []
+2025-06-10 22:01:58,841 - __main__ - INFO - Decision: fold Amount: 0.00
+2025-06-10 22:02:05,318 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-10 22:02:05,320 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-10 22:02:06,744 - __main__ - DEBUG - HTML length: 49826
+2025-06-10 22:02:08,097 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-10 22:02:09,098 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-10 22:02:09,098 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-10 22:02:10,540 - __main__ - DEBUG - HTML length: 49826
+2025-06-10 22:02:11,739 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-10 22:02:12,739 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-10 22:02:12,740 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-10 22:02:14,146 - __main__ - DEBUG - HTML length: 47977
+2025-06-10 22:02:15,244 - __main__ - INFO - Not my turn. My Hand: ['2♥', '8♦']. Stack: €1.55. Waiting...
+2025-06-10 22:02:16,245 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-10 22:02:16,246 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-10 22:02:17,660 - __main__ - DEBUG - HTML length: 47536
+2025-06-10 22:02:18,998 - __main__ - INFO - Not my turn. My Hand: ['2♥', '8♦']. Stack: €1.55. Waiting...
+2025-06-10 22:02:19,999 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-10 22:02:20,000 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-10 22:02:21,404 - __main__ - DEBUG - HTML length: 50343
+2025-06-10 22:02:22,711 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-10 22:02:23,711 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-10 22:02:23,712 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-10 22:02:25,126 - __main__ - DEBUG - HTML length: 51329
+2025-06-10 22:02:26,430 - __main__ - INFO - My turn. Hand: ['A♣', 'Q♣'], Rank: AQ suited, Stack: €1.55, Bet to call: 0.02
+2025-06-10 22:02:26,430 - __main__ - INFO - Pot: €0.03, Community Cards: []
+2025-06-10 22:02:26,436 - __main__ - INFO - Decision: raise Amount: 0.06
+2025-06-10 22:02:35,562 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-10 22:02:35,563 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-10 22:02:36,985 - __main__ - DEBUG - HTML length: 46873
+2025-06-10 22:02:38,126 - __main__ - INFO - Not my turn. My Hand: ['A♣', 'Q♣']. Stack: €1.53. Waiting...
+2025-06-10 22:02:39,128 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-10 22:02:39,128 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-10 22:02:40,539 - __main__ - DEBUG - HTML length: 50810
+2025-06-10 22:02:41,775 - __main__ - INFO - My turn. Hand: ['J♦', '6♣'], Rank: J6 offsuit, Stack: €1.58, Bet to call: 0.02
+2025-06-10 22:02:41,775 - __main__ - INFO - Pot: €0.03, Community Cards: []
+2025-06-10 22:02:41,778 - __main__ - INFO - PokerBot main_loop ended.
+2025-06-10 22:02:41,778 - __main__ - ERROR - An error occurred in __main__: cannot unpack non-iterable NoneType object
+Traceback (most recent call last):
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 662, in <module>
+    bot.main_loop()
+    ~~~~~~~~~~~~~^^
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 540, in main_loop
+    action_tuple = self.decision_engine.make_decision(game_state_for_decision, my_player_index)
+  File "C:\GitRepositories\pokerplayer\decision_engine.py", line 236, in make_decision
+    action, amount = make_preflop_decision(
+    ^^^^^^^^^^^^^^
+TypeError: cannot unpack non-iterable NoneType object
+2025-06-10 22:02:41,780 - __main__ - INFO - Closing logger handlers.
