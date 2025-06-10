@@ -187,7 +187,12 @@ class PokerPageParser:
             self.logger.error("BeautifulSoup object (self.soup) not initialized before calling analyze_players.")
             return []
         self.player_data = [] 
-        active_player_already_identified_for_this_parse = False
+        # active_player_already_identified_for_this_parse = False # Keep this commented or remove
+        # FIX for Issue #4: HTML Parsing for Active Player (Potential Issue)
+        # Instead of a global flag for the parse, we will find all potentially active players
+        # and then determine the single active player, or log a warning if multiple/none are found.
+        potential_active_players = []
+
 
         # Find all elements that are marked as player areas
         player_area_elements = self.soup.find_all('div', class_='player-area')
@@ -325,15 +330,8 @@ class PokerPageParser:
                             current_player_meets_active_criteria = True
             
             if current_player_meets_active_criteria:
-                if not active_player_already_identified_for_this_parse:
-                    player_info['has_turn'] = True
-                    active_player_already_identified_for_this_parse = True
-                else:
-                    player_info['has_turn'] = False 
-                    self.logger.warning(
-                        f"Player {player_info.get('name', player_info.get('seat', 'UnknownSeat'))} "
-                        f"met active criteria, but another player was already identified as active."
-                    )
+                potential_active_players.append(player_info)
+
 
             if player_info['is_my_player']:
                 player_info['available_actions'] = []
@@ -518,6 +516,34 @@ class PokerPageParser:
         empty_players = len([p for p in self.player_data if p.get('is_empty')])
         active_players_count = total_players - empty_players
         self.logger.info(f"Player detection complete: {total_players} total seats, {active_players_count} active players, {empty_players} empty seats")
+
+        # New logic to handle 'has_turn' based on collected potential_active_players
+        if not potential_active_players:
+            self.logger.info("No player identified as active in this parse.")
+            # Explicitly set table_data['active_player_name'] to "N/A" if no one is active
+            if hasattr(self, 'table_data') and isinstance(self.table_data, dict):
+                 self.table_data['active_player_name'] = "N/A"
+        elif len(potential_active_players) == 1:
+            active_player_info = potential_active_players[0]
+            active_player_info['has_turn'] = True
+            self.logger.info(f"Successfully identified active player: {active_player_info.get('name', active_player_info.get('seat', 'UnknownSeat'))}")
+            # Update table_data with the active player's name
+            if hasattr(self, 'table_data') and isinstance(self.table_data, dict):
+                self.table_data['active_player_name'] = active_player_info.get('name', 'N/A')
+
+            # Ensure other players are marked as not having the turn
+            for p_info in self.player_data:
+                if p_info is not active_player_info:
+                    p_info['has_turn'] = False
+        else: # Multiple players identified as active
+            self.logger.warning(f"Multiple players ({len(potential_active_players)}) identified as active. This should not happen. Listing them:")
+            for i, p_info in enumerate(potential_active_players):
+                self.logger.warning(f"  Potential active player {i+1}: {p_info.get('name', p_info.get('seat', 'UnknownSeat'))}")
+                p_info['has_turn'] = False # Mark all as false to avoid incorrect state downstream
+            # Set table_data['active_player_name'] to "Error" or "Multiple" to indicate problem
+            if hasattr(self, 'table_data') and isinstance(self.table_data, dict):
+                self.table_data['active_player_name'] = "Error: Multiple Active"
+
 
         # Log all detected players with their seats
         for p in self.player_data:

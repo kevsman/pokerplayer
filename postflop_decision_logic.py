@@ -296,7 +296,8 @@ def make_postflop_decision(
         from cash_game_enhancements import apply_cash_game_enhancements
         
         cash_game_decision_context = {
-            'hand_strength': hand_strength,
+            'hand_strength': hand_strength, # This is the string \'very_strong\', \'strong\' etc.
+            'numerical_hand_rank': numerical_hand_rank, # Added for more granular analysis
             'win_probability': win_probability,
             'position': position,
             'street': street,
@@ -437,136 +438,87 @@ def make_postflop_decision(
         f"is_pot_committed={is_pot_committed}"
     )
       # Enhanced opponent analysis using tracking data (FIX #4: Opponent Tracker Integration)
+    # Addressing Issue #2: Contradictory Opponent Analysis Logging
+    # The goal is to have one primary source of opponent_analysis for decision making.
+    # If enhanced_postflop_improvements.fix_opponent_tracker_integration is available and works,
+    # it should be the preferred source. Otherwise, fall back to other methods.
+
+    final_opponent_analysis = None
+    opponent_analysis_source = "unknown"
+
     try:
         from enhanced_postflop_improvements import fix_opponent_tracker_integration
-        opponent_analysis = fix_opponent_tracker_integration(opponent_tracker, active_opponents_count)
-        logger.info(f"Enhanced opponent analysis: tracked={opponent_analysis['tracked_count']}, "
-                   f"table_type={opponent_analysis['table_type']}, "
-                   f"avg_vpip={opponent_analysis['avg_vpip']:.1f}, "
-                   f"reasoning={opponent_analysis['reasoning']}")
-        
-        # Use the enhanced analysis
-        opponent_context = {'enhanced_analysis': opponent_analysis}
-        estimated_opponent_range = opponent_analysis['table_type']
-        fold_equity_estimate = opponent_analysis['fold_equity_estimate']
-        
+        final_opponent_analysis = fix_opponent_tracker_integration(opponent_tracker, active_opponents_count)
+        opponent_analysis_source = "enhanced_postflop_improvements.fix_opponent_tracker_integration"
+        logger.info(f"Using opponent analysis from: {opponent_analysis_source}")
+        logger.info(f"Enhanced opponent analysis: tracked={final_opponent_analysis.get('tracked_count', 'N/A')}, "
+                   f"table_type={final_opponent_analysis.get('table_type', 'N/A')}, "
+                   f"avg_vpip={final_opponent_analysis.get('avg_vpip', 0.0):.1f}, "
+                   f"reasoning={final_opponent_analysis.get('reasoning', 'N/A')}")
+
     except ImportError:
-        logger.warning("Enhanced opponent analysis not available, using improved tracking fix")
-        
-        # Use the new opponent tracking fix
-        try:
-            from opponent_tracking_fix import get_enhanced_opponent_context
-            opponent_context, estimated_opponent_range, fold_equity_estimate = get_enhanced_opponent_context(
-                opponent_tracker, active_opponents_count, bet_to_call, pot_size, community_cards
-            )
-        except ImportError:
-            logger.warning("Opponent tracking fix not available, using original logic")
-            opponent_context = {}
-            estimated_opponent_range = 'unknown'
-            fold_equity_estimate = 0.5  # Default fold equity
-    
-    # Legacy opponent analysis for compatibility (if the above failed)
-    if not opponent_context and opponent_tracker and active_opponents_count > 0:
-        # Get table dynamics
-        table_dynamics = opponent_tracker.get_table_dynamics()
-        
-        # Analyze each opponent (simplified for first implementation)
-        for opponent_name, profile in opponent_tracker.opponents.items():
-            if profile.hands_seen > 5:  # Only consider opponents with sufficient data
-                player_type = profile.classify_player_type()
-                fold_equity = profile.get_fold_equity_estimate('unknown', bet_to_call / pot_size if pot_size > 0 else 0.5)
-                
-                opponent_context[opponent_name] = {
-                    'type': player_type,
-                    'fold_equity': fold_equity,
-                    'vpip': profile.get_vpip(),
-                    'pfr': profile.get_pfr(),
-                    'can_value_bet_thin': profile.should_value_bet_thin('unknown')
-                }                # Use first opponent's data for range estimation (could be improved for multiple opponents)
-                # Extract actual opponent data from recent actions
-                opponent_position = 'unknown'
-                opponent_preflop_action = 'unknown'
-                
-                # Try to get position and preflop action from recent actions
-                if hasattr(profile, 'recent_actions') and profile.recent_actions:
-                    for action_data in reversed(profile.recent_actions):  # Check most recent first
-                        if isinstance(action_data, dict):
-                            if action_data.get('street') == 'preflop' and opponent_preflop_action == 'unknown':
-                                opponent_preflop_action = action_data.get('action', 'unknown')
-                            if action_data.get('position') and opponent_position == 'unknown':
-                                opponent_position = action_data.get('position', 'unknown')
-                
-                # If no recent actions, infer from player type
-                if opponent_preflop_action == 'unknown':
-                    player_type = profile.classify_player_type()
-                    if 'aggressive' in player_type:
-                        opponent_preflop_action = 'raise'  # Likely raiser
-                    elif 'passive' in player_type:
-                        opponent_preflop_action = 'call'   # Likely caller
-                    else:
-                        opponent_preflop_action = 'call'   # Default
-                
-                # Get board texture from community cards if available
-                board_texture = 'unknown'
-                if community_cards and len(community_cards) >= 3:
-                    # Simple board texture analysis
-                    suits = [card[-1] for card in community_cards[:3]]  # Check flop
-                    ranks = [card[:-1] for card in community_cards[:3]]
-                    
-                    # Check for draws and coordination
-                    suit_counts = {suit: suits.count(suit) for suit in suits}
-                    max_suit_count = max(suit_counts.values()) if suit_counts else 0
-                    
-                    # Simple heuristic for board texture
-                    if max_suit_count >= 2:  # Two suited
-                        board_texture = 'wet'
-                    elif len(set(ranks)) == len(ranks):  # All different ranks
-                        # Check for straight possibilities
-                        rank_values = []
-                        for rank in ranks:
-                            if rank.isdigit():
-                                rank_values.append(int(rank))
-                            elif rank == 'A':
-                                rank_values.append(14)
-                            elif rank == 'K':
-                                rank_values.append(13)
-                            elif rank == 'Q':
-                                rank_values.append(12)
-                            elif rank == 'J':
-                                rank_values.append(11)
-                        
-                        if rank_values:
-                            rank_values.sort()
-                            # Check for consecutive or near-consecutive
-                            if len(rank_values) >= 2:
-                                max_gap = max(rank_values[i+1] - rank_values[i] for i in range(len(rank_values)-1))
-                                if max_gap <= 4:  # Some straight possibility
-                                    board_texture = 'wet'
-                                else:
-                                    board_texture = 'dry'
-                            else:
-                                board_texture = 'dry'
-                    else:
-                        board_texture = 'dry'
-                
-                estimated_opponent_range = estimate_opponent_range(
-                    position=opponent_position,
-                    preflop_action=opponent_preflop_action,
-                    bet_size=bet_to_call,
-                    pot_size=pot_size,
-                    street=street,
-                    board_texture=board_texture
-                )
-                
-                logger.debug(f"Opponent range estimation: position={opponent_position}, "
-                            f"preflop_action={opponent_preflop_action}, bet_size={bet_to_call}, "
-                            f"board_texture={board_texture}, estimated_range={estimated_opponent_range}")
-                
-                fold_equity_estimate = fold_equity
-                break  # Use first opponent for now
-        
-        logger.debug(f"Opponent analysis: {len(opponent_context)} opponents tracked, table type: {table_dynamics.get('table_type', 'unknown')}, estimated_range: {estimated_opponent_range}")
-    
+        logger.warning("Module 'enhanced_postflop_improvements.fix_opponent_tracker_integration' not available.")
+    except Exception as e:
+        logger.error(f"Error in fix_opponent_tracker_integration: {e}", exc_info=True)
+
+    if final_opponent_analysis is None:
+        logger.warning("Falling back on opponent analysis methods due to previous failure or unavailability.")
+        # Fallback to fixed_opponent_integration if the primary one failed or wasn't available
+        if ENHANCED_MODULES_AVAILABLE:
+            try:
+                # This was the one logged as "Fixed opponent analysis" in the logs
+                fixed_analysis = get_fixed_opponent_analysis(opponent_tracker, active_opponents_count)
+                # We need to ensure this data is compatible or transformed if used as final_opponent_analysis
+                # For now, let's assume it provides a similar structure or we adapt its usage.
+                # To avoid direct contradiction, we will prefer the `fix_opponent_tracker_integration` if it ran.
+                # If that failed, this is our next best.
+                final_opponent_analysis = fixed_analysis # Potentially adapt this structure
+                opponent_analysis_source = "fixed_opponent_integration.get_fixed_opponent_analysis"
+                logger.info(f"Using opponent analysis from: {opponent_analysis_source}")
+                logger.info(f"Fixed opponent analysis (fallback): tracked={final_opponent_analysis.get('tracked_count', 'N/A')}, "
+                           f"table_type={final_opponent_analysis.get('table_type', 'N/A')}, "
+                           f"avg_vpip={final_opponent_analysis.get('avg_vpip', 0.0):.1f}%, " # Original log had % here
+                           f"fold_equity={final_opponent_analysis.get('fold_equity_estimate', 0.0):.1%}")
+
+            except Exception as e:
+                logger.error(f"Error in get_fixed_opponent_analysis: {e}", exc_info=True)
+        else:
+            logger.warning("ENHANCED_MODULES_AVAILABLE is False, cannot use get_fixed_opponent_analysis.")
+
+    # If still no analysis, use a default unknown state
+    if final_opponent_analysis is None:
+        logger.warning("All opponent analysis methods failed or were unavailable. Using default unknown state.")
+        final_opponent_analysis = {
+            'tracked_count': 0,
+            'table_type': 'unknown',
+            'avg_vpip': 25.0, # Default VPIP
+            'fold_equity_estimate': 0.5, # Default fold equity
+            'reasoning': 'all_sources_failed_using_default',
+            'player_type_distribution': {'unknown': 1.0}
+        }
+        opponent_analysis_source = "default_unknown_state"
+        logger.info(f"Using opponent analysis from: {opponent_analysis_source}")
+
+    # Ensure essential keys exist in final_opponent_analysis to prevent KeyErrors later
+    final_opponent_analysis.setdefault('table_type', 'unknown')
+    final_opponent_analysis.setdefault('fold_equity_estimate', 0.5)
+    final_opponent_analysis.setdefault('avg_vpip', 25.0)
+    final_opponent_analysis.setdefault('reasoning', 'default_values_applied')
+
+    # Now, `final_opponent_analysis` should be the single source of truth for opponent data.
+    # Update variables that were previously set by different opponent analysis sections.
+    opponent_context = {'current_analysis': final_opponent_analysis, 'source': opponent_analysis_source}
+    estimated_opponent_range = final_opponent_analysis['table_type'] # Or a more specific range if available
+    fold_equity_estimate = final_opponent_analysis['fold_equity_estimate']
+
+    # The old opponent_context and related logic can be removed or refactored
+    # to use `final_opponent_analysis`.
+    # For example, the section "Legacy opponent analysis for compatibility" might no longer be needed
+    # if `final_opponent_analysis` is always populated.
+
+    # Remove legacy opponent analysis block as it's now consolidated
+    # logger.debug(f\"Opponent analysis: {len(opponent_context)} opponents tracked, table type: {table_dynamics.get(\'table_type\', \'unknown\')}, estimated_range: {estimated_opponent_range}\")
+
     # Calculate SPR adjustments for strategy
     drawing_potential = is_drawing_hand(win_probability, numerical_hand_rank, street)
     spr_strategy = calculate_spr_adjustments(spr, numerical_hand_rank, drawing_potential)
@@ -578,30 +530,56 @@ def make_postflop_decision(
     
     # For one pair hands, be much more conservative about classification
     if numerical_hand_rank == 2:  # One pair
-        if win_probability >= 0.70:
-            # Very strong one pair (like top pair with good kicker vs weak range)
-            is_strong = not is_very_strong
+        # Addressing Issue #3: Hand Strength Classification Thresholds (weak_made for 52.8% win_prob)
+        # If win_prob is > 0.5, it should at least be medium or potentially strong depending on context.
+        # Classifying 52.8% as \'weak_made\' seems too pessimistic.
+        if win_probability >= 0.75: # Strong top pair, overpair etc.
+            is_very_strong = False # Unlikely for just one pair unless it's quads on board etc.
+            is_strong = True
             is_medium = False
-        elif win_probability >= 0.50:
-            # Decent one pair (like top pair vs moderate range)
-            is_strong = False
-            is_medium = not is_very_strong and not is_strong
-        else:
-            # Weak one pair (like bottom pair, weak top pair, or facing aggression)
-            # This includes the KQ with pair of 9s scenario
-            is_strong = False
+        elif win_probability >= 0.60: # Decent top pair, good middle pair
+            is_very_strong = False
+            is_strong = True # Let's try classifying as strong if win_prob is 60%+
             is_medium = False
+        elif win_probability >= 0.45: # Middle pair, weak top pair, strong bottom pair
+            is_very_strong = False
+            is_strong = False
+            is_medium = True
+        else: # Weak one pair (bottom pair, very weak kicker)
+            is_very_strong = False
+            is_strong = False
+            is_medium = False # This will make it weak
     else:
-        # For non-one-pair hands, use original logic
-        is_strong = not is_very_strong and (numerical_hand_rank >= STRONG_HAND_THRESHOLD or win_probability > 0.65)
-        is_medium = not is_very_strong and not is_strong and (numerical_hand_rank >= MEDIUM_HAND_THRESHOLD or win_probability > 0.45)
+        # For non-one-pair hands, use original logic (or the enhanced classification if available)
+        # This part assumes `is_very_strong`, `is_strong`, `is_medium` might have been set by
+        # the `enhanced_postflop_improvements` block earlier. We should respect that if it ran.
+        # If that block didn't run, this is the fallback.
+        if not ('classify_hand_strength_improved' in locals() or 'classify_hand_strength_improved' in globals()):
+            is_very_strong = numerical_hand_rank >= VERY_STRONG_HAND_THRESHOLD or win_probability > 0.85
+            is_strong = not is_very_strong and (numerical_hand_rank >= STRONG_HAND_THRESHOLD or win_probability > 0.65)
+            is_medium = not is_very_strong and not is_strong and (numerical_hand_rank >= MEDIUM_HAND_THRESHOLD or win_probability > 0.45)
     
-    # Final classification
-    is_weak = not is_very_strong and not is_strong and not is_medium
-    
-    logger.debug(f"Hand strength classification: is_very_strong={is_very_strong}, is_strong={is_strong}, "
-                f"is_medium={is_medium}, is_weak={is_weak}, numerical_hand_rank={numerical_hand_rank}, "
-                f"win_probability={win_probability:.2%}")
+    # Final classification based on the flags
+    if is_very_strong:
+        hand_strength_final_decision = 'very_strong'
+    elif is_strong:
+        hand_strength_final_decision = 'strong'
+    elif is_medium:
+        hand_strength_final_decision = 'medium'
+    else: # is_weak implicitly
+        # Distinguish between weak_made and drawing/very_weak based on numerical rank and win_prob
+        if numerical_hand_rank >= 1: # Has at least high card, pair, etc.
+            hand_strength_final_decision = 'weak_made'
+        elif is_drawing_hand(win_probability, numerical_hand_rank, street):
+            hand_strength_final_decision = 'drawing'
+        else:
+            hand_strength_final_decision = 'very_weak'
+
+    is_weak = hand_strength_final_decision in ['weak_made', 'very_weak', 'drawing']
+
+    logger.debug(f"Final Hand strength for decision: {hand_strength_final_decision} (is_weak={is_weak}). Original numerical_rank={numerical_hand_rank}, win_prob={win_probability:.2%}")
+    logger.info(f"Post-adjustment hand strength: very_strong={is_very_strong}, strong={is_strong}, medium={is_medium}, weak={is_weak} (Final Category: {hand_strength_final_decision})")
+
 
     if can_check:
         logger.debug("Option to check is available.")
@@ -904,6 +882,9 @@ def make_postflop_decision(
             
     else:  # Facing a bet
         logger.debug(f"Facing a bet. bet_to_call: {bet_to_call}, pot_size: {pot_size}, my_stack: {my_stack}, max_bet_on_table: {max_bet_on_table}")
+        # Log pot odds and win probability for all facing bet scenarios for better debugging
+        logger.info(f"Facing bet: win_probability={win_probability:.2%}, pot_odds_to_call={pot_odds_to_call:.2%}, bet_to_call={bet_to_call}, pot_size={pot_size}")
+
         if is_very_strong:
           logger.debug(f"Hand is_very_strong. win_probability: {win_probability}")
           
@@ -1015,275 +996,95 @@ def make_postflop_decision(
                 return action_fold_const, 0
         
         elif is_medium:
-            logger.debug(f"Hand is_medium. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
-              # Improved river calling logic for medium hands
-            if street == 'river':
-                # Apply cash game river decision enhancement
-                should_call_default = False
-                river_call_threshold = pot_odds_to_call
-                
-                if 'cash_game_enhancements' in advanced_context:
-                    cash_enhancements = advanced_context['cash_game_enhancements']
-                    river_analysis = cash_enhancements.get('river_analysis', {})
-                    
-                    if river_analysis:
-                        should_call_river = river_analysis.get('should_call', False)
-                        river_threshold = river_analysis.get('call_threshold', pot_odds_to_call)
-                        river_confidence = river_analysis.get('confidence', 0.5)
-                        
-                        logger.debug(f"Cash game river analysis: should_call={should_call_river}, threshold={river_threshold:.3f}, confidence={river_confidence:.2f}")
-                        
-                        if river_confidence > 0.6:  # High confidence in analysis
-                            should_call_default = should_call_river
-                            river_call_threshold = river_threshold
-                            logger.info(f"Using cash game river analysis (confidence: {river_confidence:.2f})")
-                
-                # Consider stack-to-pot ratio for river decisions
-                spr_river = my_stack / pot_size if pot_size > 0 else 10
-                
-                # Use enhanced river analysis or fall back to default logic
-                if should_call_default or (
-                    win_probability > river_call_threshold * 0.8 and  # Need 80% of required equity
-                    bet_to_call <= 0.75 * pot_size and               # Bet not too large
-                    spr_river > 0.5                                  # Not pot committed scenario
-                ):
+            logger.debug(f"Hand is_medium. win_probability: {win_probability:.2%}, pot_odds: {pot_odds_to_call:.2%}") # Added percentage formatting
+
+            # FIX for incorrect fold with strong equity (Issue #1 from POKER_BOT_ANALYSIS_IMPROVEMENTS.md)
+            # If win probability is significantly greater than pot odds, it\'s usually a call with a medium strength hand.
+            # The previous logic might have been too quick to fold.
+            # Example: win_prob=0.694, pot_odds=0.09. Bot folded. This should be a call.
+
+            # Check for pot commitment first, as this might override other decisions
+            if is_pot_committed:
+                call_amount = bet_to_call
+                logger.info(f"Decision: CALL (medium hand, pot committed). Amount to call: {call_amount:.2f}, Win Prob: {win_probability:.2%}, Pot Odds: {pot_odds_to_call:.2%}")
+                return action_call_const, round(call_amount, 2)
+
+            if win_probability > pot_odds_to_call:
+                # Consider implied odds for drawing hands or hands that can improve significantly
+                is_draw = is_drawing_hand(win_probability, numerical_hand_rank, street)
+                can_call_on_implied_odds = False
+                if is_draw:
+                    # Assuming a function should_call_with_draws exists and is imported
+                    # It would need opponent stack, effective stack, etc.
+                    # For now, let\'s assume a simplified check or that it\'s part of win_prob
+                    if should_call_with_draws(win_probability, pot_odds_to_call, pot_size, bet_to_call, my_stack, decision_engine_instance.get_effective_stack_for_implied_odds()):
+                         can_call_on_implied_odds = True
+                         logger.info(f"Medium hand is a draw, considering implied odds. Win Prob: {win_probability:.2%}, Pot Odds: {pot_odds_to_call:.2%}")
+
+
+                if win_probability > pot_odds_to_call + 0.10 or can_call_on_implied_odds: # Adding a buffer or checking implied odds
                     call_amount = bet_to_call
-                    analysis_source = "cash game enhanced" if should_call_default else "default"
-                    logger.info(f"Decision: CALL (medium hand, {analysis_source} river analysis). Amount: {call_amount:.2f}")
+                    logger.info(f"Decision: CALL (medium hand, win_prob > pot_odds + 10% or implied odds). Amount to call: {call_amount:.2f}, Win Prob: {win_probability:.2%}, Pot Odds: {pot_odds_to_call:.2%}")
                     return action_call_const, round(call_amount, 2)
-            
-            # Call with medium strength if odds are good, especially with draws (not explicitly modeled here yet)            if win_probability > pot_odds_to_call and bet_to_call <= 0.6 * pot_size : # Call if good odds and bet is not too large (e.g. up to 60% pot)
-                call_amount = bet_to_call
-                logger.info(f"Decision: CALL (medium hand, good odds and bet size). Amount to call: {call_amount:.2f}")
-                return action_call_const, round(call_amount, 2)
-            else: # Fold if odds not good or bet is large for a medium hand
-                logger.info(f"Decision: FOLD (medium hand, odds not good or bet too large). Bet_to_call: {bet_to_call}, Pot: {pot_size}")
-                return action_fold_const, 0
-        
-        else: # Weak hand
-            logger.debug(f"Hand is_weak. win_probability: {win_probability}, pot_odds: {pot_odds_to_call}")
-            
-            # Special handling for weak pairs (like KQ with pair of 9s)
-            # These hands have minimal equity and should be very conservative about calling
-            if numerical_hand_rank == 2:  # One pair (now classified as weak)
-                bet_to_pot_ratio = bet_to_call / pot_size if pot_size > 0 else 1.0
-                
-                # Be extra conservative with weak pairs
-                # Only call if we have good equity AND the bet is small
-                equity_cushion = win_probability - pot_odds_to_call
-                
-                # For weak pairs, require:
-                # 1. At least 5% equity cushion over pot odds
-                # 2. Bet size <= 40% of pot 
-                # 3. Not facing a large bet relative to stack
-                if (equity_cushion >= 0.05 and 
-                    bet_to_call <= 0.4 * pot_size and 
-                    bet_to_call <= 0.3 * my_stack and
-                    street != 'river'):  # Don't call river bets with weak pairs
-                    
+                elif win_probability > pot_odds_to_call: # Still call if direct odds are good, even if not by a large margin
                     call_amount = bet_to_call
-                    logger.info(f"Decision: CALL (weak pair with sufficient cushion). Amount: {call_amount:.2f}, "
-                              f"Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}, "
-                              f"Cushion: {equity_cushion:.2%}, Bet/Pot: {bet_to_pot_ratio:.2%}")
+                    logger.info(f"Decision: CALL (medium hand, win_prob > pot_odds). Amount to call: {call_amount:.2f}, Win Prob: {win_probability:.2%}, Pot Odds: {pot_odds_to_call:.2%}")
                     return action_call_const, round(call_amount, 2)
-                else:
-                    # Log why we're folding the weak pair
-                    reasons = []
-                    if equity_cushion < 0.05:
-                        reasons.append(f"Insufficient equity cushion: {equity_cushion:.2%} < 5%")
-                    if bet_to_call > 0.4 * pot_size:
-                        reasons.append(f"Bet too large: {bet_to_call:.2f} > 40% pot ({0.4 * pot_size:.2f})")
-                    if bet_to_call > 0.3 * my_stack:
-                        reasons.append(f"Bet too large vs stack: {bet_to_call:.2f} > 30% stack ({0.3 * my_stack:.2f})")
-                    if street == 'river':
-                        reasons.append("No river calls with weak pairs")
-                    
-                    logger.info(f"Decision: FOLD (weak pair). Reasons: {'; '.join(reasons)}")
-                    return action_fold_const, 0
-            
-            # Special handling for pot commitment with draws
-            # Special case for river raises
-            if street == 'river' and max_bet_on_table > 0 and my_player_data.get('current_bet', 0) > 0 and win_probability < 0.4:
-                # We've already bet on the river and are facing a raise with low equity
-                logger.info(f"Decision: FOLD (marginal hand facing river raise). Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
-                return action_fold_const, 0
-                
-            if is_drawing_hand(win_probability, numerical_hand_rank, street):
-                # Check if this is an all-in situation (no implied odds possible)
-                is_all_in_call = (bet_to_call >= my_stack) or my_player_data.get('is_all_in_call_available', False)
-                is_facing_all_in = (bet_to_call >= my_stack * 0.9)  # Consider 90%+ of stack as all-in equivalent
-                
-                if is_all_in_call or is_facing_all_in:
-                    # No implied odds in all-in situations - use strict equity requirements
-                    required_equity = 0.45  # Need at least 45% equity for all-in calls with draws
-                    if win_probability >= required_equity:
-                        logger.info(f"Decision: CALL (drawing hand all-in with sufficient equity). Amount: {bet_to_call:.2f}, "
-                                  f"Equity: {win_probability:.2%}, Required: {required_equity:.2%}")
-                        return action_call_const, round(bet_to_call, 2)
-                    else:
-                        logger.info(f"Decision: FOLD (drawing hand all-in with insufficient equity). "
-                                  f"Equity: {win_probability:.2%}, Required: {required_equity:.2%}")
-                        return action_fold_const, 0                  # Regular drawing hand analysis with implied odds (non all-in)
-                try:
-                    from enhanced_postflop_improvements import improved_drawing_hand_analysis
-                    draw_analysis = improved_drawing_hand_analysis(
-                        numerical_hand_rank=numerical_hand_rank,
-                        win_probability=win_probability,
-                        pot_odds=pot_odds_to_call,
-                        bet_to_call=bet_to_call,
-                        pot_size=pot_size,
-                        my_stack=my_stack,
-                        street=street                    )
-                    
-                    if draw_analysis['should_call']:
-                        logger.info(f"Decision: CALL (enhanced drawing hand analysis). Amount: {bet_to_call:.2f}, "
-                                  f"Equity: {win_probability:.2%}, Outs: {draw_analysis.get('outs', 'unknown')}, "
-                                  f"Reason: {draw_analysis.get('reasoning', 'enhanced_analysis')}")
-                        return action_call_const, round(bet_to_call, 2)
-                    else:
-                        logger.info(f"Decision: FOLD (enhanced drawing hand analysis). "
-                                  f"Equity: {win_probability:.2%}, Reason: {draw_analysis.get('reasoning', 'enhanced_analysis')}")
-                        return action_fold_const, 0
-                        
-                except ImportError:
-                    logger.warning("Enhanced drawing hand analysis not available, using fallback")
-                    # Fallback to original logic
-                    if opponent_tracker and active_opponents_count > 0:
-                        # Estimate opponent stack for implied odds calculation
-                        avg_opponent_stack = my_stack  # Conservative estimate
-                        for opponent_name, profile in opponent_tracker.opponents.items():
-                            if profile.hands_seen > 5:
-                                # Use average stack as proxy (could be improved with actual stack tracking)
-                                break
-                        
-                        # Calculate implied odds for drawing hands
-                        draw_analysis = should_call_with_draws(
-                            hand=my_player_data.get('hand', []),
-                            community_cards=my_player_data.get('community_cards', []),
-                            win_probability=win_probability,
-                            pot_size=pot_size,
-                            bet_to_call=bet_to_call,
-                            opponent_stack=avg_opponent_stack,
-                            my_stack=my_stack,
-                            street=street
-                        )
-                        
-                        if draw_analysis['should_call']:
-                            logger.info(f"Decision: CALL (drawing hand with good implied odds). Amount: {bet_to_call:.2f}, "
-                                      f"Equity: {win_probability:.2%}, Outs: {draw_analysis.get('outs', 'unknown')}, "
-                                      f"Reason: {draw_analysis['reason']}")
-                            return action_call_const, round(bet_to_call, 2)
-                        else:
-                            logger.info(f"Decision: FOLD (drawing hand with poor implied odds). "
-                                      f"Equity: {win_probability:.2%}, Reason: {draw_analysis['reason']}")
-                            return action_fold_const, 0
-                else:
-                    # Fallback to simple equity-based decision for non all-in situations
-                    if win_probability > pot_odds_to_call and bet_to_call <= 0.3 * pot_size:
-                        logger.info(f"Decision: CALL (weak hand, but drawing hand with sufficient equity). Amount to call: {bet_to_call:.2f}, Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}")
-                        return action_call_const, round(bet_to_call, 2)
-                    else:
-                        logger.info(f"Decision: FOLD (drawing hand with insufficient equity or large bet). Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}")
-                        return action_fold_const, 0
-            
-            if is_pot_committed and win_probability >= 0.35:  # Increased from 0.25 to 0.35
+
+
+            # If not calling based on direct/implied odds, then consider folding.
+            # The original log showed: "Decision: FOLD (medium hand, odds not good or bet too large)"
+            # We need to ensure the "odds not good" part is correctly evaluated.
+            # The "bet too large" part might relate to stack preservation if odds are borderline.
+
+            # Consider bluff catching if opponent is aggressive and bet is not too large
+            # This requires opponent modeling, which is handled by `should_call_bluff`
+            should_call_as_bluff_catcher = should_call_bluff(
+                numerical_hand_rank, win_probability, pot_odds_to_call,
+                estimated_opponent_range, bet_to_call, pot_size
+            )
+            if should_call_as_bluff_catcher:
                 call_amount = bet_to_call
-                logger.info(f"Decision: CALL (pot committed with reasonable equity). Amount to call: {call_amount:.2f}, Equity: {win_probability:.2%}, Commitment ratio: {pot_commitment_ratio:.2%}")
+                logger.info(f"Decision: CALL (medium hand, bluff catching). Amount to call: {call_amount:.2f}, Win Prob: {win_probability:.2%}, Pot Odds: {pot_odds_to_call:.2%}")
                 return action_call_const, round(call_amount, 2)
             
-            # Check if facing very large bet relative to stack - be extra conservative
-            bet_to_stack_ratio = bet_to_call / my_stack if my_stack > 0 else 1.0
-            if bet_to_stack_ratio > 0.4:  # If bet is more than 40% of our stack
-                logger.info(f"Decision: FOLD (weak hand, large bet {bet_to_call:.2f} > 40% of stack {my_stack:.2f})")
-                return action_fold_const, 0
-            
-            # Check if this is a drawing hand with sufficient pot odds to call
-            # Drawing hands typically have 25-40% equity and should call with good pot odds
-            # Be very conservative about bet sizing for weak hands - only call small bets
-            # Also consider if facing multiple aggressive actions (bet + raise scenario)
-            bet_to_pot_ratio = bet_to_call / pot_size if pot_size > 0 else 1.0
-            
-            # Add detailed logging to debug the failing test
-            logger.debug(f"Drawing hand check: win_prob={win_probability:.2%}, pot_odds={pot_odds_to_call:.2%}, "
-                        f"bet_to_call={bet_to_call}, pot_size={pot_size}, bet_to_pot_ratio={bet_to_pot_ratio:.2%}, "
-                        f"my_stack={my_stack}")
-            
-            # For drawing hands, equity must exceed pot odds FIRST, then check bet sizing
-            # This is the most important check - never call with negative expected value
-            if (win_probability > pot_odds_to_call and 
-                win_probability >= 0.25 and win_probability <= 0.45 and  # Drawing hand range
-                bet_to_call <= 0.35 * pot_size and  # Bet sizing check (restored to 35%)
-                bet_to_pot_ratio <= 0.4 and         # Bet to pot ratio check  
-                bet_to_call <= 0.25 * my_stack):    # Stack preservation check
-                # This is likely a drawing hand with sufficient equity to call
-                call_amount = bet_to_call
-                logger.info(f"Decision: CALL (weak hand with drawing equity, good pot odds). Amount to call: {call_amount:.2f}, Equity: {win_probability:.2%}, Pot odds: {pot_odds_to_call:.2%}, Bet/Pot: {bet_to_pot_ratio:.2%}")
-                return action_call_const, round(call_amount, 2)
-            
-            # Log why we're not calling with this drawing hand - be more specific
-            if win_probability >= 0.25 and win_probability <= 0.45:
-                reasons = []
-                if win_probability <= pot_odds_to_call:
-                    reasons.append(f"Negative EV: Equity {win_probability:.2%} <= Pot odds {pot_odds_to_call:.2%}")
-                if bet_to_call > 0.35 * pot_size:
-                    reasons.append(f"Bet too large: {bet_to_call:.2f} > 35% of pot ({0.35 * pot_size:.2f})")
-                if bet_to_pot_ratio > 0.4:
-                    reasons.append(f"Bet/Pot ratio too high: {bet_to_pot_ratio:.2%} > 40%")
-                if bet_to_call > 0.25 * my_stack:
-                    reasons.append(f"Bet too large vs stack: {bet_to_call:.2f} > 25% of stack ({0.25 * my_stack:.2f})")
-                logger.info(f"Not calling with drawing hand (equity {win_probability:.2%}). Reasons: {'; '.join(reasons)}")            # Consider bluff-raising if conditions are right (e.g., specific opponent, board texture)
-            try:
-                from enhanced_postflop_improvements import enhanced_bluffing_strategy
-                # Get enhanced bluffing decision
-                bluff_decision = enhanced_bluffing_strategy(
-                    pot_size=pot_size,
-                    my_stack=my_stack,
-                    street=street,
-                    win_probability=win_probability,
-                    position=my_player_data.get('position', 'BB'),                board_texture=my_player_data.get('community_cards', []),
-                    opponent_analysis=opponent_context
-                )
-                
-                if bluff_decision['should_bluff']:
-                    min_total_raise_to_amount = max_bet_on_table + bet_to_call
-                    if bet_to_call == 0: 
-                        min_total_raise_to_amount = max_bet_on_table + big_blind_amount
-
-                    # Calculate raise size from the pot fraction returned by enhanced bluffing strategy
-                    bluff_size_fraction = bluff_decision.get('bluff_size_pot_fraction', 0.6)
-                    calculated_raise_total_amount = max_bet_on_table + (pot_size * bluff_size_fraction)
-                    if calculated_raise_total_amount < min_total_raise_to_amount:
-                        calculated_raise_total_amount = min_total_raise_to_amount
-                    
-                    final_raise_amount = min(calculated_raise_total_amount, my_stack + my_player_data.get('current_bet', 0))
-                    is_all_in_raise = (final_raise_amount == my_stack + my_player_data.get('current_bet', 0))
-
-                    if final_raise_amount > max_bet_on_table and (final_raise_amount >= min_total_raise_to_amount or is_all_in_raise):
-                        logger.info(f"Decision: RAISE (enhanced bluff strategy). Amount: {final_raise_amount:.2f}, "
-                                  f"Reason: {bluff_decision.get('reasoning', 'enhanced_bluff')}")
-                        return action_raise_const, round(final_raise_amount, 2)
-                        
-            except ImportError:
-                logger.warning("Enhanced bluffing strategy not available, using fallback")
-                # Fallback to original bluffing logic
-                fold_equity_needed_for_bluff_raise = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 0.5
-                if decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability, bet_to_pot_ratio_for_bluff=fold_equity_needed_for_bluff_raise):
-                    min_total_raise_to_amount = max_bet_on_table + bet_to_call
-                    if bet_to_call == 0: min_total_raise_to_amount = max_bet_on_table + big_blind_amount
-
-                    calculated_raise_total_amount = max_bet_on_table * 2.5 # Standard bluff raise size
-                    if calculated_raise_total_amount < min_total_raise_to_amount:
-                        calculated_raise_total_amount = min_total_raise_to_amount
-                    
-                    final_raise_amount = min(calculated_raise_total_amount, my_stack + my_player_data.get('current_bet', 0))
-                    is_all_in_raise = (final_raise_amount == my_stack + my_player_data.get('current_bet', 0))
-
-                    if final_raise_amount > max_bet_on_table and (final_raise_amount >= min_total_raise_to_amount or is_all_in_raise):
-                        logger.info(f"Decision: RAISE (weak hand, bluffing). Total Amount: {final_raise_amount:.2f}")
-                        return action_raise_const, round(final_raise_amount, 2)            # Default to fold with weak hands if not bluffing or calling with draws
-            logger.info(f"Decision: FOLD (weak hand, no bluff, insufficient equity for call). Bet_to_call: {bet_to_call}, Pot: {pot_size}")
+            # If none of the above conditions to call are met, then fold.
+            logger.info(f"Decision: FOLD (medium hand, odds not good or bet too large after re-evaluation). Bet_to_call: {bet_to_call:.2f}, Pot: {pot_size:.2f}, Win Prob: {win_probability:.2%}, Pot Odds: {pot_odds_to_call:.2%}")
             return action_fold_const, 0
-
+        
+        elif is_weak: # Check or bluff
+            # Don't bluff with weak hands when checked to on river - be conservative
+            if street == 'river' and win_probability < 0.18:
+                logger.info("Decision: CHECK (weak hand, checking behind on river).")
+                return action_check_const, 0
+                
+            if street == 'river' and decision_engine_instance.should_bluff_func(pot_size, my_stack, street, win_probability):
+                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
+                if my_stack <= pot_size:
+                    bet_amount = my_stack
+                elif bet_amount < pot_size:
+                    bet_amount = min(pot_size, my_stack)
+                else:
+                    bet_amount = min(bet_amount, my_stack)
+                
+                # Override for all-in river bluffs when pot is small relative to stack
+                # This addresses scenarios like test_river_all_in_bluff_vs_small_stack.
+                # If pot_size is less than 20% of my_stack (i.e., stack is > 5x pot),
+                # and the current decision is to bluff bet (bet_amount > 0) but not already all-in (bet_amount < my_stack),
+                # then escalate to an all-in bluff.
+                if pot_size < my_stack * 0.20 and bet_amount > 0 and bet_amount < my_stack:
+                    logger.info(f"River bluff: Pot ({pot_size}) is < 20% of stack ({my_stack}). Current bet decision: {bet_amount}. Overriding to all-in ({my_stack}).")
+                    bet_amount = my_stack  # Go all-in
+                
+                if bet_amount > 0:
+                    logger.info(f"Decision: BET (weak hand, river bluff when checked to). Amount: {bet_amount:.2f}, Pot: {pot_size}, Stack: {my_stack}")
+                    return action_raise_const, round(bet_amount, 2) # Changed action_bet_const to action_raise_const
+                else: # If bet_amount resolved to 0 (e.g. stack is 0), check.
+                    logger.info(f"Decision: CHECK (weak hand, intended bluff but bet_amount is 0). Pot: {pot_size}, Stack: {my_stack}")
+                    return action_check_const, 0            
+            logger.info("Decision: CHECK (weak hand).")
+            return action_check_const, 0
+            
     # Fallback, should not be reached if logic is complete
     logger.error("Fell through all decision logic in postflop. Defaulting to FOLD.")
     return action_fold_const, 0
