@@ -44,16 +44,15 @@ def classify_hand_strength_enhanced(numerical_hand_rank, win_probability, board_
         if win_probability >= 0.70:
             logger.debug("Classified one pair as strong (high equity)")
             return 'strong'
-        
-        # Strong-medium one pair (top pair decent kicker) 
+          # Strong-medium one pair (top pair decent kicker) 
         elif win_probability >= 0.60:
-            # Additional context checks for more accurate classification
-            if any(phrase in hand_desc_lower for phrase in ['top pair', 'overpair', 'aces', 'kings']):
-                logger.debug("Classified one pair as medium (decent top pair)")
-                return 'medium'
-            else:
-                logger.debug("Classified one pair as weak_made (marginal equity)")
+            # Default to medium for 60%+ equity unless specifically indicated as weak
+            if any(phrase in hand_desc_lower for phrase in ['bottom pair', 'weak', 'dominated', 'bad kicker']):
+                logger.debug("Classified one pair as weak_made (weak indicators)")
                 return 'weak_made'
+            else:
+                logger.debug("Classified one pair as medium (60%+ equity)")
+                return 'medium'
         
         # Medium one pair (decent middle pair, weak top pair)
         elif win_probability >= 0.45:

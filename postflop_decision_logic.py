@@ -7,6 +7,18 @@ from implied_odds import should_call_with_draws
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+# Import enhanced modules
+try:
+    from enhanced_hand_classification import classify_hand_strength_enhanced, get_standardized_pot_commitment_threshold
+    from enhanced_bet_sizing import get_enhanced_bet_size, should_check_instead_of_bet
+    from fixed_opponent_integration import get_fixed_opponent_analysis, get_opponent_exploitative_adjustments
+    from enhanced_spr_strategy import get_spr_strategy_recommendation, should_commit_stack_spr, get_protection_needs_spr
+    ENHANCED_MODULES_AVAILABLE = True
+    logger.info("Enhanced postflop modules successfully imported")
+except ImportError as e:
+    logger.warning(f"Enhanced postflop modules not available: {e}")
+    ENHANCED_MODULES_AVAILABLE = False
+
 # Import advanced enhancement modules
 try:
     from advanced_opponent_modeling import AdvancedOpponentAnalyzer
@@ -143,78 +155,146 @@ def make_postflop_decision(
     active_opponents_count=1, # Add opponent count for multiway considerations
     opponent_tracker=None  # Add opponent tracking data
 ):
-    street = game_stage # Use game_stage as street
-
+    street = game_stage # Use game_stage as street    
     logger.debug(
         f"make_postflop_decision: street={street}, my_player_data={my_player_data}, "
         f"pot_size={pot_size}, win_prob={win_probability}, pot_odds={pot_odds_to_call}, "
         f"bet_to_call={bet_to_call}, max_bet_on_table={max_bet_on_table}, "
         f"active_opponents_count={active_opponents_count}, can_check={can_check}"
     )
-      # Check for pot commitment - if we've already invested or would invest significant portion of our stack
+    
+    # Calculate pot commitment variables first
     committed_amount = my_player_data.get('current_bet', 0)
     total_commitment_if_call = committed_amount + bet_to_call
     pot_commitment_ratio = total_commitment_if_call / (my_stack + total_commitment_if_call) if (my_stack + total_commitment_if_call) > 0 else 0
-      # ADVANCED ENHANCEMENTS INTEGRATION
-    advanced_context = {}
     
-    # CASH GAME ENHANCEMENTS INTEGRATION
-    cash_game_context = None
-    try:
-        from cash_game_enhancements import apply_cash_game_enhancements
-        from advanced_position_strategy import AdvancedPositionStrategy
+    # ENHANCED POSTFLOP ANALYSIS WITH NEW MODULES
+    position = my_player_data.get('position', 'BB')
+    community_cards = my_player_data.get('community_cards', [])
+    
+    # 1. ENHANCED HAND STRENGTH CLASSIFICATION
+    if ENHANCED_MODULES_AVAILABLE:
+        hand_strength, hand_details = classify_hand_strength_enhanced(
+            numerical_hand_rank=numerical_hand_rank,
+            win_probability=win_probability,
+            street=street,
+            board_texture='moderate'  # Will be enhanced with board analysis
+        )
+        commitment_threshold = get_standardized_pot_commitment_threshold(hand_strength, street)
         
-        # Prepare cash game decision context
-        position = my_player_data.get('position', 'BB')
-        community_cards = my_player_data.get('community_cards', [])
-        
-        # Build opponent analysis from existing tracker
-        opponent_analysis = {
-            'calling_frequency': 0.6,  # Default
-            'vpip': 25.0,
-            'pfr': 18.0,
-            'player_type': 'unknown'
-        }
-        
-        if opponent_tracker and opponent_tracker.opponents:
-            opponent_list = list(opponent_tracker.opponents.values())
-            if opponent_list:
-                avg_vpip = sum(p.get_vpip() for p in opponent_list if p.hands_seen > 5) / max(1, len([p for p in opponent_list if p.hands_seen > 5]))
-                avg_calling = opponent_tracker.get_fold_to_cbet_percent() / 100.0 if hasattr(opponent_tracker, 'get_fold_to_cbet_percent') else 0.6
-                opponent_analysis.update({
-                    'calling_frequency': 1.0 - avg_calling,
-                    'vpip': avg_vpip,
-                    'avg_vpip': avg_vpip
-                })
-        
-        # Determine hand strength
+        logger.info(f"Enhanced hand classification: {hand_strength} (rank={numerical_hand_rank}, "
+                   f"win_prob={win_probability:.1%}, threshold={commitment_threshold:.1%})")
+    else:
+        # Fallback to original classification
         if win_probability >= 0.80:
             hand_strength = 'very_strong'
-        elif win_probability >= 0.65:
+            commitment_threshold = 0.20
+        elif win_probability >= 0.70:
             hand_strength = 'strong'
-        elif win_probability >= 0.45:
+            commitment_threshold = 0.30
+        elif win_probability >= 0.55:
             hand_strength = 'medium'
-        elif win_probability >= 0.30:
-            hand_strength = 'weak_made'
+            commitment_threshold = 0.50
         else:
-            hand_strength = 'very_weak'
+            hand_strength = 'weak'
+            commitment_threshold = 0.75
         
-        # Build board texture info
-        board_texture = {
-            'texture': 'unknown',
-            'paired': False,
-            'flush_possible': False,
-            'straight_possible': False
+        hand_details = {
+            'final_classification': hand_strength,
+            'win_probability': win_probability,
+            'is_very_strong': hand_strength == 'very_strong',
+            'is_strong': hand_strength == 'strong',
+            'is_medium': hand_strength == 'medium',
+            'is_weak': hand_strength == 'weak'
         }
+    
+    # 2. FIXED OPPONENT ANALYSIS
+    if ENHANCED_MODULES_AVAILABLE:
+        opponent_analysis = get_fixed_opponent_analysis(opponent_tracker, active_opponents_count)
+        exploitative_adjustments = get_opponent_exploitative_adjustments(opponent_analysis)
         
-        # Basic board texture analysis
-        if community_cards and len(community_cards) >= 3:
-            suits = [card[-1] for card in community_cards]
-            suit_counts = {suit: suits.count(suit) for suit in suits}
-            board_texture['flush_possible'] = any(count >= 3 for count in suit_counts.values())
-            
-            ranks = [card[:-1] for card in community_cards]
-            board_texture['paired'] = len(set(ranks)) < len(ranks)
+        logger.info(f"Fixed opponent analysis: tracked={opponent_analysis['tracked_count']}, "
+                   f"table_type={opponent_analysis['table_type']}, "
+                   f"avg_vpip={opponent_analysis['avg_vpip']:.1f}%, "
+                   f"fold_equity={opponent_analysis['fold_equity_estimate']:.1%}")
+    else:
+        # Fallback opponent analysis
+        opponent_analysis = {
+            'tracked_count': 0,
+            'table_type': 'unknown',
+            'avg_vpip': 25.0,
+            'fold_equity_estimate': 0.5,
+            'reasoning': 'enhanced_modules_not_available'
+        }
+        exploitative_adjustments = {}
+    
+    # 3. ENHANCED SPR STRATEGY
+    if ENHANCED_MODULES_AVAILABLE:
+        spr_strategy = get_spr_strategy_recommendation(
+            spr=spr,
+            hand_strength=hand_strength,
+            street=street,
+            position=position,
+            opponent_count=active_opponents_count,
+            board_texture='moderate'  # Will be enhanced
+        )
+        
+        should_commit, commit_reason = should_commit_stack_spr(
+            spr=spr,
+            hand_strength=hand_strength,
+            pot_commitment_ratio=pot_commitment_ratio,
+            street=street
+        )
+        
+        logger.debug(f"SPR strategy: {spr_strategy['base_strategy']} "
+                    f"(SPR={spr:.1f}, {spr_strategy['spr_category']})")
+    else:
+        # Fallback SPR analysis
+        spr_strategy = {'betting_action': 'bet_value', 'sizing_adjustment': 1.0}
+        should_commit = pot_commitment_ratio > commitment_threshold
+        commit_reason = "fallback pot commitment logic"
+    
+    # 4. POT COMMITMENT CHECK (ENHANCED)
+    is_pot_committed = pot_commitment_ratio > commitment_threshold
+    
+    logger.debug(f"Pot commitment: committed={committed_amount:.2f}, call={bet_to_call:.2f}, "
+                f"total={total_commitment_if_call:.2f}, stack={my_stack:.2f}, "
+                f"ratio={pot_commitment_ratio:.1%}, threshold={commitment_threshold:.1%}, "
+                f"is_committed={is_pot_committed}")
+      # ADVANCED MODULES INTEGRATION (if available)
+    advanced_context = {}
+      # Determine hand strength
+    if win_probability >= 0.80:
+        hand_strength = 'very_strong'
+    elif win_probability >= 0.65:
+        hand_strength = 'strong'
+    elif win_probability >= 0.45:
+        hand_strength = 'medium'
+    elif win_probability >= 0.30:
+        hand_strength = 'weak_made'
+    else:
+        hand_strength = 'very_weak'
+    
+    # Build board texture info
+    board_texture = {
+        'texture': 'unknown',
+        'paired': False,
+        'flush_possible': False,
+        'straight_possible': False
+    }
+    
+    # Basic board texture analysis
+    if community_cards and len(community_cards) >= 3:
+        suits = [card[-1] for card in community_cards]
+        suit_counts = {suit: suits.count(suit) for suit in suits}
+        board_texture['flush_possible'] = any(count >= 3 for count in suit_counts.values())
+        
+        ranks = [card[:-1] for card in community_cards]
+        board_texture['paired'] = len(set(ranks)) < len(ranks)
+    
+    # Try to apply cash game enhancements if available
+    try:
+        from cash_game_enhancements import apply_cash_game_enhancements
         
         cash_game_decision_context = {
             'hand_strength': hand_strength,

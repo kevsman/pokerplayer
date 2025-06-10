@@ -210,10 +210,14 @@ class PerformanceMetrics:
             'total_hands': total_hands,
             'total_winnings': round(total_winnings, 2),
             'avg_daily_winnings': round(statistics.mean(daily_winnings), 2),
-            'avg_daily_hands': round(statistics.mean(daily_hands), 1),
-            'winnings_per_hand': round(total_winnings / total_hands, 4) if total_hands > 0 else 0,
+            'avg_daily_hands': round(statistics.mean(daily_hands), 1),            'winnings_per_hand': round(total_winnings / total_hands, 4) if total_hands > 0 else 0,
             'consistency_score': round(1 - (statistics.stdev(daily_winnings) / abs(statistics.mean(daily_winnings))), 3) if len(daily_winnings) > 1 and statistics.mean(daily_winnings) != 0 else 0
         }
+    
+    def check_performance_alerts(self) -> List[Dict]:
+        """Check for performance alerts using the PerformanceAlerts system."""
+        alerts_system = PerformanceAlerts(self)
+        return alerts_system.check_alerts()
 
 
 class PerformanceAlerts:
@@ -333,14 +337,23 @@ Consistency Score: {trends.get('consistency_score', 0):.3f}/1.000
         return report
 
 
-def integrate_performance_monitoring(hand_result: Dict, improvements_used: List[str]) -> Dict:
+def integrate_performance_monitoring(hand_result: Dict = None, improvements_used: List[str] = None) -> Dict:
     """Integration function for performance monitoring."""
     try:
         # Initialize metrics (in practice, this would be a singleton)
         metrics = PerformanceMetrics()
         
+        # If called without arguments, just return current status
+        if hand_result is None:
+            summary = metrics.get_session_summary()
+            return {
+                'monitoring_active': True,
+                'current_session': summary,
+                'status': 'performance_monitoring_active'
+            }
+        
         # Add improvements info to result
-        hand_result['improvements_used'] = improvements_used
+        hand_result['improvements_used'] = improvements_used or []
         
         # Record the hand
         hand_id = f"hand_{datetime.now().strftime('%Y%m%d_%H%M%S')}"

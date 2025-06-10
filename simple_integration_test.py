@@ -10,8 +10,14 @@ from unittest.mock import Mock
 # Add the current directory to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from postflop_decision_logic import make_postflop_decision
+from simple_postflop_interface import make_postflop_decision
 from config import *
+
+# Action constants for testing
+action_fold_const = "fold"
+action_check_const = "check" 
+action_call_const = "call"
+action_bet_const = "raise"  # In our system, betting is done via raise action
 
 def test_enhanced_integration():
     """Test integration of all enhanced features."""

@@ -19,8 +19,7 @@ class BoardTexture:
         self.num_cards = len(community_cards)
         self.suits = [card[-1] for card in community_cards if len(card) >= 2]
         self.ranks = [card[:-1] for card in community_cards if len(card) >= 2]
-        
-        # Convert face cards to numbers for analysis
+          # Convert face cards to numbers for analysis
         self.rank_values = []
         for rank in self.ranks:
             if rank == 'A':
@@ -31,6 +30,8 @@ class BoardTexture:
                 self.rank_values.append(12)
             elif rank == 'J':
                 self.rank_values.append(11)
+            elif rank == 'T':
+                self.rank_values.append(10)
             else:
                 self.rank_values.append(int(rank))
     
@@ -247,16 +248,17 @@ class EnhancedBoardAnalyzer:
             
             if cache_key in self.texture_cache:
                 return self.texture_cache[cache_key]
-            
-            # Analyze board texture
+              # Analyze board texture
             texture = BoardTexture(community_cards)
             
             analysis = {
                 'texture_type': texture.get_texture_type(),
                 'wetness_score': texture._calculate_wetness_score(),
-                'has_flush_draw': texture._has_flush_draw(),
+                'flush_draws': texture._has_flush_draw(),  # Test expects this key
+                'has_flush_draw': texture._has_flush_draw(),  # Keep original for compatibility
                 'straight_draws': texture._analyze_straight_draws(),
-                'has_pair': texture._has_pair(),
+                'pairs_on_board': texture._has_pair(),  # Test expects this key
+                'has_pair': texture._has_pair(),  # Keep original for compatibility
                 'betting_implications': texture.get_betting_implications(),
                 'num_cards': len(community_cards)
             }

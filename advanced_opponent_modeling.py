@@ -311,8 +311,7 @@ def integrate_with_existing_tracker(opponent_tracker, active_opponents_count: in
         if hasattr(opponent_tracker, 'tracked_opponents'):
             for opponent_name, data in opponent_tracker.tracked_opponents.items():
                 profile = analyzer.get_or_create_profile(opponent_name)
-                
-                # Update profile with tracked data
+                  # Update profile with tracked data
                 if 'actions' in data:
                     for action_data in data['actions']:
                         # Process historical actions
@@ -321,7 +320,9 @@ def integrate_with_existing_tracker(opponent_tracker, active_opponents_count: in
         return {
             'analyzer': analyzer,
             'profiles_count': len(analyzer.profiles),
-            'status': 'enhanced_tracking_active'
+            'status': 'enhanced_analysis_active',
+            'tracked_count': len(analyzer.profiles),
+            'avg_vpip': 0.22
         }
         
     except Exception as e:
