@@ -361,16 +361,28 @@ def fix_opponent_tracker_integration(opponent_tracker, active_opponents_count):
         tracked_count = len(tracked_opponents)
         
         if tracked_count == 0:
-            # If no opponents tracked, check if tracker is working
-            logger.warning(f"Opponent tracker shows 0 tracked opponents but {active_opponents_count} active opponents")
+            # If no opponents tracked with sufficient hands, determine why
+            total_profiles = len(opponent_tracker.opponents)
+            reason = 'tracker_not_working_properly'
+            if active_opponents_count > 0 and total_profiles == 0:
+                reason = 'tracker_has_no_profiles_despite_active_opponents'
+                logger.warning(f"Opponent tracker has no profiles, but {active_opponents_count} active opponents on table.")
+            elif total_profiles > 0:
+                reason = f'tracker_has_{total_profiles}_profiles_but_none_with_enough_hands_seen_threshold_3'
+                logger.warning(f"Opponent tracker has {total_profiles} profiles, but none with hands_seen >= 3 (active_opponents_count: {active_opponents_count}).")
+            else: # active_opponents_count is 0 or total_profiles is 0 (and active_opponents_count is 0)
+                 reason = 'no_active_opponents_or_no_profiles_to_track'
+                 logger.info(f"Opponent tracker: No active opponents ({active_opponents_count}) or no profiles ({total_profiles}) to assess for sufficient data.")
+
+
             return {
-                'tracked_count': 0,
+                'tracked_count': 0, # This means 0 opponents with sufficient data
                 'table_type': 'unknown',
                 'avg_vpip': 25.0,
                 'avg_pfr': 18.0,
                 'avg_aggression': 1.5,
                 'fold_equity_estimate': 0.5,
-                'reasoning': 'tracker_not_working_properly'
+                'reasoning': reason
             }
         
         # Calculate averages from tracked data
