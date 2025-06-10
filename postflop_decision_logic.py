@@ -9,7 +9,7 @@ logger.setLevel(logging.DEBUG)
 
 # Import enhanced modules
 try:
-    from enhanced_hand_classification import classify_hand_strength_enhanced, get_standardized_pot_commitment_threshold
+    from enhanced_hand_classification import classify_hand_strength_enhanced as classify_hand_strength_basic, get_standardized_pot_commitment_threshold
     from enhanced_bet_sizing import get_enhanced_bet_size, should_check_instead_of_bet
     from fixed_opponent_integration import get_fixed_opponent_analysis, get_opponent_exploitative_adjustments
     from enhanced_spr_strategy import get_spr_strategy_recommendation, should_commit_stack_spr, get_protection_needs_spr
@@ -171,10 +171,9 @@ def make_postflop_decision(
     # ENHANCED POSTFLOP ANALYSIS WITH NEW MODULES
     position = my_player_data.get('position', 'BB')
     community_cards = my_player_data.get('community_cards', [])
-    
-    # 1. ENHANCED HAND STRENGTH CLASSIFICATION
+      # 1. ENHANCED HAND STRENGTH CLASSIFICATION
     if ENHANCED_MODULES_AVAILABLE:
-        hand_strength, hand_details = classify_hand_strength_enhanced(
+        hand_strength, hand_details = classify_hand_strength_basic(
             numerical_hand_rank=numerical_hand_rank,
             win_probability=win_probability,
             street=street,
@@ -395,12 +394,11 @@ def make_postflop_decision(
             logger.warning(f"Performance monitoring setup failed: {e}")
             
     logger.debug(f"Advanced enhancements integrated: {list(advanced_context.keys())}")
-    
       # Enhanced hand strength classification (FIX #1: Inconsistent Hand Classification)
     try:
-        from enhanced_postflop_improvements import classify_hand_strength_enhanced, standardize_pot_commitment_thresholds
+        from enhanced_postflop_improvements import classify_hand_strength_enhanced as classify_hand_strength_improved, standardize_pot_commitment_thresholds
         
-        hand_strength = classify_hand_strength_enhanced(
+        hand_strength = classify_hand_strength_improved(
             numerical_hand_rank=numerical_hand_rank,
             win_probability=win_probability,
             hand_description=hand_description
