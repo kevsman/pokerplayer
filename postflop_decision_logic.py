@@ -496,48 +496,59 @@ def make_postflop_decision(
                     logger.info(f"Decision: {action_raise_const} {raise_amount} (Very strong hand vs donk bet)")
                     return action_raise_const, raise_amount
                 elif is_strong:
-                    if fold_to_raise_after_donk < 0.3 and spr > 4: 
-                        logger.info(f"Decision: {action_call_const} (Strong hand vs sticky donk bettor, high SPR. Calling to control pot / see turn)")
+                    if fold_to_raise_after_donk < 0.3 and spr > 3: # Opponent rarely folds to raise after donking, high SPR
+                        logger.info(f"Decision: {action_call_const} (Strong hand vs sticky donk bettor, high SPR, calling to keep bluffs in or evaluate further)")
                         return action_call_const, bet_to_call
                     else:
                         raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="raise_vs_donk_value_strong", bet_to_call=bet_to_call, opponent_profile=aggressor_profile)
-                        logger.info(f"Decision: {action_raise_const} {raise_amount} (Strong hand vs donk bet, raising for value/protection)")
+                        logger.info(f"Decision: {action_raise_const} {raise_amount} (Strong hand vs donk bet, raising for value)")
                         return action_raise_const, raise_amount
                 elif is_medium:
-                    if fold_to_raise_after_donk > 0.6 and win_probability > 0.3: 
-                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="raise_vs_donk_medium_bluff_value", bet_to_call=bet_to_call, opponent_profile=aggressor_profile)
-                        logger.info(f"Decision: {action_raise_const} {raise_amount} (Medium hand, raising donk due to high fold_to_raise_after_donk)")
+                    # Consider raising as a bluff if opponent folds often to raises after donking
+                    if fold_to_raise_after_donk > 0.6 and win_probability > 0.25: # Decent fold equity and some backdoor/improvement chance
+                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="bluff_raise_vs_donk_medium_hand", bet_to_call=bet_to_call, opponent_profile=aggressor_profile, bluff=True)
+                        logger.info(f"Decision: {action_raise_const} {raise_amount} (Medium hand vs donk bet, bluff-raising due to high fold_to_raise_after_donk)")
                         return action_raise_const, raise_amount
-                    elif pot_odds_to_call > 0.20: # Requires pot_odds_to_call to be defined
-                        logger.info(f"Decision: {action_call_const} (Medium hand vs donk bet, calling due to pot odds)")
+                    # Check pot odds for calling
+                    elif pot_odds_to_call >= (1 / (win_probability + 0.05) if win_probability > 0 else 100): # Adding a small buffer for implied odds
+                        logger.info(f"Decision: {action_call_const} (Medium hand vs donk bet, calling based on pot odds: {pot_odds_to_call:.2f} vs required: {1/win_probability if win_probability > 0 else 100:.2f})")
                         return action_call_const, bet_to_call
                     else:
-                        logger.info(f"Decision: {action_fold_const} (Medium hand vs donk bet, insufficient odds/fold equity to continue)")
+                        logger.info(f"Decision: {action_fold_const} (Medium hand vs donk bet, insufficient pot odds or bluff equity)")
                         return action_fold_const, 0
                 elif is_drawing:
-                    required_equity_direct = bet_to_call / (pot_size + bet_to_call + bet_to_call) if (pot_size + bet_to_call + bet_to_call) > 0 else 1.0
-                    if fold_to_raise_after_donk > 0.55 and win_probability > 0.25: 
-                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True, purpose="raise_vs_donk_drawing_semibluff", bet_to_call=bet_to_call, opponent_profile=aggressor_profile)
-                        logger.info(f"Decision: {action_raise_const} {raise_amount} (Drawing hand, semi-bluff raise vs donk)")
+                    # Calculate required equity for calling
+                    required_equity_to_call = bet_to_call / (pot_size + bet_to_call + bet_to_call) # bet_to_call / (current_pot + bet_to_call)
+                    
+                    # Semi-bluff raise potential
+                    can_semi_bluff_raise = fold_to_raise_after_donk > 0.5 and win_probability > 0.20 # Good fold equity and reasonable draw
+                    
+                    if can_semi_bluff_raise:
+                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="semi_bluff_raise_vs_donk_drawing_hand", bet_to_call=bet_to_call, opponent_profile=aggressor_profile, bluff=True)
+                        logger.info(f"Decision: {action_raise_const} {raise_amount} (Drawing hand vs donk bet, semi-bluff raising)")
                         return action_raise_const, raise_amount
-                    elif win_probability > required_equity_direct : 
-                        logger.info(f"Decision: {action_call_const} (Drawing hand vs donk bet, calling for odds)")
+                    elif win_probability >= required_equity_to_call:
+                        logger.info(f"Decision: {action_call_const} (Drawing hand vs donk bet, calling based on direct odds. Win prob: {win_probability:.2f}, Req. equity: {required_equity_to_call:.2f})")
                         return action_call_const, bet_to_call
                     else:
-                        logger.info(f"Decision: {action_fold_const} (Drawing hand vs donk bet, insufficient odds to call)")
+                        # Consider implied odds if direct odds are not met but close, and stack sizes allow
+                        implied_odds_factor = 1.5 # Simplified: look for 1.5x implied odds if direct odds slightly off
+                        if win_probability * implied_odds_factor >= required_equity_to_call and (my_stack > bet_to_call * 5 and estimated_opponent_stack_for_implied_odds > bet_to_call * 5):
+                             logger.info(f"Decision: {action_call_const} (Drawing hand vs donk bet, calling based on implied odds. Win prob: {win_probability:.2f}, Req. equity: {required_equity_to_call:.2f})")
+                             return action_call_const, bet_to_call
+                        logger.info(f"Decision: {action_fold_const} (Drawing hand vs donk bet, insufficient odds to call. Win prob: {win_probability:.2f}, Req. equity: {required_equity_to_call:.2f})")
                         return action_fold_const, 0
-                else: # is_weak_made or is_very_weak
-                    if donk_bet_freq > 0.3 and fold_to_raise_after_donk > 0.65:
-                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True, purpose="bluff_raise_vs_wide_donk", bet_to_call=bet_to_call, opponent_profile=aggressor_profile)
-                        logger.info(f"Decision: {action_raise_const} {raise_amount} (Weak hand, bluff-raising wide/weak donk bettor)")
+                else: # Weak made hand or very weak
+                    # Pure bluff raise potential if opponent folds very often
+                    if fold_to_raise_after_donk > 0.7: # High threshold for pure bluff
+                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="pure_bluff_raise_vs_donk_weak_hand", bet_to_call=bet_to_call, opponent_profile=aggressor_profile, bluff=True)
+                        logger.info(f"Decision: {action_raise_const} {raise_amount} (Weak hand vs donk bet, pure bluff-raising due to very high fold_to_raise_after_donk)")
                         return action_raise_const, raise_amount
-                    else:
-                        logger.info(f"Decision: {action_fold_const} (Weak hand vs donk bet, folding)")
-                        return action_fold_const, 0
-                logger.warning(f"Fell through donk bet logic for hand strength {hand_strength_final_decision}. Defaulting to fold.")
-                return action_fold_const, 0
-            
-            # General response to a bet/raise (if not a donk bet)
+                    logger.info(f"Decision: {action_fold_const} (Weak hand vs donk bet, folding)")
+                    return action_fold_const, 0
+
+            # General response to a bet/raise (if not a donk bet or if donk bet logic fell through)
+            logger.debug(f"Continuing to general bet/raise response logic for bet of {bet_to_call}.")
             aggressor_profile = final_opponent_analysis.get('opponent_profiles', {}).get(last_aggressor_on_street, {})
             opponent_aggression_street = aggressor_profile.get(f'aggression_frequency_{street.lower()}', 0.3) 
             opponent_fold_to_raise_street = aggressor_profile.get(f'fold_to_raise_{street.lower()}', 0.4)

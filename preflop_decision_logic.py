@@ -2,7 +2,9 @@
 import math # For round
 from hand_utils import get_preflop_hand_category # Ensure this is imported
 import logging
-import math # Ensure math is imported
+
+# Assuming OpponentTracker is in a module named opponent_tracking
+# from opponent_tracking import OpponentTracker # Import if type hinting or direct instantiation needed here
 
 logger = logging.getLogger(__name__) # Use module's name for the logger
 
@@ -12,688 +14,666 @@ ACTION_CHECK = 'check'
 ACTION_CALL = 'call'
 ACTION_RAISE = 'raise'
 
-# Add action_history as a parameter to the function signature
+# Add action_history and opponent_tracker as parameters
 def make_preflop_decision(
     my_player, hand_category, position, bet_to_call, can_check,
     my_stack, pot_size, active_opponents_count,
     small_blind, big_blind, my_current_bet_this_street, max_bet_on_table, min_raise,
     is_sb, is_bb,
     action_fold_const, action_check_const, action_call_const, action_raise_const,
-    action_history=None  # Add action_history here, default to None for backward compatibility
+    action_history=None,  # Add action_history here
+    opponent_tracker=None # Add opponent_tracker here
     ):
-    """Enhanced pre-flop decision making, now considering action_history."""
+    """Enhanced pre-flop decision making, now considering action_history and opponent_tracker."""
     
     if action_history is None:
-        action_history = [] # Initialize to empty list if not provided
+        action_history = [] 
+    
+    # It's crucial that opponent_tracker is available if we intend to use it.
+    # For now, we'll proceed cautiously if it's None, but ideally, it should always be passed.
+    if opponent_tracker is None:
+        logger.warning("Opponent tracker not provided to preflop logic. Decisions will be less informed.")
+        # Fallback: create a dummy tracker or operate with limited info
+        # For simplicity in this step, we'll just check for its existence before use.
 
-    logger.debug(f"Preflop decision with action_history: {action_history}")
+    logger.debug(f"Preflop decision with action_history: {action_history}, opponent_tracker available: {opponent_tracker is not None}")
 
-    # Use the passed hand_category for decisions
-    # preflop_category = hand_category # This line was moved from further down
+    # --- Helper function to analyze action history for current street ---
+    def analyze_street_actions(history, current_street):
+        raisers = []
+        callers = []
+        num_raises = 0
+        last_raiser_info = None
+        bet_levels = [0] # Start with 0 for initial blind posts
 
-    # --- Existing Limper Calculation (remains the same) ---
+        for action_item in history:
+            if action_item.get('street', '').lower() == current_street:
+                action_type = action_item.get('action_type', '').upper()
+                player_name = action_item.get('player_name')
+                amount = action_item.get('amount', 0) # This is the total bet amount by the player in that action.
+
+                if action_type == 'RAISE':
+                    num_raises += 1
+                    raisers.append(player_name)
+                    last_raiser_info = action_item
+                    bet_levels.append(amount)
+                elif action_type == 'CALL':
+                    callers.append(player_name)
+                elif action_type == 'BET': # Could be an open bet
+                    num_raises +=1 # Treat an initial bet as the first "raise" over blinds
+                    raisers.append(player_name)
+                    last_raiser_info = action_item
+                    bet_levels.append(amount)
+        
+        # Determine the facing bet amount and the player who made it
+        facing_bet_amount = 0
+        last_aggressor_name = None
+        if last_raiser_info:
+            facing_bet_amount = last_raiser_info.get('amount', 0) 
+            last_aggressor_name = last_raiser_info.get('player_name')
+            
+        return num_raises, raisers, callers, last_raiser_info, facing_bet_amount, last_aggressor_name, sorted(list(set(bet_levels))) # Ensure bet_levels is sorted and unique
+
+    num_raises_this_street, raisers_on_street, callers_on_street, last_raiser_action_info, facing_bet_from_history, last_aggressor_name_from_history, bet_levels_from_history = analyze_street_actions(action_history, 'preflop')
+    
+    logger.debug(f"Preflop History Analysis: Num Raises={num_raises_this_street}, Last Raiser Info={last_raiser_action_info}, Last Aggressor Name={last_aggressor_name_from_history}, Bet Levels: {bet_levels_from_history}")
+
+    # --- Opponent Profiling ---
+    last_aggressor_profile = None
+    if opponent_tracker and last_aggressor_name_from_history:
+        last_aggressor_profile = opponent_tracker.get_opponent_profile(last_aggressor_name_from_history)
+        logger.debug(f"Last aggressor ({last_aggressor_name_from_history}) profile: {last_aggressor_profile}")
+
+    table_dynamics = None
+    if opponent_tracker:
+        table_dynamics = opponent_tracker.get_table_dynamics()
+        logger.debug(f"Table dynamics: {table_dynamics}")
+
+    # --- Limper Calculation (using action_history for more accuracy if available) ---
     num_limpers = 0
-    # Corrected: max_bet_on_table is the highest bet any single player has made *in this round*.
-    # pot_size includes all bets from previous rounds and current round.
-    # my_current_bet_this_street is what my_player has put in *this* round.
+    limper_names = []
+    # A raise is any 'RAISE' action, or a 'BET' action if it's the first bet beyond blinds.
+    # Check if any action in history for preflop is a raise or a bet that isn't just posting a blind.
+    has_been_raised_or_opened = False
+    for action in action_history:
+        if action.get('street') == 'preflop':
+            action_type = action.get('action_type','').upper()
+            amount = action.get('amount',0)
+            if action_type == 'RAISE':
+                has_been_raised_or_opened = True
+                break
+            if action_type == 'BET' and amount > big_blind : # A bet larger than BB is an open
+                has_been_raised_or_opened = True
+                break
     
-    # Limper calculation: A limper is someone who called the big blind preflop.
-    # This is tricky to calculate perfectly without full action history.
-    # Simplified: if no raise yet (max_bet_on_table <= big_blind) and pot is larger than blinds + our bet.
-    # MODIFIED CONDITION HERE:
-    if max_bet_on_table <= big_blind and not (is_sb and my_current_bet_this_street == small_blind and bet_to_call == big_blind - small_blind):
-        # If we are not SB facing an unraised pot where SB just needs to complete.
-        # The case for BB having option to check when folded to (no limpers) is handled by num_limpers being 0 later.
+    if not has_been_raised_or_opened:
+        for action in action_history:
+            if action.get('street') == 'preflop' and \
+               action.get('action_type', '').upper() == 'CALL' and \
+               action.get('amount') == big_blind and \
+               action.get('player_name') != my_player.get('name'): 
+                player_actions_before_call = [
+                    a for a in action_history 
+                    if a.get('player_name') == action.get('player_name') and 
+                       a.get('street') == 'preflop' and 
+                       action_history.index(a) < action_history.index(action)
+                ]
+                is_blind_post = any(prev_a.get('action_type','').upper() == 'POST' for prev_a in player_actions_before_call if prev_a.get('amount',0) == big_blind)
+
+                if not any(prev_a.get('action_type','').upper() in ['BET', 'RAISE'] for prev_a in player_actions_before_call) and not is_blind_post:
+                    if action.get('player_name') not in limper_names:
+                         num_limpers += 1
+                         limper_names.append(action.get('player_name'))
+    logger.debug(f"Number of limpers calculated from history: {num_limpers}, Names: {limper_names}")
+
+
+    # --- Raise Amount Calculation (Revised and using history) ---
+    base_for_raise_calc = big_blind # Default if no prior raises
+    size_of_last_raise_increment = big_blind # Default if first raise is ours
+
+    if last_raiser_action_info: # There has been at least one bet/raise
+        last_raise_total_bet = last_raiser_action_info.get('amount', 0)
+        base_for_raise_calc = last_raise_total_bet # The total amount of the last bet/raise
+
+        # Find the bet level before the last_raise_total_bet
+        previous_bet_level_idx = -1
+        for i, level in enumerate(bet_levels_from_history):
+            if level < last_raise_total_bet:
+                previous_bet_level_idx = i
+            else:
+                break 
         
-        # A simpler limper estimation:
-        # Money in pot beyond SB, BB, and our current bet (if we are not SB/BB and already bet)
-        money_from_others_not_blinds = pot_size - my_current_bet_this_street
-        if not is_sb and not is_bb: # If we are not blinds
-             money_from_others_not_blinds = pot_size - (small_blind + big_blind) - my_current_bet_this_street
-        elif is_sb: # If we are SB
-            money_from_others_not_blinds = pot_size - small_blind # BB is the other main component
-            if max_bet_on_table > small_blind : # BB must have at least BB
-                 money_from_others_not_blinds -= big_blind
-            else: # BB might not have posted if game just started and action is on SB weirdly
-                 money_from_others_not_blinds -= max(0, max_bet_on_table) # count what BB put
-        elif is_bb: # If we are BB
-            money_from_others_not_blinds = pot_size - big_blind - small_blind # money from others beyond blinds
-
-        money_from_others_not_blinds = max(0, money_from_others_not_blinds)
-
-        if big_blind > 0:
-            if money_from_others_not_blinds > 0:
-                num_limpers = int(math.ceil(money_from_others_not_blinds / big_blind))
-            else:
-                num_limpers = 0
-        else:
-            num_limpers = 0 # Avoid division by zero if big_blind is 0
-        num_limpers = max(0, num_limpers)    # --- Raise Amount Calculation (Revised) ---
-    if max_bet_on_table <= big_blind: # No prior actual raise, only blinds or limps posted. This is an opening or isolation raise situation.
-        # Opening raise or isolation raise over limpers.
-        if position == 'CO':
-            base_open_multiple = 3
-        elif position == 'BTN':
-            if num_limpers > 0:
-                base_open_multiple = 3  # Use 3x for isolation over limpers
-            else:
-                base_open_multiple = 2.5  # Use 2.5x for normal opens
-        else:
-            base_open_multiple = 3
-        raise_amount_calculated = (base_open_multiple * big_blind) + (num_limpers * big_blind)
-    else: # Facing a real raise (max_bet_on_table > big_blind). This is a re-raise (3-bet, 4-bet, etc.) situation.
-        # 3-bet/4-bet/squeeze sizing        # Squeeze: if more than one opponent has put in max_bet_on_table, use 4.5x open
-        if position in ['CO', 'BTN'] and pot_size > 2 * max_bet_on_table:
-            raise_amount_calculated = 4.5 * max_bet_on_table
-        # 4-bet: if max_bet_on_table > 7*big_blind (likely a 3-bet), use 2.33x (to get 0.42 from 0.18)
-        elif max_bet_on_table > 7 * big_blind:
-            raise_amount_calculated = 2.33 * max_bet_on_table        # 3-bet OOP (SB/BB): 3x open for SB value hands
-        elif position in ['SB', 'BB']:
-            if position == 'BB':
-                raise_amount_calculated = 4.0 * max_bet_on_table
-            else:
-                raise_amount_calculated = 3.0 * max_bet_on_table  # 3x for value hands, bluffs use custom sizing
-        # 3-bet IP: 3x open
-        else:
-            raise_amount_calculated = 3 * max_bet_on_table
+        previous_bet_level = 0
+        if previous_bet_level_idx != -1 and previous_bet_level_idx < len(bet_levels_from_history):
+             previous_bet_level = bet_levels_from_history[previous_bet_level_idx]
+        
+        size_of_last_raise_increment = last_raise_total_bet - previous_bet_level
+        if size_of_last_raise_increment <=0 : # Should not happen if bet_levels are correct
+            size_of_last_raise_increment = big_blind # Fallback
     
-    # Final adjustments and validations
-    raise_amount_calculated = max(raise_amount_calculated, min_raise if min_raise > bet_to_call else 0)
-    if bet_to_call > 0 and raise_amount_calculated <= bet_to_call:
+    open_raise_multiplier_bb = 3.0 # Multiplier of Big Blind for open raise
+    if position == 'BTN' and num_limpers == 0: open_raise_multiplier_bb = 2.5
+    if position == 'SB' and num_limpers == 0: open_raise_multiplier_bb = 3.0
+
+    if table_dynamics:
+        if 'loose' in table_dynamics.get('table_type', ''):
+            open_raise_multiplier_bb += 0.5 
+        elif 'tight' in table_dynamics.get('table_type', ''):
+            open_raise_multiplier_bb = max(2.0, open_raise_multiplier_bb - 0.25)
+
+
+    if num_raises_this_street == 0: # This is an opening raise or isolation raise.
+        # Standard open: X * BB. Isolation: X * BB + Y * BB for each limper.
+        raise_amount_calculated = (open_raise_multiplier_bb * big_blind) + (num_limpers * big_blind)
+    else: # Facing a bet/raise (re-raise situation: 3-bet, 4-bet, etc.)
+        # Standard re-raise: current total bet + K * (size of last raise increment)
+        # Or: K * (total amount of previous bet)
+        reraise_multiplier_of_total_bet = 3.0
+        if position not in ['SB', 'BB']: # IP
+            reraise_multiplier_of_total_bet = 2.7
+        
+        if num_raises_this_street >= 2: # Facing a 3-bet (we consider 4-bet) or more
+            reraise_multiplier_of_total_bet = 2.3 
+            if position not in ['SB', 'BB']: reraise_multiplier_of_total_bet = 2.2
+
+        # Calculate raise based on the total amount of the previous bet/raise
+        raise_amount_calculated = reraise_multiplier_of_total_bet * base_for_raise_calc
+        
+        # Alternative: Pot-sized raise logic for re-raises
+        # Amount to call = bet_to_call
+        # Pot after call = pot_size + bet_to_call
+        # Raise size = Pot after call
+        # Total bet = bet_to_call + Pot after call = bet_to_call + pot_size + bet_to_call
+        # pot_sized_raise_total = bet_to_call + pot_size + bet_to_call 
+        # if num_raises_this_street >=1: # If re-raising
+        #     raise_amount_calculated = pot_sized_raise_total
+
+
+        # Add extra for callers between the last raise and us (if any)
+        # This is complex; for now, the multiplier approach is simpler.
+        # If there were callers after the last raise, our re-raise should be larger.
+        # Example: UTG raises to 3BB. MP calls. CO (Hero) wants to 3-bet.
+        # Pot is SB+BB + 3BB (UTG) + 3BB (MP) = ~7.5BB before Hero. Call is 3BB.
+        # Standard 3-bet over UTG raise might be 9-10BB. Over UTG+caller, maybe 12-15BB.
+        # Our current `raise_amount_calculated` is based on `base_for_raise_calc` (UTG's 3BB total).
+        # So, e.g., 2.7 * 3BB = 8.1BB. We need to add for the caller.
+        # Add 1x the size of the original raise for each caller.
+        
+        callers_after_last_raise_count = 0
+        if last_raiser_action_info and action_history:
+            try:
+                # Find the index of the last raiser's action
+                last_raiser_index = -1
+                # This direct object comparison might fail if objects are not identical
+                # A robust way is to use a unique ID if actions have one, or compare key fields.
+                # For now, assume last_raiser_action_info is the actual dict from action_history
+                if last_raiser_action_info in action_history:
+                     last_raiser_index = action_history.index(last_raiser_action_info)
+                
+                if last_raiser_index != -1:
+                    for i in range(last_raiser_index + 1, len(action_history)):
+                        action_after_raiser = action_history[i]
+                        if action_after_raiser.get('street','').lower() == 'preflop':
+                            if action_after_raiser.get('action_type','').upper() == 'CALL' and \
+                               action_after_raiser.get('amount',0) == base_for_raise_calc: # Called the last raise amount
+                                callers_after_last_raise_count +=1
+            except ValueError: # If last_raiser_action_info is not in action_history (e.g. it was a copy)
+                logger.warning("Could not find last_raiser_action_info in action_history for caller counting.")
+
+
+        if callers_after_last_raise_count > 0:
+            raise_amount_calculated += (callers_after_last_raise_count * size_of_last_raise_increment)
+
+
+    # Final adjustments to raise_amount_calculated
+    # Ensure raise is at least min_raise (total amount)
+    # min_raise is the total bet amount for a valid minimum raise.
+    # If we are opening (num_raises_this_street == 0), min_raise is typically 2*BB.
+    # If we are re-raising, min_raise is (last_bet_total + last_raise_increment).
+    
+    # If our calculated raise is less than the legal min_raise, use min_raise.
+    # min_raise should be the *total* bet amount.
+    if raise_amount_calculated < min_raise and min_raise > bet_to_call : # bet_to_call is what we owe
+         raise_amount_calculated = min_raise
+    
+    # If calculated amount is not actually a raise over current bet_to_call (i.e. <= bet_to_call),
+    # but min_raise is a valid raise (min_raise > bet_to_call), then use min_raise.
+    if raise_amount_calculated <= bet_to_call and min_raise > bet_to_call:
         raise_amount_calculated = min_raise
+
+    # Ensure raise amount is not more than our stack
     raise_amount_calculated = round(min(raise_amount_calculated, my_stack), 2)
+
+    # If, after all calculations, the raise_amount_calculated is not greater than what we need to call,
+    # it means we cannot make a "standard" sized raise.
+    # The decision to raise will then consider if an all-in is appropriate or if min_raise is the only option.
     
-    # This check was here, ensure it's still valid:
-    # If we decide to raise, the amount must be at least min_raise.
-    # min_raise is the *total* bet amount for a valid minimum raise.
-    # If raise_amount_calculated < min_raise and raise_amount_calculated > bet_to_call: # If it's intended as a raise but too small
-    #    raise_amount_calculated = min_raise
-    # This should be covered by max(raise_amount_calculated, min_raise) if min_raise is correctly the total bet.
-    # Let's refine: if we intend to raise, the amount must be >= min_raise.
-    # The decision to raise comes later. This is just the 'default' calculated raise.    print(f"Preflop Logic: Pos: {position}, Cat: {preflop_category}, B2Call: {bet_to_call}, CanChk: {can_check}, CalcRaise: {raise_amount_calculated}, MyStack: {my_stack}, MyBet: {my_current_bet_this_street}, MaxOppBet: {max_bet_on_table}, Pot: {pot_size}, Opps: {active_opponents_count}, BB: {big_blind}, is_bb: {is_bb}, NumLimpers: {num_limpers}")
+    logger.info(f"Preflop Logic: Pos: {position}, Cat: {hand_category}, B2Call: {bet_to_call}, CanChk: {can_check}, CalcRaise: {raise_amount_calculated}, MyStack: {my_stack}, MyBet: {my_current_bet_this_street}, MaxOppBet: {max_bet_on_table}, MinRaise: {min_raise}, Pot: {pot_size}, Opps: {active_opponents_count}, BB: {big_blind}, is_bb: {is_bb}, NumLimpers: {num_limpers}, NumRaises: {num_raises_this_street}")
+    if last_aggressor_profile:
+        logger.info(f"Last Aggressor ({last_aggressor_name_from_history}): VPIP={last_aggressor_profile.get_vpip():.1f}, PFR={last_aggressor_profile.get_pfr():.1f}, Type={last_aggressor_profile.classify_player_type()}")
 
-    # --- Decision Logic ---
+
+    # --- Decision Logic (incorporating opponent tendencies) ---
+
+    # General principle: If last aggressor is very tight, be more cautious. If very loose, be more aggressive.
+    # These thresholds would ideally come from OpponentProfile methods like get_fold_to_3bet_percentage()
+    fold_to_3bet_threshold_tight = 55 # Folds to 3bet > 55% of the time
+    fold_to_3bet_threshold_loose = 35 # Folds to 3bet < 35% (calls/4bets more)
     
-    # Example of using action_history:
-    # Count how many raises have occurred this street from the history
-    num_raises_this_street = 0
-    # For preflop, the street is always 'preflop'.
-    current_street_from_history = 'preflop' 
-
-    if action_history:
-        for action_item in action_history:
-            if action_item.get('street', '').lower() == current_street_from_history and \
-               action_item.get('action_type', '').upper() == 'RAISE':
-                num_raises_this_street += 1
-    
-    logger.debug(f"Number of raises this street (from history): {num_raises_this_street}")
-
-    print(f"DEBUG PREFLOP: Starting decision logic with hand_category='{hand_category}', raises_this_street={num_raises_this_street}")
-    
-    if hand_category == "Weak":
-        print(f"DEBUG PREFLOP: Entered Weak hand category")
+    # --- PREMIUM PAIRS (AA, KK, QQ) ---
+    if hand_category == "Premium Pair":
+        # Always aim to raise or re-raise.
+        actual_raise_amount = raise_amount_calculated
         
-        # If facing multiple raises, fold weak hands more readily
-        if num_raises_this_street >= 2 and bet_to_call > 0:
-            print(f"DEBUG PREFLOP: Weak hand facing multiple raises ({num_raises_this_street}). Action: FOLD")
-            return action_fold_const, 0
-
-        if can_check and is_bb and bet_to_call == 0:
-            print(f"DEBUG PREFLOP: BB can check with no bet to call. Action: CHECK")
-            return action_check_const, 0
+        # If calculated raise is not valid (e.g. <= bet_to_call) but we can go all-in or make min_raise
+        if actual_raise_amount <= bet_to_call:
+            if my_stack > bet_to_call: # We can raise more than just calling
+                actual_raise_amount = my_stack # Default to all-in if standard calc failed
+                if min_raise > bet_to_call and min_raise < my_stack: # If min_raise is a valid option
+                    actual_raise_amount = min_raise 
+            # If actual_raise_amount is still <= bet_to_call, it means only call or fold is possible.
         
-        # Enhanced BTN stealing with wider range
-        if position == 'BTN' and num_limpers == 0 and max_bet_on_table <= big_blind:
-            # BTN should attempt steals with wider range including suited weak hands and some offsuit hands
-            hand = my_player['hand']
-            card1_suit = hand[0][-1]
-            card2_suit = hand[1][-1]
-            is_suited = card1_suit == card2_suit
-            
-            # Get card ranks
-            card1_rank = hand[0][:-1] if hand[0][:-1] != '10' else 'T'
-            card2_rank = hand[1][:-1] if hand[1][:-1] != '10' else 'T'
-            
-            # Expand steal range: suited kings, suited queens, any suited connector
-            has_high_card = card1_rank in ['K', 'Q', 'J'] or card2_rank in ['K', 'Q', 'J']
-            
-            # Check for suited connectors or gappers
-            from hand_utils import RANK_TO_VALUE
-            rank1_val = RANK_TO_VALUE.get(card1_rank, 0)
-            rank2_val = RANK_TO_VALUE.get(card2_rank, 0)
-            if rank1_val < rank2_val:
-                rank1_val, rank2_val = rank2_val, rank1_val
-            
-            is_connector = is_suited and (rank1_val - rank2_val) <= 2 and rank1_val >= 6
-            
-            # Steal with: suited high cards, suited connectors, some offsuit broadways
-            should_steal = False
-            if is_suited and (has_high_card or is_connector):
-                should_steal = True
-            elif not is_suited and has_high_card and (rank1_val >= 11 and rank2_val >= 9):  # J9o+
-                should_steal = True
-                
-            if should_steal:
-                steal_amount = raise_amount_calculated
-                steal_amount = max(steal_amount, min_raise)
-                steal_amount = round(min(steal_amount, my_stack), 2)
-                if steal_amount > bet_to_call:
-                    print(f"BTN steal with weak hand ({card1_rank}{card1_suit}, {card2_rank}{card2_suit}). Action: RAISE, Amount: {steal_amount}")
-                    return action_raise_const, steal_amount
-        
-        # CO late position play - more liberal than early position
-        if position == 'CO' and num_limpers == 0 and max_bet_on_table <= big_blind:
-            hand = my_player['hand']
-            card1_rank = hand[0][:-1] if hand[0][:-1] != '10' else 'T'
-            card2_rank = hand[1][:-1] if hand[1][:-1] != '10' else 'T'
-            
-            # More conservative than BTN but still wider than early position
-            has_king_queen = card1_rank in ['K', 'Q'] or card2_rank in ['K', 'Q']
-            if has_king_queen and (hand[0][-1] == hand[1][-1]):  # Suited K or Q
-                steal_amount = raise_amount_calculated
-                steal_amount = max(steal_amount, min_raise)
-                steal_amount = round(min(steal_amount, my_stack), 2)
-                if steal_amount > bet_to_call:
-                    print(f"CO open with suited high card. Action: RAISE, Amount: {steal_amount}")
-                    return action_raise_const, steal_amount
-                      # If facing a raise, fold weak hands (with some exceptions)
-        if bet_to_call > 0:
-            print(f"DEBUG PREFLOP: Weak hand facing bet (bet_to_call={bet_to_call}). Action: FOLD")
-            return action_fold_const, 0
-            # If no bet to call, and cannot check (e.g., UTG must act), fold weak hands.
-        # Exception: BTN steal attempts with suited weak hands like K4s
-        if bet_to_call == 0:
-            print(f"DEBUG PREFLOP: bet_to_call == 0, checking for BTN steal scenarios")
-            # Check if this is a BTN steal spot (no limpers, first to act)
-            if position == 'BTN' and num_limpers == 0:                # BTN should attempt steals with wider range including suited kings
-                # Check if it's a suited hand that could be a steal candidate
-                hand = my_player['hand']
-                card1_suit = hand[0][-1]
-                card2_suit = hand[1][-1]
-                is_suited = card1_suit == card2_suit
-                 
-                # Get card ranks
-                card1_rank = hand[0][:-1] if hand[0][:-1] != '10' else 'T'
-                card2_rank = hand[1][:-1] if hand[1][:-1] != '10' else 'T'
-                 
-                # Check if it contains a King and is suited (like K4s)
-                has_king = card1_rank == 'K' or card2_rank == 'K'
-                 
-                if is_suited and has_king:
-                    steal_amount = raise_amount_calculated
-                    steal_amount = max(steal_amount, min_raise)
-                    steal_amount = round(min(steal_amount, my_stack), 2)
-                    if steal_amount > bet_to_call:
-                        print(f"Weak suited King in BTN, steal attempt. Action: RAISE, Amount: {steal_amount}")
-                        return action_raise_const, steal_amount
-            
-            # If not a steal situation and cannot check, fold
-            if not can_check:
-                print(f"DEBUG PREFLOP: Weak hand, cannot check (e.g. UTG open), no bet to call. Action: FOLD")
-                print(f"DEBUG PREFLOP: Details - can_check={can_check}, position={position}, bet_to_call={bet_to_call}")
-                return action_fold_const, 0# Debug logging for BB check issue investigation
-        print(f"DEBUG PREFLOP: At check/fold decision point:")
-        print(f"  - position: {position}")
-        print(f"  - bet_to_call: {bet_to_call}")
-        print(f"  - can_check: {can_check}")
-        print(f"  - is_bb: {is_bb}")
-        print(f"  - hand_category: {hand_category}")
-        
-        # If no bet to call and can check (e.g. UTG limp, later position check through, or BB with no raise)
-        if bet_to_call == 0 and can_check:
-            print(f"DEBUG PREFLOP: Weak hand, can check (limp/check through or BB facing no bet). Action: CHECK")
-            return action_check_const, 0
-        
-        # Default for weak hands: if can check, check. Otherwise, fold.
-        # This covers the BB case where it's checked to them (bet_to_call == 0, can_check == True)
-        print(f"DEBUG PREFLOP: Weak hand, default. Action: CHECK if can_check else FOLD. (can_check={can_check}, bet_to_call={bet_to_call})")
-        return action_check_const if can_check else action_fold_const, 0
+        can_make_valid_raise = actual_raise_amount > bet_to_call or \
+                               (actual_raise_amount == my_stack and my_stack > bet_to_call)
 
-
-    if hand_category == "Premium Pair": # AA, KK, QQ
-        # For Premium Pairs, the decision is almost always to raise if possible.
-        # The raise_amount_calculated should be appropriate from the global calculation.
-        # If max_bet_on_table <= big_blind (opening/iso): calc was (3*BB) + (limpers*BB)
-        # If max_bet_on_table > big_blind (facing raise): calc was 3 * max_bet_on_table
-        
-        # If bet_to_call == 0 (or more generally, if max_bet_on_table <= big_blind, meaning we are first to make a 'real' bet)
-        if max_bet_on_table <= big_blind: # We are opening or isolating limpers
-            # Use the globally calculated raise_amount_calculated for opening/isolating
-            actual_raise_amount = raise_amount_calculated
-            actual_raise_amount = max(actual_raise_amount, min_raise) # Ensure it's at least min_raise
-            actual_raise_amount = round(min(actual_raise_amount, my_stack), 2)
-            if actual_raise_amount <= bet_to_call and actual_raise_amount < my_stack : # Not a valid raise, or not all-in
-                 actual_raise_amount = min_raise # Fallback if calc is too low
-                 actual_raise_amount = round(min(actual_raise_amount, my_stack), 2)
-
-            if actual_raise_amount > bet_to_call or (actual_raise_amount == my_stack and my_stack > bet_to_call): # Must be a raise or a covering all-in
-                print(f"Premium Pair, opening/isolating. Action: RAISE, Amount: {actual_raise_amount}")
-                return action_raise_const, actual_raise_amount
-            else: # Should not happen if min_raise is valid and stack sufficient. Fallback to call if weird state.
-                if bet_to_call < my_stack and bet_to_call > 0:
-                    print(f"Premium Pair, opening/isolating, raise calc issue, calling. Action: CALL, Amount: {bet_to_call}")
-                    return action_call_const, bet_to_call
-                elif can_check:
-                    print(f"Premium Pair, opening/isolating, raise calc issue, checking. Action: CHECK")
-                    return action_check_const, 0
-                else:
-                    print(f"Premium Pair, opening/isolating, raise calc issue, folding. Action: FOLD")
-                    return action_fold_const, 0
-        else: # Facing a bet or raise (max_bet_on_table > big_blind)
-            # Re-raise. Use the globally calculated raise_amount_calculated (3x max_bet_on_table)
-            actual_raise_amount = raise_amount_calculated
-            actual_raise_amount = max(actual_raise_amount, min_raise) # Ensure it's a valid raise amount
-            actual_raise_amount = round(min(actual_raise_amount, my_stack), 2)
-
-            if actual_raise_amount <= bet_to_call: # Calculated raise is not even a call or is invalid.
-                # This can happen if 3*max_bet_on_table is less than min_raise and min_raise itself is just a call.
-                # Or if stack is too small. If stack is small, actual_raise_amount might be my_stack.
-                if actual_raise_amount == my_stack and my_stack > bet_to_call: # All-in raise
-                     print(f"Premium Pair, facing bet, re-raising ALL-IN. Action: RAISE, Amount: {my_stack}")
-                     return action_raise_const, my_stack
-                  # Fallback if raise calculation is problematic
-                # Premium pairs (AA, KK, QQ) should almost never fold preflop
-                # Call with any premium pair if we can't raise properly
-                if bet_to_call < my_stack: # Can afford to call (not an impossible all-in for more than stack)
-                    print(f"Premium Pair, facing bet, raise calc failed, calling with premium hand. Action: CALL, Amount: {bet_to_call}")
-                    return action_call_const, bet_to_call
-                else: # Only fold if the bet is somehow more than our entire stack (should never happen)
-                    print(f"Premium Pair, facing bet larger than stack (impossible situation). Action: CALL ALL-IN, Amount: {my_stack}")
-                    return action_call_const, my_stack
-            
-            # If calculated raise is a significant portion of stack, consider it an all-in.
-            if actual_raise_amount >= my_stack * 0.85 and actual_raise_amount > bet_to_call : 
-                print(f"Premium Pair, facing bet, large re-raise. Action: RAISE (ALL-IN), Amount: {my_stack}")
-                return action_raise_const, my_stack
-            
-            print(f"Premium Pair, facing bet. Action: RAISE, Amount: {actual_raise_amount}")
-            return action_raise_const, actual_raise_amount
-
-    # AKs, AKo, AQs, AQo, AJs, AJo, KQs, KQo (Playable Broadway / Suited Ace)
-    # Strong Pair (JJ, TT)
-    # Suited Playable (KJs, KTs, QJs, QTs, JTs)
-    # Medium Pair (99, 88, 77) - Added
-    if hand_category in ["Suited Ace", "Offsuit Ace", "Suited King", "Offsuit King", "Playable Broadway", "Offsuit Broadway", "Strong Pair", "Suited Playable", "Medium Pair", "Offsuit Playable", "Small Pair", "Weak", "Premium Pair", "Suited Connector"]: # Added "Small Pair", "Weak", "Premium Pair", "Suited Connector"
-        if position in ['UTG', 'MP']:
-            # Facing a real raise (max_bet_on_table > big_blind)
-            # Fold AJo/ATo facing UTG raise + MP 3-bet
-            if bet_to_call > big_blind * 4 or (hand_category in ["Offsuit Ace", "Offsuit Broadway"] and max_bet_on_table > 7 * big_blind):
-                print(f"{hand_category} in {position}, facing large raise or 3-bet. Action: FOLD")
-                return action_fold_const, 0
-
-            # Opening or raising over limpers if no one has made a 'real' raise yet
-            if max_bet_on_table <= big_blind:
-                # Use the global raise_amount_calculated for opening
-                open_raise = raise_amount_calculated
-                open_raise = max(open_raise, min_raise) # Ensure it's at least min_raise
-                open_raise = round(min(open_raise, my_stack),2)
-
-                if open_raise > bet_to_call or (open_raise == my_stack and my_stack > bet_to_call): # Must be a raise or covering all-in
-                    # Filter out weaker hands in this category for UTG/MP opens if they are too weak
-                    if position == 'UTG' and hand_category in ["Medium Pair", "Suited Playable"]: # Too loose for UTG open
-                         print(f"{hand_category} in UTG, too weak to open. Action: FOLD")
-                         return action_fold_const, 0
-                    if position == 'MP' and hand_category == "Medium Pair" and hand_category not in ["Strong Pair"]: # e.g. 77-99 from MP might be too loose for 3x open
-                         # TT+ is Strong Pair. So this is for 77-99.
-                         # Let's allow MP to open Medium Pairs for now
-                         pass
-
-                    print(f"{hand_category} in {position}, opening/raising limpers. Action: RAISE, Amount: {open_raise}")
-                    return action_raise_const, open_raise
-                else: # Raise calculation failed, try to check/fold
-                     if can_check:
-                         print(f"{hand_category} in {position}, opening, raise calc issue, checking. Action: CHECK")
-                         return action_check_const, 0
-                     else:
-                         print(f"{hand_category} in {position}, opening, raise calc issue, folding. Action: FOLD")
-                         return action_fold_const, 0
-            # Facing a real raise (max_bet_on_table > big_blind)
-            elif bet_to_call <= big_blind * 4: 
-                if hand_category == "Strong Pair": # TT, JJ, AKo
-                    # AKo should 3-bet vs UTG open in MP
-                    if position == "MP" and bet_to_call <= big_blind * 3: # Assuming AKo is part of Strong Pair for this
-                        three_bet_amount = raise_amount_calculated # Global calc for MP 3bet is 3x
-                        three_bet_amount = max(three_bet_amount, min_raise)
-                        three_bet_amount = round(min(three_bet_amount, my_stack), 2)
-                        if three_bet_amount > bet_to_call:
-                            print(f"{hand_category} (likely AKo or strong pair) in MP, 3-betting. Action: RAISE, Amount: {three_bet_amount}")
-                            return action_raise_const, three_bet_amount
-                    
-                    # If not 3-betting (e.g. TT, JJ vs larger raise, or AKo if 3-bet calc failed)
-                    if bet_to_call <= big_blind * 3.5: 
-                        print(f"{hand_category} in {position}, facing raise <= 3.5x. Action: CALL, Amount: {bet_to_call}")
-                        return action_call_const, bet_to_call
-                    else:
-                        print(f"{hand_category} in {position}, facing large raise > 3.5x. Action: FOLD")
-                        return action_fold_const, 0
-                # For suited aces like A8s in CO vs UTG open - should call, not 3-bet
-                # Only 3-bet stronger suited aces (AJs+) not weaker ones (A8s, A9s)
-                elif hand_category == "Suited Ace":
-                    print(f"{hand_category} in {position}, facing raise <= 4BB. Action: CALL, Amount: {bet_to_call}")
-                    return action_call_const, bet_to_call
-                # For other strong hands like AK, AQ, KQs in UTG/MP facing a raise.
-                # Call smaller raises.
-                print(f"{hand_category} in {position}, facing raise <= 4BB. Action: CALL, Amount: {bet_to_call}")
-                return action_call_const, bet_to_call
-            else: # Facing a large raise
-                print(f"{hand_category} in {position}, facing large raise > 4BB. Action: FOLD")
-                return action_fold_const, 0
-        elif position in ['CO', 'BTN']:
-            # Facing a raise (max_bet_on_table > big_blind)
-            # Fold weak offsuit aces facing large raises, but check pot odds for strong hands like AQ offsuit
-            if hand_category == "Offsuit Ace" and max_bet_on_table > 7 * big_blind:
-                # This might be too tight for BTN vs CO, but as a general rule for "Offsuit Ace"
-                # Consider action_history: if it's a 3-bet and we are BTN vs CO, AQo might still call or 4-bet bluff.
-                # For now, keeping original logic, but this is a place for action_history refinement.
-                if num_raises_this_street >= 1: # If facing at least one raise (e.g. a 3-bet)
-                    print(f"{hand_category} in {position}, facing 3-bet or more. Action: FOLD")
-                    return action_fold_const, 0
-
-                print(f"{hand_category} in {position}, facing large initial raise. Action: FOLD") # Original logic if not a 3-bet+ situation
-                return action_fold_const, 0
-            # For Offsuit Broadway (like AQ offsuit), check pot odds before folding to large raises
-            elif hand_category == "Offsuit Broadway" and max_bet_on_table > 7 * big_blind:
-                # Calculate pot odds to decide if we should call with a strong hand
-                pot_odds_needed = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 1
-                if pot_odds_needed <= 0.40:  # AQ offsuit should call with good pot odds
-                    print(f"{hand_category} in {position}, facing large raise but good pot odds ({pot_odds_needed:.1%} equity needed). Action: CALL, Amount: {bet_to_call}")
-                    return action_call_const, bet_to_call
-                else:
-                    print(f"{hand_category} in {position}, facing large raise with poor pot odds ({pot_odds_needed:.1%} equity needed). Action: FOLD")
-                    return action_fold_const, 0
-
-            # Squeeze logic: if pot_size > 2*max_bet_on_table, treat as squeeze (already part of raise_amount_calculated)
-            # The raise_amount_calculated for CO/BTN already considers squeeze (4.5x) or 3-bet (3x).
-            
-            # Opening or raising over limpers
-            if max_bet_on_table <= big_blind:
-                open_raise = raise_amount_calculated # Use global calc: (3*BB or 2.5*BB for BTN) + limpers
-                open_raise = max(open_raise, min_raise)
-                open_raise = round(min(open_raise, my_stack),2)
-                if open_raise > bet_to_call or (open_raise == my_stack and my_stack > bet_to_call):
-                    print(f"{hand_category} in {position}, opening/isolating. Action: RAISE, Amount: {open_raise}")
-                    return action_raise_const, open_raise
-                else: # Raise calculation failed
-                     if can_check: # Should not happen if opening unless BB
-                         print(f"{hand_category} in {position}, opening, raise calc issue, checking. Action: CHECK")
-                         return action_check_const, 0
-                     else:
-                         print(f"{hand_category} in {position}, opening, raise calc issue, folding. Action: FOLD")
-                         return action_fold_const, 0
-            # Facing a real raise (max_bet_on_table > big_blind)
-            # Hands strong enough to 3-bet: "Playable Broadway", "Offsuit Broadway" (AQo, AJo), "Suited Ace", "Offsuit Ace" (AKo), "Strong Pair"
-            elif hand_category in ["Playable Broadway", "Offsuit Broadway", "Suited Ace", "Offsuit Ace", "Strong Pair"] and \
-                 max_bet_on_table > big_blind and \
-                 max_bet_on_table <= big_blind * 4.5: # Facing a standard open or small 3-bet
-                three_bet_amount = raise_amount_calculated # Global calc for CO/BTN 3-bet (3x or 4.5x if squeeze)
-                three_bet_amount = max(three_bet_amount, min_raise)
-                three_bet_amount = round(min(three_bet_amount, my_stack), 2)
-                if three_bet_amount > bet_to_call:
-                    print(f"{hand_category} in {position}, 3-betting. Action: RAISE, Amount: {three_bet_amount}")
-                    return action_raise_const, three_bet_amount
-                elif bet_to_call < my_stack : # Fallback to call if 3-bet calc is too small but can call
-                    print(f"{hand_category} in {position}, 3-bet calc low, calling. Action: CALL, Amount: {bet_to_call}")
-                    return action_call_const, bet_to_call
-                else: # Cannot 3-bet effectively or call
-                    print(f"{hand_category} in {position}, cannot 3-bet/call effectively. Action: FOLD")
-                    return action_fold_const, 0
-            elif bet_to_call <= big_blind * 10: # Facing a larger bet (likely 3-bet or 4-bet)
-                # Call with strong suited hands and strong pairs if odds are decent and not too much of stack.
-                if hand_category in ["Suited Ace", "Playable Broadway", "Strong Pair"] and bet_to_call < my_stack * 0.33:
-                    print(f"{hand_category} in {position}, facing large bet, calling. Action: CALL, Amount: {bet_to_call}")
-                    return action_call_const, bet_to_call
-                else:
-                    print(f"{hand_category} in {position}, facing large bet, folding. Action: FOLD")
-                    return action_fold_const, 0
-            else: # Facing a very large bet
-                print(f"{hand_category} in {position}, facing very large bet. Action: FOLD")
-                return action_fold_const, 0
-        elif position == 'SB':
-            # SB strategy: 3-bet or fold mostly. Call very selectively.
-            if max_bet_on_table <= big_blind: # Opening from SB
-                open_raise = raise_amount_calculated # Should be 3x BB + limpers (if any)
-                open_raise = max(open_raise, min_raise)
-                open_raise = round(min(open_raise, my_stack), 2)
-                
-                # Tighten SB open range for some categories if no limpers
-                if num_limpers == 0 and hand_category in ["Offsuit Ace", "Offsuit Broadway", "Medium Pair", "Suited Playable"]:
-                     # KJs, KTs, QJs, QTs, JTs (Suited Playable) can be opened. ATo, KJo, QJo, JTo (Offsuit Broadway) are borderline.
-                     # Medium pairs (77-99) are also borderline. Weaker Offsuit Aces (A9o-A2o) are folds.
-                     if hand_category in ["Offsuit Ace", "Medium Pair"] or \
-                        (hand_category == "Offsuit Broadway" and not any(r in hand_category for r in ["AK", "AQ", "KQ"])): # Fold weaker offsuit broadways
-                         print(f"{hand_category} in SB, too weak to open vs no limpers. Action: FOLD")
-                         return action_fold_const, 0
-
-                if open_raise > bet_to_call: # bet_to_call should be small_blind if completing, or 0 if opening
-                    print(f"{hand_category} in SB, opening/raising. Action: RAISE, Amount: {open_raise}")
-                    return action_raise_const, open_raise
-                elif can_check: # Should only happen if it was checked to SB and BB, and SB wants to check.
-                                # But this block is for stronger hands, unlikely to check here.
-                                # More likely, this means raise calc failed.
-                    print(f"{hand_category} in SB, open/raise calc issue, checking. Action: CHECK")
-                    return action_check_const, 0
-                else: # Cannot raise effectively
-                    print(f"{hand_category} in SB, open/raise calc issue, folding. Action: FOLD")
-                    return action_fold_const, 0
-            else: # Facing a raise in SB
-                my_bet_on_street_before_this_action = max_bet_on_table - bet_to_call
-                # Use the 'small_blind' parameter passed to the function
-                we_already_raised_this_street = my_bet_on_street_before_this_action > small_blind
-
-                is_suited_ace_category = (hand_category == "Suited Ace")
-                
-                if is_suited_ace_category and we_already_raised_this_street:
-                    logger.info(f"{hand_category} in SB, facing re-raise (4-bet+), folding. Action: FOLD")
-                    return ACTION_FOLD, 0
-
-                can_consider_initial_3bet = hand_category in ["Strong Pair", "Suited Ace", "Playable Broadway"]
-                can_consider_5bet_plus = hand_category in ["Strong Pair", "Playable Broadway"] 
-
-                eligible_for_aggressive_action = False
-                if not we_already_raised_this_street and can_consider_initial_3bet:
-                    eligible_for_aggressive_action = True
-                elif we_already_raised_this_street and can_consider_5bet_plus:
-                    if hand_category == "Suited Ace": 
-                        logger.info(f"{hand_category} in SB, facing re-raise (4-bet+) (safeguard), folding. Action: FOLD")
-                        return ACTION_FOLD, 0
-                    eligible_for_aggressive_action = True
-                
-                commitment_factor = 0.45 if we_already_raised_this_street else 0.33 
-
-                if eligible_for_aggressive_action and max_bet_on_table < my_stack * commitment_factor:
-                    # raise_amount_calculated is already defined earlier in the function
-                    reraise_amount = raise_amount_calculated 
-                    reraise_amount = max(reraise_amount, min_raise) # Ensure it's a valid min raise total
-                    reraise_amount = round(min(reraise_amount, my_stack), 2)
-
-                    if reraise_amount > bet_to_call: # Ensure it's an actual raise
-                        action_type = "re-raising (4-bet+)" if we_already_raised_this_street else "3-betting"
-                        logger.info(f"{hand_category} in SB, {action_type}. Action: RAISE, Amount: {reraise_amount}")
-                        return ACTION_RAISE, reraise_amount
-                
-                logger.info(f"{hand_category} in SB, facing raise, folding (default path). Action: FOLD")
-                return ACTION_FOLD, 0
-        elif position == 'BB':
-            # BB strategy: Defend wider. Call, 3-bet, or check.
-            if max_bet_on_table <= big_blind: # Limped pot or folded to BB
-                if can_check and bet_to_call == 0: # Option to check
-                    print(f"{hand_category} in BB, can check. Action: CHECK")
-                    return action_check_const, 0
-                else: # Must be limpers, BB can raise (or complete if SB limped and bet_to_call is small)
-                    iso_raise = raise_amount_calculated # Global calc: (base_open_multiple * big_blind) + (num_limpers * big_blind)
-                    iso_raise = max(iso_raise, min_raise)
-                    iso_raise = round(min(iso_raise, my_stack), 2)
-                    
-                    # Raise with a decent range over limpers, especially stronger hands in this category
-                    # Don't raise with weakest parts of "Medium Pair" or "Suited Playable" if many limpers (reverse implied odds)
-                    # For simplicity, if it's in this strong category, consider raising over limps.
-                    if iso_raise > bet_to_call:
-                        print(f"{hand_category} in BB, isolating limpers/raising. Action: RAISE, Amount: {iso_raise}")
-                        return action_raise_const, iso_raise
-                    elif can_check: # This implies bet_to_call was 0, caught above. Or raise calc failed.
-                        print(f"{hand_category} in BB, raise calc issue or already checked to, checking. Action: CHECK")
-                        return action_check_const, 0
-                    else: # Should not happen if BB can act and not check
-                        print(f"{hand_category} in BB, unexpected state, folding. Action: FOLD")
-                        return action_fold_const, 0
-            else: # Facing a raise in BB
-                pot_odds = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 1
-                
-                should_3bet = False
-                # 3-bet stronger hands: AQs+, KQs, TT+, AKo.
-                if hand_category == "Strong Pair": # TT, JJ
-                    should_3bet = True
-                elif hand_category == "Suited Ace": # AQs, AKs (more broadly, strong suited aces)
-                    should_3bet = True 
-                elif hand_category == "Playable Broadway": # KQs (more broadly, strong suited broadways)
-                    should_3bet = True
-                # AKo would be "Offsuit Ace" or "Offsuit Broadway". Need more specific check for AKo.
-                # For now, this is a simplified 3-bet range from BB.
-
-                if should_3bet and max_bet_on_table < my_stack * 0.4: # Avoid 3-betting too much stack
-                    three_bet_amount = raise_amount_calculated # Global calc for BB 3bet (e.g., 4.0 * max_bet_on_table)
-                    three_bet_amount = max(three_bet_amount, min_raise)
-                    three_bet_amount = round(min(three_bet_amount, my_stack), 2)
-                    if three_bet_amount > bet_to_call:
-                        print(f"{hand_category} in BB, 3-betting. Action: RAISE, Amount: {three_bet_amount}")
-                        return action_raise_const, three_bet_amount
-
-                # Calling range: Suited Aces, Suited Kings, Playable Broadways, Offsuit Broadways, Strong/Medium Pairs, some Suited Playables
-                can_afford_call = bet_to_call < my_stack
-                # Call if bet_to_call is not too large (e.g., vs 2-3x open, call wider. Vs 3bet, be tighter)
-                # Example: call if raise is up to 4-5x BB, or if pot odds are good.
-                reasonable_bet_to_call_threshold = big_blind * 5 
-                # If facing a 3-bet (e.g. max_bet_on_table is already > 3*BB), this threshold might be too high for calling wide.
-                if max_bet_on_table > big_blind * 3.5: # Facing a likely 3-bet
-                    reasonable_bet_to_call_threshold = big_blind * 10 # Adjust for calling 3-bets, but still be mindful of stack.
-                                                                    # This means bet_to_call is the additional amount for the 3bet.
-
-                is_decent_hand_to_call = hand_category in ["Suited Ace", "Suited King", "Playable Broadway", "Offsuit Broadway", "Strong Pair", "Medium Pair", "Suited Playable"]
-
-                if can_afford_call and bet_to_call <= reasonable_bet_to_call_threshold and is_decent_hand_to_call:
-                    print(f"{hand_category} in BB, facing raise, calling. Pot odds: {pot_odds:.2f}. Action: CALL, Amount: {bet_to_call}")
-                    return action_call_const, bet_to_call
-                elif can_check and bet_to_call == 0: # Should have been caught by opening logic if folded to BB
-                     print(f"{hand_category} in BB, can check (unlikely here). Action: CHECK")
-                     return action_check_const, 0
-                
-                print(f"{hand_category} in BB, facing raise, folding. Action: FOLD")
-                return action_fold_const, 0
-        # Fallback if position not matched (should not occur if all positions handled)
-        else:
-            print(f"WARNING: {hand_category} in unhandled position {position}. Defaulting to check/fold.")
-            if can_check:
-                return action_check_const, 0
-            return action_fold_const, 0
-
-    elif hand_category == "Suited Connector":
-        print(f"DEBUG PREFLOP: Entered Suited Connector category for hand {my_player['hand']} in position {position}")
-        # Example: Play suited connectors more conservatively from early position
-        if position in ['UTG', 'MP']:
-            if max_bet_on_table <= big_blind: # Opening or limpers
-                # Consider opening if no raise and few limpers
-                if num_limpers <= 1:
-                    open_raise = raise_amount_calculated
-                    open_raise = max(open_raise, min_raise)
-                    open_raise = round(min(open_raise, my_stack),2)
-                    if open_raise > bet_to_call:
-                        print(f"Suited Connector in {position}, opening/isolating. Action: RAISE, Amount: {open_raise}")
-                        return action_raise_const, open_raise
-                # If many limpers or cannot raise effectively, check/fold
-                if can_check:
-                    print(f"Suited Connector in {position}, checking. Action: CHECK")
-                    return action_check_const, 0
-                print(f"Suited Connector in {position}, folding. Action: FOLD")
-                return action_fold_const, 0
-            elif bet_to_call <= big_blind * 3: # Facing a small raise
-                 # Call with good implied odds, especially if multi-way
-                if active_opponents_count > 1 and bet_to_call < my_stack * 0.1:
-                    print(f"Suited Connector in {position}, calling small raise for implied odds. Action: CALL, Amount: {bet_to_call}")
-                    return action_call_const, bet_to_call
-                print(f"Suited Connector in {position}, facing small raise, folding. Action: FOLD")
-                return action_fold_const, 0
-            else: # Facing a large raise
-                print(f"Suited Connector in {position}, facing large raise, folding. Action: FOLD")
-                return action_fold_const, 0
-        elif position in ['CO', 'BTN']:
-            if max_bet_on_table <= big_blind: # Opening or limpers
-                open_raise = raise_amount_calculated
-                open_raise = max(open_raise, min_raise)
-                open_raise = round(min(open_raise, my_stack),2)
-                if open_raise > bet_to_call:
-                    print(f"Suited Connector in {position}, opening/isolating. Action: RAISE, Amount: {open_raise}")
-                    return action_raise_const, open_raise
-                if can_check: # Should not happen if opening unless BB
-                    print(f"Suited Connector in {position}, opening, raise calc issue, checking. Action: CHECK")
-                    return action_check_const, 0
-                print(f"Suited Connector in {position}, opening, raise calc issue, folding. Action: FOLD")
-                return action_fold_const, 0
-            elif bet_to_call <= big_blind * 4: # Facing a moderate raise
-                # Call more liberally in late position
-                if bet_to_call < my_stack * 0.15:
-                    print(f"Suited Connector in {position}, calling moderate raise. Action: CALL, Amount: {bet_to_call}")
-                    return action_call_const, bet_to_call
-                print(f"Suited Connector in {position}, facing moderate raise, folding. Action: FOLD")
-                return action_fold_const, 0
-            else: # Facing a large raise
-                print(f"Suited Connector in {position}, facing large raise, folding. Action: FOLD")
-                return action_fold_const, 0
-        elif position in ['SB', 'BB']: # Blinds play differently
-            if position == 'SB':
-                if max_bet_on_table <= big_blind: # Limped or folded to SB
-                    # Raise or complete
-                    open_raise = raise_amount_calculated
-                    open_raise = max(open_raise, min_raise)
-                    open_raise = round(min(open_raise, my_stack),2)
-                    if open_raise > bet_to_call :
-                         print(f"Suited Connector in SB, opening/raising. Action: RAISE, Amount: {open_raise}")
-                         return action_raise_const, open_raise
-                    # If cannot raise (e.g. completing small blind), and can call
-                    elif bet_to_call > 0 and bet_to_call < my_stack * 0.1:
-                         print(f"Suited Connector in SB, completing/calling small bet. Action: CALL, Amount: {bet_to_call}")
+        if can_make_valid_raise:
+            # QQ facing a 3-bet or 4-bet from a very tight player might consider calling if deep.
+            if num_raises_this_street >= 2 and "Q" in str(my_player.get('hand', ['','']))[1]: # Simplified QQ check
+                if last_aggressor_profile and last_aggressor_profile.classify_player_type() in ["tight_aggressive", "tight_passive"] and last_aggressor_profile.get_pfr() < 10:
+                    logger.info("QQ facing 3bet+ from tight player.")
+                    # Effective stack for calling decision
+                    effective_stack_for_call = min(my_stack, last_raiser_action_info.get('stack_before_action', my_stack) if last_raiser_action_info else my_stack)
+                    if bet_to_call < effective_stack_for_call * 0.33: 
+                         logger.info(f"Premium Pair (QQ) vs tight 3bettor/4bettor, calling. Action: CALL, Amount: {bet_to_call}")
                          return action_call_const, bet_to_call
-                    elif can_check : # Should not happen if SB has to act unless BB also limped.
-                         print(f"Suited Connector in SB, checking. Action: CHECK")
-                         return action_check_const, 0
-                    print(f"Suited Connector in SB, folding. Action: FOLD")
-                    return action_fold_const, 0
-                else: # Facing a raise in SB
-                    # Generally fold suited connectors from SB vs raise unless specific read/deep stacks
-                    print(f"Suited Connector in SB, facing raise, folding. Action: FOLD")
-                    return action_fold_const, 0
-            elif position == 'BB':
-                if max_bet_on_table <= big_blind: # Limped pot or folded to BB
-                    if can_check and bet_to_call == 0:
-                        print(f"Suited Connector in BB, checking. Action: CHECK")
-                        return action_check_const, 0
-                    else: # Limpers, BB can raise or call
-                        open_raise = raise_amount_calculated
-                        open_raise = max(open_raise, min_raise)
-                        open_raise = round(min(open_raise, my_stack),2)
-                        if open_raise > bet_to_call:
-                            print(f"Suited Connector in BB, isolating limpers. Action: RAISE, Amount: {open_raise}")
-                            return action_raise_const, open_raise
-                        # If cannot raise effectively, consider calling if cheap
-                        elif bet_to_call > 0 and bet_to_call < big_blind * 2 and bet_to_call < my_stack * 0.05 : # Call very cheap bets
-                             print(f"Suited Connector in BB, calling small bet over limps. Action: CALL, Amount: {bet_to_call}")
-                             return action_call_const, bet_to_call
-                        elif can_check: # Should be caught by first check
-                             print(f"Suited Connector in BB, checking. Action: CHECK")
-                             return action_check_const, 0
-                        print(f"Suited Connector in BB, folding. Action: FOLD")
-                        return action_fold_const, 0
-                else: # Facing a raise in BB
-                    pot_odds = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 1
-                    # Call with good pot odds and if not too much of stack
-                    if bet_to_call <= big_blind * 5 and bet_to_call < my_stack * 0.15: # Call raises up to 5BB if stack allows
-                        print(f"Suited Connector in BB, facing raise, calling with pot odds {pot_odds:.2f}. Action: CALL, Amount: {bet_to_call}")
-                        return action_call_const, bet_to_call
-                    print(f"Suited Connector in BB, facing raise, folding. Action: FOLD")
-                    return action_fold_const, 0
-        else: # Should not happen
-            if can_check: return action_check_const, 0
+            
+            logger.info(f"Premium Pair. Action: RAISE, Amount: {actual_raise_amount}")
+            return action_raise_const, actual_raise_amount
+        
+        # If cannot make a valid raise, call if possible.
+        if bet_to_call > 0 and bet_to_call < my_stack:
+            logger.info(f"Premium Pair, cannot make standard raise, calling. Action: CALL, Amount: {bet_to_call}")
+            return action_call_const, bet_to_call
+        elif bet_to_call >= my_stack and bet_to_call > 0: # All-in call
+             logger.info(f"Premium Pair, cannot make standard raise, calling ALL-IN. Action: CALL, Amount: {my_stack}")
+             return action_call_const, my_stack
+        elif can_check: 
+            logger.info(f"Premium Pair, can check (unusual). Action: CHECK") 
+            return action_check_const, 0
+        else: 
+            logger.warning(f"Premium Pair in unexpected fold situation. B2C:{bet_to_call}, MyStack:{my_stack} Action: FOLD")
             return action_fold_const, 0
 
-    # Fallback for unhandled preflop categories or logic fall-through
-    print(f"WARNING: Unhandled preflop_category '{preflop_category}' or major logic fall-through in make_preflop_decision. Defaulting to FOLD.")
+
+    # --- STRONG HANDS (AKs, AKo, AQs, JJ, TT) ---
+    is_strong_hand = hand_category in ["Strong Pair"] or \
+                     (hand_category == "Suited Ace" and any(h in str(my_player.get('hand','')) for h in ["AKs", "AQs"])) or \
+                     (hand_category == "Offsuit Ace" and "AKo" in str(my_player.get('hand','')))
+
+    if is_strong_hand:
+        actual_raise_amount = raise_amount_calculated
+        can_make_valid_raise = actual_raise_amount > bet_to_call or \
+                               (actual_raise_amount == my_stack and my_stack > bet_to_call)
+
+        if num_raises_this_street == 0: # Opening
+            if can_make_valid_raise:
+                logger.info(f"Strong hand ({hand_category}), opening. Action: RAISE, Amount: {actual_raise_amount}")
+                return action_raise_const, actual_raise_amount
+            elif can_check: # BB, checked to. Still raise.
+                 logger.info(f"Strong hand ({hand_category}), BB can check, but raising. Action: RAISE, Amount: {actual_raise_amount if actual_raise_amount > 0 else min_raise}")
+                 return action_raise_const, actual_raise_amount if actual_raise_amount > 0 else min_raise
+            else: 
+                 logger.info(f"Strong hand ({hand_category}), cannot open raise effectively. Folding. (Review this state)")
+                 return action_fold_const, 0
+
+        elif num_raises_this_street == 1: # Facing an open raise, consider 3-betting
+            is_jj_tt = hand_category == "Strong Pair" and any(h in str(my_player.get('hand','')) for h in ["JJ", "TT"])
+            
+            if is_jj_tt and last_aggressor_profile and last_aggressor_profile.get_pfr() < 10 and position not in ['BTN', 'CO']: # JJ/TT vs tight opener, not in LP
+                effective_stack_for_call = min(my_stack, last_raiser_action_info.get('stack_before_action', my_stack) if last_raiser_action_info else my_stack)
+                if bet_to_call < effective_stack_for_call * 0.20 : 
+                    logger.info(f"Strong Pair (JJ/TT) vs tight opener. Action: CALL, Amount: {bet_to_call}")
+                    return action_call_const, bet_to_call
+            
+            # Standard 3-bet with strong hands
+            if can_make_valid_raise:
+                logger.info(f"Strong hand ({hand_category}), 3-betting. Action: RAISE, Amount: {actual_raise_amount}")
+                return action_raise_const, actual_raise_amount
+            elif bet_to_call < my_stack: 
+                logger.info(f"Strong hand ({hand_category}), cannot 3-bet effectively, calling. Action: CALL, Amount: {bet_to_call}")
+                return action_call_const, bet_to_call
+            elif bet_to_call >= my_stack and bet_to_call > 0 : # All-in call
+                 logger.info(f"Strong hand ({hand_category}), cannot 3-bet/call. Action: CALL ALL-IN, Amount: {my_stack}")
+                 return action_call_const, my_stack
+            else:
+                logger.info(f"Strong hand ({hand_category}), cannot 3-bet/call, folding. Action: FOLD")
+                return action_fold_const, 0
+
+
+        elif num_raises_this_street >= 2: # Facing a 3-bet or 4-bet
+            is_ak = "AK" in str(my_player.get('hand',''))
+            if is_ak: # AK continues (4-bet or call 4-bet/5-bet)
+                if can_make_valid_raise: 
+                    logger.info(f"AK facing 3bet+, re-raising. Action: RAISE, Amount: {actual_raise_amount}")
+                    return action_raise_const, actual_raise_amount
+                elif bet_to_call < my_stack: 
+                    logger.info(f"AK facing 3bet+, calling. Action: CALL, Amount: {bet_to_call}")
+                    return action_call_const, bet_to_call
+                elif bet_to_call >= my_stack and bet_to_call > 0: 
+                    logger.info(f"AK facing 3bet+, calling ALL-IN. Action: CALL, Amount: {my_stack}")
+                    return action_call_const, my_stack
+                else:
+                    logger.info(f"AK facing 3bet+, folding. Action: FOLD")
+                    return action_fold_const, 0
+            else: # AQs, JJ, TT facing 3-bet+
+                effective_stack = min(my_stack, last_raiser_action_info.get('stack_before_action', my_stack) if last_raiser_action_info else my_stack)
+                # Adjust threshold based on aggressor type
+                call_threshold_multiplier = 0.30
+                if last_aggressor_profile and last_aggressor_profile.classify_player_type() in ["loose_aggressive", "maniac"]:
+                    call_threshold_multiplier = 0.40 # Call wider vs LAGs/Maniacs
+                
+                if bet_to_call < effective_stack * call_threshold_multiplier:
+                    logger.info(f"AQs/JJ/TT facing 3bet+, calling. Action: CALL, Amount: {bet_to_call}")
+                    return action_call_const, bet_to_call
+                else:
+                    logger.info(f"AQs/JJ/TT facing 3bet+, folding to large bet or vs tight player. Action: FOLD")
+                    return action_fold_const, 0
+        
+        # Fallback for strong hands
+        if bet_to_call == 0 and can_check: return action_check_const, 0
+        if bet_to_call > 0 and bet_to_call < my_stack: return action_call_const, bet_to_call
+        if bet_to_call >= my_stack and bet_to_call > 0 : return action_call_const, my_stack 
+        return action_fold_const, 0
+
+
+    # --- MEDIUM STRENGTH HANDS (AQo, AJs, KQs, ATs, KJs, QJs, 99, 88, 77) ---
+    is_medium_hand = hand_category in ["Medium Pair", "Suited Playable"] or \
+                     (hand_category == "Offsuit Ace" and "AQo" in str(my_player.get('hand',''))) or \
+                     (hand_category == "Suited Ace" and any(h in str(my_player.get('hand','')) for h in ["AJs", "ATs"])) or \
+                     (hand_category == "Suited King" and any(h in str(my_player.get('hand','')) for h in ["KQs", "KJs"])) or \
+                     (hand_category == "Playable Broadway" and "QJs" in str(my_player.get('hand','')))
+
+
+    if is_medium_hand:
+        actual_raise_amount = raise_amount_calculated
+        can_make_valid_raise = actual_raise_amount > bet_to_call or \
+                               (actual_raise_amount == my_stack and my_stack > bet_to_call)
+
+        if num_raises_this_street == 0: # Opening
+            can_open = True
+            # Tighten up opening ranges from UTG/MP for some medium hands
+            if position in ['UTG', 'MP']:
+                if hand_category == "Medium Pair" and not any(p in str(my_player.get('hand','')) for p in ["99"]): # 77,88 from UTG/MP
+                    can_open = False
+                if hand_category == "Suited Ace" and "ATs" in str(my_player.get('hand','')) and position == 'UTG': 
+                    can_open = False
+                if hand_category == "Offsuit Ace" and "AQo" in str(my_player.get('hand','')) and position == 'UTG': # AQo UTG is borderline, consider table
+                    if table_dynamics and 'tight' not in table_dynamics.get('table_type',''): can_open = False # Fold AQo UTG unless table is tight
+
+            if not can_open:
+                logger.info(f"Medium hand ({hand_category}) too weak to open from {position}. Action: FOLD")
+                return action_fold_const, 0
+
+            if can_make_valid_raise:
+                logger.info(f"Medium hand ({hand_category}), opening. Action: RAISE, Amount: {actual_raise_amount}")
+                return action_raise_const, actual_raise_amount
+            elif can_check: # BB, checked to
+                 logger.info(f"Medium hand ({hand_category}), BB can check, but raising. Action: RAISE, Amount: {actual_raise_amount if actual_raise_amount > 0 else min_raise}")
+                 return action_raise_const, actual_raise_amount if actual_raise_amount > 0 else min_raise
+            else:
+                 logger.info(f"Medium hand ({hand_category}), cannot open effectively. Folding.")
+                 return action_fold_const, 0
+
+        elif num_raises_this_street == 1: # Facing an open raise
+            should_3bet_bluff = False
+            fold_to_3bet_stat = None
+            pfr_stat = None
+            raiser_player_type = "unknown"
+
+            if last_aggressor_profile:
+                fold_to_3bet_stat = last_aggressor_profile.get_fold_to_3bet_percentage()
+                pfr_stat = last_aggressor_profile.get_pfr()
+                raiser_player_type = last_aggressor_profile.classify_player_type()
+                logger.debug(f"Aggressor {last_aggressor_name_from_history} stats: FoldTo3Bet={fold_to_3bet_stat}, PFR={pfr_stat}, Type={raiser_player_type}")
+
+            # Conditions for 3-betting as a semi-bluff
+            # More likely if raiser folds often to 3-bets, or is opening very wide (high PFR)
+            # Also consider position: more 3-bet bluffs from LP (BTN, CO) or Blinds.
+            if fold_to_3bet_stat is not None and fold_to_3bet_stat > 50: # Folds >50% to 3bets
+                should_3bet_bluff = True
+            elif pfr_stat is not None and pfr_stat > 25 and position in ['CO', 'BTN', 'SB', 'BB']:
+                should_3bet_bluff = True
+            elif raiser_player_type in ["loose_aggressive", "maniac"] and position in ['CO', 'BTN', 'SB', 'BB']:
+                should_3bet_bluff = True
+            
+            # Specific hands good for semi-bluff 3-betting (blockers, playability)
+            can_semi_bluff_3bet_hand = hand_category in ["Suited Ace", "Suited King"] or \
+                                      (hand_category == "Medium Pair" and any(p in str(my_player.get('hand','')) for p in ["99","88","77"])) or \
+                                      (hand_category == "Suited Playable" and any(h in str(my_player.get('hand','')) for h in ["KQs", "QJs"])) 
+
+            if should_3bet_bluff and can_semi_bluff_3bet_hand and can_make_valid_raise:
+                logger.info(f"Medium hand ({hand_category}), 3-betting as semi-bluff vs {last_aggressor_name_from_history} (F3B:{fold_to_3bet_stat}, PFR:{pfr_stat}). Action: RAISE, Amount: {actual_raise_amount}")
+                return action_raise_const, actual_raise_amount
+
+            # Default to call if not 3-betting and price is right
+            effective_stack_for_call = min(my_stack, last_raiser_action_info.get('stack_before_action', my_stack) if last_raiser_action_info else my_stack)
+            call_cost_percentage_of_stack = (bet_to_call / effective_stack_for_call) if effective_stack_for_call > 0 else 1
+            
+            # Call with medium pairs (set mining) or good suited broadways/aces if price is good.
+            # Max 10-12% of stack for these calls usually, adjust based on opponent type
+            max_call_percentage = 0.10 # Default
+            if hand_category == "Medium Pair": max_call_percentage = 0.12 # For setmining
+            if raiser_player_type in ["loose_passive", "whale"]: # Call wider vs fishy players
+                max_call_percentage += 0.05
+            if position == 'BB': # Defend BB a bit wider
+                max_call_percentage += 0.03
+
+            if call_cost_percentage_of_stack < max_call_percentage:
+                logger.info(f"Medium hand ({hand_category}), calling raise from {last_aggressor_name_from_history}. Cost: {call_cost_percentage_of_stack*100:.0f}% of stack. Action: CALL, Amount: {bet_to_call}")
+                return action_call_const, bet_to_call
+            else:
+                logger.info(f"Medium hand ({hand_category}), raise from {last_aggressor_name_from_history} too expensive to call ({call_cost_percentage_of_stack*100:.0f}% of stack). Action: FOLD")
+                return action_fold_const, 0
+
+        else: # Facing 3-bet or more
+            # Generally fold medium hands to 3-bets unless specific conditions are met
+            # e.g. AQ, 99 vs a known loose 3-bettor and good stack depth/position.
+            can_call_3bet = False
+            if last_aggressor_profile and bet_to_call < my_stack * 0.25: # Not committing too much
+                fold_to_4bet_stat = last_aggressor_profile.get_fold_to_4bet_percentage() # Assuming this stat exists
+                three_bet_stat = last_aggressor_profile.get_3bet_percentage() # Assuming this stat exists
+
+                # If opponent 3-bets wide (high 3Bet%) and folds to 4-bets often, consider a 4-bet bluff with AQs/AJs/KQs or even 99/88
+                if can_make_valid_raise and (hand_category in ["Suited Ace", "Suited King"] or (hand_category == "Medium Pair" and "99" in str(my_player.get('hand','')))):
+                    if three_bet_stat is not None and three_bet_stat > 10 and fold_to_4bet_stat is not None and fold_to_4bet_stat > 50:
+                        logger.info(f"Medium hand ({hand_category}) 4-bet bluffing vs {last_aggressor_name_from_history} (3B:{three_bet_stat}, F4B:{fold_to_4bet_stat}). Action: RAISE, Amount: {actual_raise_amount}")
+                        return action_raise_const, actual_raise_amount
+                
+                # Call 3-bet with AQ, 99, 88, sometimes 77, AJs, KQs if opponent is loose or we have position/deep stacks
+                if hand_category in ["Offsuit Ace", "Medium Pair"] or (hand_category == "Suited Ace" and "AJs" in str(my_player.get('hand',''))) or (hand_category == "Suited King" and "KQs" in str(my_player.get('hand',''))):
+                    if raiser_player_type in ["loose_aggressive", "maniac"] or (three_bet_stat is not None and three_bet_stat > 8):
+                        if position != 'SB': # Avoid calling 3bets OOP from SB too often
+                            can_call_3bet = True
+            
+            if can_call_3bet:
+                logger.info(f"Medium hand ({hand_category}) calling 3-bet from {last_aggressor_name_from_history}. Action: CALL, Amount: {bet_to_call}")
+                return action_call_const, bet_to_call
+
+            logger.info(f"Medium hand ({hand_category}) facing 3bet+ from {last_aggressor_name_from_history}. Action: FOLD")
+            return action_fold_const, 0
+
+
+    # --- SPECULATIVE HANDS (Suited Connectors, Small Pairs 66-22, some Suited Gappers, Weak Suited Aces) ---
+    # Refined category check for speculative hands
+    is_speculative_hand = hand_category in ["Suited Connector", "Small Pair"] or \
+                          (hand_category == "Suited Ace" and any(h in str(my_player.get('hand','')) for h in ["A2s", "A3s", "A4s", "A5s"])) or \
+                          (hand_category == "Suited Gapper" and any(h in str(my_player.get('hand','')) for h in ["J9s", "T8s", "97s", "86s", "75s", "64s"])) 
+
+    if is_speculative_hand:
+        actual_raise_amount = raise_amount_calculated
+        can_make_valid_raise = actual_raise_amount > bet_to_call or \
+                               (actual_raise_amount == my_stack and my_stack > bet_to_call)
+
+        if num_raises_this_street == 0: # Opening or limping
+            # Open raise SCs, small pairs, good suited gappers, weak suited aces from LP or BTN vs SB/BB
+            can_open_speculative = False
+            if position in ['CO', 'BTN']:
+                can_open_speculative = True
+            elif position == 'SB' and num_limpers == 0: # Stealing from SB
+                can_open_speculative = True
+            
+            if can_open_speculative and can_make_valid_raise:
+                logger.info(f"Speculative ({hand_category}, {str(my_player.get('hand',''))}) from {position}, opening. Action: RAISE, Amount: {actual_raise_amount}")
+                return action_raise_const, actual_raise_amount
+            
+            # Limp/call small raises if multi-way potential and good price from other positions
+            # Check if we can complete SB or check BB
+            if is_sb and bet_to_call == (big_blind - small_blind) and num_limpers > 0: # Completing SB into limped pot
+                 logger.info(f"Speculative ({hand_category}, {str(my_player.get('hand',''))}) in SB, completing into limped pot. Action: CALL, Amount: {bet_to_call}")
+                 return action_call_const, bet_to_call
+            if is_bb and can_check and bet_to_call == 0 : # Checking BB
+                 logger.info(f"Speculative ({hand_category}, {str(my_player.get('hand',''))}) in BB, can check. Action: CHECK")
+                 return action_check_const, 0
+
+            # Consider calling a single BB if many limpers (good pot odds)
+            # Pot odds = (pot_size + bet_to_call) / bet_to_call
+            # Required equity for call = 1 / (Pot odds + 1)
+            # For speculative hands, we often need better implied odds than direct pot odds.
+            if bet_to_call == big_blind and num_limpers >= (2 if position not in ['MP', 'UTG'] else 3) and active_opponents_count >=3 :
+                 effective_stack_for_call = my_stack 
+                 # Call if bet is very small part of stack (e.g. < 5% for good implied odds)
+                 if bet_to_call < effective_stack_for_call * 0.05 : 
+                    logger.info(f"Speculative ({hand_category}, {str(my_player.get('hand',''))}), cheap call in multiway limped pot ({num_limpers} limpers). Action: CALL, Amount: {bet_to_call}")
+                    return action_call_const, bet_to_call
+            
+            logger.info(f"Speculative ({hand_category}, {str(my_player.get('hand',''))}), no good spot to open/limp/call from {position}. Action: FOLD")
+            return action_fold_const, 0
+
+        elif num_raises_this_street == 1: # Facing one raise
+            effective_stack = min(my_stack, last_raiser_action_info.get('stack_before_action', my_stack) if last_raiser_action_info else my_stack)
+            # Implied odds: call if bet_to_call is small % of effective stack (e.g., < 5-7% for set mining/strong draws)
+            # And preferably multi-way or vs loose player.
+            
+            # The "10x rule" or "5/10 rule" for speculative hands (call if bet is <10% of effective stack, if you expect to win >10x bet when you hit)
+            # Simplified: call if bet_to_call < 7% of effective_stack for good suited connectors/small pairs, maybe 5% for others.
+            max_call_percentage_speculative = 0.0
+            if hand_category == "Small Pair": max_call_percentage_speculative = 0.07 # Set mining
+            elif hand_category == "Suited Connector": max_call_percentage_speculative = 0.06
+            elif hand_category == "Suited Ace" and any(h in str(my_player.get('hand','')) for h in ["A2s", "A3s", "A4s", "A5s"]): # Wheel aces
+                max_call_percentage_speculative = 0.05 
+            
+            is_multiway_potential = active_opponents_count > 1 or len(callers_on_street) > 0 # More than just us and the raiser, or callers already in.
+            
+            raiser_is_loose_or_fishy = False
+            if last_aggressor_profile and last_aggressor_profile.classify_player_type() in ["loose_aggressive", "loose_passive", "maniac", "whale"]:
+                raiser_is_loose_or_fishy = True
+
+            can_call_for_implied_odds = False
+            if bet_to_call > 0 and (bet_to_call / effective_stack if effective_stack > 0 else 1) < max_call_percentage_speculative:
+                if is_multiway_potential or raiser_is_loose_or_fishy or position in ['BB', 'BTN']: # More inclined to call in position or from BB
+                    can_call_for_implied_odds = True
+            
+            # BB defense with direct pot odds for some speculative hands if raise is small
+            if is_bb and bet_to_call <= 3.5 * big_blind : 
+                pot_odds_to_call = (pot_size + bet_to_call) / bet_to_call if bet_to_call > 0 else 0
+                # Rough equity needed: 1 / (pot_odds_to_call + 1)
+                # Suited connectors/gappers might have ~15-25% raw equity vs a range here.
+                # If pot_odds are good, e.g. > 3:1 (need 25% equity), can consider calling.
+                if pot_odds_to_call > 3.0 and hand_category in ["Suited Connector", "Suited Gapper", "Suited Ace"]:
+                    can_call_for_implied_odds = True # Or direct odds defense
+                    logger.info(f"Speculative ({hand_category}, {str(my_player.get('hand',''))}) in BB, defending vs small raise due to pot odds ({pot_odds_to_call:.1f}:1). Action: CALL, Amount: {bet_to_call}")
+                    return action_call_const, bet_to_call
+
+            if can_call_for_implied_odds:
+                logger.info(f"Speculative ({hand_category}, {str(my_player.get('hand',''))}), calling raise from {last_aggressor_name_from_history} with good implied/pot odds. Action: CALL, Amount: {bet_to_call}")
+                return action_call_const, bet_to_call
+            else:
+                logger.info(f"Speculative ({hand_category}, {str(my_player.get('hand',''))}), not enough implied odds to call raise from {last_aggressor_name_from_history}. Action: FOLD")
+                return action_fold_const, 0
+        else: # Facing 3-bet or more
+            # Generally fold all speculative hands to 3-bets unless very specific conditions (deep stacks, vs maniac 3-bettor, in position)
+            # This is rare and risky.
+            logger.info(f"Speculative ({hand_category}, {str(my_player.get('hand',''))}) facing 3bet+ from {last_aggressor_name_from_history}. Action: FOLD")
+            return action_fold_const, 0
+
+
+    # --- WEAK HANDS ---
+    if hand_category == "Weak":
+        logger.debug(f"Preflop: Entered Weak hand category. NumRaises: {num_raises_this_street}, B2C: {bet_to_call}, Pos: {position}, is_bb: {is_bb}")
+        
+        # Defend BB vs single small raise if opponent is a frequent stealer from BTN/CO/SB
+        if is_bb and num_raises_this_street == 1 and bet_to_call <= 3.5 * big_blind:
+            if last_aggressor_profile and last_raiser_action_info:
+                raiser_pos = last_raiser_action_info.get('position')
+                # aggressor_steal_attempt_freq = last_aggressor_profile.get_steal_frequency(raiser_pos) # Needs specific stat
+                # Using PFR from steal positions as proxy
+                pfr_from_steal_pos = 0
+                if raiser_pos in ['CO','BTN','SB'] and last_aggressor_profile.position_stats[raiser_pos]['hands_dealt'] > 10: # Min sample
+                    pfr_from_steal_pos = (last_aggressor_profile.position_stats[raiser_pos]['pfr_hands'] / last_aggressor_profile.position_stats[raiser_pos]['hands_dealt']) * 100
+                
+                if pfr_from_steal_pos > 30 or last_aggressor_profile.get_pfr() > 28 : # Raiser is active or stealing often
+                    pot_odds = (pot_size + bet_to_call) / bet_to_call if bet_to_call > 0 else 0
+                    # Required equity approx 1 / (pot_odds + 1)
+                    # If getting better than 2:1 or 2.5:1, might be worth calling with many hands.
+                    if pot_odds > 2.0 : 
+                        logger.info(f"Weak hand in BB vs steal from active player ({last_aggressor_name_from_history} from {raiser_pos}), good pot odds ({pot_odds:.1f}:1). Action: CALL, Amount: {bet_to_call}")
+                        return action_call_const, bet_to_call
+        
+        if can_check and bet_to_call == 0:
+            logger.info(f"Weak hand, can check. Action: CHECK")
+            return action_check_const, 0
+        
+        logger.info(f"Weak hand, default. Action: FOLD (B2C: {bet_to_call}, CanCheck: {can_check})")
+        return action_fold_const, 0
+
+    # Fallback: This should ideally not be reached if all categories are handled.
+    logger.warning(f"Preflop decision fall-through for hand category '{hand_category}'. Pos: {position}, B2C: {bet_to_call}, CanChk: {can_check}. Defaulting to check/fold.")
+    if can_check and bet_to_call == 0:
+        return action_check_const, 0
     return action_fold_const, 0
+
+
+if __name__ == '__main__':
+    # This block is for testing the function directly if needed.
+    # Setup mock objects for my_player, opponent_tracker, etc.
+    # logger.setLevel(logging.DEBUG) # Ensure logs are visible
+    # handler = logging.StreamHandler()
+    # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    # handler.setFormatter(formatter)
+    # logger.addHandler(handler)
+    # logger.propagate = False
+
+
+    print("Preflop decision logic module loaded.")
+    # Add example calls here to test functionality
+    # mock_my_player = {'name': "Hero", 'hand': ["As", "Kd"], 'stack': 1000} # Example
+    # mock_action_history = [
+    #     {'player_name': 'Villain1', 'action_type': 'CALL', 'amount': 10, 'street': 'preflop'},
+    #     {'player_name': 'Villain2', 'action_type': 'RAISE', 'amount': 40, 'street': 'preflop', 'stack_before_action': 1000, 'position': 'CO'},
+    # ]
+    # # Mock opponent tracker setup
+    # class MockOpponentProfile:
+    #     def __init__(self, name): self.player_name = name; self.vpip=25; self.pfr=20; self.hands_seen_count=50; self.position_stats = defaultdict(lambda: defaultdict(int))
+    #     def get_vpip(self): return self.vpip
+    #     def get_pfr(self): return self.pfr
+    #     def classify_player_type(self): return "unknown"
+    # class MockOpponentTracker:
+    #     def __init__(self): self.opponents = {}
+    #     def get_opponent_profile(self, name): 
+    #         if name not in self.opponents: self.opponents[name] = MockOpponentProfile(name)
+    #         return self.opponents[name]
+    #     def get_table_dynamics(self): return {'table_type': 'normal'}
+
+    # mock_tracker = MockOpponentTracker()
+
+    # decision, amount = make_preflop_decision(
+    #     my_player=mock_my_player, hand_category="Strong Pair", position="BTN", bet_to_call=30, can_check=False,
+    #     my_stack=990, pot_size=65, active_opponents_count=2,
+    #     small_blind=5, big_blind=10, my_current_bet_this_street=10, max_bet_on_table=40, min_raise=70,
+    #     is_sb=False, is_bb=False,
+    #     action_fold_const='fold', action_check_const='check', action_call_const='call', action_raise_const='raise',
+    #     action_history=mock_action_history,
+    #     opponent_tracker=mock_tracker 
+    # )
+    # print(f"Test Decision: {decision}, Amount: {amount}")
+    pass # Placeholder for more comprehensive tests

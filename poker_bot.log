@@ -9668,3 +9668,13 @@
 2025-06-11 19:31:56,791 - __main__ - INFO - PokerBot stopped by user.
 2025-06-11 19:31:56,792 - __main__ - INFO - PokerBot main_loop ended.
 2025-06-11 19:31:56,792 - __main__ - INFO - Closing logger handlers.
+2025-06-11 20:43:23,180 - __main__ - ERROR - An error occurred in __main__: OpponentTracker.__init__() got an unexpected keyword argument 'logger'
+Traceback (most recent call last):
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 689, in <module>
+    bot = PokerBot()
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 35, in __init__
+    self.opponent_tracker = OpponentTracker(config=self.config, logger=self.logger)
+                            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: OpponentTracker.__init__() got an unexpected keyword argument 'logger'
+2025-06-11 20:43:23,181 - __main__ - INFO - Closing logger handlers.
+2025-06-11 20:43:23,189 - __main__ - INFO - PokerBot application finished.

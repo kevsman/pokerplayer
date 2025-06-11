@@ -5,7 +5,7 @@ import logging
 from collections import defaultdict, deque
 from typing import Dict, List, Optional, Tuple, Any # Added Any
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__) # Will be passed in
 
 # Define constants for streets to ensure consistency
 PREFLOP = "preflop"
@@ -19,10 +19,11 @@ class OpponentProfile:
     Track and analyze opponent tendencies for better decision making.
     """
     
-    def __init__(self, player_name: str, max_hands_tracked: int = 100, max_actions_per_hand: int = 20): # Added max_actions_per_hand
+    def __init__(self, player_name: str, max_hands_tracked: int = 100, max_actions_per_hand: int = 20, logger_instance: Optional[logging.Logger] = None):
         self.player_name = player_name
         self.max_hands_tracked = max_hands_tracked
-        self.max_actions_per_hand = max_actions_per_hand # Store this
+        self.max_actions_per_hand = max_actions_per_hand
+        self.logger = logger_instance if logger_instance else logging.getLogger(__name__)
         
         # Basic stats
         self.hands_played_count = 0 # Renamed for clarity
@@ -64,11 +65,10 @@ class OpponentProfile:
         
     def new_hand(self, hand_id: str):
         """Called at the start of a new hand to reset current hand data."""
-        if self.current_hand_id and self.current_hand_actions: # If there was a previous hand with actions
-            # Store the completed hand's actions
-            # Limit the number of actions stored per hand to avoid excessive memory use
+        if self.current_hand_id and self.current_hand_actions: 
+            
             if len(self.current_hand_actions) > self.max_actions_per_hand:
-                 logger.warning(f"Player {self.player_name}, Hand {self.current_hand_id}: Exceeded max_actions_per_hand ({len(self.current_hand_actions)} > {self.max_actions_per_hand}). Truncating.")
+                 self.logger.warning(f"Player {self.player_name}, Hand {self.current_hand_id}: Exceeded max_actions_per_hand ({len(self.current_hand_actions)} > {self.max_actions_per_hand}). Truncating.")
                  self.current_hand_actions = self.current_hand_actions[:self.max_actions_per_hand]
 
             self.hand_action_history.append({
@@ -101,7 +101,7 @@ class OpponentProfile:
         This is the primary method for updating opponent statistics.
         """
         if not self.current_hand_id:
-            logger.warning(f"Player {self.player_name}: Log_action called without current_hand_id. Action: {action_type} on {street}")
+            self.logger.warning(f"Player {self.player_name}: Log_action called without current_hand_id. Action: {action_type} on {street}")
             # Potentially initialize a placeholder hand_id or queue action if this is valid
             return
 
@@ -284,55 +284,51 @@ class OpponentProfile:
 
 class OpponentTracker:
     """
-    Manages multiple opponent profiles and provides analysis.
+    Manages multiple OpponentProfile instances and provides aggregated table insights.
     """
-    
-    def __init__(self, config=None, logger_instance=None): # Renamed logger to logger_instance
+    def __init__(self, config=None, logger_instance: Optional[logging.Logger] = None, max_hands_to_track_per_opponent: int = 100):
         self.opponents: Dict[str, OpponentProfile] = {}
-        self.config = config 
-        self.logger = logger_instance if logger_instance else logging.getLogger(__name__) 
-        self.current_hand_id_for_tracker: Optional[str] = None
+        self.config = config # Store config if provided
+        self.logger = logger_instance if logger_instance else logging.getLogger(__name__)
+        self.max_hands_to_track_per_opponent = max_hands_to_track_per_opponent
+        self.logger.info("OpponentTracker initialized.")
 
-
-    def get_or_create_profile(self, player_name: str) -> OpponentProfile:
+    def get_opponent_profile(self, player_name: str) -> OpponentProfile:
+        """Retrieves or creates an opponent profile."""
         if player_name not in self.opponents:
-            max_hands = self.config.get('opponent_tracker',{}).get('max_hands_to_track_per_opponent', 100) if self.config else 100
-            max_actions = self.config.get('opponent_tracker',{}).get('max_actions_to_store_per_hand', 20) if self.config else 20
-            self.opponents[player_name] = OpponentProfile(player_name, max_hands_tracked=max_hands, max_actions_per_hand=max_actions)
-            self.logger.info(f"Created new profile for opponent: {player_name}")
+            self.logger.info(f"Creating new profile for opponent: {player_name}")
+            self.opponents[player_name] = OpponentProfile(
+                player_name,
+                max_hands_tracked=self.max_hands_to_track_per_opponent,
+                logger_instance=self.logger # Pass logger to profile
+            )
         return self.opponents[player_name]
-        
-    def log_action(self, player_name: str, action_type: str, street: str, 
-                             position: Optional[str] = None, bet_amount: float = 0, # Renamed amount to bet_amount
-                             pot_size_before_action: float = 0, # Added pot_size_before_action
-                             hand_id: Optional[str] = None,
-                             is_our_hero: bool = False, # Added is_our_hero
-                             players_in_hand_at_action: int = 0): # Added players_in_hand_at_action
-        
-        if not hand_id:
-            self.logger.warning(f"OpponentTracker.log_action called for {player_name} without hand_id. Action: {action_type}. Discarding.")
+
+    def log_action(self, player_name: str, action_type: str, street: str, amount: float = 0, 
+                   pot_size_before_action: float = 0, position: Optional[str] = None, 
+                   is_our_hero: bool = False, players_in_hand_at_action: int = 0, hand_id: Optional[str] = None):
+        """
+        Logs an action for a specific opponent.
+        Ensures the hand_id is passed to the profile's new_hand if it's a new hand for them.
+        """
+        if not player_name: # Basic validation
+            self.logger.warning("Attempted to log action for player with no name.")
             return
 
-        profile = self.get_or_create_profile(player_name)
+        profile = self.get_opponent_profile(player_name)
         
         # Check if it's a new hand for this player profile
-        if hand_id != profile.current_hand_id:
-            profile.new_hand(hand_id) # This also updates profile.current_hand_id
-
-        # If it's a new hand for the tracker overall (first action of a new hand_id seen by tracker)
-        if hand_id != self.current_hand_id_for_tracker:
-            self.current_hand_id_for_tracker = hand_id
-            # Potentially reset/update other tracker-level per-hand states if any
-
-        self.logger.debug(
-            f"Tracker logging action for {player_name} (Hero: {is_our_hero}): Hand ID {hand_id}, Street: {street}, "
-            f"Action: {action_type}, Pos: {position}, Amt: {bet_amount}, PotBefore: {pot_size_before_action}, PlayersInHand: {players_in_hand_at_action}"
-        )
+        if hand_id and profile.current_hand_id != hand_id:
+            profile.new_hand(hand_id)
+            self.logger.debug(f"New hand ({hand_id}) started for opponent {player_name} in OpponentTracker.")
+        elif not profile.current_hand_id and hand_id: # If profile just created and hand_id is available
+            profile.new_hand(hand_id)
+            self.logger.debug(f"Initial hand ({hand_id}) set for new opponent {player_name} in OpponentTracker.")
 
         profile.log_action(
             action_type=action_type, 
             street=street, 
-            amount=bet_amount, 
+            amount=amount, 
             pot_size_before_action=pot_size_before_action,
             position=position,
             is_our_hero=is_our_hero,
@@ -441,6 +437,7 @@ class OpponentTracker:
 if __name__ == '__main__':
     # Setup basic logging for testing this module
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    logger = logging.getLogger(__name__) # Create a logger instance for the test block
     
     test_config = {
         'opponent_tracker': {
@@ -454,26 +451,26 @@ if __name__ == '__main__':
     
     # --- Hand 1 ---
     hand_id_1 = "hand123"
-    tracker.log_action(player_name="PlayerA", action_type="CALL", street=PREFLOP, position="BTN", bet_amount=10, pot_size_before_action=15, hand_id=hand_id_1, players_in_hand_at_action=3)
-    tracker.log_action(player_name="PlayerB", action_type="RAISE", street=PREFLOP, position="SB", bet_amount=40, pot_size_before_action=25, hand_id=hand_id_1, players_in_hand_at_action=3)
-    tracker.log_action(player_name="PlayerA", action_type="CALL", street=PREFLOP, position="BTN", bet_amount=30, pot_size_before_action=65, hand_id=hand_id_1, players_in_hand_at_action=2)
+    tracker.log_action(player_name="PlayerA", action_type="CALL", street=PREFLOP, position="BTN", amount=10, pot_size_before_action=15, hand_id=hand_id_1, players_in_hand_at_action=3)
+    tracker.log_action(player_name="PlayerB", action_type="RAISE", street=PREFLOP, position="SB", amount=40, pot_size_before_action=25, hand_id=hand_id_1, players_in_hand_at_action=3)
+    tracker.log_action(player_name="PlayerA", action_type="CALL", street=PREFLOP, position="BTN", amount=30, pot_size_before_action=65, hand_id=hand_id_1, players_in_hand_at_action=2)
     
     # Flop actions for Hand 1
-    tracker.log_action(player_name="PlayerB", action_type="BET", street=FLOP, bet_amount=50, pot_size_before_action=95, hand_id=hand_id_1, position="SB", players_in_hand_at_action=2)
+    tracker.log_action(player_name="PlayerB", action_type="BET", street=FLOP, amount=50, pot_size_before_action=95, hand_id=hand_id_1, position="SB", players_in_hand_at_action=2)
     tracker.log_action(player_name="PlayerA", action_type="FOLD", street=FLOP, hand_id=hand_id_1, position="BTN", players_in_hand_at_action=2)
 
     # --- Hand 2 (Player A involved again) ---
     hand_id_2 = "hand124"
-    tracker.log_action(player_name="PlayerA", action_type="RAISE", street=PREFLOP, position="CO", bet_amount=25, pot_size_before_action=15, hand_id=hand_id_2, players_in_hand_at_action=4)
-    tracker.log_action(player_name="PlayerC", action_type="CALL", street=PREFLOP, position="BTN", bet_amount=25, pot_size_before_action=40, hand_id=hand_id_2, players_in_hand_at_action=2)
+    tracker.log_action(player_name="PlayerA", action_type="RAISE", street=PREFLOP, position="CO", amount=25, pot_size_before_action=15, hand_id=hand_id_2, players_in_hand_at_action=4)
+    tracker.log_action(player_name="PlayerC", action_type="CALL", street=PREFLOP, position="BTN", amount=25, pot_size_before_action=40, hand_id=hand_id_2, players_in_hand_at_action=2)
 
     # Flop actions for Hand 2
-    tracker.log_action(player_name="PlayerA", action_type="BET", street=FLOP, bet_amount=30, pot_size_before_action=65, hand_id=hand_id_2, position="CO", players_in_hand_at_action=2)
-    tracker.log_action(player_name="PlayerC", action_type="CALL", street=FLOP, bet_amount=30, pot_size_before_action=95, hand_id=hand_id_2, position="BTN", players_in_hand_at_action=2)
+    tracker.log_action(player_name="PlayerA", action_type="BET", street=FLOP, amount=30, pot_size_before_action=65, hand_id=hand_id_2, position="CO", players_in_hand_at_action=2)
+    tracker.log_action(player_name="PlayerC", action_type="CALL", street=FLOP, amount=30, pot_size_before_action=95, hand_id=hand_id_2, position="BTN", players_in_hand_at_action=2)
 
     # Turn actions for Hand 2
     tracker.log_action(player_name="PlayerA", action_type="CHECK", street=TURN, hand_id=hand_id_2, position="CO", players_in_hand_at_action=2)
-    tracker.log_action(player_name="PlayerC", action_type="BET", street=TURN, bet_amount=70, pot_size_before_action=125, hand_id=hand_id_2, position="BTN", players_in_hand_at_action=2)
+    tracker.log_action(player_name="PlayerC", action_type="BET", street=TURN, amount=70, pot_size_before_action=125, hand_id=hand_id_2, position="BTN", players_in_hand_at_action=2)
     tracker.log_action(player_name="PlayerA", action_type="FOLD", street=TURN, hand_id=hand_id_2, position="CO", players_in_hand_at_action=2)
 
 
@@ -489,7 +486,7 @@ if __name__ == '__main__':
     logger.info(tracker.get_opponent_exploitative_adjustments("PlayerA", situation))
     
     logger.info("\n--- Player A Profile Details ---")
-    profile_a = tracker.get_or_create_profile("PlayerA")
+    profile_a = tracker.get_opponent_profile("PlayerA") # Corrected method name
     logger.info(f"Player A VPIP: {profile_a.get_vpip():.2f}%")
     logger.info(f"Player A PFR: {profile_a.get_pfr():.2f}%")
     logger.info(f"Player A Flop CBet: {profile_a.get_cbet_stat(FLOP)[0]:.2f}% ({profile_a.get_cbet_stat(FLOP)[1]} opps)")
@@ -497,7 +494,7 @@ if __name__ == '__main__':
     logger.info(f"Player A Hand Action History (second hand): {profile_a.hand_action_history[1] if len(profile_a.hand_action_history) > 1 else 'None'}")
 
     logger.info("\n--- Player B Profile Details ---")
-    profile_b = tracker.get_or_create_profile("PlayerB")
+    profile_b = tracker.get_opponent_profile("PlayerB") # Corrected method name
     logger.info(f"Player B VPIP: {profile_b.get_vpip():.2f}%")
     logger.info(f"Player B PFR: {profile_b.get_pfr():.2f}%")
     logger.info(f"Player B Flop CBet: {profile_b.get_cbet_stat(FLOP)[0]:.2f}% ({profile_b.get_cbet_stat(FLOP)[1]} opps)")

@@ -27,12 +27,14 @@ def parse_currency_string(value_str):
 class PokerBot:
     def __init__(self, config_path='config.json'):
         self.config = Config(config_path) # Use Config class
+        self.fh = None # Initialize fh and ch to None
+        self.ch = None # Initialize fh and ch to None
         self.logger = self._setup_logger()
         self.parser = PokerPageParser(self.logger, self.config)
         self.hand_evaluator = HandEvaluator()
         self.equity_calculator = EquityCalculator()
-        # Initialize OpponentTracker with config
-        self.opponent_tracker = OpponentTracker(config=self.config, logger=self.logger)
+        # Initialize OpponentTracker with config and logger
+        self.opponent_tracker = OpponentTracker(config=self.config, logger_instance=self.logger)
         # Pass config to DecisionEngine
         self.decision_engine = DecisionEngine(self.hand_evaluator, self.equity_calculator, self.opponent_tracker, self.config, self.logger)
         self.ui_controller = UIController(self.logger, self.config) # Pass config
@@ -49,61 +51,71 @@ class PokerBot:
         self.running = False
 
     def _setup_logger(self):
-        logger = logging.getLogger(__name__)
-        logger.setLevel(logging.DEBUG)
-        fh = logging.FileHandler('poker_bot.log', mode='a', encoding='utf-8')
-        fh.setLevel(logging.DEBUG)
-        ch = logging.StreamHandler(sys.stdout)
-        ch.setLevel(logging.INFO)
-        
-        # Configure formatter to handle Unicode characters
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        fh.setFormatter(formatter)
-        ch.setFormatter(formatter)
-        
-        # Set encoding for StreamHandler to handle Unicode on Windows
-        if hasattr(ch, 'stream') and hasattr(ch.stream, 'reconfigure'):
-            try:
-                ch.stream.reconfigure(encoding='utf-8')
-            except Exception:
-                # Fallback: create a new StreamHandler with proper encoding
-                import io
-                if sys.platform.startswith('win'):
-                    # For Windows, wrap stdout to handle Unicode properly
-                    utf8_stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-                    ch = logging.StreamHandler(utf8_stdout)
-                    ch.setLevel(logging.INFO)
-                    ch.setFormatter(formatter)
-        
-        logger.addHandler(fh)
-        logger.addHandler(ch)
-        logger.propagate = False # Prevent logging to root logger if it has handlers
+        logger = logging.getLogger(__name__) # Use __name__ for the logger
+        logger.setLevel(self.config.get_setting('LOG_LEVEL', 'INFO').upper()) # Get level from config
 
+        # Clear existing handlers to avoid duplicate logs if re-initialized
+        if logger.hasHandlers():
+            logger.handlers.clear()
+
+        # Create formatter
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+        # File handler
+        log_file_path = self.config.get_setting('LOG_FILE_PATH', 'poker_bot.log')
+        try:
+            self.fh = logging.FileHandler(log_file_path, mode='a') # Use mode 'a' to append
+            self.fh.setLevel(logging.DEBUG) # Or get from config
+            self.fh.setFormatter(formatter)
+            logger.addHandler(self.fh)
+        except Exception as e:
+            print(f"Error setting up file logger: {e}")
+            self.fh = None # Ensure fh is None if setup fails
+
+        # Console handler
+        self.ch = logging.StreamHandler()
+        self.ch.setLevel(logging.INFO) # Or get from config
+        self.ch.setFormatter(formatter)
+        logger.addHandler(self.ch)
+        
+        logger.info("Logger setup complete.")
         return logger
 
     def close_logger(self):
         """Close all logging handlers."""
-        # Check if logger was initialized and has handlers
         if hasattr(self, 'logger') and self.logger and self.logger.hasHandlers():
             self.logger.info("Closing logger handlers.")
-            if self.fh:
-                self.fh.close()
-                self.logger.removeHandler(self.fh)
-                self.fh = None
-            if self.ch:
-                self.ch.close()
-                self.logger.removeHandler(self.ch)
-                self.ch = None
-            # Also clear any other handlers that might have been added
-            for handler in self.logger.handlers[:]:
-                handler.close()
-                self.logger.removeHandler(handler)
-        elif hasattr(self, 'fh') and self.fh: # Fallback for fh if logger is not fully set
-            self.fh.close()
-            self.fh = None
-        elif hasattr(self, 'ch') and self.ch: # Fallback for ch if logger is not fully set
-            self.ch.close()
-            self.ch = None
+            # Use a try-except block for each handler to prevent one failure from stopping others
+            if hasattr(self, 'fh') and self.fh:
+                try:
+                    self.fh.close()
+                    self.logger.removeHandler(self.fh)
+                except Exception as e:
+                    print(f"Error closing file handler: {e}")
+                finally:
+                    self.fh = None
+            
+            if hasattr(self, 'ch') and self.ch:
+                try:
+                    self.ch.close()
+                    self.logger.removeHandler(self.ch)
+                except Exception as e:
+                    print(f"Error closing console handler: {e}")
+                finally:
+                    self.ch = None
+            
+            # Also clear any other handlers that might have been added directly to the logger
+            # This part might be redundant if fh and ch are the only handlers added by this class
+            for handler in self.logger.handlers[:]: # Iterate over a copy
+                try:
+                    handler.close()
+                    self.logger.removeHandler(handler)
+                except Exception as e:
+                    print(f"Error closing/removing additional handler: {e}")
+        elif hasattr(self, 'logger') and self.logger: # Logger exists but no handlers (e.g. cleared)
+             self.logger.info("Logger has no handlers to close.")
+        else:
+            print("Logger not initialized or already cleaned up.")
 
     def __del__(self):
         """Ensure logger is closed when bot instance is deleted."""
@@ -385,27 +397,39 @@ class PokerBot:
 
     def close_logger(self):
         """Close all logging handlers."""
-        # Check if logger was initialized and has handlers
         if hasattr(self, 'logger') and self.logger and self.logger.hasHandlers():
             self.logger.info("Closing logger handlers.")
-            if self.fh:
-                self.fh.close()
-                self.logger.removeHandler(self.fh)
-                self.fh = None
-            if self.ch:
-                self.ch.close()
-                self.logger.removeHandler(self.ch)
-                self.ch = None
-            # Also clear any other handlers that might have been added
-            for handler in self.logger.handlers[:]:
-                handler.close()
-                self.logger.removeHandler(handler)
-        elif hasattr(self, 'fh') and self.fh: # Fallback for fh if logger is not fully set
-            self.fh.close()
-            self.fh = None
-        elif hasattr(self, 'ch') and self.ch: # Fallback for ch if logger is not fully set
-            self.ch.close()
-            self.ch = None
+            # Use a try-except block for each handler to prevent one failure from stopping others
+            if hasattr(self, 'fh') and self.fh:
+                try:
+                    self.fh.close()
+                    self.logger.removeHandler(self.fh)
+                except Exception as e:
+                    print(f"Error closing file handler: {e}")
+                finally:
+                    self.fh = None
+            
+            if hasattr(self, 'ch') and self.ch:
+                try:
+                    self.ch.close()
+                    self.logger.removeHandler(self.ch)
+                except Exception as e:
+                    print(f"Error closing console handler: {e}")
+                finally:
+                    self.ch = None
+            
+            # Also clear any other handlers that might have been added directly to the logger
+            # This part might be redundant if fh and ch are the only handlers added by this class
+            for handler in self.logger.handlers[:]: # Iterate over a copy
+                try:
+                    handler.close()
+                    self.logger.removeHandler(handler)
+                except Exception as e:
+                    print(f"Error closing/removing additional handler: {e}")
+        elif hasattr(self, 'logger') and self.logger: # Logger exists but no handlers (e.g. cleared)
+             self.logger.info("Logger has no handlers to close.")
+        else:
+            print("Logger not initialized or already cleaned up.")
 
     def main_loop(self):
         self.logger.info("Poker Bot - Main Loop Started")
