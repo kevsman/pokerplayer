@@ -734,3 +734,28 @@ pyperclip.PyperclipWindowsException: Error calling OpenClipboard ([WinError 0] O
 2025-06-11 11:33:46,661 - __main__ - INFO - PokerBot stopped by user.
 2025-06-11 11:33:46,661 - __main__ - INFO - PokerBot main_loop ended.
 2025-06-11 11:33:46,661 - __main__ - INFO - Closing logger handlers.
+2025-06-11 11:46:04,512 - __main__ - INFO - PokerBot started. Press Ctrl+C to stop.
+2025-06-11 11:46:04,512 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:46:04,512 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:46:05,898 - __main__ - DEBUG - HTML length: 50852
+2025-06-11 11:46:06,513 - __main__ - INFO - My turn. Hand: ['3♦', '3♠'], Rank: Pair of 3s, Stack: €1.01, Bet to call: 0.02 Opponent Stacks: [mmmm113: €1.98, Linde: €1.33, Ida1984: €1.83, sde777: €2.25, Xvir43: €0.80]
+2025-06-11 11:46:06,513 - __main__ - INFO - Pot: €0.03, Community Cards: []
+2025-06-11 11:46:06,517 - __main__ - INFO - Decision: fold Amount: 0.00
+2025-06-11 11:46:12,977 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:46:12,978 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:46:14,371 - __main__ - DEBUG - HTML length: 49949
+2025-06-11 11:46:15,472 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:46:16,473 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:46:16,474 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:46:17,864 - __main__ - DEBUG - HTML length: 50345
+2025-06-11 11:46:18,968 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:46:19,968 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:46:19,969 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:46:21,365 - __main__ - DEBUG - HTML length: 50338
+2025-06-11 11:46:21,815 - __main__ - INFO - PokerBot stopped by user.
+2025-06-11 11:46:21,815 - __main__ - INFO - PokerBot main_loop ended.
+2025-06-11 11:46:21,815 - __main__ - INFO - Closing logger handlers.
