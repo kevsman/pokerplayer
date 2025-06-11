@@ -320,6 +320,7 @@ class DecisionEngine:
                 win_probability=win_probability, # Pass converted float win_probability
                 pot_odds_to_call=pot_odds_to_call,
                 game_stage=current_round, 
+                community_cards=community_cards, # Add community_cards argument
                 spr=spr,
                 action_fold_const=ACTION_FOLD,
                 action_check_const=ACTION_CHECK,
