@@ -277,51 +277,122 @@ def make_postflop_decision(
     # Genuine check is only possible if can_check is True AND bet_to_call is 0.
     effectively_can_genuinely_check = can_check and (bet_to_call == 0)
 
+    # Determine if the bot was the pre-flop aggressor (PFR)
+    # This flag is assumed to be set in my_player_data by the decision engine
+    was_pfr = my_player_data.get('was_preflop_aggressor', False)
+    if was_pfr:
+        logger.debug("Player was pre-flop aggressor. Considering c-bet options.")
+
     if effectively_can_genuinely_check:
         logger.debug("Option to genuinely check is available (can_check=True, bet_to_call=0). Evaluating check vs. bet/raise.")
         # This is the block for when we can truly check (action is on us, no prior bet in this round)
         
         if is_very_strong:
             # Check if we should check instead of bet (e.g., for trapping or if board is scary)
-            if ENHANCED_MODULES_AVAILABLE and should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street): # Corrected arguments
-                logger.info(f"Decision: {action_check_const} (Very strong hand, checking to trap or due to board)")
-                return action_check_const, 0
-            else:
-                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
-                logger.info(f"Decision: {action_raise_const} {bet_amount} (Very strong hand, value bet)")
-                return action_raise_const, bet_amount
+            if ENHANCED_MODULES_AVAILABLE: # Check if enhanced modules are available
+                should_check_flag, check_reason = should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street)
+                if should_check_flag:
+                    logger.info(f"Decision: {action_check_const} (Very strong hand, checking because: {check_reason})")
+                    return action_check_const, 0
+            # Fallback or if not checking for trap
+            bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
+            logger.info(f"Decision: {action_raise_const} {bet_amount} (Very strong hand, value bet)")
+            return action_raise_const, bet_amount
         
         elif is_strong:
-            if ENHANCED_MODULES_AVAILABLE and should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street): # Corrected arguments
-                logger.info(f"Decision: {action_check_const} (Strong hand, checking for pot control or board texture)")
-                return action_check_const, 0
-            else:
-                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
-                logger.info(f"Decision: {action_raise_const} {bet_amount} (Strong hand, value bet)")
-                return action_raise_const, bet_amount
+            if ENHANCED_MODULES_AVAILABLE: # Check if enhanced modules are available
+                should_check_flag, check_reason = should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street)
+                if should_check_flag:
+                    logger.info(f"Decision: {action_check_const} (Strong hand, checking because: {check_reason})")
+                    return action_check_const, 0
+            # Fallback or if not checking for specific reason
+            bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
+            logger.info(f"Decision: {action_raise_const} {bet_amount} (Strong hand, value bet)")
+            return action_raise_const, bet_amount
 
         elif is_medium:
-            if is_thin_value_spot(hand_strength_final_decision, win_probability, final_opponent_analysis.get('table_type', 'unknown'), position):
-                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False) / 2 # Smaller for thin value
+            can_cbet_medium = False
+            bet_purpose_detail = "thin value bet" # Default purpose
+            bet_factor = 0.5 # Default factor for thin value
+
+            if was_pfr:
+                # More liberal c-betting conditions for PFR with medium strength
+                if win_probability > 0.45 and active_opponents_count <= 2: # Example thresholds
+                    can_cbet_medium = True
+                    bet_purpose_detail = "c-bet with medium strength"
+                    bet_factor = 0.6 # Slightly larger for c-bet
+                    logger.info(f"Medium hand, PFR: Considering c-bet. Win prob: {win_probability:.2f}, Opps: {active_opponents_count}")
+
+            # Check original thin value spot condition OR new PFR c-bet condition
+            if can_cbet_medium or is_thin_value_spot(hand_strength_final_decision, win_probability, final_opponent_analysis.get('table_type', 'unknown'), position):
+                if can_cbet_medium and not is_thin_value_spot(hand_strength_final_decision, win_probability, final_opponent_analysis.get('table_type', 'unknown'), position):
+                    # This ensures the log reflects the PFR c-bet if that's the primary driver
+                    bet_purpose_detail = "c-bet with medium strength (PFR)"
+                    bet_factor = 0.6 
+                elif is_thin_value_spot(hand_strength_final_decision, win_probability, final_opponent_analysis.get('table_type', 'unknown'), position) and not can_cbet_medium:
+                     # Original thin value spot, not PFR driven or PFR conditions not met but thin value spot is.
+                     bet_purpose_detail = "thin value bet"
+                     bet_factor = 0.5
+
+                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False) * bet_factor
                 bet_amount = max(bet_amount, big_blind_amount) # Ensure min bet
-                logger.info(f"Decision: {action_raise_const} {bet_amount} (Medium hand, thin value bet)")
+                logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Medium hand, {bet_purpose_detail})")
                 return action_raise_const, bet_amount
             else:
-                logger.info(f"Decision: {action_check_const} (Medium hand, pot control or check-evaluate)")
+                # If not betting, consider if specific check conditions apply
+                if ENHANCED_MODULES_AVAILABLE:
+                    should_check_flag, check_reason = should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street)
+                    if should_check_flag:
+                        logger.info(f"Decision: {action_check_const} (Medium hand, {('PFR but ' if was_pfr else '')}checking because: {check_reason})")
+                        return action_check_const, 0
+                
+                logger.info(f"Decision: {action_check_const} (Medium hand, {('PFR ' if was_pfr else '')}choosing to check-evaluate or pot control)")
                 return action_check_const, 0
 
         else: # is_weak_final is true
             if hand_strength_final_decision == 'drawing':
-                logger.info(f"Decision: {action_check_const} (Drawing hand, checking to see next card)")
-                return action_check_const, 0
+                if was_pfr:
+                    can_semi_bluff_cbet = False
+                    # Conditions for PFR semi-bluff c-bet with draws:
+                    # Example: decent equity (>25%) AND reasonable fold equity (>35%) AND few opponents (<=2)
+                    if win_probability > 0.25 and active_opponents_count <= 2: 
+                        fold_equity_for_draw_bluff = calculate_fold_equity(final_opponent_analysis.get('table_type', 'unknown'), board_texture, pot_size * 0.5, pot_size) # Assume 0.5 pot bet for FE calc
+                        if fold_equity_for_draw_bluff > 0.35: 
+                            can_semi_bluff_cbet = True
+                            logger.info(f"Drawing hand, PFR: Considering semi-bluff c-bet. Win prob: {win_probability:.2f}, Fold equity: {fold_equity_for_draw_bluff:.2f}, Opps: {active_opponents_count}")
+
+                    if can_semi_bluff_cbet:
+                        bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
+                        logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Drawing hand, PFR semi-bluff c-bet)")
+                        return action_raise_const, bet_amount
+                    else:
+                        logger.info(f"Decision: {action_check_const} (Drawing hand, PFR choosing to check, not ideal semi-bluff or taking free card)")
+                        return action_check_const, 0
+                else: # Not PFR
+                    logger.info(f"Decision: {action_check_const} (Drawing hand, checking to see next card)")
+                    return action_check_const, 0
+            
             elif hand_strength_final_decision == 'weak_made':
-                fold_equity = calculate_fold_equity(final_opponent_analysis.get('table_type', 'unknown'), board_texture, pot_size * 0.5, pot_size)
-                if fold_equity > 0.6: 
+                fold_equity = calculate_fold_equity(final_opponent_analysis.get('table_type', 'unknown'), board_texture, pot_size * 0.5, pot_size) # Assume 0.5 pot bet for FE calc
+                
+                cbet_bluff_threshold = 0.6 # Default threshold
+                log_message_detail_prefix = ""
+                if was_pfr:
+                    cbet_bluff_threshold = 0.45 # Lowered threshold for PFR c-bet bluff (tune this)
+                    log_message_detail_prefix = "c-bet "
+                    logger.info(f"Weak made hand, PFR: Considering {log_message_detail_prefix}bluff. Fold equity: {fold_equity:.2f}, Threshold: {cbet_bluff_threshold}")
+
+                if fold_equity > cbet_bluff_threshold:
                     bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
-                    logger.info(f"Decision: {action_raise_const} {bet_amount} (Weak made hand, bluffing with high fold equity)")
+                    logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Weak made hand, {log_message_detail_prefix}bluffing with fold equity)")
                     return action_raise_const, bet_amount
                 else:
-                    logger.info(f"Decision: {action_check_const} (Weak made hand, checking, low fold equity for bluff)")
+                    if ENHANCED_MODULES_AVAILABLE:
+                        should_check_flag, check_reason = should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street)
+                        if should_check_flag:
+                            logger.info(f"Decision: {action_check_const} (Weak made hand, {('PFR but ' if was_pfr else '')}checking because: {check_reason})")
+                            return action_check_const, 0
+                    logger.info(f"Decision: {action_check_const} (Weak made hand, checking, low fold equity for {log_message_detail_prefix}bluff)")
                     return action_check_const, 0
             else: # very_weak
                 logger.info(f"Decision: {action_check_const} (Very weak hand, check-fold strategy likely)")

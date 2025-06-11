@@ -121,6 +121,31 @@ class DecisionEngine:
         # Update opponent tracking before making decision
         self.update_opponents_from_game_state(game_state, player_index)
 
+        # Determine if this player was the pre-flop aggressor
+        # This needs to be tracked across streets. For now, we check if they made the last raise preflop.
+        # A more robust solution would store this state in OpponentTracker or similar.
+        was_preflop_aggressor = False
+        if current_round != 'preflop': # Only relevant post-flop
+            # Check preflop actions from game_state if available, or rely on opponent_tracker
+            # This is a simplified check. A full implementation would look at the action history.
+            # For now, we'll assume if the player is in `my_player` and has a specific flag or we can infer it.
+            # This part needs to be properly implemented by tracking who made the last preflop raise.
+            # Placeholder: Assume it's passed in my_player data or we can retrieve it.
+            # For the purpose of this change, we'll add it to my_player_data before calling postflop.
+            # This would typically be set by a part of the system that processes game history.
+            if hasattr(self.opponent_tracker, 'get_preflop_aggressor_info'):
+                pfr_info = self.opponent_tracker.get_preflop_aggressor_info()
+                if pfr_info and pfr_info.get('name') == my_player.get('name'):
+                    was_preflop_aggressor = True
+                    logger.debug(f"Player {my_player.get('name')} identified as pre-flop aggressor by opponent_tracker.")
+            # If not available from tracker, it might be in my_player from a previous stage or log parsing
+            elif my_player.get('was_preflop_aggressor') is True:
+                 was_preflop_aggressor = True
+                 logger.debug(f"Player {my_player.get('name')} has 'was_preflop_aggressor' flag set to True.")
+            
+            # Store this in my_player data for postflop_decision_logic to use
+            my_player['was_preflop_aggressor'] = was_preflop_aggressor
+
         # Evaluate hand for the current player
         hand_eval_dict = self.hand_evaluator.evaluate_hand(my_player['hand'], community_cards)
         numerical_hand_rank = hand_eval_dict.get('rank_value', 0)
