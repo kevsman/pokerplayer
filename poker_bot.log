@@ -9689,3 +9689,30 @@ Traceback (most recent call last):
                            ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: DecisionEngine.__init__() takes from 2 to 3 positional arguments but 6 were given
 2025-06-11 20:58:46,793 - __main__ - INFO - Closing logger handlers.
+2025-06-11 21:01:08,893 - __main__ - INFO - Logger setup complete.
+2025-06-11 21:01:08,894 - __main__ - INFO - OpponentTracker initialized.
+2025-06-11 21:01:08,895 - __main__ - ERROR - An error occurred in __main__: 'Config' object has no attribute 'get'. Check your config file or attribute name.
+Traceback (most recent call last):
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 713, in <module>
+    bot = PokerBot()
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 39, in __init__
+    self.decision_engine = DecisionEngine(self.hand_evaluator, self.config) # Corrected arguments
+                           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\GitRepositories\pokerplayer\decision_engine.py", line 37, in __init__
+    self.big_blind_amount = self.config.get('big_blind', 0.02) # Renamed for clarity
+                            ^^^^^^^^^^^^^^^
+  File "C:\GitRepositories\pokerplayer\config.py", line 83, in __getattr__
+    raise AttributeError(f"\'{type(self).__name__}\' object has no attribute \'{name}\'. Check your config file or attribute name.")
+AttributeError: 'Config' object has no attribute 'get'. Check your config file or attribute name.
+2025-06-11 21:01:08,897 - __main__ - INFO - Closing logger handlers.
+2025-06-11 21:02:39,459 - __main__ - INFO - Logger setup complete.
+2025-06-11 21:02:39,460 - __main__ - INFO - OpponentTracker initialized.
+2025-06-11 21:02:39,461 - __main__ - ERROR - An error occurred in __main__: UIController.__init__() takes 1 positional argument but 3 were given
+Traceback (most recent call last):
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 713, in <module>
+    bot = PokerBot()
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 40, in __init__
+    self.ui_controller = UIController(self.logger, self.config) # Pass config
+                         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: UIController.__init__() takes 1 positional argument but 3 were given
+2025-06-11 21:02:39,464 - __main__ - INFO - Closing logger handlers.

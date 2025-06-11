@@ -34,9 +34,9 @@ class DecisionEngine:
     def __init__(self, hand_evaluator, config=None): 
         self.hand_evaluator = hand_evaluator
         self.config = config if config is not None else {}
-        self.big_blind_amount = self.config.get('big_blind', 0.02) # Renamed for clarity
-        self.small_blind_amount = self.config.get('small_blind', 0.01) # Renamed for clarity
-        self.base_aggression_factor = self.config.get('base_aggression_factor_postflop', 1.0) # Renamed for clarity
+        self.big_blind_amount = self.config.get_setting('big_blind', 0.02) # Renamed for clarity
+        self.small_blind_amount = self.config.get_setting('small_blind', 0.01) # Renamed for clarity
+        self.base_aggression_factor = self.config.get_setting('base_aggression_factor_postflop', 1.0) # Renamed for clarity
         
         # Initialize equity calculator system
         self.equity_calculator = EquityCalculator()
@@ -45,7 +45,7 @@ class DecisionEngine:
         self.opponent_tracker = OpponentTracker()
         
         # Tournament settings (default to cash game)
-        self.tournament_level = self.config.get('tournament_level', 0)  # 0 = cash game, 1-3 = tournament levels
+        self.tournament_level = self.config.get_setting('tournament_level', 0)  # 0 = cash game, 1-3 = tournament levels
         
         # Make helper functions available as instance methods or attributes
         self.get_optimal_bet_size_func = get_optimal_bet_size
