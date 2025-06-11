@@ -42,43 +42,35 @@ class PokerPageParser:
                 'all_players_data': [],
                 'my_player_data': None,
                 'error': "Empty or invalid HTML content received",
-                'parsed_actions': [] # Ensure parsed_actions is returned even on error
+                'parsed_actions': []
             }
 
         self.soup = BeautifulSoup(html_content, 'html.parser')
         self.table_data = {}
         self.player_data = []
-        
-        # Ensure this is cleared at the start of a full parse
-        self.last_parsed_actions = []
+        self.last_parsed_actions = [] # Cleared at the start
 
-        # These methods should populate self.table_data and self.player_data
-        # For example:
-        # self._parse_table_info() # Populates self.table_data (including game_stage)
-        # self._parse_player_data_elements() # Finds player elements
-        # self.analyze_players() # Populates self.player_data with detailed info for each player
-                                 # (name, seat, stack, cards, bet_this_street, is_folded, is_all_in, position)
-        # self.analyze_community_cards() # Populates community cards in self.table_data
-
-        # Critical: Ensure analyze_players (or equivalent) populates self.player_data thoroughly
-        # *before* calling _update_last_parsed_actions.
-        # The old heuristic in analyze_players for adding "BET" actions to self.last_parsed_actions
-        # should be removed as _update_last_parsed_actions handles this more comprehensively.
+        # Populate table_data and player_data
+        self.analyze_table()    # Populates self.table_data
+        self.analyze_players()  # Populates self.player_data
 
         # After self.player_data and self.table_data are populated:
-        self._update_last_parsed_actions()
+        self._update_last_parsed_actions() # Populates self.last_parsed_actions
 
-        # parse_html likely returns a summary of game state or status
-        # For example:
-        # return {
-        #     'status': 'success',
-        #     'hand_id': self.table_data.get('hand_id'),
-        #     'game_stage': self.table_data.get('game_stage'),
-        #     'warnings': self.warnings_log # if you have one
-        # }
-        # The exact return value depends on how it's used by PokerBot.
-        # For now, just ensuring the call is made.
-        # ... existing return ...
+        my_player_data = None
+        for player in self.player_data:
+            if player.get('is_my_player'):
+                my_player_data = player
+                break
+        
+        # Ensure a consistent return structure
+        return {
+            'table_data': self.table_data,
+            'all_players_data': self.player_data,
+            'my_player_data': my_player_data,
+            'parsed_actions': self.last_parsed_actions,
+            'error': None # Explicitly set error to None on success
+        }
 
     def analyze_table(self):
         # Ensure soup is available

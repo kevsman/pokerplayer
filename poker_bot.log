@@ -9716,3 +9716,103 @@ Traceback (most recent call last):
                          ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: UIController.__init__() takes 1 positional argument but 3 were given
 2025-06-11 21:02:39,464 - __main__ - INFO - Closing logger handlers.
+2025-06-11 21:04:19,831 - __main__ - INFO - Logger setup complete.
+2025-06-11 21:04:19,832 - __main__ - INFO - OpponentTracker initialized.
+2025-06-11 21:04:19,833 - __main__ - WARNING - Config object passed to UIController is not of expected type, loading from file.
+2025-06-11 21:04:19,835 - __main__ - INFO - Poker Bot - Main Loop Started
+2025-06-11 21:04:19,836 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 21:04:21,228 - __main__ - WARNING - Cannot update last_parsed_actions: player_data or table_data missing.
+2025-06-11 21:04:21,229 - __main__ - ERROR - Failed to parse HTML or critical data missing: Parser returned None. Retrying in 1 second...
+2025-06-11 21:04:22,230 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 21:04:23,623 - __main__ - WARNING - Cannot update last_parsed_actions: player_data or table_data missing.
+2025-06-11 21:04:23,623 - __main__ - ERROR - Failed to parse HTML or critical data missing: Parser returned None. Retrying in 1 second...
+2025-06-11 21:04:24,624 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 21:04:26,046 - __main__ - WARNING - Cannot update last_parsed_actions: player_data or table_data missing.
+2025-06-11 21:04:26,047 - __main__ - ERROR - Failed to parse HTML or critical data missing: Parser returned None. Retrying in 1 second...
+2025-06-11 21:04:27,048 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 21:04:28,449 - __main__ - WARNING - Cannot update last_parsed_actions: player_data or table_data missing.
+2025-06-11 21:04:28,450 - __main__ - ERROR - Failed to parse HTML or critical data missing: Parser returned None. Retrying in 1 second...
+2025-06-11 21:04:29,452 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 21:04:30,817 - __main__ - INFO - Poker Bot stopped by user (KeyboardInterrupt).
+2025-06-11 21:04:30,817 - __main__ - INFO - Poker Bot - Main Loop Ended
+2025-06-11 21:04:30,818 - __main__ - INFO - Closing logger handlers.
+2025-06-11 21:05:43,864 - __main__ - INFO - Logger setup complete.
+2025-06-11 21:05:43,864 - __main__ - INFO - OpponentTracker initialized.
+2025-06-11 21:05:43,864 - __main__ - WARNING - Config object passed to UIController is not of expected type, loading from file.
+2025-06-11 21:05:43,865 - __main__ - INFO - Poker Bot - Main Loop Started
+2025-06-11 21:05:43,865 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 21:05:45,261 - __main__ - WARNING - Cannot update last_parsed_actions: player_data or table_data missing.
+2025-06-11 21:05:45,268 - __main__ - WARNING - Cannot update last_parsed_actions: player_data or table_data missing.
+2025-06-11 21:05:45,269 - __main__ - ERROR - Failed to parse HTML or critical data missing: Parser returned None. Retrying in 1 second...
+2025-06-11 21:05:46,270 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 21:05:47,658 - __main__ - WARNING - Cannot update last_parsed_actions: player_data or table_data missing.
+2025-06-11 21:05:47,668 - __main__ - WARNING - Cannot update last_parsed_actions: player_data or table_data missing.
+2025-06-11 21:05:47,669 - __main__ - ERROR - Failed to parse HTML or critical data missing: Parser returned None. Retrying in 1 second...
+2025-06-11 21:05:48,670 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 21:05:50,058 - __main__ - WARNING - Cannot update last_parsed_actions: player_data or table_data missing.
+2025-06-11 21:05:50,068 - __main__ - WARNING - Cannot update last_parsed_actions: player_data or table_data missing.
+2025-06-11 21:05:50,069 - __main__ - ERROR - Failed to parse HTML or critical data missing: Parser returned None. Retrying in 1 second...
+2025-06-11 21:05:51,070 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 21:05:52,462 - __main__ - WARNING - Cannot update last_parsed_actions: player_data or table_data missing.
+2025-06-11 21:05:52,470 - __main__ - WARNING - Cannot update last_parsed_actions: player_data or table_data missing.
+2025-06-11 21:05:52,470 - __main__ - ERROR - Failed to parse HTML or critical data missing: Parser returned None. Retrying in 1 second...
+2025-06-11 21:05:52,702 - __main__ - INFO - Poker Bot stopped by user (KeyboardInterrupt).
+2025-06-11 21:05:52,702 - __main__ - INFO - Poker Bot - Main Loop Ended
+2025-06-11 21:05:52,702 - __main__ - INFO - Closing logger handlers.
+2025-06-11 21:07:28,594 - __main__ - INFO - Logger setup complete.
+2025-06-11 21:07:28,595 - __main__ - INFO - OpponentTracker initialized.
+2025-06-11 21:07:28,596 - __main__ - WARNING - Config object passed to UIController is not of expected type, loading from file.
+2025-06-11 21:07:28,597 - __main__ - INFO - Poker Bot - Main Loop Started
+2025-06-11 21:07:28,598 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 21:07:30,004 - __main__ - INFO - Found visible dealer button at seat 3
+2025-06-11 21:07:30,007 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 21:07:30,010 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-11 21:07:30,010 - __main__ - INFO - Found 0 potential action elements.
+2025-06-11 21:07:30,012 - __main__ - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 21:07:30,012 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-11 21:07:30,012 - __main__ - INFO - Using dealer position: 3
+2025-06-11 21:07:30,013 - __main__ - INFO - Position calculation: 5 active players, dealer at seat 3
+2025-06-11 21:07:30,013 - __main__ - INFO - Player N/A in seat 2 assigned position: CO
+2025-06-11 21:07:30,013 - __main__ - INFO - Player mikiTobi in seat 3 assigned position: BTN
+2025-06-11 21:07:30,014 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 21:07:30,015 - __main__ - INFO - Player EternalFish in seat 5 assigned position: BB
+2025-06-11 21:07:30,015 - __main__ - INFO - Player portugal545 in seat 6 assigned position: UTG
+2025-06-11 21:07:30,015 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-11 21:07:30,024 - __main__ - INFO - Found visible dealer button at seat 3
+2025-06-11 21:07:30,026 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 21:07:30,028 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-11 21:07:30,028 - __main__ - INFO - Found 0 potential action elements.
+2025-06-11 21:07:30,029 - __main__ - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 21:07:30,030 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-11 21:07:30,030 - __main__ - INFO - Using dealer position: 3
+2025-06-11 21:07:30,030 - __main__ - INFO - Position calculation: 5 active players, dealer at seat 3
+2025-06-11 21:07:30,030 - __main__ - INFO - Player N/A in seat 2 assigned position: CO
+2025-06-11 21:07:30,031 - __main__ - INFO - Player mikiTobi in seat 3 assigned position: BTN
+2025-06-11 21:07:30,032 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 21:07:30,032 - __main__ - INFO - Player EternalFish in seat 5 assigned position: BB
+2025-06-11 21:07:30,032 - __main__ - INFO - Player portugal545 in seat 6 assigned position: UTG
+2025-06-11 21:07:30,033 - __main__ - ERROR - Critical error in main loop: 'Config' object has no attribute 'get'. Check your config file or attribute name.
+Traceback (most recent call last):
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 459, in main_loop
+    parsed_state = self.parser.parse_html(current_html)
+  File "C:\GitRepositories\pokerplayer\html_parser.py", line 58, in parse_html
+    self._update_last_parsed_actions() # Populates self.last_parsed_actions
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\GitRepositories\pokerplayer\html_parser.py", line 796, in _update_last_parsed_actions
+    bot_player_name = self.config.get('bot_player_name')
+                      ^^^^^^^^^^^^^^^
+  File "C:\GitRepositories\pokerplayer\config.py", line 83, in __getattr__
+    raise AttributeError(f"\'{type(self).__name__}\' object has no attribute \'{name}\'. Check your config file or attribute name.")
+AttributeError: 'Config' object has no attribute 'get'. Check your config file or attribute name.
+2025-06-11 21:07:30,036 - __main__ - INFO - Poker Bot - Main Loop Ended
+2025-06-11 21:07:30,037 - __main__ - INFO - Closing logger handlers.

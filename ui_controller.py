@@ -17,56 +17,105 @@ DEFAULT_DELAYS = {
 }
 
 class UIController:
-    def __init__(self):
+    def __init__(self, logger=None, config_object=None): # Modified to accept logger and config
+        self.logger = logger
         self.positions = {}
         self.delays = DEFAULT_DELAYS.copy() # Initialize with defaults
         self.config = {} # Initialize config dictionary
-        self.load_config()
+        
+        # If a config_object is passed (e.g. from PokerBot), use it
+        if config_object:
+            # Assuming config_object has a method to get all settings or is a dict
+            if hasattr(config_object, 'get_all_settings'):
+                self.config = config_object.get_all_settings()
+            elif isinstance(config_object, dict):
+                self.config = config_object
+            else:
+                self.log_warning("Config object passed to UIController is not of expected type, loading from file.")
+                self.load_config_from_file() # Fallback to loading from file
+            
+            # Extract positions and delays from the passed config if available
+            self.positions = self.config.get("positions", {})
+            loaded_delays = self.config.get("delays", {})
+            for key, value in loaded_delays.items():
+                if key in self.delays:
+                    self.delays[key] = value
+        else:
+            # Fallback to loading from file if no config_object is provided
+            self.load_config_from_file()
 
-    def load_config(self):
+    def log_info(self, message):
+        if self.logger:
+            self.logger.info(message)
+        else:
+            print(f"INFO: {message}")
+
+    def log_warning(self, message):
+        if self.logger:
+            self.logger.warning(message)
+        else:
+            print(f"WARNING: {message}")
+
+    def log_error(self, message):
+        if self.logger:
+            self.logger.error(message)
+        else:
+            print(f"ERROR: {message}")
+
+    def load_config_from_file(self): # Renamed from load_config to avoid confusion
         try:
             with open(CONFIG_FILE, 'r') as f:
                 config_data = json.load(f)
-                self.config = config_data.copy() # Store the full config
-                self.positions = config_data.get("positions", {})
+                # self.config = config_data.copy() # Store the full config - This is now handled by the main config object if passed
+                # If self.config is still empty (meaning no config_object was passed or it was minimal)
+                if not self.config:
+                    self.config = config_data.copy()
+
+                self.positions = config_data.get("positions", self.positions if self.positions else {}) # Prioritize already set positions
+                
                 # Load delays, merging with defaults to ensure all keys are present
                 loaded_delays = config_data.get("delays", {})
                 for key, value in loaded_delays.items():
                     if key in self.delays: # Only update if key is a recognized delay setting
                         self.delays[key] = value
         except FileNotFoundError:
-            print(f"Info: {CONFIG_FILE} not found. Using default positions and delays. Calibration needed.")
-            self.config = {}
-            self.positions = {}
+            self.log_warning(f"{CONFIG_FILE} not found. Using default positions and delays. Calibration needed.")
+            # self.config = {} # Keep potentially passed config
+            self.positions = self.positions if self.positions else {}
             self.delays = DEFAULT_DELAYS.copy()
         except json.JSONDecodeError:
-            print(f"Error: Could not decode {CONFIG_FILE}. Using default positions and delays.")
-            self.config = {}
-            self.positions = {}
+            self.log_error(f"Could not decode {CONFIG_FILE}. Using default positions and delays.")
+            # self.config = {} # Keep potentially passed config
+            self.positions = self.positions if self.positions else {}
             self.delays = DEFAULT_DELAYS.copy()
 
     def save_config(self):
         # Start with existing config to preserve all settings
-        config_data = self.config.copy() if self.config else {}
+        # If self.config was populated by a passed config_object, we update that structure
+        # Otherwise, we build it from scratch or from file-loaded data.
+        config_data_to_save = self.config.copy() if self.config else {}
         
         # Update with current positions and delays
-        config_data["positions"] = self.positions
-        config_data["delays"] = self.delays
+        config_data_to_save["positions"] = self.positions
+        config_data_to_save["delays"] = self.delays
         
         # Ensure auto_search has default values if not present
-        if "auto_search" not in config_data:
-            config_data["auto_search"] = {
+        if "auto_search" not in config_data_to_save:
+            config_data_to_save["auto_search"] = {
                 "enabled": True,
                 "step_size": 5,
                 "max_attempts": 60
             }
         
-        with open(CONFIG_FILE, 'w') as f:
-            json.dump(config_data, f, indent=4)
-        print(f"Configuration saved to {CONFIG_FILE}")
+        try:
+            with open(CONFIG_FILE, 'w') as f:
+                json.dump(config_data_to_save, f, indent=4)
+            self.log_info(f"Configuration saved to {CONFIG_FILE}")
+        except Exception as e:
+            self.log_error(f"Error saving config to {CONFIG_FILE}: {e}")
         
-        # Update our internal config to match what was saved
-        self.config = config_data
+        # Update our internal config to match what was saved, especially if it was minimal before
+        self.config = config_data_to_save
 
     def calibrate_position(self, name):
         input(f"Move mouse to '{name}' and press Enter...")
@@ -127,7 +176,7 @@ class UIController:
         # Import html_parser to test HTML validity
         try:
             from html_parser import PokerPageParser
-            parser = PokerPageParser()
+            parser = PokerPageParser(logger=self.logger, config=self.config) # Pass logger and config
         except ImportError:
             print("Error: Could not import html_parser for validation.")
             return False
@@ -221,7 +270,7 @@ class UIController:
         if auto_retry:
             try:
                 from html_parser import PokerPageParser
-                parser = PokerPageParser()
+                parser = PokerPageParser(logger=self.logger, config=self.config) # Pass logger and config
                 parsed_result = parser.parse_html(html_content)
                 players_data = parsed_result.get('all_players_data', [])
                 
