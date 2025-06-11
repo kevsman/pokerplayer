@@ -36,7 +36,7 @@ class PokerBot:
         # Initialize OpponentTracker with config and logger
         self.opponent_tracker = OpponentTracker(config=self.config, logger_instance=self.logger)
         # Pass config to DecisionEngine
-        self.decision_engine = DecisionEngine(self.hand_evaluator, self.equity_calculator, self.opponent_tracker, self.config, self.logger)
+        self.decision_engine = DecisionEngine(self.hand_evaluator, self.config) # Corrected arguments
         self.ui_controller = UIController(self.logger, self.config) # Pass config
         self.table_data = {}
         self.player_data = [] # This will store list of player dicts
