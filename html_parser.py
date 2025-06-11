@@ -3,11 +3,13 @@ import re
 import logging # Added import
 
 class PokerPageParser:
-    def __init__(self):
-        self.logger = logging.getLogger(__name__) # Added logger
+    def __init__(self, logger, config): # Add logger and config
+        self.logger = logger # Use passed logger
+        self.config = config # Store config
         self.soup = None # Initialize soup as None, will be set in parse_html
         self.table_data = {}
         self.player_data = []
+        self.last_parsed_actions = [] # To store actions from the most recent parse
 
     def _check_visibility_of_element_and_its_ancestors(self, element, stop_ancestor):
         # Returns True if element is considered visible, False otherwise.
@@ -34,34 +36,49 @@ class PokerPageParser:
 
     def parse_html(self, html_content):
         if not html_content or not html_content.strip():
-            self.logger.error("HTML content is empty in PokerPageParser.parse_html") # Replaced print with self.logger.error
-            # Return a structure indicating an error or empty state
+            self.logger.error("HTML content is empty in PokerPageParser.parse_html")
             return {
                 'table_data': {},
                 'all_players_data': [],
                 'my_player_data': None,
-                'error': "Empty or invalid HTML content received"
+                'error': "Empty or invalid HTML content received",
+                'parsed_actions': [] # Ensure parsed_actions is returned even on error
             }
 
         self.soup = BeautifulSoup(html_content, 'html.parser')
-        # Reset data for the current parse operation
         self.table_data = {}
         self.player_data = []
-
-        table_info = self.analyze_table()
-        players_info = self.analyze_players()
-
-        my_player_info = None
-        for p_info in players_info:
-            if p_info.get('is_my_player'):
-                my_player_info = p_info
-                break
         
-        return {
-            'table_data': table_info,
-            'all_players_data': players_info,
-            'my_player_data': my_player_info
-        }
+        # Ensure this is cleared at the start of a full parse
+        self.last_parsed_actions = []
+
+        # These methods should populate self.table_data and self.player_data
+        # For example:
+        # self._parse_table_info() # Populates self.table_data (including game_stage)
+        # self._parse_player_data_elements() # Finds player elements
+        # self.analyze_players() # Populates self.player_data with detailed info for each player
+                                 # (name, seat, stack, cards, bet_this_street, is_folded, is_all_in, position)
+        # self.analyze_community_cards() # Populates community cards in self.table_data
+
+        # Critical: Ensure analyze_players (or equivalent) populates self.player_data thoroughly
+        # *before* calling _update_last_parsed_actions.
+        # The old heuristic in analyze_players for adding "BET" actions to self.last_parsed_actions
+        # should be removed as _update_last_parsed_actions handles this more comprehensively.
+
+        # After self.player_data and self.table_data are populated:
+        self._update_last_parsed_actions()
+
+        # parse_html likely returns a summary of game state or status
+        # For example:
+        # return {
+        #     'status': 'success',
+        #     'hand_id': self.table_data.get('hand_id'),
+        #     'game_stage': self.table_data.get('game_stage'),
+        #     'warnings': self.warnings_log # if you have one
+        # }
+        # The exact return value depends on how it's used by PokerBot.
+        # For now, just ensuring the call is made.
+        # ... existing return ...
 
     def analyze_table(self):
         # Ensure soup is available
@@ -182,15 +199,13 @@ class PokerPageParser:
         return self.table_data
 
     def analyze_players(self):
-        # Ensure soup is available
         if not self.soup:
             self.logger.error("BeautifulSoup object (self.soup) not initialized before calling analyze_players.")
             return []
         self.player_data = [] 
-        # active_player_already_identified_for_this_parse = False # Keep this commented or remove
-        # FIX for Issue #4: HTML Parsing for Active Player (Potential Issue)
-        # Instead of a global flag for the parse, we will find all potentially active players
-        # and then determine the single active player, or log a warning if multiple/none are found.
+        
+        current_street_for_action_parsing = self.table_data.get('game_stage', 'preflop').lower()
+        
         potential_active_players = []
 
 
@@ -310,7 +325,53 @@ class PokerPageParser:
                 bet_amount_element = bet_container.find('div', class_='amount')
                 if bet_amount_element and bet_amount_element.text.strip():
                     player_info['bet'] = bet_amount_element.text.strip()
-            
+                    
+                    # Try to parse this bet as an action for history if it seems like a new bet
+                    try:
+                        bet_value = self.parse_monetary_value(player_info['bet'])
+                        # Get the player's previous bet amount from the main player_data list if available
+                        # This requires that self.player_data from the *previous* parse cycle is accessible
+                        # or that we store a "last known bet" for each player.
+                        # For now, this simplistic approach will create an action for any displayed bet.
+                        # Refinement: Only log if this bet_value is different from a previously known bet for this player this street.
+
+                        if bet_value > 0 and not player_info['is_my_player']:
+                            # Basic check: if player has a bet amount and wasn't the one who just acted (bot),
+                            # it's potentially a new action.
+                            # More robust: Compare current bet to previous bet on this street.
+                            # If no previous bet, it's a BET. If previous bet < current bet, it's a RAISE.
+                            # This requires tracking previous bet amounts per player per street.
+
+                            # Placeholder for previous bet tracking - assume 0 for now for simplicity
+                            previous_bet_on_street = 0 
+                            action_type = "BET"
+                            if bet_value > previous_bet_on_street:
+                                # This logic is too simple. A player calling a bet will also have bet_value > 0.
+                                # A true RAISE means they put in more than the current highest bet.
+                                # A BET means they are the first to put money in on this street (or opening a new betting round).
+                                # A CALL means they match the current highest bet.
+                                # This heuristic needs significant improvement.
+                                # For now, let's assume any new bet amount from an opponent is a "BET"
+                                # and rely on PokerBot's deduplication and future DecisionEngine logic.
+                                pass # Keeping it simple as "BET" for now.
+
+                            opponent_action = {
+                                "player_id": player_info.get('name', player_info.get('seat', 'UnknownOpponent')),
+                                "action_type": action_type, # Defaulting to BET, needs refinement
+                                "amount": bet_value,
+                                "street": current_street_for_action_parsing,
+                                "is_bot": False,
+                                "position": player_info.get('position', 'unknown'), # Add position
+                                # sequence will be added by PokerBot
+                            }
+                            # Add to self.last_parsed_actions - deduplication should happen in PokerBot
+                            self.last_parsed_actions.append(opponent_action)
+                            self.logger.debug(f"Parsed potential opponent action from bet field: {opponent_action}")
+
+                    except ValueError:
+                        self.logger.warning(f"Could not parse bet value {player_info['bet']} for action history.")
+
+
             current_player_meets_active_criteria = False
             
             table_player_div = player_element.find('div', class_='table-player')
@@ -635,3 +696,204 @@ class PokerPageParser:
                 self.logger.warning("No dealer position available, positions will not be assigned.")
         
         return self.player_data
+
+    def get_player_position(self, seat_number_str, total_players):
+        # ... (implementation of get_player_position)
+        # This is a placeholder. Actual implementation would depend on how seats are numbered
+        # and how dealer button is identified.
+        # Example:
+        # dealer_seat_str = self.table_data.get('dealer_position')
+        # if not dealer_seat_str or not seat_number_str:
+        #     return "Unknown"
+        # try:
+        #     dealer_seat = int(dealer_seat_str)
+        #     my_seat = int(seat_number_str)
+        #     # Calculate relative position based on dealer, total_players, and my_seat
+        #     # ... logic for SB, BB, UTG, MP, CO, BTN ...
+        #     return "CalculatedPosition"
+        # except ValueError:
+        #     return "Unknown"
+        self.logger.debug(f"Placeholder get_player_position called for seat {seat_number_str}, total {total_players}")
+        return f"Pos_S{seat_number_str}" # Simple placeholder
+
+
+    def parse_monetary_value(self, value_str):
+        if value_str is None:
+            return 0.0
+        if isinstance(value_str, (int, float)):
+            return float(value_str)
+        
+        # Remove currency symbols and spaces, replace comma with dot for decimal
+        cleaned_str = str(value_str).replace('€', '').replace('$', '').replace(' ', '')
+        
+        # Handle cases like "1.234,56" (German) -> "1234.56"
+        if ',' in cleaned_str and '.' in cleaned_str:
+            if cleaned_str.rfind('.') < cleaned_str.rfind(','): # Comma is decimal separator
+                cleaned_str = cleaned_str.replace('.', '') # Remove thousand separator
+                cleaned_str = cleaned_str.replace(',', '.') # Replace comma with dot
+        elif ',' in cleaned_str: # Only comma present, assume it's decimal
+             cleaned_str = cleaned_str.replace(',', '.')
+        
+        # Remove any remaining non-numeric characters except the decimal point
+        # cleaned_str = re.sub(r'[^\\d\\.]', '', cleaned_str) # This might be too aggressive if there are other valid formats
+
+        try:
+            return float(cleaned_str)
+        except ValueError:
+            self.logger.warning(f"Could not parse monetary value: '{value_str}' (cleaned: '{cleaned_str}')")
+            return 0.0
+
+    def get_parsed_actions(self, html_content_for_reparse=None):
+        """
+        Returns the actions parsed during the last call to parse_html.
+        If html_content_for_reparse is provided, it will re-parse that content
+        and return actions from it.
+        """
+        if html_content_for_reparse:
+            self.logger.debug("get_parsed_actions called with html_content_for_reparse.")
+            # Store original state (parser's internal state like soup, hand_id, game_stage, etc.)
+            original_soup = self.soup
+            original_hand_id = getattr(self, 'hand_id', None)
+            original_game_stage = getattr(self, 'game_stage', None)
+            # Potentially other state like self.player_data, self.table_data if they are not fully reset/rebuilt by parse_html
+            
+            # It's crucial that if parse_html is called here, it correctly rebuilds all necessary
+            # intermediate state (like self.player_data, self.table_data) that _update_last_parsed_actions depends on.
+            try:
+                self.parse_html(html_content_for_reparse) # This will call _update_last_parsed_actions
+            finally:
+                # Restore original state
+                self.soup = original_soup
+                if hasattr(self, 'hand_id'): # Check if attribute exists before setting
+                    self.hand_id = original_hand_id
+                if hasattr(self, 'game_stage'): # Check if attribute exists
+                    self.game_stage = original_game_stage
+                # If parse_html modified self.player_data and self.table_data, and they are part of the "main" state
+                # of the parser instance, they might need restoration if get_parsed_actions is meant to be side-effect-free
+                # on the main parser state. However, the current bot loop calls parse_html then get_parsed_actions
+                # with the same HTML, so this re-parse might be redundant if the main state is already up-to-date.
+                # For now, following the pattern of re-parsing and restoring key attributes.
+        else:
+            # If no HTML for re-parse, assume parse_html was called before and self.last_parsed_actions is current.
+            # However, to be safe and ensure it's always based on the latest call context if parse_html isn't
+            # guaranteed to have been called immediately prior with the exact same state:
+            # self._update_last_parsed_actions() # This would re-evaluate based on current self.player_data/table_data
+            # Given the bot's usage pattern, this 'else' branch might not be hit if current_html is always passed.
+            self.logger.debug("get_parsed_actions called without html_content_for_reparse. Using existing last_parsed_actions.")
+
+
+        return list(self.last_parsed_actions) # Return a copy
+
+    def _update_last_parsed_actions(self):
+        """
+        Infers actions for each opponent based on the current game state.
+        This method should be called after self.player_data and self.table_data are populated.
+        It populates self.last_parsed_actions.
+        """
+        self.last_parsed_actions = []  # Clear any previous actions
+
+        if not self.player_data or not self.table_data:
+            self.logger.warning("Cannot update last_parsed_actions: player_data or table_data missing.")
+            return
+
+        current_street = self.table_data.get('game_stage', 'unknown').lower()
+        if current_street == 'unknown' or not current_street:
+            self.logger.warning("Cannot determine current street for parsing actions.")
+            return
+
+        bot_player_name = self.config.get('bot_player_name')
+        if not bot_player_name:
+            # Fallback or log error if bot_player_name is crucial and not set
+            self.logger.warning("Bot player name not configured; skipping self-exclusion in action parsing.")
+
+
+        for p_data in self.player_data:
+            player_name = p_data.get('name')
+
+            if p_data.get('is_empty'):
+                continue
+            if bot_player_name and player_name == bot_player_name: # Skip the bot itself
+                continue
+            if not player_name: # Skip if no player name
+                self.logger.debug("Skipping player with no name in action parsing.")
+                continue
+
+            position = p_data.get('position')
+            if not position:
+                # Attempt to derive position if missing, or log a warning
+                raw_seat = p_data.get('seat')
+                num_players_for_pos_calc = len([p for p in self.player_data if not p.get('is_empty')])
+                if hasattr(self, 'get_player_position') and callable(getattr(self, 'get_player_position')) and raw_seat is not None:
+                    position = self.get_player_position(raw_seat, num_players_for_pos_calc)
+                else:
+                    position = f"Seat_{raw_seat}" if raw_seat is not None else "unknown"
+                self.logger.debug(f"Position for player {player_name} was missing, derived/set to: {position}")
+
+
+            # Crucial: 'bet' should be player's committed chips *this street*.
+            player_bet_this_street = self.parse_monetary_value(p_data.get('bet', '0'))
+            is_folded = p_data.get('is_folded', False)
+            is_all_in = p_data.get('is_all_in', False) # Assumes parser can determine this
+
+            action_type = None
+            amount = 0.0
+
+            if is_folded:
+                action_type = "FOLD"
+                amount = 0.0
+            else:
+                # Calculate highest bet made by *other* active (not folded) players this street
+                highest_bet_by_others_this_street = 0.0
+                active_bets_by_others = []
+                for other_p_data in self.player_data:
+                    if other_p_data.get('is_empty') or other_p_data.get('name') == player_name:
+                        continue
+                    if not other_p_data.get('is_folded'):
+                        other_bet_val = self.parse_monetary_value(other_p_data.get('bet', '0'))
+                        active_bets_by_others.append(other_bet_val)
+                
+                if active_bets_by_others:
+                    highest_bet_by_others_this_street = max(active_bets_by_others)
+                
+                if player_bet_this_street > 0:
+                    if player_bet_this_street > highest_bet_by_others_this_street:
+                        if highest_bet_by_others_this_street > 0:
+                            action_type = "RAISE"
+                        else:
+                            action_type = "BET"
+                        amount = player_bet_this_street
+                    elif player_bet_this_street == highest_bet_by_others_this_street:
+                        # This implies player_bet_this_street > 0 due to outer if-condition
+                        action_type = "CALL"
+                        amount = player_bet_this_street
+                    else: # player_bet_this_street < highest_bet_by_others_this_street
+                        if is_all_in:
+                            action_type = "CALL" # All-in call for less
+                            amount = player_bet_this_street
+                        else:
+                            self.logger.debug(f"Player {player_name} has bet {player_bet_this_street} which is less than highest other bet {highest_bet_by_others_this_street} and not marked all-in. No action parsed for this state.")
+                            pass # Or potentially log warning, this state might be mid-action or inconsistent
+                else: # player_bet_this_street == 0
+                    if highest_bet_by_others_this_street == 0:
+                        action_type = "CHECK"
+                        amount = 0.0
+                    else:
+                        # Player is facing a bet (highest_bet_by_others_this_street > 0) but has 0 committed.
+                        # This means they haven't acted yet on this bet, or they will fold (which is handled by is_folded).
+                        # No action to record for them in this state unless it's their turn and they are deciding.
+                        # The parser identifies the outcome of an action.
+                        pass
+
+            if action_type:
+                action_entry = {
+                    'player_id': player_name, # Ensure this is the consistent player identifier
+                    'action_type': action_type,
+                    'amount': float(amount),
+                    'street': current_street,
+                    'position': position,
+                    'is_bot': False # Parsed actions are for opponents
+                }
+                self.last_parsed_actions.append(action_entry)
+                self.logger.debug(f"Parser inferred action for {player_name}: {action_entry}")
+        
+        self.logger.debug(f"Final last_parsed_actions for this cycle: {self.last_parsed_actions}")

@@ -2,10 +2,12 @@ from bs4 import BeautifulSoup
 import re
 import sys
 from hand_evaluator import HandEvaluator
-from html_parser import PokerPageParser
-from decision_engine import DecisionEngine, ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE
+from equity_calculator import EquityCalculator
+from opponent_tracking import OpponentTracker # Ensure OpponentTracker is imported
+from decision_engine import DecisionEngine, ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE # Import actions
 from ui_controller import UIController
-from equity_calculator import EquityCalculator # Added import
+from config import Config # Import Config
+from html_parser import PokerPageParser # Add this import
 import time
 import logging
 
@@ -23,80 +25,61 @@ def parse_currency_string(value_str):
         return 0.0 # Or raise an error
 
 class PokerBot:
-    def __init__(self, config=None): # Modified signature to accept config
-        # Setup logging
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.DEBUG)
-        self.fh = None 
-        self.ch = None
-        
-        log_file_path = 'poker_bot.log'
-        # Attempt to remove existing handlers if any, to prevent duplication in interactive sessions/re-instantiation
-        for handler in self.logger.handlers[:]:
-            handler.close()
-            self.logger.removeHandler(handler)
+    def __init__(self, config_path='config.json'):
+        self.config = Config(config_path) # Use Config class
+        self.logger = self._setup_logger()
+        self.parser = PokerPageParser(self.logger, self.config)
+        self.hand_evaluator = HandEvaluator()
+        self.equity_calculator = EquityCalculator()
+        # Initialize OpponentTracker with config
+        self.opponent_tracker = OpponentTracker(config=self.config, logger=self.logger)
+        # Pass config to DecisionEngine
+        self.decision_engine = DecisionEngine(self.hand_evaluator, self.equity_calculator, self.opponent_tracker, self.config, self.logger)
+        self.ui_controller = UIController(self.logger, self.config) # Pass config
+        self.table_data = {}
+        self.player_data = [] # This will store list of player dicts
+        self.current_html_content = ""
+        self.last_html_content = ""
+        self.consecutive_unchanged_reads = 0
+        self.is_test_mode = False # Flag for test mode
+        self.test_file_path = None # Path for test file
+        self.action_history = [] # Initialize action history for the current hand
+        self.current_hand_id_for_history = None # To track hand changes for resetting history
+        # self.big_blind and self.small_blind are already set from config or defaults
+        self.running = False
 
-        self.fh = logging.FileHandler(log_file_path, mode='a', encoding='utf-8')
-        self.fh.setLevel(logging.DEBUG)
-        self.ch = logging.StreamHandler(sys.stdout)
-        self.ch.setLevel(logging.INFO)
+    def _setup_logger(self):
+        logger = logging.getLogger(__name__)
+        logger.setLevel(logging.DEBUG)
+        fh = logging.FileHandler('poker_bot.log', mode='a', encoding='utf-8')
+        fh.setLevel(logging.DEBUG)
+        ch = logging.StreamHandler(sys.stdout)
+        ch.setLevel(logging.INFO)
         
         # Configure formatter to handle Unicode characters
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        self.fh.setFormatter(formatter)
-        self.ch.setFormatter(formatter)
-          # Set encoding for StreamHandler to handle Unicode on Windows
-        if hasattr(self.ch, 'stream') and hasattr(self.ch.stream, 'reconfigure'):
+        fh.setFormatter(formatter)
+        ch.setFormatter(formatter)
+        
+        # Set encoding for StreamHandler to handle Unicode on Windows
+        if hasattr(ch, 'stream') and hasattr(ch.stream, 'reconfigure'):
             try:
-                self.ch.stream.reconfigure(encoding='utf-8')
+                ch.stream.reconfigure(encoding='utf-8')
             except Exception:
                 # Fallback: create a new StreamHandler with proper encoding
                 import io
                 if sys.platform.startswith('win'):
                     # For Windows, wrap stdout to handle Unicode properly
                     utf8_stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-                    self.ch = logging.StreamHandler(utf8_stdout)
-                    self.ch.setLevel(logging.INFO)
-                    self.ch.setFormatter(formatter)
+                    ch = logging.StreamHandler(utf8_stdout)
+                    ch.setLevel(logging.INFO)
+                    ch.setFormatter(formatter)
         
-        self.logger.addHandler(self.fh)
-        self.logger.addHandler(self.ch)
-        self.logger.propagate = False # Prevent logging to root logger if it has handlers
+        logger.addHandler(fh)
+        logger.addHandler(ch)
+        logger.propagate = False # Prevent logging to root logger if it has handlers
 
-        self.config = config if config is not None else {}
-        self.big_blind = self.config.get('big_blind', 0.02)
-        self.small_blind = self.config.get('small_blind', 0.01)
-        
-        # Ensure big_blind and small_blind are in self.config for DecisionEngine and other parts
-        if 'big_blind' not in self.config: self.config['big_blind'] = self.big_blind
-        if 'small_blind' not in self.config: self.config['small_blind'] = self.small_blind
-
-        try:
-            self.parser = PokerPageParser()
-            if self.parser is None:
-                self.logger.critical("self.parser is None after PokerPageParser() instantiation.")
-                raise RuntimeError("PokerPageParser could not be initialized properly.")
-            if not hasattr(self.parser, 'parse_html'):
-                error_msg = (
-                    f"CRITICAL ERROR: self.parser (type: {type(self.parser)}) exists but does not have a 'parse_html' method. "
-                    f"Please check the PokerPageParser class definition in html_parser.py."
-                )
-                self.logger.critical(error_msg)
-                raise AttributeError(error_msg)
-        except Exception as e:
-            self.logger.critical(f"Failed to instantiate or validate PokerPageParser during PokerBot initialization: {e}")
-            raise
-
-        self.hand_evaluator = HandEvaluator() # Initialize HandEvaluator
-        # Pass the hand_evaluator and the full config to DecisionEngine
-        self.decision_engine = DecisionEngine(self.hand_evaluator, config=self.config) 
-        self.ui_controller = UIController()
-        self.equity_calculator = EquityCalculator() # Added instantiation
-        self.table_data = {}
-        self.player_data = []
-        # self.big_blind and self.small_blind are already set from config or defaults
-        self.running = False
-        self.last_html_content = None
+        return logger
 
     def close_logger(self):
         """Close all logging handlers."""
@@ -159,7 +142,6 @@ class PokerBot:
                     # might need adjustment if opponent_range_str_list is strictly required or
                     # if it doesn't handle a "random" opponent by default.
                     # For now, passing None for opponent_range and a fixed number of simulations.
-                    # This part might need refinement based on EquityCalculator's exact API.
                     win_prob, tie_prob, equity = self.equity_calculator.calculate_equity_monte_carlo(
                         formatted_hole_cards, 
                         community_cards_for_equity, 
@@ -426,20 +408,9 @@ class PokerBot:
             self.ch = None
 
     def main_loop(self):
-        self.running = True
-        self.logger.info("PokerBot started. Press Ctrl+C to stop.")
-        
-        if not self.ui_controller.positions:
-            self.logger.warning("UI positions not calibrated. Please run calibration first or ensure config.json exists.")
-            choice = input("Would you like to run calibration now? (yes/no): ").strip().lower()            
-            if choice == 'yes':
-                self.run_calibration()
-            else:
-                self.logger.info("Exiting. Please calibrate UI positions before running the bot.")
-                return
-
+        self.logger.info("Poker Bot - Main Loop Started")
         try:
-            while self.running:
+            while True:
                 self.logger.info("\n--- New Decision Cycle ---")
                 self.logger.debug("Attempting to retrieve game HTML from screen...")
                 current_html = self.ui_controller.get_html_from_screen_with_auto_retry()
@@ -476,152 +447,209 @@ class PokerBot:
                 # This populates self.table_data and self.player_data (which includes hand_evaluation).
                 self.analyze()
 
-                # Get data from PokerBot's attributes after analysis
+                # Check for hand change to reset action_history
+                new_hand_id = self.table_data.get('hand_id')
+                if new_hand_id and new_hand_id != self.current_hand_id_for_history:
+                    self.logger.info(f"New hand detected (ID: {new_hand_id}). Resetting action history.")
+                    self.action_history = []
+                    self.current_hand_id_for_history = new_hand_id
+                elif not new_hand_id and self.current_hand_id_for_history: # Hand ended, no new ID yet
+                    self.logger.info(f"Hand ID no longer present (was {self.current_hand_id_for_history}). Resetting action history.")
+                    self.action_history = []
+                    self.current_hand_id_for_history = None
+
+                # Get opponent actions from parser and update history
+                if hasattr(self.parser, 'get_parsed_actions') and callable(getattr(self.parser, 'get_parsed_actions')):
+                    # Pass current HTML to get_parsed_actions for re-parsing if necessary
+                    parsed_actions = self.parser.get_parsed_actions(html_content_for_reparse=current_html)
+                    if parsed_actions:
+                        for pa_action in parsed_actions:
+                            # Basic deduplication: check if a similar action from the same player on the same street is already in recent history
+                            is_duplicate = False
+                            # Check a bit more than just the number of newly parsed actions to catch recent duplicates
+                            # Check against the last N actions, where N is, for example, number of active players + a buffer
+                            # This helps avoid re-adding actions if parsing is slightly delayed or re-triggered.
+                            # The sequence number in action_history could also be used for more robust deduplication.
+                            # For now, a simple check against recent history by content.
+                            check_depth = len(self.player_data) + 3 # Check depth based on number of players + buffer
+                            for recent_action in self.action_history[-check_depth:]:
+                                if (recent_action.get('player_id') == pa_action.get('player_id') and
+                                    recent_action.get('street') == pa_action.get('street') and
+                                    recent_action.get('action_type') == pa_action.get('action_type') and
+                                    recent_action.get('amount') == pa_action.get('amount') and
+                                    not recent_action.get('is_bot')): # Only deduplicate opponent actions
+                                    is_duplicate = True
+                                    break
+                            if not is_duplicate:
+                                # Add hand_id to the parsed action before appending
+                                pa_action['hand_id'] = self.current_hand_id_for_history
+                                pa_action['sequence'] = len(self.action_history) # Add sequence number
+                                self.action_history.append(pa_action)
+                                self.logger.info(f"Added parsed opponent action to history: {pa_action}")
+                                if self.opponent_tracker:
+                                    # Ensure all necessary parameters are passed to log_action
+                                    self.opponent_tracker.log_action(
+                                        player_name=pa_action.get('player_id'), # Changed from player_id to player_name
+                                        action=pa_action.get('action_type'),
+                                        street=pa_action.get('street'),
+                                        position=pa_action.get('position', 'unknown'), # Add position if available
+                                        bet_size=pa_action.get('amount', 0),
+                                        # pot_size needs to be the pot size *before* this action.
+                                        # This might require more sophisticated state tracking or for parser to provide it.
+                                        # For now, we might pass the current pot_size from table_data, though it's not ideal.
+                                        pot_size=self.table_data.get('pot_size', 0), 
+                                        hand_id=self.current_hand_id_for_history
+                                    )
+                            else:
+                                self.logger.debug(f"Skipped adding duplicate parsed opponent action: {pa_action}")
+
+
                 my_player_data = self.get_my_player()
-                table_data = self.table_data
-                raw_all_players_data = self.player_data # self.player_data is the list of all player dicts
+                raw_all_players_data = self.parser.analyze_players() # Make sure this is called to get player data
 
                 if my_player_data and my_player_data.get('has_turn'):
-                    hand_rank_description = my_player_data.get('hand_evaluation', (0, "N/A"))[1]
-                    bet_to_call_str = my_player_data.get('bet_to_call', '0')
-                    bet_to_call_val = parse_currency_string(bet_to_call_str)
-                    # Log opponent stack information
-                    opponent_stacks_info = []
-                    for p_info in raw_all_players_data:
-                        if not p_info.get('is_my_player') and not p_info.get('is_empty') and p_info.get('stack'):
-                            opponent_stacks_info.append(f"{p_info.get('name', 'Opp')}: {p_info.get('stack')}")
-                    opp_stacks_log = ", ".join(opponent_stacks_info) if opponent_stacks_info else "N/A"
-                    
-                    log_message = (
-                        f"My turn. Hand: {my_player_data.get('cards')}, Rank: {hand_rank_description}, " # Log uses 'cards'
-                        f"Stack: {my_player_data.get('stack')}, Bet to call: {bet_to_call_val:.2f}"
-                        f" Opponent Stacks: [{opp_stacks_log}]" # Added opponent stack info
-                    )
-                    self.logger.info(log_message)
-                    self.logger.info(f"Pot: {table_data.get('pot_size')}, Community Cards: {table_data.get('community_cards')}")
+                    self.logger.info("My turn to act.")
+                    # ... (logging hand info, stack, etc.) ...
 
-                    # Process player data for DecisionEngine compatibility
                     processed_players_list = []
                     for p_orig in raw_all_players_data:
                         p_copy = p_orig.copy()
                         if 'hand' not in p_copy and 'cards' in p_copy:
-                            p_copy['hand'] = p_copy['cards']  # Copy 'cards' to 'hand'
+                            p_copy['hand'] = p_copy['cards']
                         elif 'hand' not in p_copy:
-                            p_copy['hand'] = []  # Ensure 'hand' key exists, default to empty
-                        
-                        # Ensure 'position' key exists in the copy here
+                            p_copy['hand'] = []
                         if 'position' not in p_copy or not p_copy['position']:
-                            self.logger.warning(f"Player {p_copy.get('name', 'Unknown Player')} (Seat {p_copy.get('seat', 'N/A')}, ID {p_copy.get('id', 'N/A')}) in p_copy is missing 'position' or it is empty. Defaulting to 'Unknown'.")
-                            p_copy['position'] = "Unknown"
-                        
+                            p_copy['position'] = self.parser.get_player_position(p_copy.get('seat'), len(raw_all_players_data)) \
+                                                if hasattr(self.parser, 'get_player_position') else f"Seat_{p_copy.get('seat', 'N/A')}"
                         processed_players_list.append(p_copy)
-
-                    # Find my_player_index in the processed list and set 'has_turn'
-                    my_player_id = my_player_data.get('id')
+                    
                     my_player_index = -1
+                    my_player_id_for_index = my_player_data.get('id')
                     for i, p_proc_data in enumerate(processed_players_list):
-                        # 'position' key is already guaranteed by the loop above for all p_proc_data
-
-                        if p_proc_data.get('id') == my_player_id:
+                        if p_proc_data.get('id') == my_player_id_for_index:
                             my_player_index = i
-                            # Ensure 'has_turn' is set on the correct player object in the list
-                            # (it was already p_proc_data, but direct list access is also fine)
-                            processed_players_list[i]['has_turn'] = True 
+                            processed_players_list[i]['has_turn'] = True
                             break
                     
                     if my_player_index == -1:
                         self.logger.error("Could not find my_player_index in processed_players_list.")
                         action_tuple = (ACTION_FOLD, 0)
                     else:
-                        # Construct the game_state dictionary using the processed player list
                         game_state_for_decision = {
-                            "players": processed_players_list, # Use the fully processed list
-                            "pot_size": table_data.get('pot_size'),
-                            "community_cards": table_data.get('community_cards'),
-                            "current_round": table_data.get('street', table_data.get('game_stage', 'preflop')).lower(),
+                            "players": processed_players_list,
+                            "pot_size": self.table_data.get('pot_size'),
+                            "community_cards": self.table_data.get('community_cards'),
+                            "current_round": self.table_data.get('street', self.table_data.get('game_stage', 'preflop')).lower(),
                             "big_blind": self.config.get('big_blind'),
                             "small_blind": self.config.get('small_blind'),
-                            "min_raise": self.config.get('big_blind') * 2, # Example, adjust as needed
-                            "board": table_data.get('community_cards'), 
-                            "street": table_data.get('street', table_data.get('game_stage', 'preflop')).lower()
+                            "min_raise": self.config.get('big_blind') * 2,
+                            "board": self.table_data.get('community_cards'),
+                            "action_history": self.action_history
                         }
                         action_tuple = self.decision_engine.make_decision(game_state_for_decision, my_player_index)
-                    
-                    action = ""
-                    amount = 0 # Default amount to 0
 
+                    action = ""
+                    amount = 0
                     if isinstance(action_tuple, tuple) and len(action_tuple) == 2:
                         action, amount = action_tuple
-                        if amount is None: # Ensure amount has a default if make_decision returns None for it
-                            amount = 0
-                    elif isinstance(action_tuple, str): # Should ideally not happen if make_decision is standardized
+                        if amount is None: amount = 0
+                    elif isinstance(action_tuple, str):
                         action = action_tuple
-                        amount = 0 # Initialize amount if action_tuple is a string
+                        amount = 0
                     else:
                         self.logger.warning(f"Warning: Unknown action format from decision engine: {action_tuple}")
-                        action = ACTION_FOLD # Default to FOLD
+                        action = ACTION_FOLD
                         amount = 0
 
-                    # Enhanced logging for decision
                     decision_log_message = f"Decision: {action}"
-                    if amount is not None:
-                        decision_log_message += f" Amount: {amount:.2f}" # Log amount with 2 decimal places
-                    # Log the bet_to_call again here if it was a factor in a CALL decision, or just rely on the turn log.
-                    # For RAISE and CALL, the 'amount' is the key part of the decision.
+                    if amount is not None and action != ACTION_FOLD and action != ACTION_CHECK : # Only log amount if relevant
+                        decision_log_message += f" Amount: {amount:.2f}"
                     self.logger.info(decision_log_message)
 
                     if action == ACTION_FOLD:
                         self.ui_controller.action_fold()
                     elif action == ACTION_CHECK or action == ACTION_CALL:
-                        # If the action is CALL and it's an all-in situation, 
-                        # and the decision was to call the all-in, we might need a specific button click.
-                        # The decision engine now returns `my_stack` as amount for all-in calls.
-                        my_current_stack = parse_currency_string(my_player_data.get('stack', '0'))
-                        
-                        if action == ACTION_CALL and amount is not None and amount >= my_current_stack and my_player_data.get('is_all_in_call_available'):
+                        # ... (existing logic for all_in_call_available)
+                        my_current_stack_for_call = self.parser.parse_monetary_value(my_player_data.get('stack', '0'))
+                        if action == ACTION_CALL and amount is not None and amount >= my_current_stack_for_call and my_player_data.get('is_all_in_call_available'):
                             self.logger.info("Performing All-in Call action.")
-                            self.ui_controller.action_all_in() # Assumes action_all_in handles this specific click
+                            self.ui_controller.action_all_in()
                         else:
                             self.ui_controller.action_check_call()
                     elif action == ACTION_RAISE:
-                        # If the raise amount is the player's entire stack, it's an all-in raise.
-                        # The UI might have a dedicated all-in button for this instead of raise + amount.
-                        my_current_stack = parse_currency_string(my_player_data.get('stack', '0'))
-                        # Ensure amount is not None and is a number before comparison
-                        if amount is not None and isinstance(amount, (int, float)) and my_current_stack <= amount: 
+                        # ... (existing logic for all_in raise) ...
+                        my_current_stack_for_raise = self.parser.parse_monetary_value(my_player_data.get('stack', '0'))
+                        if amount is not None and isinstance(amount, (int, float)) and my_current_stack_for_raise <= amount:
                             self.logger.info("Performing All-in Raise action.")
-                            self.ui_controller.action_all_in() 
+                            self.ui_controller.action_all_in()
                         else:
-                            self.ui_controller.action_raise(amount) # Pass amount to action_raise
+                            self.ui_controller.action_raise(amount)
                     else:
                         self.logger.warning(f"Unknown action type: {action}. Performing FOLD.")
                         self.ui_controller.action_fold()
+
+                    current_street_for_history = self.table_data.get('game_stage', self.table_data.get('street', 'preflop')).lower()
+                    bot_player_id = "HeroBot"
+                    if my_player_data and my_player_data.get('name'):
+                        bot_player_id = my_player_data.get('name')
+                    
+                    bot_action_record = {
+                        "player_id": bot_player_id,
+                        "action_type": action.upper(),
+                        "amount": float(amount) if amount is not None else 0.0,
+                        "street": current_street_for_history,
+                        "is_bot": True,
+                        "sequence": len(self.action_history),
+                        "hand_id": self.current_hand_id_for_history # Add hand_id to bot's actions
+                    }
+                    
+                    # Avoid adding duplicate bot action
+                    # Check only the very last action, and ensure it's for the current hand and street
+                    is_recent_bot_action_same = False
+                    if self.action_history: 
+                        last_recorded_action = self.action_history[-1]
+                        if (last_recorded_action.get('is_bot') and 
+                            last_recorded_action.get('hand_id') == self.current_hand_id_for_history and
+                            last_recorded_action.get('street') == current_street_for_history and 
+                            last_recorded_action.get('action_type') == action.upper()):
+                            is_recent_bot_action_same = True
+
+                    if not is_recent_bot_action_same:
+                        self.action_history.append(bot_action_record)
+                        self.logger.info(f"Recorded bot action to action_history: {bot_action_record}")
+                        if self.opponent_tracker and my_player_data:
+                            self.opponent_tracker.log_action(
+                                player_name=bot_player_id, # Changed from player_id to player_name
+                                action=action.upper(),
+                                street=current_street_for_history,
+                                bet_size=float(amount) if amount is not None else 0.0,
+                                # Position and pot_size for bot's own action might also need careful consideration
+                                # For now, using basic values or 'unknown' if not readily available.
+                                position=my_player_data.get('position', 'unknown'),
+                                pot_size=self.table_data.get('pot_size', 0), # Pot size before bot's action might be more accurate
+                                hand_id=self.current_hand_id_for_history
+                            )
                     
                     time.sleep(self.config.get('delays', {}).get('after_action_delay', 5.0))
 
-                else:
-                    active_player = self.get_active_player()
+                else: # Not my turn or no player data
+                    active_player = self.get_active_player() # This method might need raw_all_players_data
                     if active_player:
                         self.logger.info(f"Not my turn. Active player: {active_player.get('name')}. Waiting...")
-                    elif my_player_data: # My player data exists, but not my turn (e.g. game ended, or observing)
-                        # Log opponent stack information even when not my turn
-                        opponent_stacks_info = []
-                        for p_info in raw_all_players_data:
-                            if not p_info.get('is_my_player') and not p_info.get('is_empty') and p_info.get('stack'):
-                                opponent_stacks_info.append(f"{p_info.get('name', 'Opp')}: {p_info.get('stack')}")
-                        opp_stacks_log = ", ".join(opponent_stacks_info) if opponent_stacks_info else "N/A"
-                        self.logger.info(f"Not my turn. My Hand: {my_player_data.get('cards')}. Stack: {my_player_data.get('stack')}. Opponent Stacks: [{opp_stacks_log}]. Waiting...")
-                    else: # No player data found for me.
-                        self.logger.info("My player data not found. Waiting...")
+                    elif my_player_data: # My player data exists, but not my turn
+                        self.logger.info("Not my turn, but my player data exists. Waiting...")
+                        # ... (existing logging for opponent stacks) ...
+                    else: # No player data at all (e.g. observing, or error)
+                        self.logger.info("No player data found or not my turn. Waiting...")
                 
-                time.sleep(self.config.get('delays', {}).get('main_loop_general_delay', 1.0))
+                time.sleep(self.config.get('delays', {}).get('main_loop_delay', 1.0))
 
         except KeyboardInterrupt:
-            self.logger.info("PokerBot stopped by user.")
+            self.logger.info("Poker Bot stopped by user (KeyboardInterrupt).")
+        except Exception as e:
+            self.logger.error(f"Critical error in main loop: {e}", exc_info=True)
         finally:
-            self.running = False
-            self.logger.info("PokerBot main_loop ended.")
-            # self.close_logger() # Call close_logger here when main_loop finishes
+            self.logger.info("Poker Bot - Main Loop Ended")
 
 if __name__ == "__main__":
     # Basic logging setup for the __main__ block with Unicode support

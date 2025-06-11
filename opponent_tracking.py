@@ -215,20 +215,27 @@ class OpponentTracker:
     Manages multiple opponent profiles and provides analysis.
     """
     
-    def __init__(self):
+    def __init__(self, config=None, logger=None): # Added config and logger
         self.opponents: Dict[str, OpponentProfile] = {}
-        
+        self.config = config # Store config
+        self.logger = logger if logger else logging.getLogger(__name__) # Store logger
+
     def get_or_create_profile(self, player_name: str) -> OpponentProfile:
         """Get existing profile or create new one."""
         if player_name not in self.opponents:
             self.opponents[player_name] = OpponentProfile(player_name)
         return self.opponents[player_name]
         
-    def update_opponent_action(self, player_name: str, action: str, street: str, 
-                             position: str = 'unknown', bet_size: float = 0, pot_size: float = 0):
+    def log_action(self, player_name: str, action: str, street: str, 
+                             position: str = 'unknown', bet_size: float = 0, pot_size: float = 0, hand_id: Optional[str] = None): # Renamed and added hand_id
         """Update opponent statistics based on their action."""
         profile = self.get_or_create_profile(player_name)
         
+        # Log the raw action with hand_id for more detailed future analysis if needed
+        # For now, we'll pass it to the existing update methods which don't use hand_id yet
+        if self.logger:
+            self.logger.debug(f"Logging action for {player_name}: Hand ID {hand_id}, {street}, {action}, Pos: {position}, Size: {bet_size}, Pot: {pot_size}")
+
         if street == 'preflop':
             profile.update_preflop_action(action, position, bet_size, pot_size)
         else:

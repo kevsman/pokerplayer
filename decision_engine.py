@@ -101,6 +101,7 @@ class DecisionEngine:
         
         all_players = game_state['players']
         current_round = game_state['current_round']
+        action_history = game_state.get('action_history', []) # Extract action_history
         
         pot_value = game_state.get('pot_size', game_state.get('pot'))
         if pot_value is None:
@@ -131,8 +132,6 @@ class DecisionEngine:
             # For now, we'll assume if the player is in `my_player` and has a specific flag or we can infer it.
             # This part needs to be properly implemented by tracking who made the last preflop raise.
             # Placeholder: Assume it's passed in my_player data or we can retrieve it.
-            # For the purpose of this change, we'll add it to my_player_data before calling postflop.
-            # This would typically be set by a part of the system that processes game history.
             if hasattr(self.opponent_tracker, 'get_preflop_aggressor_info'):
                 pfr_info = self.opponent_tracker.get_preflop_aggressor_info()
                 if pfr_info and pfr_info.get('name') == my_player.get('name'):
@@ -243,12 +242,9 @@ class DecisionEngine:
         active_opponents_count = sum(1 for i, p in enumerate(all_players) if p and p.get('is_active', False) and i != player_index)
         if current_round == 'preflop':
             logger.debug(f"  DEBUG ENGINE: PRE-CALL to make_preflop_decision: final_bet_to_call={final_bet_to_call}, max_bet_on_table={max_bet_on_table}")
-            # sys.stderr.flush() # Not needed with logger
             
-            # Calculate hand_category
             hand_category = get_preflop_hand_category(my_player['hand'], my_player['position'])
             
-            # Determine if player is SB or BB
             is_sb = my_player['position'] == 'SB'
             is_bb = my_player['position'] == 'BB'            # Debug logging for BB check issue
             logger.info(f"DEBUG ENGINE: Calling make_preflop_decision with:")
@@ -277,7 +273,8 @@ class DecisionEngine:
                 action_fold_const=ACTION_FOLD,
                 action_check_const=ACTION_CHECK,
                 action_call_const=ACTION_CALL,
-                action_raise_const=ACTION_RAISE
+                action_raise_const=ACTION_RAISE,
+                action_history=action_history # Pass action_history
             )
             
             logger.info(f"DEBUG ENGINE: make_preflop_decision returned: action={action}, amount={amount}")
@@ -311,7 +308,6 @@ class DecisionEngine:
                 spr = float('inf') if my_stack > 0 else 0
             
             logger.debug(f"  DEBUG ENGINE: PRE-CALL to make_postflop_decision: final_bet_to_call={final_bet_to_call}, max_bet_on_table={max_bet_on_table}")
-            # sys.stderr.flush() # Not needed with logger
             
             action, amount = make_postflop_decision(
                 decision_engine_instance=self,
@@ -335,7 +331,8 @@ class DecisionEngine:
                 base_aggression_factor=self.base_aggression_factor,
                 max_bet_on_table=max_bet_on_table,
                 active_opponents_count=active_opponents_count,
-                opponent_tracker=self.opponent_tracker  # Pass opponent tracking data
+                opponent_tracker=self.opponent_tracker,  # Pass opponent tracking data
+                action_history=action_history # Pass action_history
             )
         
         # Ensure amount is a float before returning
