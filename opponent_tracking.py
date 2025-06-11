@@ -340,7 +340,7 @@ class OpponentTracker:
             return {'avg_vpip': 25.0, 'avg_pfr': 15.0, 'table_type': 'unknown_no_opponents', 'sample_size': 0}
             
         # Filter for opponents with a minimum number of hands seen for more reliable stats
-        min_hands_for_stats = self.config.get('opponent_tracker',{}).get('min_hands_for_table_stats', 10) if self.config else 10
+        min_hands_for_stats = self.config.get_setting('opponent_tracker',{}).get('min_hands_for_table_stats', 10) if self.config else 10
         
         relevant_profiles = [p for p in self.opponents.values() if p.hands_seen_count >= min_hands_for_stats]
         
@@ -377,7 +377,7 @@ class OpponentTracker:
         `game_situation` could include: our hand strength, position, street, pot odds, etc.
         """
         profile = self.opponents.get(player_name)
-        if not profile or profile.hands_seen_count < self.config.get('opponent_tracker',{}).get('min_hands_for_exploits', 20):
+        if not profile or profile.hands_seen_count < self.config.get_setting('opponent_tracker',{}).get('min_hands_for_exploits', 20):
             return {"primary_adjust": "play_standard", "reason": "Not enough data or profile not found."}
 
         player_type = profile.classify_player_type()

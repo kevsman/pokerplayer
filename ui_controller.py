@@ -161,9 +161,9 @@ class UIController:
         """
         # Use config values if parameters not provided
         if step_size is None:
-            step_size = self.config.get('auto_search', {}).get('step_size', 5)
+            step_size = self.config.get_setting('auto_search', {}).get('step_size', 5)
         if max_attempts is None:
-            max_attempts = self.config.get('auto_search', {}).get('max_attempts', 60)
+            max_attempts = self.config.get_setting('auto_search', {}).get('max_attempts', 60)
         if "html_search_start_point" not in self.positions:
             print("Error: Starting search point not calibrated. Cannot perform automatic search.")
             return False

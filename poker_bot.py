@@ -348,9 +348,9 @@ class PokerBot:
                     "pot_size": table_data.get('pot_size'),
                     "community_cards": table_data.get('community_cards'),
                     "current_round": table_data.get('game_stage', 'preflop').lower(), # Ensure current_round is present
-                    "big_blind": self.config.get('big_blind'),
-                    "small_blind": self.config.get('small_blind'),
-                    "min_raise": self.config.get('big_blind', 0.02) * 2, # Ensure min_raise
+                    "big_blind": self.config.get_setting('big_blind'),
+                    "small_blind": self.config.get_setting('small_blind'),
+                    "min_raise": self.config.get_setting('big_blind', 0.02) * 2, # Ensure min_raise
                     # 'board' and 'street' are often aliases or similar to community_cards and current_round
                     "board": table_data.get('community_cards'), 
                     "street": table_data.get('game_stage', 'preflop').lower()
@@ -514,14 +514,14 @@ class PokerBot:
                                     # Ensure all necessary parameters are passed to log_action
                                     self.opponent_tracker.log_action(
                                         player_name=pa_action.get('player_id'), # Changed from player_id to player_name
-                                        action=pa_action.get('action_type'),
+                                        action_type=pa_action.get('action_type'), # Corrected parameter name
                                         street=pa_action.get('street'),
                                         position=pa_action.get('position', 'unknown'), # Add position if available
-                                        bet_size=pa_action.get('amount', 0),
+                                        amount=pa_action.get('amount', 0), # Renamed from bet_size to amount
                                         # pot_size needs to be the pot size *before* this action.
                                         # This might require more sophisticated state tracking or for parser to provide it.
                                         # For now, we might pass the current pot_size from table_data, though it's not ideal.
-                                        pot_size=self.table_data.get('pot_size', 0), 
+                                        pot_size_before_action=self.table_data.get('pot_size', 0), # Renamed from pot_size
                                         hand_id=self.current_hand_id_for_history
                                     )
                             else:
@@ -559,14 +559,24 @@ class PokerBot:
                         self.logger.error("Could not find my_player_index in processed_players_list.")
                         action_tuple = (ACTION_FOLD, 0)
                     else:
+                        big_blind_value = self.config.get_setting('big_blind')
+                        if big_blind_value is None:
+                            self.logger.warning("Config 'big_blind' is None from settings, using default 0.02 for this decision cycle.")
+                            big_blind_value = 0.02  # Default value
+
+                        small_blind_value = self.config.get_setting('small_blind')
+                        if small_blind_value is None:
+                            self.logger.warning("Config 'small_blind' is None from settings, using default 0.01 for this decision cycle.")
+                            small_blind_value = 0.01 # Default value if big blind was also None, or half of big_blind_value
+
                         game_state_for_decision = {
                             "players": processed_players_list,
                             "pot_size": self.table_data.get('pot_size'),
                             "community_cards": self.table_data.get('community_cards'),
                             "current_round": self.table_data.get('street', self.table_data.get('game_stage', 'preflop')).lower(),
-                            "big_blind": self.config.get('big_blind'),
-                            "small_blind": self.config.get('small_blind'),
-                            "min_raise": self.config.get('big_blind') * 2,
+                            "big_blind": big_blind_value,
+                            "small_blind": small_blind_value,
+                            "min_raise": big_blind_value * 2,
                             "board": self.table_data.get('community_cards'),
                             "action_history": self.action_history
                         }
@@ -654,7 +664,7 @@ class PokerBot:
                                 hand_id=self.current_hand_id_for_history
                             )
                     
-                    time.sleep(self.config.get('delays', {}).get('after_action_delay', 5.0))
+                    time.sleep(self.config.get_setting('delays', {}).get('after_action_delay', 5.0))
 
                 else: # Not my turn or no player data
                     active_player = self.get_active_player() # This method might need raw_all_players_data
@@ -666,7 +676,7 @@ class PokerBot:
                     else: # No player data at all (e.g. observing, or error)
                         self.logger.info("No player data found or not my turn. Waiting...")
                 
-                time.sleep(self.config.get('delays', {}).get('main_loop_delay', 1.0))
+                time.sleep(self.config.get_setting('delays', {}).get('main_loop_delay', 1.0))
 
         except KeyboardInterrupt:
             self.logger.info("Poker Bot stopped by user (KeyboardInterrupt).")

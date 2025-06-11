@@ -88,9 +88,9 @@ class PokerPageParser:
         pot_element = self.soup.find('span', class_='total-pot-amount')
         if pot_element:
             pot_text = pot_element.text.strip()
-            self.table_data['pot_size'] = pot_text
+            self.table_data['pot_size'] = self.parse_monetary_value(pot_text) # Use parse_monetary_value
         else:
-            self.table_data['pot_size'] = "N/A"
+            self.table_data['pot_size'] = 0.0 # Default to float 0.0
 
         # Extract community cards
         self.table_data['community_cards'] = []
@@ -793,7 +793,7 @@ class PokerPageParser:
             self.logger.warning("Cannot determine current street for parsing actions.")
             return
 
-        bot_player_name = self.config.get('bot_player_name')
+        bot_player_name = self.config.get_setting('bot_player_name') # Corrected method call
         if not bot_player_name:
             # Fallback or log error if bot_player_name is crucial and not set
             self.logger.warning("Bot player name not configured; skipping self-exclusion in action parsing.")
