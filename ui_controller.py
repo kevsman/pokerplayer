@@ -260,7 +260,21 @@ class UIController:
         pyautogui.hotkey('ctrl', 'c')
         time.sleep(self.get_delay("medium_pause")) # Significantly increased pause for clipboard to update
         
-        html_content = pyperclip.paste()
+        html_content = None
+        for _ in range(3): # Try up to 3 times
+            try:
+                html_content = pyperclip.paste()
+                if html_content and html_content.strip() and '<' in html_content and '>' in html_content:
+                    break # Success
+            except pyperclip.PyperclipWindowsException as e:
+                print(f"Warning: pyperclip.paste() failed: {e}. Retrying...")
+                time.sleep(0.5) # Wait a bit before retrying
+            else: # If no exception but content is bad
+                if not html_content or not html_content.strip() or '<' not in html_content or '>' not in html_content:
+                    print(f"Warning: Clipboard does not seem to contain valid HTML-like content. Retrying...")
+                    time.sleep(0.5) # Wait a bit before retrying
+                else: # Content is good
+                    break 
         
         # More lenient check for HTML-like content
         if not html_content or not html_content.strip() or '<' not in html_content or '>' not in html_content:

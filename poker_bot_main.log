@@ -4614,3 +4614,1542 @@
 2025-06-11 11:11:57,937 - DEBUG - SPR analysis context: spr=2.55, initial_spr_strategy={'spr': 2.5517241379310347, 'spr_category': 'low', 'base_strategy': 'play_carefully_fold_to_big_bets', 'betting_action': 'check_call_small', 'sizing_adjustment': 1.1, 'reasoning': 'Low SPR (low) - looking to commit with medium hands'}, drawing_potential=False, final_hand_strength_for_decision=strong
 2025-06-11 11:11:57,937 - DEBUG - Facing a bet of 0.02 (can_check was False). Evaluating call, raise, or fold.
 2025-06-11 11:11:57,938 - INFO - Decision: fold (Strong hand, folding, bad pot odds: 0.06 vs req: 0.22)
+2025-06-11 11:30:27,803 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:27,804 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:27,805 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:27,805 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:27,806 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:27,806 - INFO - No player identified as active in this parse.
+2025-06-11 11:30:27,806 - INFO - Using dealer position: 2
+2025-06-11 11:30:27,806 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:27,806 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:30:27,806 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:27,806 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:27,806 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:27,806 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:27,819 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:27,820 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:27,822 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:27,822 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:27,822 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:27,822 - INFO - No player identified as active in this parse.
+2025-06-11 11:30:27,822 - INFO - Using dealer position: 2
+2025-06-11 11:30:27,822 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:27,823 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:30:27,823 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:27,823 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:27,823 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:27,823 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:27,824 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:27,825 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:27,826 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:27,826 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:27,827 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:27,827 - INFO - No player identified as active in this parse.
+2025-06-11 11:30:27,827 - INFO - Using dealer position: 2
+2025-06-11 11:30:27,827 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:27,827 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:30:27,827 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:27,828 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:27,828 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:27,828 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:30,206 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:30,207 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:30,210 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:30,210 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:30,210 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:30,211 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:30,211 - INFO - Using dealer position: 2
+2025-06-11 11:30:30,211 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:30,211 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:30,211 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:30,212 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:30,212 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:30,212 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:30,219 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:30,220 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:30,222 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:30,222 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:30,223 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:30,223 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:30,223 - INFO - Using dealer position: 2
+2025-06-11 11:30:30,223 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:30,223 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:30,223 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:30,223 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:30,224 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:30,224 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:30,225 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:30,226 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:30,228 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:30,229 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:30,229 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:30,230 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:30,230 - INFO - Using dealer position: 2
+2025-06-11 11:30:30,230 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:30,230 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:30,230 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:30,230 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:30,231 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:30,231 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:32,608 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:32,609 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:32,611 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:32,612 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:32,612 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:32,612 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:32,612 - INFO - Using dealer position: 2
+2025-06-11 11:30:32,612 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:32,613 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:30:32,613 - INFO - Player N/A in seat 2 assigned position: BTN
+2025-06-11 11:30:32,613 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:32,613 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:32,613 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:32,620 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:32,622 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:32,624 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:32,625 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:32,625 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:32,625 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:32,625 - INFO - Using dealer position: 2
+2025-06-11 11:30:32,625 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:32,626 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:30:32,626 - INFO - Player N/A in seat 2 assigned position: BTN
+2025-06-11 11:30:32,626 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:32,626 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:32,626 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:32,628 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:32,629 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:32,631 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:32,631 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:32,631 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:32,632 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:32,632 - INFO - Using dealer position: 2
+2025-06-11 11:30:32,632 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:32,632 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:30:32,632 - INFO - Player N/A in seat 2 assigned position: BTN
+2025-06-11 11:30:32,633 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:32,633 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:32,633 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:35,008 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:35,009 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:35,010 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:35,011 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:35,011 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:35,011 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:35,012 - INFO - Using dealer position: 2
+2025-06-11 11:30:35,012 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:35,012 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:30:35,012 - INFO - Player N/A in seat 2 assigned position: BTN
+2025-06-11 11:30:35,012 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:35,013 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:35,013 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:35,018 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:35,019 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:35,021 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:35,022 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:35,022 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:35,022 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:35,023 - INFO - Using dealer position: 2
+2025-06-11 11:30:35,023 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:35,023 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:30:35,023 - INFO - Player N/A in seat 2 assigned position: BTN
+2025-06-11 11:30:35,023 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:35,023 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:35,023 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:35,025 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:35,026 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:35,027 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:35,028 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:35,028 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:35,028 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:35,029 - INFO - Using dealer position: 2
+2025-06-11 11:30:35,029 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:35,029 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:30:35,029 - INFO - Player N/A in seat 2 assigned position: BTN
+2025-06-11 11:30:35,029 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:35,029 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:35,029 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:37,403 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:37,404 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:37,405 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:37,406 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:37,406 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:37,406 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:37,407 - INFO - Using dealer position: 2
+2025-06-11 11:30:37,407 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:37,407 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:37,407 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:37,407 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:37,407 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:37,407 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:37,413 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:37,415 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:37,417 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:37,417 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:37,418 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:37,418 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:37,418 - INFO - Using dealer position: 2
+2025-06-11 11:30:37,418 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:37,418 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:37,419 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:37,419 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:37,419 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:37,419 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:37,421 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:37,421 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:37,423 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:37,424 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:37,424 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:37,424 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:37,424 - INFO - Using dealer position: 2
+2025-06-11 11:30:37,424 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:37,425 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:37,425 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:37,425 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:37,425 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:37,425 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:39,798 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:39,799 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:39,801 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:39,802 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:39,802 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:39,802 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:39,803 - INFO - Using dealer position: 2
+2025-06-11 11:30:39,803 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:39,803 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:39,803 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:39,803 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:39,803 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:39,803 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:39,812 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:39,813 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:39,815 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:39,816 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:39,816 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:39,816 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:39,816 - INFO - Using dealer position: 2
+2025-06-11 11:30:39,816 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:39,817 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:39,817 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:39,817 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:39,817 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:39,817 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:39,819 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:39,820 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:39,822 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:39,823 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:39,823 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:39,823 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:39,824 - INFO - Using dealer position: 2
+2025-06-11 11:30:39,824 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:39,824 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:39,824 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:39,824 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:39,825 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:39,825 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:42,199 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:42,200 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:42,201 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:42,201 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:42,202 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:42,202 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:42,202 - INFO - Using dealer position: 2
+2025-06-11 11:30:42,203 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:42,203 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:42,203 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:42,203 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:42,203 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:42,203 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:42,210 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:42,211 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:42,212 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:42,213 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:42,213 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:42,213 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:42,213 - INFO - Using dealer position: 2
+2025-06-11 11:30:42,213 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:42,213 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:42,214 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:42,214 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:42,214 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:42,214 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:42,216 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:42,217 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:42,219 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:42,219 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:42,220 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:42,220 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:42,220 - INFO - Using dealer position: 2
+2025-06-11 11:30:42,220 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:42,220 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:42,220 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:42,220 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:42,220 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:42,221 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:44,595 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:44,596 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:44,597 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:44,597 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:44,598 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:44,598 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:44,598 - INFO - Using dealer position: 2
+2025-06-11 11:30:44,599 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:44,599 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:44,599 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:44,599 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:44,599 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:44,600 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:44,605 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:44,606 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:44,609 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:44,609 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:44,610 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:44,610 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:44,610 - INFO - Using dealer position: 2
+2025-06-11 11:30:44,611 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:44,611 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:44,611 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:44,611 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:44,611 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:44,612 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:44,614 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:44,615 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:44,617 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:44,617 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:44,617 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:44,617 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:44,618 - INFO - Using dealer position: 2
+2025-06-11 11:30:44,618 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:44,618 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:44,618 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:44,618 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:44,619 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:44,619 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:46,996 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:46,997 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:46,999 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:46,999 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:46,999 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:47,000 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:47,000 - INFO - Using dealer position: 2
+2025-06-11 11:30:47,000 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:47,000 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:47,000 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:47,001 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:47,001 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:47,001 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:47,007 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:47,009 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:47,011 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:47,012 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:47,012 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:47,013 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:47,013 - INFO - Using dealer position: 2
+2025-06-11 11:30:47,013 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:47,013 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:47,013 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:47,013 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:47,013 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:47,014 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:47,016 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:47,017 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:47,020 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:47,020 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:47,020 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:47,021 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:47,021 - INFO - Using dealer position: 2
+2025-06-11 11:30:47,021 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:47,021 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:47,021 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:47,021 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:47,022 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:47,022 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:49,395 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:49,397 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:49,398 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:49,398 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:49,399 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:49,399 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:49,399 - INFO - Using dealer position: 2
+2025-06-11 11:30:49,399 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:49,399 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:49,399 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:49,399 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:49,399 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:49,399 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:49,405 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:49,406 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:49,409 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:49,409 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:49,409 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:49,409 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:49,409 - INFO - Using dealer position: 2
+2025-06-11 11:30:49,410 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:49,410 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:49,410 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:49,410 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:49,410 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:49,410 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:49,413 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:49,414 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:49,416 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:49,416 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:49,417 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:49,417 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:49,417 - INFO - Using dealer position: 2
+2025-06-11 11:30:49,417 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:49,418 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:49,418 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:49,418 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:49,418 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:49,418 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:51,796 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:51,797 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:51,799 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:51,800 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:51,800 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:51,800 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:51,800 - INFO - Using dealer position: 2
+2025-06-11 11:30:51,801 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:51,801 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:51,801 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:51,801 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:51,802 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:51,802 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:51,813 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:51,814 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:51,816 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:51,816 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:51,817 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:51,817 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:51,817 - INFO - Using dealer position: 2
+2025-06-11 11:30:51,817 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:51,818 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:51,818 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:51,818 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:51,818 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:51,818 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:51,821 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:51,822 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:51,824 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:51,824 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:51,825 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:51,825 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:51,825 - INFO - Using dealer position: 2
+2025-06-11 11:30:51,825 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:51,825 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:51,826 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:51,826 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:51,826 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:51,826 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:54,199 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:54,200 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:54,202 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:54,203 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:54,203 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:54,203 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:54,203 - INFO - Using dealer position: 2
+2025-06-11 11:30:54,203 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:54,203 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:54,203 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:54,204 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:54,204 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:54,204 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:54,210 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:54,211 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:54,214 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:54,214 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:54,214 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:54,215 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:54,215 - INFO - Using dealer position: 2
+2025-06-11 11:30:54,215 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:54,215 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:54,216 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:54,216 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:54,216 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:54,216 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:54,218 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:54,219 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:54,222 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:54,222 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:54,222 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:54,223 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:54,223 - INFO - Using dealer position: 2
+2025-06-11 11:30:54,223 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:54,223 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:54,223 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:54,223 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:54,224 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:54,224 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:56,599 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:56,600 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:56,602 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:56,603 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:56,603 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:56,603 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:56,604 - INFO - Using dealer position: 2
+2025-06-11 11:30:56,604 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:56,604 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:56,604 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:56,604 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:56,604 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:56,605 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:56,610 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:56,611 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:56,614 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:56,614 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:56,614 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:56,615 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:56,615 - INFO - Using dealer position: 2
+2025-06-11 11:30:56,615 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:56,615 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:56,616 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:56,616 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:56,616 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:56,616 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:56,618 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:56,619 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:56,620 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:56,621 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:56,621 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:56,621 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:56,621 - INFO - Using dealer position: 2
+2025-06-11 11:30:56,622 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:56,622 - INFO - Player N/A in seat 1 assigned position: CO
+2025-06-11 11:30:56,622 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:30:56,622 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:56,622 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:56,622 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:58,995 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:58,996 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:58,998 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:58,998 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:58,998 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:58,998 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:58,998 - INFO - Using dealer position: 2
+2025-06-11 11:30:58,999 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:58,999 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:30:58,999 - INFO - Player N/A in seat 2 assigned position: BTN
+2025-06-11 11:30:58,999 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:58,999 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:58,999 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:59,006 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:59,007 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:59,009 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:59,010 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:59,010 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:59,010 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:59,010 - INFO - Using dealer position: 2
+2025-06-11 11:30:59,010 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:59,010 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:30:59,010 - INFO - Player N/A in seat 2 assigned position: BTN
+2025-06-11 11:30:59,010 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:59,011 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:59,011 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:30:59,013 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:30:59,014 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:30:59,016 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:30:59,017 - INFO - Found 0 potential action elements.
+2025-06-11 11:30:59,017 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:30:59,017 - INFO - Successfully identified active player: N/A
+2025-06-11 11:30:59,017 - INFO - Using dealer position: 2
+2025-06-11 11:30:59,018 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:30:59,018 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:30:59,018 - INFO - Player N/A in seat 2 assigned position: BTN
+2025-06-11 11:30:59,018 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:30:59,018 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:30:59,018 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:31:01,394 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:31:01,396 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:01,397 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:01,398 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:01,398 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:31:01,398 - INFO - No player identified as active in this parse.
+2025-06-11 11:31:01,398 - INFO - Using dealer position: 2
+2025-06-11 11:31:01,398 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:31:01,398 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:31:01,398 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:31:01,398 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:31:01,398 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:31:01,398 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:31:01,403 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:31:01,404 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:01,405 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:01,405 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:01,405 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:31:01,405 - INFO - No player identified as active in this parse.
+2025-06-11 11:31:01,406 - INFO - Using dealer position: 2
+2025-06-11 11:31:01,406 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:31:01,406 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:31:01,406 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:31:01,406 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:31:01,406 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:31:01,406 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:31:01,407 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:31:01,408 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:01,409 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:01,409 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:01,409 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-11 11:31:01,409 - INFO - No player identified as active in this parse.
+2025-06-11 11:31:01,410 - INFO - Using dealer position: 2
+2025-06-11 11:31:01,410 - INFO - Position calculation: 5 active players, dealer at seat 2
+2025-06-11 11:31:01,410 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:31:01,410 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:31:01,410 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:31:01,410 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:31:01,411 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:31:03,786 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:31:03,788 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:03,789 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:03,790 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:03,790 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:03,790 - INFO - No player identified as active in this parse.
+2025-06-11 11:31:03,791 - INFO - Using dealer position: 2
+2025-06-11 11:31:03,791 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-11 11:31:03,791 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:31:03,791 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:31:03,791 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:31:03,791 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:31:03,792 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:31:03,792 - INFO - Player Player 10 in seat 6 assigned position: MP
+2025-06-11 11:31:03,807 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:31:03,808 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:03,810 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:03,811 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:03,811 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:03,811 - INFO - No player identified as active in this parse.
+2025-06-11 11:31:03,812 - INFO - Using dealer position: 2
+2025-06-11 11:31:03,812 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-11 11:31:03,812 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:31:03,812 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:31:03,812 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:31:03,813 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:31:03,813 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:31:03,813 - INFO - Player Player 10 in seat 6 assigned position: MP
+2025-06-11 11:31:03,815 - INFO - Found visible dealer button at seat 2
+2025-06-11 11:31:03,816 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:03,818 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:03,818 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:03,819 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:03,819 - INFO - No player identified as active in this parse.
+2025-06-11 11:31:03,819 - INFO - Using dealer position: 2
+2025-06-11 11:31:03,820 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-11 11:31:03,820 - INFO - Player Player 1 in seat 1 assigned position: CO
+2025-06-11 11:31:03,820 - INFO - Player Player 3 in seat 2 assigned position: BTN
+2025-06-11 11:31:03,820 - INFO - Player Player 5 in seat 3 assigned position: SB
+2025-06-11 11:31:03,820 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-11 11:31:03,820 - INFO - Player Player 8 in seat 5 assigned position: UTG
+2025-06-11 11:31:03,820 - INFO - Player Player 10 in seat 6 assigned position: MP
+2025-06-11 11:31:06,198 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:06,199 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:06,201 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:06,202 - INFO - Found 3 potential action elements.
+2025-06-11 11:31:06,203 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:06,203 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:31:06,203 - INFO - Using dealer position: 5
+2025-06-11 11:31:06,203 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:06,204 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:06,204 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:06,204 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:06,204 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:06,204 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:06,204 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:06,213 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:06,214 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:06,217 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:06,217 - INFO - Found 3 potential action elements.
+2025-06-11 11:31:06,218 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:06,218 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:31:06,219 - INFO - Using dealer position: 5
+2025-06-11 11:31:06,219 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:06,219 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:06,219 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:06,219 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:06,220 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:06,220 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:06,220 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:06,222 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:06,223 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:06,226 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:06,226 - INFO - Found 3 potential action elements.
+2025-06-11 11:31:06,227 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:06,228 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:31:06,228 - INFO - Using dealer position: 5
+2025-06-11 11:31:06,228 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:06,228 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:06,229 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:06,229 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:06,229 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:06,229 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:06,229 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:06,885 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 39.94%, Tie: 10.20%, Equity: 45.04% (5000 simulations)
+2025-06-11 11:31:06,886 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-11 11:31:06,886 - INFO -   my_player raw current_bet: None
+2025-06-11 11:31:06,886 - INFO -   my_current_bet parsed: 0.0
+2025-06-11 11:31:06,886 - INFO -   my_player position: CO
+2025-06-11 11:31:06,887 - INFO -   my_player name: warriorwonder25
+2025-06-11 11:31:06,887 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-11 11:31:06,887 - INFO -   my_player raw current_bet: None
+2025-06-11 11:31:06,887 - INFO -   my_current_bet parsed: 0.0
+2025-06-11 11:31:06,887 - INFO -   max_bet_on_table: 0.02
+2025-06-11 11:31:06,888 - INFO -   bet_to_call_calculated: 0.02
+2025-06-11 11:31:06,888 - INFO -   my_player position: CO
+2025-06-11 11:31:06,888 - INFO -   my_player name: warriorwonder25
+2025-06-11 11:31:06,888 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-11 11:31:06,888 - INFO -   final_bet_to_call = 0.0 (type: <class 'float'>)
+2025-06-11 11:31:06,888 - INFO -   final_bet_to_call == 0 = True
+2025-06-11 11:31:06,889 - INFO -   final_bet_to_call == 0.0 = True
+2025-06-11 11:31:06,889 - INFO -   abs(final_bet_to_call) < 1e-10 = True
+2025-06-11 11:31:06,889 - INFO -   can_check = True
+2025-06-11 11:31:06,889 - INFO - DEBUG ENGINE: Calling make_preflop_decision with:
+2025-06-11 11:31:06,889 - INFO -   - position: CO
+2025-06-11 11:31:06,889 - INFO -   - bet_to_call: 0.0
+2025-06-11 11:31:06,889 - INFO -   - can_check: True
+2025-06-11 11:31:06,890 - INFO -   - is_bb: False
+2025-06-11 11:31:06,890 - INFO -   - hand: ['8♥', '6♦']
+2025-06-11 11:31:06,891 - INFO - DEBUG ENGINE: make_preflop_decision returned: action=check, amount=0
+2025-06-11 11:31:14,721 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:14,723 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:14,725 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:14,725 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:14,726 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:14,726 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:14,726 - INFO - Using dealer position: 5
+2025-06-11 11:31:14,726 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:14,726 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:14,726 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:14,726 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:14,726 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:14,726 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:14,727 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:14,734 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:14,734 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:14,738 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:14,738 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:14,739 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:14,739 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:14,739 - INFO - Using dealer position: 5
+2025-06-11 11:31:14,739 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:14,740 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:14,740 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:14,740 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:14,740 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:14,740 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:14,740 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:14,742 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:14,743 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:14,746 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:14,747 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:14,747 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:14,747 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:14,748 - INFO - Using dealer position: 5
+2025-06-11 11:31:14,748 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:14,748 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:14,748 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:14,748 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:14,749 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:14,749 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:14,749 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:15,363 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 39.48%, Tie: 10.72%, Equity: 44.84% (5000 simulations)
+2025-06-11 11:31:17,737 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:17,739 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:17,741 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:17,741 - INFO - Found 3 potential action elements.
+2025-06-11 11:31:17,742 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:17,742 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:31:17,742 - INFO - Using dealer position: 5
+2025-06-11 11:31:17,742 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:17,742 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:17,742 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:17,742 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:17,743 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:17,743 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:17,743 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:17,751 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:17,752 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:17,754 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:17,755 - INFO - Found 3 potential action elements.
+2025-06-11 11:31:17,755 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:17,755 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:31:17,755 - INFO - Using dealer position: 5
+2025-06-11 11:31:17,755 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:17,756 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:17,756 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:17,756 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:17,756 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:17,756 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:17,756 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:17,758 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:17,759 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:17,761 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:17,761 - INFO - Found 3 potential action elements.
+2025-06-11 11:31:17,762 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:17,762 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:31:17,762 - INFO - Using dealer position: 5
+2025-06-11 11:31:17,763 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:17,763 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:17,763 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:17,763 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:17,763 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:17,764 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:17,764 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:18,372 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 37.36%, Tie: 11.04%, Equity: 42.88% (5000 simulations)
+2025-06-11 11:31:18,374 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-11 11:31:18,374 - INFO -   my_player raw current_bet: None
+2025-06-11 11:31:18,374 - INFO -   my_current_bet parsed: 0.0
+2025-06-11 11:31:18,374 - INFO -   my_player position: CO
+2025-06-11 11:31:18,374 - INFO -   my_player name: warriorwonder25
+2025-06-11 11:31:18,374 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-11 11:31:18,375 - INFO -   my_player raw current_bet: None
+2025-06-11 11:31:18,375 - INFO -   my_current_bet parsed: 0.0
+2025-06-11 11:31:18,375 - INFO -   max_bet_on_table: 0.08
+2025-06-11 11:31:18,375 - INFO -   bet_to_call_calculated: 0.08
+2025-06-11 11:31:18,375 - INFO -   my_player position: CO
+2025-06-11 11:31:18,375 - INFO -   my_player name: warriorwonder25
+2025-06-11 11:31:18,375 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-11 11:31:18,375 - INFO -   final_bet_to_call = 0.06 (type: <class 'float'>)
+2025-06-11 11:31:18,375 - INFO -   final_bet_to_call == 0 = False
+2025-06-11 11:31:18,376 - INFO -   final_bet_to_call == 0.0 = False
+2025-06-11 11:31:18,376 - INFO -   abs(final_bet_to_call) < 1e-10 = False
+2025-06-11 11:31:18,376 - INFO -   can_check = False
+2025-06-11 11:31:18,376 - INFO - DEBUG ENGINE: Calling make_preflop_decision with:
+2025-06-11 11:31:18,376 - INFO -   - position: CO
+2025-06-11 11:31:18,376 - INFO -   - bet_to_call: 0.06
+2025-06-11 11:31:18,376 - INFO -   - can_check: False
+2025-06-11 11:31:18,376 - INFO -   - is_bb: False
+2025-06-11 11:31:18,376 - INFO -   - hand: ['8♥', '6♦']
+2025-06-11 11:31:18,377 - INFO - DEBUG ENGINE: make_preflop_decision returned: action=fold, amount=0
+2025-06-11 11:31:26,209 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:26,210 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:26,212 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:26,212 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:26,213 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:26,213 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:26,213 - INFO - Using dealer position: 5
+2025-06-11 11:31:26,213 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:26,214 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:26,214 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:26,214 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:26,214 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:26,214 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:26,214 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:26,220 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:26,221 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:26,224 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:26,225 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:26,226 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:26,226 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:26,226 - INFO - Using dealer position: 5
+2025-06-11 11:31:26,226 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:26,226 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:26,227 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:26,227 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:26,227 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:26,227 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:26,227 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:26,229 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:26,230 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:26,233 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:26,233 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:26,234 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:26,234 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:26,235 - INFO - Using dealer position: 5
+2025-06-11 11:31:26,235 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:26,235 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:26,235 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:26,235 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:26,235 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:26,236 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:26,236 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:26,851 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 61.10%, Tie: 3.76%, Equity: 62.98% (5000 simulations)
+2025-06-11 11:31:29,233 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:29,234 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:29,236 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:29,236 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:29,237 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:29,237 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:29,237 - INFO - Using dealer position: 5
+2025-06-11 11:31:29,237 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:29,237 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:29,238 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:29,238 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:29,238 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:29,238 - INFO - Player N/A in seat 5 assigned position: BTN
+2025-06-11 11:31:29,238 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:29,247 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:29,248 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:29,251 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:29,252 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:29,253 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:29,253 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:29,253 - INFO - Using dealer position: 5
+2025-06-11 11:31:29,253 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:29,253 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:29,254 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:29,254 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:29,254 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:29,254 - INFO - Player N/A in seat 5 assigned position: BTN
+2025-06-11 11:31:29,254 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:29,257 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:29,258 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:29,261 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:29,261 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:29,262 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:29,262 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:29,263 - INFO - Using dealer position: 5
+2025-06-11 11:31:29,263 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:29,263 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:29,263 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:29,263 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:29,264 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:29,264 - INFO - Player N/A in seat 5 assigned position: BTN
+2025-06-11 11:31:29,264 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:29,879 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 60.62%, Tie: 4.12%, Equity: 62.68% (5000 simulations)
+2025-06-11 11:31:32,254 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:32,255 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:32,257 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:32,258 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:32,259 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:32,259 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:32,259 - INFO - Using dealer position: 5
+2025-06-11 11:31:32,259 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:32,259 - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-11 11:31:32,259 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:32,259 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:32,259 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:32,259 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:32,260 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:32,268 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:32,269 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:32,271 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:32,272 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:32,273 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:32,273 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:32,273 - INFO - Using dealer position: 5
+2025-06-11 11:31:32,273 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:32,273 - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-11 11:31:32,274 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:32,274 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:32,274 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:32,274 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:32,274 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:32,276 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:32,278 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:32,280 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:32,281 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:32,281 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:32,282 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:32,282 - INFO - Using dealer position: 5
+2025-06-11 11:31:32,282 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:32,283 - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-11 11:31:32,283 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:32,283 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:32,283 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:32,283 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:32,284 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:32,931 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 83.44%, Tie: 1.40%, Equity: 84.14% (5000 simulations)
+2025-06-11 11:31:35,305 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:35,306 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:35,309 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:35,309 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:35,310 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:35,310 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:35,311 - INFO - Using dealer position: 5
+2025-06-11 11:31:35,311 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:35,311 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:35,311 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:35,311 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:35,311 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:35,312 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:35,312 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:35,319 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:35,320 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:35,322 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:35,322 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:35,323 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:35,323 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:35,323 - INFO - Using dealer position: 5
+2025-06-11 11:31:35,323 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:35,323 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:35,324 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:35,324 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:35,324 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:35,324 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:35,324 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:35,326 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:35,327 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:35,329 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:35,330 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:35,331 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:35,331 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:35,331 - INFO - Using dealer position: 5
+2025-06-11 11:31:35,331 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:35,331 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:35,331 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:35,331 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:35,332 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:35,332 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:35,332 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:35,937 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 83.02%, Tie: 1.24%, Equity: 83.64% (5000 simulations)
+2025-06-11 11:31:38,314 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:38,315 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:38,317 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:38,317 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:38,318 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:38,318 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:38,318 - INFO - Using dealer position: 5
+2025-06-11 11:31:38,318 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:38,318 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:38,319 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:38,319 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:38,319 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:38,319 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:38,319 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:38,328 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:38,329 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:38,331 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:38,332 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:38,332 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:38,333 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:38,333 - INFO - Using dealer position: 5
+2025-06-11 11:31:38,333 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:38,333 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:38,334 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:38,334 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:38,334 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:38,334 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:38,334 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:38,336 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:38,338 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:38,341 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:38,341 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:38,342 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:38,342 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:38,343 - INFO - Using dealer position: 5
+2025-06-11 11:31:38,343 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:38,343 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:38,343 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:38,343 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:38,343 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:38,344 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:38,344 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:38,952 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 83.22%, Tie: 1.14%, Equity: 83.79% (5000 simulations)
+2025-06-11 11:31:41,327 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:41,329 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:41,331 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:41,331 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:41,332 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:41,332 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:41,332 - INFO - Using dealer position: 5
+2025-06-11 11:31:41,332 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:41,333 - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-11 11:31:41,333 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:41,333 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:41,333 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:41,333 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:41,334 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:41,351 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:41,352 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:41,355 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:41,355 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:41,357 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:41,357 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:41,357 - INFO - Using dealer position: 5
+2025-06-11 11:31:41,357 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:41,358 - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-11 11:31:41,358 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:41,358 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:41,358 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:41,358 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:41,359 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:41,361 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:41,362 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:41,364 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:41,364 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:41,365 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:41,365 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:41,366 - INFO - Using dealer position: 5
+2025-06-11 11:31:41,366 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:41,366 - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-11 11:31:41,366 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:41,367 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:41,367 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:41,367 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:41,367 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:41,950 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 74.44%, Tie: 0.38%, Equity: 74.63% (5000 simulations)
+2025-06-11 11:31:44,326 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:44,327 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:44,329 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:44,330 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:44,330 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:44,331 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:44,331 - INFO - Using dealer position: 5
+2025-06-11 11:31:44,331 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:44,331 - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-11 11:31:44,331 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:44,331 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:44,331 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:44,332 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:44,332 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:44,340 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:44,341 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:44,344 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:44,344 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:44,345 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:44,345 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:44,346 - INFO - Using dealer position: 5
+2025-06-11 11:31:44,346 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:44,346 - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-11 11:31:44,346 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:44,346 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:44,346 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:44,347 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:44,347 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:44,349 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:44,351 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:44,354 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:44,354 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:44,356 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:44,356 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:44,356 - INFO - Using dealer position: 5
+2025-06-11 11:31:44,356 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:44,357 - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-11 11:31:44,357 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:44,357 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:44,357 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:44,357 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:44,358 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:44,976 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 74.28%, Tie: 0.44%, Equity: 74.50% (5000 simulations)
+2025-06-11 11:31:47,355 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:47,356 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:47,358 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:47,358 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:47,359 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:47,359 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:47,359 - INFO - Using dealer position: 5
+2025-06-11 11:31:47,360 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:47,360 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:47,360 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:47,360 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:47,361 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:47,361 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:47,361 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:47,370 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:47,372 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:47,375 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:47,375 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:47,376 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:47,376 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:47,376 - INFO - Using dealer position: 5
+2025-06-11 11:31:47,377 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:47,377 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:47,377 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:47,377 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:47,377 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:47,377 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:47,377 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:47,380 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:47,381 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:47,384 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:47,385 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:47,385 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:47,386 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:47,386 - INFO - Using dealer position: 5
+2025-06-11 11:31:47,386 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:47,386 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:47,386 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-11 11:31:47,387 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:47,387 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:47,387 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:47,387 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:47,999 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 74.06%, Tie: 0.36%, Equity: 74.24% (5000 simulations)
+2025-06-11 11:31:50,379 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:50,380 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:50,383 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:50,383 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:50,384 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:50,384 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:50,384 - INFO - Using dealer position: 5
+2025-06-11 11:31:50,385 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:50,385 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:50,385 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:50,385 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:50,385 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:50,385 - INFO - Player N/A in seat 5 assigned position: BTN
+2025-06-11 11:31:50,386 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:50,395 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:50,396 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:50,399 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:50,399 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:50,400 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:50,400 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:50,400 - INFO - Using dealer position: 5
+2025-06-11 11:31:50,401 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:50,401 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:50,401 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:50,401 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:50,402 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:50,402 - INFO - Player N/A in seat 5 assigned position: BTN
+2025-06-11 11:31:50,402 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:50,404 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:50,405 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:50,408 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:50,408 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:50,410 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:50,410 - INFO - Successfully identified active player: N/A
+2025-06-11 11:31:50,410 - INFO - Using dealer position: 5
+2025-06-11 11:31:50,410 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:50,410 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:50,411 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:50,411 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:50,411 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:50,411 - INFO - Player N/A in seat 5 assigned position: BTN
+2025-06-11 11:31:50,411 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:51,025 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 74.30%, Tie: 0.58%, Equity: 74.59% (5000 simulations)
+2025-06-11 11:31:53,405 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:53,406 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:53,409 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:53,409 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:53,410 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:53,410 - INFO - No player identified as active in this parse.
+2025-06-11 11:31:53,411 - INFO - Using dealer position: 5
+2025-06-11 11:31:53,411 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:53,411 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:53,411 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:53,411 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:53,412 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:53,412 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:53,412 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:53,420 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:53,421 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:53,423 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:53,423 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:53,424 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:53,424 - INFO - No player identified as active in this parse.
+2025-06-11 11:31:53,424 - INFO - Using dealer position: 5
+2025-06-11 11:31:53,425 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:53,425 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:53,425 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:53,425 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:53,425 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:53,426 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:53,426 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:53,428 - INFO - Found visible dealer button at seat 5
+2025-06-11 11:31:53,429 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:31:53,431 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:31:53,432 - INFO - Found 0 potential action elements.
+2025-06-11 11:31:53,433 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:31:53,433 - INFO - No player identified as active in this parse.
+2025-06-11 11:31:53,433 - INFO - Using dealer position: 5
+2025-06-11 11:31:53,434 - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-11 11:31:53,434 - INFO - Player Linde in seat 1 assigned position: BB
+2025-06-11 11:31:53,434 - INFO - Player Ida1984 in seat 2 assigned position: UTG
+2025-06-11 11:31:53,434 - INFO - Player jawa843 in seat 3 assigned position: MP
+2025-06-11 11:31:53,434 - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-11 11:31:53,434 - INFO - Player sde777 in seat 5 assigned position: BTN
+2025-06-11 11:31:53,434 - INFO - Player bountykrks in seat 6 assigned position: SB
+2025-06-11 11:31:54,011 - INFO - Equity calculation complete for ['8♥', '6♦'] vs random. Win: 74.58%, Tie: 0.50%, Equity: 74.83% (5000 simulations)
+2025-06-11 11:33:11,793 - INFO - Found visible dealer button at seat 3
+2025-06-11 11:33:11,794 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:11,797 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:11,797 - INFO - Found 3 potential action elements.
+2025-06-11 11:33:11,798 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:11,799 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:33:11,799 - INFO - Using dealer position: 3
+2025-06-11 11:33:11,799 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-11 11:33:11,799 - INFO - Player Linde in seat 1 assigned position: MP
+2025-06-11 11:33:11,799 - INFO - Player Ida1984 in seat 2 assigned position: CO
+2025-06-11 11:33:11,799 - INFO - Player jawa843 in seat 3 assigned position: BTN
+2025-06-11 11:33:11,800 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 11:33:11,800 - INFO - Player sde777 in seat 5 assigned position: BB
+2025-06-11 11:33:11,800 - INFO - Player bountykrks in seat 6 assigned position: UTG
+2025-06-11 11:33:11,808 - INFO - Found visible dealer button at seat 3
+2025-06-11 11:33:11,809 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:11,813 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:11,813 - INFO - Found 3 potential action elements.
+2025-06-11 11:33:11,814 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:11,814 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:33:11,814 - INFO - Using dealer position: 3
+2025-06-11 11:33:11,814 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-11 11:33:11,814 - INFO - Player Linde in seat 1 assigned position: MP
+2025-06-11 11:33:11,814 - INFO - Player Ida1984 in seat 2 assigned position: CO
+2025-06-11 11:33:11,814 - INFO - Player jawa843 in seat 3 assigned position: BTN
+2025-06-11 11:33:11,815 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 11:33:11,815 - INFO - Player sde777 in seat 5 assigned position: BB
+2025-06-11 11:33:11,815 - INFO - Player bountykrks in seat 6 assigned position: UTG
+2025-06-11 11:33:11,817 - INFO - Found visible dealer button at seat 3
+2025-06-11 11:33:11,818 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:11,820 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:11,820 - INFO - Found 3 potential action elements.
+2025-06-11 11:33:11,821 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:11,821 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:33:11,822 - INFO - Using dealer position: 3
+2025-06-11 11:33:11,822 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-11 11:33:11,822 - INFO - Player Linde in seat 1 assigned position: MP
+2025-06-11 11:33:11,822 - INFO - Player Ida1984 in seat 2 assigned position: CO
+2025-06-11 11:33:11,822 - INFO - Player jawa843 in seat 3 assigned position: BTN
+2025-06-11 11:33:11,822 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 11:33:11,822 - INFO - Player sde777 in seat 5 assigned position: BB
+2025-06-11 11:33:11,823 - INFO - Player bountykrks in seat 6 assigned position: UTG
+2025-06-11 11:33:12,439 - INFO - Equity calculation complete for ['5♠', 'A♠'] vs random. Win: 54.00%, Tie: 9.20%, Equity: 58.60% (5000 simulations)
+2025-06-11 11:33:12,440 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-11 11:33:12,441 - INFO -   my_player raw current_bet: None
+2025-06-11 11:33:12,441 - INFO -   my_current_bet parsed: 0.0
+2025-06-11 11:33:12,441 - INFO -   my_player position: SB
+2025-06-11 11:33:12,441 - INFO -   my_player name: warriorwonder25
+2025-06-11 11:33:12,441 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-11 11:33:12,441 - INFO -   my_player raw current_bet: None
+2025-06-11 11:33:12,441 - INFO -   my_current_bet parsed: 0.0
+2025-06-11 11:33:12,442 - INFO -   max_bet_on_table: 0.02
+2025-06-11 11:33:12,442 - INFO -   bet_to_call_calculated: 0.02
+2025-06-11 11:33:12,442 - INFO -   my_player position: SB
+2025-06-11 11:33:12,442 - INFO -   my_player name: warriorwonder25
+2025-06-11 11:33:12,442 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-11 11:33:12,442 - INFO -   final_bet_to_call = 0.01 (type: <class 'float'>)
+2025-06-11 11:33:12,442 - INFO -   final_bet_to_call == 0 = False
+2025-06-11 11:33:12,442 - INFO -   final_bet_to_call == 0.0 = False
+2025-06-11 11:33:12,443 - INFO -   abs(final_bet_to_call) < 1e-10 = False
+2025-06-11 11:33:12,443 - INFO -   can_check = False
+2025-06-11 11:33:12,443 - INFO - DEBUG ENGINE: Calling make_preflop_decision with:
+2025-06-11 11:33:12,443 - INFO -   - position: SB
+2025-06-11 11:33:12,443 - INFO -   - bet_to_call: 0.01
+2025-06-11 11:33:12,443 - INFO -   - can_check: False
+2025-06-11 11:33:12,443 - INFO -   - is_bb: False
+2025-06-11 11:33:12,444 - INFO -   - hand: ['5♠', 'A♠']
+2025-06-11 11:33:12,444 - INFO - DEBUG ENGINE: make_preflop_decision returned: action=raise, amount=0.08
+2025-06-11 11:33:22,911 - INFO - Found visible dealer button at seat 3
+2025-06-11 11:33:22,912 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:22,915 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:22,915 - INFO - Found 3 potential action elements.
+2025-06-11 11:33:22,916 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:22,916 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:33:22,916 - INFO - Using dealer position: 3
+2025-06-11 11:33:22,916 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-11 11:33:22,916 - INFO - Player Linde in seat 1 assigned position: MP
+2025-06-11 11:33:22,917 - INFO - Player Ida1984 in seat 2 assigned position: CO
+2025-06-11 11:33:22,917 - INFO - Player jawa843 in seat 3 assigned position: BTN
+2025-06-11 11:33:22,917 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 11:33:22,918 - INFO - Player sde777 in seat 5 assigned position: BB
+2025-06-11 11:33:22,918 - INFO - Player bountykrks in seat 6 assigned position: UTG
+2025-06-11 11:33:22,932 - INFO - Found visible dealer button at seat 3
+2025-06-11 11:33:22,933 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:22,937 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:22,938 - INFO - Found 3 potential action elements.
+2025-06-11 11:33:22,939 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:22,939 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:33:22,939 - INFO - Using dealer position: 3
+2025-06-11 11:33:22,940 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-11 11:33:22,940 - INFO - Player Linde in seat 1 assigned position: MP
+2025-06-11 11:33:22,940 - INFO - Player Ida1984 in seat 2 assigned position: CO
+2025-06-11 11:33:22,940 - INFO - Player jawa843 in seat 3 assigned position: BTN
+2025-06-11 11:33:22,940 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 11:33:22,941 - INFO - Player sde777 in seat 5 assigned position: BB
+2025-06-11 11:33:22,941 - INFO - Player bountykrks in seat 6 assigned position: UTG
+2025-06-11 11:33:22,945 - INFO - Found visible dealer button at seat 3
+2025-06-11 11:33:22,946 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:22,950 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:22,950 - INFO - Found 3 potential action elements.
+2025-06-11 11:33:22,952 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:22,952 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:33:22,953 - INFO - Using dealer position: 3
+2025-06-11 11:33:22,953 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-11 11:33:22,953 - INFO - Player Linde in seat 1 assigned position: MP
+2025-06-11 11:33:22,953 - INFO - Player Ida1984 in seat 2 assigned position: CO
+2025-06-11 11:33:22,953 - INFO - Player jawa843 in seat 3 assigned position: BTN
+2025-06-11 11:33:22,954 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 11:33:22,954 - INFO - Player sde777 in seat 5 assigned position: BB
+2025-06-11 11:33:22,954 - INFO - Player bountykrks in seat 6 assigned position: UTG
+2025-06-11 11:33:24,150 - INFO - Equity calculation complete for ['5♠', 'A♠'] vs random. Win: 52.98%, Tie: 8.80%, Equity: 57.38% (5000 simulations)
+2025-06-11 11:33:24,151 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-11 11:33:24,151 - INFO -   my_player raw current_bet: None
+2025-06-11 11:33:24,151 - INFO -   my_current_bet parsed: 0.0
+2025-06-11 11:33:24,151 - INFO -   my_player position: SB
+2025-06-11 11:33:24,151 - INFO -   my_player name: warriorwonder25
+2025-06-11 11:33:24,151 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-11 11:33:24,152 - INFO -   my_player raw current_bet: None
+2025-06-11 11:33:24,152 - INFO -   my_current_bet parsed: 0.0
+2025-06-11 11:33:24,152 - INFO -   max_bet_on_table: 0.14
+2025-06-11 11:33:24,152 - INFO -   bet_to_call_calculated: 0.14
+2025-06-11 11:33:24,152 - INFO -   my_player position: SB
+2025-06-11 11:33:24,152 - INFO -   my_player name: warriorwonder25
+2025-06-11 11:33:24,152 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-11 11:33:24,153 - INFO -   final_bet_to_call = 0.06 (type: <class 'float'>)
+2025-06-11 11:33:24,153 - INFO -   final_bet_to_call == 0 = False
+2025-06-11 11:33:24,153 - INFO -   final_bet_to_call == 0.0 = False
+2025-06-11 11:33:24,153 - INFO -   abs(final_bet_to_call) < 1e-10 = False
+2025-06-11 11:33:24,153 - INFO -   can_check = False
+2025-06-11 11:33:24,153 - INFO - DEBUG ENGINE: Calling make_preflop_decision with:
+2025-06-11 11:33:24,153 - INFO -   - position: SB
+2025-06-11 11:33:24,153 - INFO -   - bet_to_call: 0.06
+2025-06-11 11:33:24,154 - INFO -   - can_check: False
+2025-06-11 11:33:24,154 - INFO -   - is_bb: False
+2025-06-11 11:33:24,154 - INFO -   - hand: ['5♠', 'A♠']
+2025-06-11 11:33:24,154 - INFO - DEBUG ENGINE: make_preflop_decision returned: action=raise, amount=0.42
+2025-06-11 11:33:34,618 - INFO - Found visible dealer button at seat 3
+2025-06-11 11:33:34,618 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:34,621 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:34,621 - INFO - Found 3 potential action elements.
+2025-06-11 11:33:34,623 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:34,623 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:33:34,623 - INFO - Using dealer position: 3
+2025-06-11 11:33:34,623 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-11 11:33:34,624 - INFO - Player Linde in seat 1 assigned position: MP
+2025-06-11 11:33:34,624 - INFO - Player Ida1984 in seat 2 assigned position: CO
+2025-06-11 11:33:34,624 - INFO - Player jawa843 in seat 3 assigned position: BTN
+2025-06-11 11:33:34,624 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 11:33:34,624 - INFO - Player sde777 in seat 5 assigned position: BB
+2025-06-11 11:33:34,625 - INFO - Player bountykrks in seat 6 assigned position: UTG
+2025-06-11 11:33:34,632 - INFO - Found visible dealer button at seat 3
+2025-06-11 11:33:34,633 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:34,635 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:34,635 - INFO - Found 3 potential action elements.
+2025-06-11 11:33:34,636 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:34,636 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:33:34,637 - INFO - Using dealer position: 3
+2025-06-11 11:33:34,637 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-11 11:33:34,637 - INFO - Player Linde in seat 1 assigned position: MP
+2025-06-11 11:33:34,637 - INFO - Player Ida1984 in seat 2 assigned position: CO
+2025-06-11 11:33:34,637 - INFO - Player jawa843 in seat 3 assigned position: BTN
+2025-06-11 11:33:34,638 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 11:33:34,638 - INFO - Player sde777 in seat 5 assigned position: BB
+2025-06-11 11:33:34,638 - INFO - Player bountykrks in seat 6 assigned position: UTG
+2025-06-11 11:33:34,640 - INFO - Found visible dealer button at seat 3
+2025-06-11 11:33:34,641 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:34,644 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:34,644 - INFO - Found 3 potential action elements.
+2025-06-11 11:33:34,645 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:34,646 - INFO - Successfully identified active player: warriorwonder25
+2025-06-11 11:33:34,646 - INFO - Using dealer position: 3
+2025-06-11 11:33:34,646 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-11 11:33:34,646 - INFO - Player Linde in seat 1 assigned position: MP
+2025-06-11 11:33:34,646 - INFO - Player Ida1984 in seat 2 assigned position: CO
+2025-06-11 11:33:34,646 - INFO - Player jawa843 in seat 3 assigned position: BTN
+2025-06-11 11:33:34,647 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 11:33:34,647 - INFO - Player sde777 in seat 5 assigned position: BB
+2025-06-11 11:33:34,647 - INFO - Player bountykrks in seat 6 assigned position: UTG
+2025-06-11 11:33:35,237 - INFO - Equity calculation complete for ['5♠', 'A♠'] vs random. Win: 36.56%, Tie: 15.00%, Equity: 44.06% (5000 simulations)
+2025-06-11 11:33:35,238 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-11 11:33:35,238 - INFO -   my_player raw current_bet: None
+2025-06-11 11:33:35,238 - INFO -   my_current_bet parsed: 0.0
+2025-06-11 11:33:35,238 - INFO -   my_player position: SB
+2025-06-11 11:33:35,239 - INFO -   my_player name: warriorwonder25
+2025-06-11 11:33:35,239 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-11 11:33:35,239 - INFO -   my_player raw current_bet: None
+2025-06-11 11:33:35,239 - INFO -   my_current_bet parsed: 0.0
+2025-06-11 11:33:35,239 - INFO -   max_bet_on_table: 0.0
+2025-06-11 11:33:35,239 - INFO -   bet_to_call_calculated: 0.0
+2025-06-11 11:33:35,239 - INFO -   my_player position: SB
+2025-06-11 11:33:35,239 - INFO -   my_player name: warriorwonder25
+2025-06-11 11:33:35,240 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-11 11:33:35,240 - INFO -   final_bet_to_call = 0.0 (type: <class 'float'>)
+2025-06-11 11:33:35,240 - INFO -   final_bet_to_call == 0 = True
+2025-06-11 11:33:35,240 - INFO -   final_bet_to_call == 0.0 = True
+2025-06-11 11:33:35,240 - INFO -   abs(final_bet_to_call) < 1e-10 = True
+2025-06-11 11:33:35,240 - INFO -   can_check = True
+2025-06-11 11:33:35,240 - DEBUG - make_postflop_decision: street=flop, my_player_data={'seat': '4', 'name': 'warriorwonder25', 'stack': '€0.32', 'bet': '0', 'is_my_player': True, 'is_empty': False, 'cards': ['5♠', 'A♠'], 'has_turn': True, 'has_hidden_cards': False, 'id': '4', 'available_actions': ['fold', 'check', 'bet'], 'is_all_in_call_available': False, 'bet_to_call': 0, 'seat_int': 4, 'position': 'SB', 'hand_evaluation': (1, 'High Card', []), 'hand_rank': 'High Card', 'win_probability': 0.3656, 'tie_probability': 0.15, 'hand': ['5♠', 'A♠']}, pot_size=0.86, win_prob=0.3656, pot_odds=0.0, bet_to_call=0.0, max_bet_on_table=0.0, active_opponents_count=0, can_check=True
+2025-06-11 11:33:35,241 - DEBUG - Estimated opponent stack for implied odds: 0.91
+2025-06-11 11:33:35,241 - INFO - Enhanced hand classification: weak_made (rank=1, win_prob=36.6%, threshold=65.0%)
+2025-06-11 11:33:35,241 - INFO - Fixed opponent analysis: tracked=0, table_type=tight, avg_vpip=20.0%, fold_equity=65.0%
+2025-06-11 11:33:35,241 - DEBUG - SPR strategy: fold_to_aggression (SPR=0.4, very_low)
+2025-06-11 11:33:35,241 - DEBUG - Initial Pot commitment: committed=0.00, call=0.00, total=0.00, stack=0.32, ratio=0.0%, threshold=65.0%, is_committed=False
+2025-06-11 11:33:35,247 - INFO - Cash game enhancements applied for SB flop weak_made
+2025-06-11 11:33:35,247 - INFO - Cash game enhancements applied: confidence=0.85
+2025-06-11 11:33:35,248 - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-11 11:33:35,248 - DEBUG - Performance monitoring setup.
+2025-06-11 11:33:35,248 - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'advanced_opponent_analysis', 'performance_tracker', 'decision_context_for_perf']
+2025-06-11 11:33:35,249 - DEBUG - Refined classification (enhanced_postflop_improvements): drawing, commitment_threshold: 42.35%
+2025-06-11 11:33:35,249 - DEBUG - Refined Pot commitment check: ratio=0.00%, refined_threshold=42.35%, is_pot_committed=False
+2025-06-11 11:33:35,250 - INFO - Opponent tracker: No active opponents (0) or no profiles (0) to assess for sufficient data.
+2025-06-11 11:33:35,250 - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-11 11:33:35,250 - INFO - Final opponent analysis (enhanced_postflop_improvements.fix_opponent_tracker_integration): tracked=0, table_type=unknown, avg_vpip=25.0, fold_equity=50.0%
+2025-06-11 11:33:35,250 - DEBUG - Final decision hand strength: weak_made (is_weak=True). Orig rank=1, win_prob=36.56%
+2025-06-11 11:33:35,251 - INFO - Post-adjustment hand strength flags: very_strong=False, strong=False, medium=False (Final Category: weak_made)
+2025-06-11 11:33:35,251 - DEBUG - SPR analysis context: spr=0.37, initial_spr_strategy={'spr': 0.37209302325581395, 'spr_category': 'very_low', 'base_strategy': 'fold_to_aggression', 'betting_action': 'fold_to_bets', 'sizing_adjustment': 1.0, 'reasoning': 'Very low SPR (very_low) - must commit or fold with weak_made'}, drawing_potential=True, final_hand_strength_for_decision=weak_made
+2025-06-11 11:33:35,251 - DEBUG - Option to genuinely check is available (can_check=True, bet_to_call=0). Evaluating check vs. bet/raise.
+2025-06-11 11:33:35,251 - INFO - Decision: check (Weak made hand, checking, low fold equity for bluff)
+2025-06-11 11:33:43,085 - INFO - Found visible dealer button at seat 3
+2025-06-11 11:33:43,086 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:43,088 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:43,088 - INFO - Found 0 potential action elements.
+2025-06-11 11:33:43,088 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:43,088 - INFO - No player identified as active in this parse.
+2025-06-11 11:33:43,088 - INFO - Using dealer position: 3
+2025-06-11 11:33:43,088 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-11 11:33:43,089 - INFO - Player Linde in seat 1 assigned position: MP
+2025-06-11 11:33:43,089 - INFO - Player Ida1984 in seat 2 assigned position: CO
+2025-06-11 11:33:43,089 - INFO - Player jawa843 in seat 3 assigned position: BTN
+2025-06-11 11:33:43,090 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 11:33:43,090 - INFO - Player sde777 in seat 5 assigned position: BB
+2025-06-11 11:33:43,090 - INFO - Player bountykrks in seat 6 assigned position: UTG
+2025-06-11 11:33:43,098 - INFO - Found visible dealer button at seat 3
+2025-06-11 11:33:43,099 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:43,102 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:43,102 - INFO - Found 0 potential action elements.
+2025-06-11 11:33:43,103 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:43,104 - INFO - No player identified as active in this parse.
+2025-06-11 11:33:43,104 - INFO - Using dealer position: 3
+2025-06-11 11:33:43,104 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-11 11:33:43,104 - INFO - Player Linde in seat 1 assigned position: MP
+2025-06-11 11:33:43,104 - INFO - Player Ida1984 in seat 2 assigned position: CO
+2025-06-11 11:33:43,105 - INFO - Player jawa843 in seat 3 assigned position: BTN
+2025-06-11 11:33:43,105 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 11:33:43,105 - INFO - Player sde777 in seat 5 assigned position: BB
+2025-06-11 11:33:43,105 - INFO - Player bountykrks in seat 6 assigned position: UTG
+2025-06-11 11:33:43,108 - INFO - Found visible dealer button at seat 3
+2025-06-11 11:33:43,108 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:43,110 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:43,111 - INFO - Found 0 potential action elements.
+2025-06-11 11:33:43,112 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:43,112 - INFO - No player identified as active in this parse.
+2025-06-11 11:33:43,112 - INFO - Using dealer position: 3
+2025-06-11 11:33:43,112 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-11 11:33:43,112 - INFO - Player Linde in seat 1 assigned position: MP
+2025-06-11 11:33:43,112 - INFO - Player Ida1984 in seat 2 assigned position: CO
+2025-06-11 11:33:43,112 - INFO - Player jawa843 in seat 3 assigned position: BTN
+2025-06-11 11:33:43,112 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-11 11:33:43,112 - INFO - Player sde777 in seat 5 assigned position: BB
+2025-06-11 11:33:43,112 - INFO - Player bountykrks in seat 6 assigned position: UTG
+2025-06-11 11:33:43,678 - INFO - Equity calculation complete for ['5♠', 'A♠'] vs random. Win: 44.66%, Tie: 0.70%, Equity: 45.01% (5000 simulations)
+2025-06-11 11:33:46,056 - INFO - Found visible dealer button at seat 4
+2025-06-11 11:33:46,057 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:46,060 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:46,060 - INFO - Found 0 potential action elements.
+2025-06-11 11:33:46,060 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:46,061 - INFO - Successfully identified active player: N/A
+2025-06-11 11:33:46,061 - INFO - Using dealer position: 4
+2025-06-11 11:33:46,061 - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-11 11:33:46,061 - INFO - Player N/A in seat 1 assigned position: UTG
+2025-06-11 11:33:46,061 - INFO - Player Ida1984 in seat 2 assigned position: MP
+2025-06-11 11:33:46,061 - INFO - Player jawa843 in seat 3 assigned position: CO
+2025-06-11 11:33:46,061 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-11 11:33:46,061 - INFO - Player sde777 in seat 5 assigned position: SB
+2025-06-11 11:33:46,062 - INFO - Player bountykrks in seat 6 assigned position: BB
+2025-06-11 11:33:46,068 - INFO - Found visible dealer button at seat 4
+2025-06-11 11:33:46,069 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:46,072 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:46,072 - INFO - Found 0 potential action elements.
+2025-06-11 11:33:46,073 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:46,073 - INFO - Successfully identified active player: N/A
+2025-06-11 11:33:46,073 - INFO - Using dealer position: 4
+2025-06-11 11:33:46,073 - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-11 11:33:46,073 - INFO - Player N/A in seat 1 assigned position: UTG
+2025-06-11 11:33:46,073 - INFO - Player Ida1984 in seat 2 assigned position: MP
+2025-06-11 11:33:46,073 - INFO - Player jawa843 in seat 3 assigned position: CO
+2025-06-11 11:33:46,074 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-11 11:33:46,074 - INFO - Player sde777 in seat 5 assigned position: SB
+2025-06-11 11:33:46,074 - INFO - Player bountykrks in seat 6 assigned position: BB
+2025-06-11 11:33:46,076 - INFO - Found visible dealer button at seat 4
+2025-06-11 11:33:46,077 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-11 11:33:46,078 - INFO - Found actions area. Analyzing buttons...
+2025-06-11 11:33:46,079 - INFO - Found 0 potential action elements.
+2025-06-11 11:33:46,079 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-11 11:33:46,080 - INFO - Successfully identified active player: N/A
+2025-06-11 11:33:46,080 - INFO - Using dealer position: 4
+2025-06-11 11:33:46,080 - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-11 11:33:46,080 - INFO - Player N/A in seat 1 assigned position: UTG
+2025-06-11 11:33:46,080 - INFO - Player Ida1984 in seat 2 assigned position: MP
+2025-06-11 11:33:46,080 - INFO - Player jawa843 in seat 3 assigned position: CO
+2025-06-11 11:33:46,080 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-11 11:33:46,081 - INFO - Player sde777 in seat 5 assigned position: SB
+2025-06-11 11:33:46,081 - INFO - Player bountykrks in seat 6 assigned position: BB

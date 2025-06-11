@@ -526,3 +526,211 @@
 2025-06-11 11:12:01,049 - __main__ - INFO - PokerBot stopped by user.
 2025-06-11 11:12:01,050 - __main__ - INFO - PokerBot main_loop ended.
 2025-06-11 11:12:01,050 - __main__ - INFO - Closing logger handlers.
+2025-06-11 11:30:26,425 - __main__ - INFO - PokerBot started. Press Ctrl+C to stop.
+2025-06-11 11:30:26,425 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:26,425 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:27,807 - __main__ - DEBUG - HTML length: 45347
+2025-06-11 11:30:27,828 - __main__ - INFO - Not my turn. My Hand: []. Stack: €0.80. Opponent Stacks: [Player 1: €1.98, Player 3: €1.12, Player 8: €1.69, Player 5: €2]. Waiting...
+2025-06-11 11:30:28,828 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:28,828 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:30,212 - __main__ - DEBUG - HTML length: 46298
+2025-06-11 11:30:30,231 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:30:31,232 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:31,232 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:32,614 - __main__ - DEBUG - HTML length: 46606
+2025-06-11 11:30:32,633 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:30:33,634 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:33,634 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:35,013 - __main__ - DEBUG - HTML length: 46522
+2025-06-11 11:30:35,029 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:30:36,030 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:36,030 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:37,408 - __main__ - DEBUG - HTML length: 46739
+2025-06-11 11:30:37,426 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:30:38,426 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:38,427 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:39,803 - __main__ - DEBUG - HTML length: 47442
+2025-06-11 11:30:39,825 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:30:40,825 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:40,826 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:42,203 - __main__ - DEBUG - HTML length: 47084
+2025-06-11 11:30:42,221 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:30:43,222 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:43,222 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:44,600 - __main__ - DEBUG - HTML length: 47398
+2025-06-11 11:30:44,619 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:30:45,620 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:45,620 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:47,001 - __main__ - DEBUG - HTML length: 47309
+2025-06-11 11:30:47,022 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:30:48,022 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:48,023 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:49,400 - __main__ - DEBUG - HTML length: 47309
+2025-06-11 11:30:49,418 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:30:50,419 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:50,419 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:51,802 - __main__ - DEBUG - HTML length: 47321
+2025-06-11 11:30:51,826 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:30:52,827 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:52,827 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:54,204 - __main__ - DEBUG - HTML length: 47321
+2025-06-11 11:30:54,224 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:30:55,224 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:55,225 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:56,605 - __main__ - DEBUG - HTML length: 47321
+2025-06-11 11:30:56,623 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:30:57,623 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:30:57,624 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:30:58,999 - __main__ - DEBUG - HTML length: 47373
+2025-06-11 11:30:59,018 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:31:00,019 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:00,019 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:01,398 - __main__ - DEBUG - HTML length: 46496
+2025-06-11 11:31:01,411 - __main__ - INFO - Not my turn. My Hand: []. Stack: €0.80. Opponent Stacks: [Player 1: €1.93, Player 3: €1.07, Player 8: €1.69, Player 5: €2]. Waiting...
+2025-06-11 11:31:02,412 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:02,412 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:03,792 - __main__ - DEBUG - HTML length: 46282
+2025-06-11 11:31:03,821 - __main__ - INFO - Not my turn. My Hand: []. Stack: €0.80. Opponent Stacks: [Player 10: €0, Player 1: €2.07, Player 3: €1.07, Player 8: €1.69, Player 5: €2]. Waiting...
+2025-06-11 11:31:04,821 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:04,822 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:06,204 - __main__ - DEBUG - HTML length: 50288
+2025-06-11 11:31:06,885 - __main__ - INFO - My turn. Hand: ['8♥', '6♦'], Rank: 86 offsuit, Stack: €0.78, Bet to call: 0.00 Opponent Stacks: [bountykrks: €0, Linde: €2.06, Ida1984: €1.05, sde777: €1.69, jawa843: €2]
+2025-06-11 11:31:06,885 - __main__ - INFO - Pot: €0.05, Community Cards: []
+2025-06-11 11:31:06,891 - __main__ - INFO - Decision: check Amount: 0.00
+2025-06-11 11:31:13,346 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:13,347 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:14,727 - __main__ - DEBUG - HTML length: 49771
+2025-06-11 11:31:15,364 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:31:16,365 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:16,365 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:17,743 - __main__ - DEBUG - HTML length: 51361
+2025-06-11 11:31:18,373 - __main__ - INFO - My turn. Hand: ['8♥', '6♦'], Rank: 86 offsuit, Stack: €0.78, Bet to call: 0.06 Opponent Stacks: [bountykrks: €1.56, Linde: €1.99, Ida1984: €0.99, sde777: €1.61, jawa843: €2]
+2025-06-11 11:31:18,373 - __main__ - INFO - Pot: €0.26, Community Cards: []
+2025-06-11 11:31:18,377 - __main__ - INFO - Decision: fold Amount: 0.00
+2025-06-11 11:31:24,834 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:24,835 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:26,214 - __main__ - DEBUG - HTML length: 50301
+2025-06-11 11:31:26,852 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:31:27,852 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:27,853 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:29,239 - __main__ - DEBUG - HTML length: 50302
+2025-06-11 11:31:29,880 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:31:30,881 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:30,881 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:32,260 - __main__ - DEBUG - HTML length: 50534
+2025-06-11 11:31:32,931 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:31:33,932 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:33,933 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:35,312 - __main__ - DEBUG - HTML length: 50596
+2025-06-11 11:31:35,937 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:31:36,938 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:36,938 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:38,319 - __main__ - DEBUG - HTML length: 50516
+2025-06-11 11:31:38,953 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:31:39,954 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:39,954 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:41,334 - __main__ - DEBUG - HTML length: 50920
+2025-06-11 11:31:41,951 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:31:42,951 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:42,951 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:44,332 - __main__ - DEBUG - HTML length: 50861
+2025-06-11 11:31:44,976 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:31:45,977 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:45,977 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:47,361 - __main__ - DEBUG - HTML length: 50850
+2025-06-11 11:31:47,999 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:31:49,000 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:49,001 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:50,386 - __main__ - DEBUG - HTML length: 50915
+2025-06-11 11:31:51,026 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-11 11:31:52,026 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:52,027 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:53,412 - __main__ - DEBUG - HTML length: 49633
+2025-06-11 11:31:54,012 - __main__ - INFO - Not my turn. My Hand: ['8♥', '6♦']. Stack: €0.78. Opponent Stacks: [bountykrks: €1.56, Linde: €1.86, Ida1984: €0.21, sde777: €0.83, jawa843: €2]. Waiting...
+2025-06-11 11:31:55,012 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:31:55,013 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:31:56,933 - __main__ - INFO - PokerBot main_loop ended.
+2025-06-11 11:31:56,934 - __main__ - ERROR - An error occurred in __main__: Error calling OpenClipboard ([WinError 0] Operasjonen er utført.)
+Traceback (most recent call last):
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 676, in <module>
+    bot.main_loop()
+    ~~~~~~~~~~~~~^^
+  File "C:\GitRepositories\pokerplayer\poker_bot.py", line 445, in main_loop
+    current_html = self.ui_controller.get_html_from_screen_with_auto_retry()
+  File "C:\GitRepositories\pokerplayer\ui_controller.py", line 207, in get_html_from_screen_with_auto_retry
+    html_content = self.get_html_from_screen()
+  File "C:\GitRepositories\pokerplayer\ui_controller.py", line 263, in get_html_from_screen
+    html_content = pyperclip.paste()
+  File "C:\Users\kev_s\AppData\Local\Programs\Python\Python313\Lib\site-packages\pyperclip\__init__.py", line 449, in paste_windows
+    with clipboard(None):
+         ~~~~~~~~~^^^^^^
+  File "C:\Users\kev_s\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "C:\Users\kev_s\AppData\Local\Programs\Python\Python313\Lib\site-packages\pyperclip\__init__.py", line 411, in clipboard
+    raise PyperclipWindowsException("Error calling OpenClipboard")
+pyperclip.PyperclipWindowsException: Error calling OpenClipboard ([WinError 0] Operasjonen er utført.)
+2025-06-11 11:31:56,966 - __main__ - INFO - Closing logger handlers.
+2025-06-11 11:33:10,412 - __main__ - INFO - PokerBot started. Press Ctrl+C to stop.
+2025-06-11 11:33:10,412 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:33:10,412 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:33:11,800 - __main__ - DEBUG - HTML length: 50856
+2025-06-11 11:33:12,440 - __main__ - INFO - My turn. Hand: ['5♠', 'A♠'], Rank: A5 suited, Stack: €0.73, Bet to call: 0.01 Opponent Stacks: [bountykrks: €1.56, Linde: €1.72, Ida1984: €2.02, sde777: €0.91, jawa843: €2.06]
+2025-06-11 11:33:12,440 - __main__ - INFO - Pot: €0.05, Community Cards: []
+2025-06-11 11:33:12,444 - __main__ - INFO - Decision: raise Amount: 0.08
+2025-06-11 11:33:21,529 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:33:21,529 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:33:22,918 - __main__ - DEBUG - HTML length: 50501
+2025-06-11 11:33:24,150 - __main__ - INFO - My turn. Hand: ['5♠', 'A♠'], Rank: A5 suited, Stack: €0.66, Bet to call: 0.06 Opponent Stacks: [bountykrks: €1.56, Linde: €1.60, Ida1984: €2.02, sde777: €0.91, jawa843: €2.06]
+2025-06-11 11:33:24,150 - __main__ - INFO - Pot: €0.24, Community Cards: []
+2025-06-11 11:33:24,154 - __main__ - INFO - Decision: raise Amount: 0.42
+2025-06-11 11:33:33,240 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:33:33,241 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:33:34,625 - __main__ - DEBUG - HTML length: 50864
+2025-06-11 11:33:35,237 - __main__ - INFO - My turn. Hand: ['5♠', 'A♠'], Rank: High Card, Stack: €0.32, Bet to call: 0.00 Opponent Stacks: [bountykrks: €1.56, Linde: €1.32, Ida1984: €2.02, sde777: €0.91, jawa843: €2.06]
+2025-06-11 11:33:35,238 - __main__ - INFO - Pot: €0.86, Community Cards: ['3♠', '10♣', '8♥']
+2025-06-11 11:33:35,251 - __main__ - INFO - Decision: check Amount: 0.00
+2025-06-11 11:33:41,709 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:33:41,710 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:33:43,090 - __main__ - DEBUG - HTML length: 48859
+2025-06-11 11:33:43,678 - __main__ - INFO - Not my turn. My Hand: ['5♠', 'A♠']. Stack: €0.32. Opponent Stacks: [bountykrks: €1.56, Linde: €1.32, Ida1984: €2.02, sde777: €0.91, jawa843: €2.06]. Waiting...
+2025-06-11 11:33:44,679 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-11 11:33:44,679 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-11 11:33:46,062 - __main__ - DEBUG - HTML length: 50222
+2025-06-11 11:33:46,661 - __main__ - INFO - PokerBot stopped by user.
+2025-06-11 11:33:46,661 - __main__ - INFO - PokerBot main_loop ended.
+2025-06-11 11:33:46,661 - __main__ - INFO - Closing logger handlers.
