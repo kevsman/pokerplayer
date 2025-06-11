@@ -90,6 +90,7 @@ MEDIUM_HAND_THRESHOLD = 2       # e.g., Middle Pair or better
 
 # Functions previously here have been moved to the postflop directory.
 
+
 def make_postflop_decision(
     decision_engine_instance, 
     numerical_hand_rank, 
@@ -227,9 +228,15 @@ def make_postflop_decision(
     # Decision logic starts here, using the processed and consolidated data
     # (is_pot_committed, hand_strength_final_decision, is_weak_final, final_opponent_analysis, advanced_context etc.)
 
-    if can_check:
-        logger.debug("Option to check is available.")
-        # If very strong hand, consider betting or check-raising.
+    # If can_check is True but there's a bet_to_call, it means the "check" button
+    # likely acts as a "call" button. In this scenario, we are effectively facing a bet.
+    # Genuine check is only possible if can_check is True AND bet_to_call is 0.
+    effectively_can_genuinely_check = can_check and (bet_to_call == 0)
+
+    if effectively_can_genuinely_check:
+        logger.debug("Option to genuinely check is available (can_check=True, bet_to_call=0). Evaluating check vs. bet/raise.")
+        # This is the block for when we can truly check (action is on us, no prior bet in this round)
+        
         if is_very_strong:
             # Check if we should check instead of bet (e.g., for trapping or if board is scary)
             if ENHANCED_MODULES_AVAILABLE and should_check_instead_of_bet(hand_strength_final_decision, board_texture, position, opponent_analysis_from_initial, street):
@@ -240,7 +247,6 @@ def make_postflop_decision(
                 logger.info(f"Decision: {action_raise_const} {bet_amount} (Very strong hand, value bet)")
                 return action_raise_const, bet_amount
         
-        # If strong hand, usually bet for value, but consider checking sometimes.
         elif is_strong:
             if ENHANCED_MODULES_AVAILABLE and should_check_instead_of_bet(hand_strength_final_decision, board_texture, position, opponent_analysis_from_initial, street):
                 logger.info(f"Decision: {action_check_const} (Strong hand, checking for pot control or board texture)")
@@ -250,9 +256,7 @@ def make_postflop_decision(
                 logger.info(f"Decision: {action_raise_const} {bet_amount} (Strong hand, value bet)")
                 return action_raise_const, bet_amount
 
-        # If medium strength hand, more inclined to check or bet smaller for value/protection.
         elif is_medium:
-            # Thin value bet or check for pot control.
             if is_thin_value_spot(hand_strength_final_decision, win_probability, final_opponent_analysis.get('table_type', 'unknown'), position):
                 bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False) / 2 # Smaller for thin value
                 bet_amount = max(bet_amount, big_blind_amount) # Ensure min bet
@@ -262,17 +266,13 @@ def make_postflop_decision(
                 logger.info(f"Decision: {action_check_const} (Medium hand, pot control or check-evaluate)")
                 return action_check_const, 0
 
-        # Weak hands (weak_made, drawing, very_weak)
         else: # is_weak_final is true
             if hand_strength_final_decision == 'drawing':
-                # If drawing, check if implied odds justify a call (if there was a bet), or check to see next card cheap.
-                # Since we can_check, we are not facing a bet here. So, check to realize equity.
                 logger.info(f"Decision: {action_check_const} (Drawing hand, checking to see next card)")
                 return action_check_const, 0
             elif hand_strength_final_decision == 'weak_made':
-                # Bluffing consideration: If opponent is likely to fold and we have some blockers/equity.
-                fold_equity = calculate_fold_equity(final_opponent_analysis.get('table_type', 'unknown'), board_texture, pot_size * 0.5, pot_size) # Example bet size for bluff
-                if fold_equity > 0.6: # High chance opponent folds
+                fold_equity = calculate_fold_equity(final_opponent_analysis.get('table_type', 'unknown'), board_texture, pot_size * 0.5, pot_size)
+                if fold_equity > 0.6: 
                     bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                     logger.info(f"Decision: {action_raise_const} {bet_amount} (Weak made hand, bluffing with high fold equity)")
                     return action_raise_const, bet_amount
@@ -283,8 +283,12 @@ def make_postflop_decision(
                 logger.info(f"Decision: {action_check_const} (Very weak hand, check-fold strategy likely)")
                 return action_check_const, 0
             
-    else: # Must call or raise or fold (cannot check)
-        logger.debug("Cannot check. Must call, raise, or fold.")
+    else: # This means (bet_to_call > 0) OR (not can_check originally)
+        if bet_to_call > 0:
+            logger.debug(f"Facing a bet of {bet_to_call} (can_check was {can_check}). Evaluating call, raise, or fold.")
+        else: # implies can_check was False and bet_to_call is 0
+            logger.debug(f"Cannot check (can_check=False, bet_to_call=0). Evaluating options.")
+        
         min_raise = max_bet_on_table * 2 # Simplified min raise logic
         
         if is_very_strong:
@@ -294,13 +298,13 @@ def make_postflop_decision(
                 logger.info(f"Decision: {action_raise_const} {bet_amount} (Very strong hand, committing stack, SPR={spr:.1f})")
             else:
                 bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
-                bet_amount = max(bet_amount, min_raise) # Ensure it's a valid raise
+                bet_amount = max(bet_amount, min_raise) 
                 logger.info(f"Decision: {action_raise_const} {bet_amount} (Very strong hand, value raise)")
             return action_raise_const, min(bet_amount, my_stack)
 
         elif is_strong:
             # Value raise or call depending on aggression and opponent.
-            if pot_odds_to_call > (1 - win_probability) / win_probability if win_probability > 0 else float('inf'): # Basic pot odds check
+            if pot_odds_to_call > (1 - win_probability) / win_probability if win_probability > 0 else float('inf'): 
                 # Consider raising if opponent is passive or we want to build pot
                 if base_aggression_factor > 0.6 or final_opponent_analysis.get('table_type', '').startswith('passive'):
                     bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
@@ -344,7 +348,6 @@ def make_postflop_decision(
                     logger.info(f"Decision: {action_fold_const} (Drawing hand, folding, no odds)")
                     return action_fold_const, 0
             elif hand_strength_final_decision == 'weak_made':
-                # Can we call as a bluff catcher?
                 if should_call_bluff(hand_strength_final_decision, win_probability, pot_odds_to_call, final_opponent_analysis.get('table_type', 'unknown'), bet_to_call, pot_size):
                     logger.info(f"Decision: {action_call_const} {bet_to_call} (Weak made hand, calling as bluff catcher)")
                     return action_call_const, bet_to_call

@@ -570,7 +570,114 @@ def make_preflop_decision(
             if can_check:
                 return action_check_const, 0
             return action_fold_const, 0
-    
+    elif preflop_category == "Suited Connector":
+        print(f"DEBUG PREFLOP: Entered Suited Connector category for hand {my_player['hand']} in position {position}")
+        # Example: Play suited connectors more conservatively from early position
+        if position in ['UTG', 'MP']:
+            if max_bet_on_table <= big_blind: # Opening or limpers
+                # Consider opening if no raise and few limpers
+                if num_limpers <= 1:
+                    open_raise = raise_amount_calculated
+                    open_raise = max(open_raise, min_raise)
+                    open_raise = round(min(open_raise, my_stack),2)
+                    if open_raise > bet_to_call:
+                        print(f"Suited Connector in {position}, opening/isolating. Action: RAISE, Amount: {open_raise}")
+                        return action_raise_const, open_raise
+                # If many limpers or cannot raise effectively, check/fold
+                if can_check:
+                    print(f"Suited Connector in {position}, checking. Action: CHECK")
+                    return action_check_const, 0
+                print(f"Suited Connector in {position}, folding. Action: FOLD")
+                return action_fold_const, 0
+            elif bet_to_call <= big_blind * 3: # Facing a small raise
+                 # Call with good implied odds, especially if multi-way
+                if active_opponents_count > 1 and bet_to_call < my_stack * 0.1:
+                    print(f"Suited Connector in {position}, calling small raise for implied odds. Action: CALL, Amount: {bet_to_call}")
+                    return action_call_const, bet_to_call
+                print(f"Suited Connector in {position}, facing small raise, folding. Action: FOLD")
+                return action_fold_const, 0
+            else: # Facing a large raise
+                print(f"Suited Connector in {position}, facing large raise, folding. Action: FOLD")
+                return action_fold_const, 0
+        elif position in ['CO', 'BTN']:
+            if max_bet_on_table <= big_blind: # Opening or limpers
+                open_raise = raise_amount_calculated
+                open_raise = max(open_raise, min_raise)
+                open_raise = round(min(open_raise, my_stack),2)
+                if open_raise > bet_to_call:
+                    print(f"Suited Connector in {position}, opening/isolating. Action: RAISE, Amount: {open_raise}")
+                    return action_raise_const, open_raise
+                if can_check: # Should not happen if opening unless BB
+                    print(f"Suited Connector in {position}, opening, raise calc issue, checking. Action: CHECK")
+                    return action_check_const, 0
+                print(f"Suited Connector in {position}, opening, raise calc issue, folding. Action: FOLD")
+                return action_fold_const, 0
+            elif bet_to_call <= big_blind * 4: # Facing a moderate raise
+                # Call more liberally in late position
+                if bet_to_call < my_stack * 0.15:
+                    print(f"Suited Connector in {position}, calling moderate raise. Action: CALL, Amount: {bet_to_call}")
+                    return action_call_const, bet_to_call
+                print(f"Suited Connector in {position}, facing moderate raise, folding. Action: FOLD")
+                return action_fold_const, 0
+            else: # Facing a large raise
+                print(f"Suited Connector in {position}, facing large raise, folding. Action: FOLD")
+                return action_fold_const, 0
+        elif position in ['SB', 'BB']: # Blinds play differently
+            if position == 'SB':
+                if max_bet_on_table <= big_blind: # Limped or folded to SB
+                    # Raise or complete
+                    open_raise = raise_amount_calculated
+                    open_raise = max(open_raise, min_raise)
+                    open_raise = round(min(open_raise, my_stack),2)
+                    if open_raise > bet_to_call :
+                         print(f"Suited Connector in SB, opening/raising. Action: RAISE, Amount: {open_raise}")
+                         return action_raise_const, open_raise
+                    # If cannot raise (e.g. completing small blind), and can call
+                    elif bet_to_call > 0 and bet_to_call < my_stack * 0.1:
+                         print(f"Suited Connector in SB, completing/calling small bet. Action: CALL, Amount: {bet_to_call}")
+                         return action_call_const, bet_to_call
+                    elif can_check : # Should not happen if SB has to act unless BB also limped.
+                         print(f"Suited Connector in SB, checking. Action: CHECK")
+                         return action_check_const, 0
+                    print(f"Suited Connector in SB, folding. Action: FOLD")
+                    return action_fold_const, 0
+                else: # Facing a raise in SB
+                    # Generally fold suited connectors from SB vs raise unless specific read/deep stacks
+                    print(f"Suited Connector in SB, facing raise, folding. Action: FOLD")
+                    return action_fold_const, 0
+            elif position == 'BB':
+                if max_bet_on_table <= big_blind: # Limped pot or folded to BB
+                    if can_check and bet_to_call == 0:
+                        print(f"Suited Connector in BB, checking. Action: CHECK")
+                        return action_check_const, 0
+                    else: # Limpers, BB can raise or call
+                        open_raise = raise_amount_calculated
+                        open_raise = max(open_raise, min_raise)
+                        open_raise = round(min(open_raise, my_stack),2)
+                        if open_raise > bet_to_call:
+                            print(f"Suited Connector in BB, isolating limpers. Action: RAISE, Amount: {open_raise}")
+                            return action_raise_const, open_raise
+                        # If cannot raise effectively, consider calling if cheap
+                        elif bet_to_call > 0 and bet_to_call < big_blind * 2 and bet_to_call < my_stack * 0.05 : # Call very cheap bets
+                             print(f"Suited Connector in BB, calling small bet over limps. Action: CALL, Amount: {bet_to_call}")
+                             return action_call_const, bet_to_call
+                        elif can_check: # Should be caught by first check
+                             print(f"Suited Connector in BB, checking. Action: CHECK")
+                             return action_check_const, 0
+                        print(f"Suited Connector in BB, folding. Action: FOLD")
+                        return action_fold_const, 0
+                else: # Facing a raise in BB
+                    pot_odds = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 1
+                    # Call with good pot odds and if not too much of stack
+                    if bet_to_call <= big_blind * 5 and bet_to_call < my_stack * 0.15: # Call raises up to 5BB if stack allows
+                        print(f"Suited Connector in BB, facing raise, calling with pot odds {pot_odds:.2f}. Action: CALL, Amount: {bet_to_call}")
+                        return action_call_const, bet_to_call
+                    print(f"Suited Connector in BB, facing raise, folding. Action: FOLD")
+                    return action_fold_const, 0
+        else: # Should not happen
+            if can_check: return action_check_const, 0
+            return action_fold_const, 0
+
     # Fallback for unhandled preflop categories or logic fall-through
     print(f"WARNING: Unhandled preflop_category '{preflop_category}' or major logic fall-through in make_preflop_decision. Defaulting to FOLD.")
     return action_fold_const, 0
