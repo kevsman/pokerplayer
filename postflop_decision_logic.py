@@ -347,19 +347,30 @@ def make_postflop_decision(
             return action_raise_const, min(bet_amount, my_stack)
 
         elif is_strong:
+            required_equity = (1 - win_probability) / win_probability if win_probability > 0 else float('inf')
             # Value raise or call depending on aggression and opponent.
-            if pot_odds_to_call > (1 - win_probability) / win_probability if win_probability > 0 else float('inf'): 
+            # Add a condition to prevent folding strong hands to tiny bets unless equity is abysmal
+            is_tiny_bet = bet_to_call <= (pot_size * 0.25) # Example: bet is 25% of pot or less
+
+            if pot_odds_to_call > required_equity or (is_tiny_bet and win_probability > 0.15): # Call if odds are good OR it's a tiny bet and we have some equity
                 # Consider raising if opponent is passive or we want to build pot
                 if base_aggression_factor > 0.6 or final_opponent_analysis.get('table_type', '').startswith('passive'):
-                    bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
-                    bet_amount = max(bet_amount, min_raise)
-                    logger.info(f"Decision: {action_raise_const} {bet_amount} (Strong hand, raising against bet)")
-                    return action_raise_const, min(bet_amount, my_stack)
+                    # Check if we have a very strong kicker or a very good two pair before re-raising.
+                    # This check needs more context on numerical_hand_rank interpretation for "good" two pair.
+                    # For now, let's be slightly more conservative on re-raising with just "strong" two-pair unless SPR is low or opponent is a fish.
+                    if spr < 4 or final_opponent_analysis.get('is_weak_passive', False): # Example condition to re-raise
+                        bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
+                        bet_amount = max(bet_amount, min_raise)
+                        logger.info(f"Decision: {action_raise_const} {bet_amount} (Strong hand, raising against bet, favorable conditions)")
+                        return action_raise_const, min(bet_amount, my_stack)
+                    else:
+                        logger.info(f"Decision: {action_call_const} {bet_to_call} (Strong hand, calling bet, good odds or tiny bet)")
+                        return action_call_const, bet_to_call
                 else:
-                    logger.info(f"Decision: {action_call_const} {bet_to_call} (Strong hand, calling bet, good odds)")
+                    logger.info(f"Decision: {action_call_const} {bet_to_call} (Strong hand, calling bet, good odds or tiny bet)")
                     return action_call_const, bet_to_call
             else:
-                logger.info(f"Decision: {action_fold_const} (Strong hand, folding, bad pot odds: {pot_odds_to_call:.2f} vs req: {(1-win_probability)/win_probability if win_probability > 0 else float('inf'):.2f})")
+                logger.info(f"Decision: {action_fold_const} (Strong hand, folding, bad pot odds: {pot_odds_to_call:.2f} vs req: {required_equity:.2f} and not a tiny bet or equity too low)")
                 return action_fold_const, 0
 
         elif is_medium:

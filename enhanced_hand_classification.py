@@ -172,13 +172,21 @@ class EnhancedHandClassifier:
                 # On flop/turn, consider probability for protection needs
                 if abs(self._get_classification_strength(rank_class) - 
                        self._get_classification_strength(prob_class)) <= 1:
-                    return rank_class  # Close enough, use rank
+                    # If classifications are close (e.g. strong vs very_strong, or medium vs strong)
+                    # lean towards the probability-based one if it's stronger, otherwise rank.
+                    # This helps to correctly upgrade strong draws or slightly weaker made hands with high potential.
+                    if self._get_classification_strength(prob_class) > self._get_classification_strength(rank_class):
+                        return prob_class
+                    return rank_class
                 else:
-                    # Take the more conservative classification
-                    return min(rank_class, prob_class, 
+                    # If classifications differ significantly, take the stronger one
+                    return max(rank_class, prob_class, 
                              key=self._get_classification_strength)
         
-        # Default: take more conservative classification
+        # Default: take more conservative classification (should ideally be covered by above logic)
+        # For safety, if somehow not covered, prefer stronger if prob_class is much better.
+        if self._get_classification_strength(prob_class) > self._get_classification_strength(rank_class) + 1:
+             return prob_class
         return min(rank_class, prob_class, key=self._get_classification_strength)
     
     def _get_classification_strength(self, classification: str) -> int:
