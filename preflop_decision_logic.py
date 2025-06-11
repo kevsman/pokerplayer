@@ -329,7 +329,7 @@ def make_preflop_decision(
     # Strong Pair (JJ, TT)
     # Suited Playable (KJs, KTs, QJs, QTs, JTs)
     # Medium Pair (99, 88, 77) - Added
-    if preflop_category in ["Suited Ace", "Offsuit Ace", "Suited King", "Offsuit King", "Playable Broadway", "Offsuit Broadway", "Strong Pair", "Suited Playable", "Medium Pair", "Offsuit Playable"]: # Added "Offsuit Playable"
+    if preflop_category in ["Suited Ace", "Offsuit Ace", "Suited King", "Offsuit King", "Playable Broadway", "Offsuit Broadway", "Strong Pair", "Suited Playable", "Medium Pair", "Offsuit Playable", "Small Pair", "Weak", "Premium Pair", "Suited Connector"]: # Added "Small Pair", "Weak", "Premium Pair", "Suited Connector"
         if position in ['UTG', 'MP']:
             # Facing a real raise (max_bet_on_table > big_blind)
             # Fold AJo/ATo facing UTG raise + MP 3-bet
