@@ -485,9 +485,17 @@ class PokerBot:
                     hand_rank_description = my_player_data.get('hand_evaluation', (0, "N/A"))[1]
                     bet_to_call_str = my_player_data.get('bet_to_call', '0')
                     bet_to_call_val = parse_currency_string(bet_to_call_str)
+                    # Log opponent stack information
+                    opponent_stacks_info = []
+                    for p_info in raw_all_players_data:
+                        if not p_info.get('is_my_player') and not p_info.get('is_empty') and p_info.get('stack'):
+                            opponent_stacks_info.append(f"{p_info.get('name', 'Opp')}: {p_info.get('stack')}")
+                    opp_stacks_log = ", ".join(opponent_stacks_info) if opponent_stacks_info else "N/A"
+                    
                     log_message = (
                         f"My turn. Hand: {my_player_data.get('cards')}, Rank: {hand_rank_description}, " # Log uses 'cards'
                         f"Stack: {my_player_data.get('stack')}, Bet to call: {bet_to_call_val:.2f}"
+                        f" Opponent Stacks: [{opp_stacks_log}]" # Added opponent stack info
                     )
                     self.logger.info(log_message)
                     self.logger.info(f"Pot: {table_data.get('pot_size')}, Community Cards: {table_data.get('community_cards')}")
@@ -596,7 +604,13 @@ class PokerBot:
                     if active_player:
                         self.logger.info(f"Not my turn. Active player: {active_player.get('name')}. Waiting...")
                     elif my_player_data: # My player data exists, but not my turn (e.g. game ended, or observing)
-                        self.logger.info(f"Not my turn. My Hand: {my_player_data.get('cards')}. Stack: {my_player_data.get('stack')}. Waiting...")
+                        # Log opponent stack information even when not my turn
+                        opponent_stacks_info = []
+                        for p_info in raw_all_players_data:
+                            if not p_info.get('is_my_player') and not p_info.get('is_empty') and p_info.get('stack'):
+                                opponent_stacks_info.append(f"{p_info.get('name', 'Opp')}: {p_info.get('stack')}")
+                        opp_stacks_log = ", ".join(opponent_stacks_info) if opponent_stacks_info else "N/A"
+                        self.logger.info(f"Not my turn. My Hand: {my_player_data.get('cards')}. Stack: {my_player_data.get('stack')}. Opponent Stacks: [{opp_stacks_log}]. Waiting...")
                     else: # No player data found for me.
                         self.logger.info("My player data not found. Waiting...")
                 
