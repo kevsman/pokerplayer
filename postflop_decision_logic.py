@@ -69,7 +69,7 @@ if ENHANCED_MODULES_AVAILABLE:
 
 # Create file handler if it doesn't exist
 if not logger.handlers:
-    handler = logging.FileHandler('debug_postflop_decision_logic.log', mode='a')
+    handler = logging.FileHandler('debug_postflop_decision_logic.log', mode='a', encoding='utf-8') # Added encoding='utf-8'
     handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
@@ -239,7 +239,7 @@ def make_postflop_decision(
         
         if is_very_strong:
             # Check if we should check instead of bet (e.g., for trapping or if board is scary)
-            if ENHANCED_MODULES_AVAILABLE and should_check_instead_of_bet(hand_strength_final_decision, board_texture, position, opponent_analysis_from_initial, street):
+            if ENHANCED_MODULES_AVAILABLE and should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street): # Corrected arguments
                 logger.info(f"Decision: {action_check_const} (Very strong hand, checking to trap or due to board)")
                 return action_check_const, 0
             else:
@@ -248,7 +248,7 @@ def make_postflop_decision(
                 return action_raise_const, bet_amount
         
         elif is_strong:
-            if ENHANCED_MODULES_AVAILABLE and should_check_instead_of_bet(hand_strength_final_decision, board_texture, position, opponent_analysis_from_initial, street):
+            if ENHANCED_MODULES_AVAILABLE and should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street): # Corrected arguments
                 logger.info(f"Decision: {action_check_const} (Strong hand, checking for pot control or board texture)")
                 return action_check_const, 0
             else:
@@ -362,4 +362,4 @@ def make_postflop_decision(
     logger.error("Fell through all decision logic in postflop. Defaulting to FOLD.")
     return action_fold_const, 0
 
-# Functions previously here have been moved to the postflop directory.
+# Functions previously here have been moved to the postflop directory
