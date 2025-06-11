@@ -654,13 +654,13 @@ class PokerBot:
                         if self.opponent_tracker and my_player_data:
                             self.opponent_tracker.log_action(
                                 player_name=bot_player_id, # Changed from player_id to player_name
-                                action=action.upper(),
+                                action_type=action.upper(), # Corrected parameter name
                                 street=current_street_for_history,
-                                bet_size=float(amount) if amount is not None else 0.0,
+                                amount=float(amount) if amount is not None else 0.0, # Corrected parameter name
                                 # Position and pot_size for bot's own action might also need careful consideration
                                 # For now, using basic values or 'unknown' if not readily available.
                                 position=my_player_data.get('position', 'unknown'),
-                                pot_size=self.table_data.get('pot_size', 0), # Pot size before bot's action might be more accurate
+                                pot_size_before_action=self.table_data.get('pot_size', 0), # Corrected parameter name
                                 hand_id=self.current_hand_id_for_history
                             )
                     
