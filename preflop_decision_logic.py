@@ -1,12 +1,16 @@
 # preflop_decision_logic.py
 import math # For round
 from hand_utils import get_preflop_hand_category # Ensure this is imported
+import logging
+from config import Config
+
+logger = logging.getLogger(Config.LOG_NAME)
 
 # Constants for actions (consider moving to a shared constants file)
-ACTION_FOLD = "fold"
-ACTION_CHECK = "check"
-ACTION_CALL = "call"
-ACTION_RAISE = "raise"
+ACTION_FOLD = 'fold'
+ACTION_CHECK = 'check'
+ACTION_CALL = 'call'
+ACTION_RAISE = 'raise'
 
 def adjust_for_implied_odds(hand_category, position, my_stack, effective_stack, big_blind):
     """
@@ -456,7 +460,7 @@ def make_preflop_decision(
                 return action_fold_const, 0
         elif position == 'SB':
             # SB strategy: 3-bet or fold mostly. Call very selectively.
-            if max_bet_on_table <= big_blind: # Opening from SB (limped to SB or SB is first to act after blinds)
+            if max_bet_on_table <= big_blind: # Opening from SB
                 open_raise = raise_amount_calculated # Should be 3x BB + limpers (if any)
                 open_raise = max(open_raise, min_raise)
                 open_raise = round(min(open_raise, my_stack), 2)
@@ -482,22 +486,48 @@ def make_preflop_decision(
                     print(f"{preflop_category} in SB, open/raise calc issue, folding. Action: FOLD")
                     return action_fold_const, 0
             else: # Facing a raise in SB
-                # Strong hands 3-bet: Suited Ace (AJs+), Playable Broadway (KQs), Strong Pair (TT+)
-                # Simplified: 3-bet "Strong Pair", "Suited Ace", "Playable Broadway"
-                is_strong_for_3bet = preflop_category in ["Strong Pair", "Suited Ace", "Playable Broadway"]
-                
-                if is_strong_for_3bet and max_bet_on_table < my_stack * 0.33 : # Avoid 3-betting into huge bets
-                    three_bet_amount = raise_amount_calculated # Global calc for SB 3bet (e.g., 3.0 * max_bet_on_table)
-                    three_bet_amount = max(three_bet_amount, min_raise)
-                    three_bet_amount = round(min(three_bet_amount, my_stack), 2)
-                    if three_bet_amount > bet_to_call:
-                        print(f"{preflop_category} in SB, 3-betting. Action: RAISE, Amount: {three_bet_amount}")
-                        return action_raise_const, three_bet_amount
-                
-                # Generally fold other hands from SB when facing a raise unless very specific read/situation
-                print(f"{preflop_category} in SB, facing raise, folding. Action: FOLD")
-                return action_fold_const, 0
+                my_bet_on_street_before_this_action = max_bet_on_table - bet_to_call
+                we_already_raised_this_street = my_bet_on_street_before_this_action > Config.SMALL_BLIND
 
+                is_suited_ace_category = (preflop_category == "Suited Ace")
+                
+                if is_suited_ace_category and we_already_raised_this_street:
+                    # A5s (Suited Ace) facing a 4-bet or more. Should generally fold.
+                    logger.info(f"{preflop_category} in SB, facing re-raise (4-bet+), folding. Action: FOLD")
+                    return ACTION_FOLD, 0
+
+                # Determine eligibility for aggressive action (3-bet or 5-bet for stronger hands)
+                # Corrected "Suoted Ace" to "Suited Ace"
+                can_consider_initial_3bet = preflop_category in ["Strong Pair", "Suited Ace", "Playable Broadway"]
+                # More restrictive for 5-betting (example: QQ+, AK)
+                can_consider_5bet_plus = preflop_category in ["Strong Pair", "Playable Broadway"] # Further refinement might be needed for specific hands like QQ+/AK
+
+                eligible_for_aggressive_action = False
+                if not we_already_raised_this_street and can_consider_initial_3bet:
+                    eligible_for_aggressive_action = True
+                elif we_already_raised_this_street and can_consider_5bet_plus:
+                    if preflop_category == "Suited Ace": # Should have been caught by the specific fold logic above
+                        logger.info(f"{preflop_category} in SB, facing re-raise (4-bet+) (safeguard), folding. Action: FOLD")
+                        return ACTION_FOLD, 0
+                    eligible_for_aggressive_action = True
+                
+                # Allow slightly more commitment if already in a 4-bet+ pot with a premium hand
+                commitment_factor = 0.45 if we_already_raised_this_street else 0.33 
+
+                if eligible_for_aggressive_action and max_bet_on_table < my_stack * commitment_factor:
+                    # raise_amount_calculated is determined globally or passed in, used for both 3-bets and 5-bets here.
+                    # By folding "Suited Ace" to 4-bets above, it won't use this for an aggressive 5-bet.
+                    reraise_amount = raise_amount_calculated 
+                    reraise_amount = max(reraise_amount, min_raise)
+                    reraise_amount = round(min(reraise_amount, my_stack), 2)
+
+                    if reraise_amount > bet_to_call:
+                        action_type = "re-raising (4-bet+)" if we_already_raised_this_street else "3-betting"
+                        logger.info(f"{preflop_category} in SB, {action_type}. Action: RAISE, Amount: {reraise_amount}")
+                        return ACTION_RAISE, reraise_amount
+                
+                logger.info(f"{preflop_category} in SB, facing raise, folding (default path). Action: FOLD")
+                return ACTION_FOLD, 0
         elif position == 'BB':
             # BB strategy: Defend wider. Call, 3-bet, or check.
             if max_bet_on_table <= big_blind: # Limped pot or folded to BB
