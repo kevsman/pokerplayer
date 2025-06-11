@@ -305,6 +305,7 @@ class DecisionEngine:
                 action_call_const=ACTION_CALL,
                 action_raise_const=ACTION_RAISE,
                 my_player_data=my_player,
+                all_players_raw_data=all_players, # Add this line
                 big_blind_amount=self.big_blind_amount,
                 base_aggression_factor=self.base_aggression_factor,
                 max_bet_on_table=max_bet_on_table,

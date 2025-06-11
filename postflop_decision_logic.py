@@ -88,7 +88,23 @@ MEDIUM_HAND_THRESHOLD = 2       # e.g., Middle Pair or better
 # ACTION_BET = "bet"
 # ACTION_RAISE = "raise"
 
-# Functions previously here have been moved to the postflop directory.
+# Functions previously here have been moved to the postflop directory
+
+
+# Helper function for parsing stack values
+def _parse_stack_value_for_postflop(stack_str: str) -> float:
+    if isinstance(stack_str, (int, float)):
+        return float(stack_str)
+    if isinstance(stack_str, str):
+        cleaned_str = stack_str.replace('€', '').replace('$', '').replace(',', '').strip()
+        if not cleaned_str:
+            return 0.0
+        try:
+            return float(cleaned_str)
+        except ValueError:
+            logger.warning(f"Could not parse stack value string: {stack_str}")
+            return 0.0
+    return 0.0
 
 
 def make_postflop_decision(
@@ -112,7 +128,8 @@ def make_postflop_decision(
     base_aggression_factor,
     max_bet_on_table, # Added this parameter
     active_opponents_count=1, # Add opponent count for multiway considerations
-    opponent_tracker=None  # Add opponent tracking data
+    opponent_tracker=None,  # Add opponent tracking data
+    all_players_raw_data=None # New parameter for all players' data from parser
 ):
     street = game_stage # Use game_stage as street    
     logger.debug(
@@ -129,6 +146,33 @@ def make_postflop_decision(
     
     position = my_player_data.get('position', 'BB')
     community_cards = my_player_data.get('community_cards', [])
+
+    # Determine opponent stack for implied odds
+    opponent_stacks_for_implied_odds = []
+    if all_players_raw_data:
+        my_player_name_from_data = my_player_data.get('name')
+        for p_data in all_players_raw_data:
+            is_opponent = True
+            # Check if it's my player by name or by a specific flag if parser sets it
+            if my_player_name_from_data and p_data.get('name') == my_player_name_from_data:
+                is_opponent = False
+            elif p_data.get('is_my_player'): # Assuming parser might set 'is_my_player'
+                is_opponent = False
+            
+            if is_opponent and not p_data.get('is_empty', False) and p_data.get('stack') and p_data.get('stack') != 'N/A':
+                stack_val = _parse_stack_value_for_postflop(p_data.get('stack'))
+                if stack_val > 0: # Consider only opponents with a positive stack
+                    opponent_stacks_for_implied_odds.append(stack_val)
+
+    estimated_opponent_stack_for_implied_odds = my_stack # Default to my_stack
+    if opponent_stacks_for_implied_odds:
+        if active_opponents_count == 1 and len(opponent_stacks_for_implied_odds) == 1:
+            estimated_opponent_stack_for_implied_odds = opponent_stacks_for_implied_odds[0]
+        else: # Multiple opponents or if counts mismatch, use the smallest stack.
+            estimated_opponent_stack_for_implied_odds = min(opponent_stacks_for_implied_odds)
+    else:
+        logger.info("No opponent stacks found/parsed for implied odds; using my_stack as fallback.")
+    logger.debug(f"Estimated opponent stack for implied odds: {estimated_opponent_stack_for_implied_odds}")
 
     # 1. INITIAL ENHANCED ANALYSIS (Hand Strength, Basic Opponent, SPR)
     initial_analysis_result = process_initial_enhanced_analysis(
@@ -320,7 +364,8 @@ def make_postflop_decision(
 
         elif is_medium:
             # Call if odds are good, consider folding if bet is large or SPR is awkward.
-            if should_call_with_draws(win_probability, pot_odds_to_call, pot_size, bet_to_call, my_stack, decision_engine_instance.get_effective_stack_for_implied_odds()):
+            # Using the determined estimated_opponent_stack_for_implied_odds
+            if should_call_with_draws(my_player_data.get('hand', []), community_cards, win_probability, pot_size, bet_to_call, estimated_opponent_stack_for_implied_odds, my_stack, street):
                  logger.info(f"Decision: {action_call_const} {bet_to_call} (Medium hand/draw, calling with implied odds)")
                  return action_call_const, bet_to_call
             elif pot_odds_to_call > (1 - win_probability) / win_probability if win_probability > 0 else float('inf'):
@@ -341,7 +386,8 @@ def make_postflop_decision(
 
         else: # is_weak_final is true
             if hand_strength_final_decision == 'drawing':
-                if should_call_with_draws(win_probability, pot_odds_to_call, pot_size, bet_to_call, my_stack, decision_engine_instance.get_effective_stack_for_implied_odds()):
+                # Using the determined estimated_opponent_stack_for_implied_odds
+                if should_call_with_draws(my_player_data.get('hand', []), community_cards, win_probability, pot_size, bet_to_call, estimated_opponent_stack_for_implied_odds, my_stack, street):
                     logger.info(f"Decision: {action_call_const} {bet_to_call} (Drawing hand, calling with implied odds)")
                     return action_call_const, bet_to_call
                 else:
