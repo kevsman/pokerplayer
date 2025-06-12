@@ -597,6 +597,64 @@ def make_preflop_decision(
             return action_fold_const, 0
 
 
+    # --- OTHER SUITED ACES (A9s, A8s, A7s, A6s) ---
+    is_other_suited_ace = hand_category == "Suited Ace" and \
+                          any(h in str(my_player.get('hand','')) for h in ["A9s", "A8s", "A7s", "A6s"])
+
+    if is_other_suited_ace:
+        actual_raise_amount = raise_amount_calculated
+        can_make_valid_raise = actual_raise_amount > bet_to_call or \
+                               (actual_raise_amount == my_stack and my_stack > bet_to_call)
+
+        if num_raises_this_street == 0: # Opening situation
+            if position in ['CO', 'BTN', 'SB'] and num_limpers == 0:
+                if can_make_valid_raise:
+                    logger.info(f"Other Suited Ace ({str(my_player.get('hand',''))}) from {position}, opening. Action: RAISE, Amount: {actual_raise_amount}")
+                    return action_raise_const, actual_raise_amount
+            if is_bb and can_check: # BB, checked to
+                 logger.info(f"Other Suited Ace ({str(my_player.get('hand',''))}), BB can check, but raising. Action: RAISE, Amount: {actual_raise_amount if actual_raise_amount > 0 else min_raise}")
+                 return action_raise_const, actual_raise_amount if actual_raise_amount > 0 else min_raise
+            # If not opening from LP/SB or checking BB to raise, consider limping or folding based on other factors (not implemented here, defaults to fold)
+            logger.info(f"Other Suited Ace ({str(my_player.get('hand',''))}) from {position}, not opening. Action: FOLD (or check if possible)")
+            if can_check and bet_to_call == 0: return action_check_const, 0
+            return action_fold_const, 0
+
+        elif num_raises_this_street == 1: # Facing an open raise
+            effective_stack = min(my_stack, last_raiser_action_info.get('stack_before_action', my_stack) if last_raiser_action_info else my_stack)
+            
+            # Consider 3-betting as a semi-bluff
+            raiser_pos = last_raiser_action_info.get('position') if last_raiser_action_info else "unknown"
+            pfr_from_steal_pos = 0
+            raiser_is_likely_stealing = False
+            if last_aggressor_profile and raiser_pos in ['CO', 'BTN', 'SB']:
+                 # Simplified check for steal attempt (e.g. PFR > 30% from these positions or general high PFR)
+                if last_aggressor_profile.position_stats.get(raiser_pos, {}).get('hands_dealt', 0) > 10:
+                    pfr_from_steal_pos = (last_aggressor_profile.position_stats[raiser_pos]['pfr_hands'] / last_aggressor_profile.position_stats[raiser_pos]['hands_dealt']) * 100
+                if pfr_from_steal_pos > 30 or last_aggressor_profile.get_pfr() > 28:
+                    raiser_is_likely_stealing = True
+
+            if raiser_is_likely_stealing and position in ['SB', 'BB', 'BTN'] and can_make_valid_raise: # 3betting from blinds or BTN vs steal
+                logger.info(f"Other Suited Ace ({str(my_player.get('hand',''))}), 3-betting vs likely steal from {raiser_pos}. Action: RAISE, Amount: {actual_raise_amount}")
+                return action_raise_const, actual_raise_amount
+
+            # Calling conditions
+            call_cost_percentage_of_stack = (bet_to_call / effective_stack) if effective_stack > 0 else 1
+            max_call_percentage = 0.10 # Max 10% of stack to call a raise
+            if is_bb: max_call_percentage = 0.15 # Defend BB a bit wider
+
+            if call_cost_percentage_of_stack < max_call_percentage and bet_to_call > 0 :
+                logger.info(f"Other Suited Ace ({str(my_player.get('hand',''))}), calling raise from {last_aggressor_name_from_history}. Cost: {call_cost_percentage_of_stack*100:.0f}% of stack. Action: CALL, Amount: {bet_to_call}")
+                return action_call_const, bet_to_call
+            
+            logger.info(f"Other Suited Ace ({str(my_player.get('hand',''))}), facing raise, folding. B2C: {bet_to_call}, MyStack: {my_stack}, Raiser: {last_aggressor_name_from_history}")
+            if can_check and bet_to_call == 0: return action_check_const, 0 # Should not happen if num_raises_this_street == 1
+            return action_fold_const, 0
+
+        else: # Facing 3-bet or more
+            logger.info(f"Other Suited Ace ({str(my_player.get('hand',''))}) facing 3bet+ from {last_aggressor_name_from_history}. Action: FOLD")
+            return action_fold_const, 0
+
+
     # --- WEAK HANDS ---
     if hand_category == "Weak":
         logger.debug(f"Preflop: Entered Weak hand category. NumRaises: {num_raises_this_street}, B2C: {bet_to_call}, Pos: {position}, is_bb: {is_bb}")
