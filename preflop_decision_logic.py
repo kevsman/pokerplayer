@@ -2,6 +2,7 @@
 import math # For round
 from hand_utils import get_preflop_hand_category # Ensure this is imported
 import logging
+import random # Added for bluffing randomization
 
 # Assuming OpponentTracker is in a module named opponent_tracking
 # from opponent_tracking import OpponentTracker # Import if type hinting or direct instantiation needed here
@@ -29,6 +30,32 @@ def make_preflop_decision(
     if action_history is None:
         action_history = [] 
     
+    # Retrieve config parameters with defaults
+    # Added support for config-based aggression parameters
+    config = getattr(my_player, 'config', None)
+    
+    # Default values if config doesn't exist or values aren't set
+    base_aggression = 2.0  # Increased default aggression
+    preflop_range_widening = 0.2
+    bluff_frequency = 0.25
+    three_bet_frequency = 0.4
+    position_aggression = {'BTN': 1.5, 'CO': 1.3, 'MP': 1.1, 'UTG': 0.9, 'SB': 1.2, 'BB': 1.0}
+    
+    # Try to get values from config if available
+    if config:
+        base_aggression = config.get_setting('strategy', {}).get('base_aggression_factor_preflop', base_aggression)
+        preflop_range_widening = config.get_setting('strategy', {}).get('preflop_range_widening', preflop_range_widening)
+        bluff_frequency = config.get_setting('strategy', {}).get('bluff_frequency', bluff_frequency)
+        three_bet_frequency = config.get_setting('strategy', {}).get('three_bet_frequency', three_bet_frequency)
+        position_aggression = config.get_setting('strategy', {}).get('position_aggression_multipliers', position_aggression)
+    
+    # Position-specific aggression adjustment
+    position_multiplier = position_aggression.get(position, 1.0)
+    effective_aggression = base_aggression * position_multiplier
+    
+    # Adjust the range widening based on aggression and position
+    effective_range_widening = preflop_range_widening * effective_aggression
+    
     # It's crucial that opponent_tracker is available if we intend to use it.
     # For now, we'll proceed cautiously if it's None, but ideally, it should always be passed.
     if opponent_tracker is None:
@@ -37,6 +64,7 @@ def make_preflop_decision(
         # For simplicity in this step, we'll just check for its existence before use.
 
     logger.debug(f"Preflop decision with action_history: {action_history}, opponent_tracker available: {opponent_tracker is not None}")
+    logger.info(f"Using aggression factor: {effective_aggression}, range widening: {effective_range_widening}")
 
     # --- Helper function to analyze action history for current street ---
     def analyze_street_actions(history, current_street):
@@ -393,6 +421,17 @@ def make_preflop_decision(
                      (hand_category == "Suited King" and any(h in str(my_player.get('hand','')) for h in ["KQs", "KJs"])) or \
                      (hand_category == "Playable Broadway" and "QJs" in str(my_player.get('hand','')))
 
+    # Apply range widening to consider more hands as medium strength
+    if effective_range_widening > 0 and not is_medium_hand:
+        # Widening the medium hand range based on aggression factor
+        if ((hand_category == "Suited Ace" and "A9s" in str(my_player.get('hand',''))) or
+            (hand_category == "Suited Playable" and any(h in str(my_player.get('hand','')) for h in ["KTs", "QTs", "JTs"])) or
+            (hand_category == "Suited Connector" and position in ['BTN', 'CO', 'SB']) or
+            (hand_category == "Small Pair" and position in ['BTN', 'CO']) or
+            (hand_category == "Offsuit Broadway" and any(h in str(my_player.get('hand','')) for h in ["KQo", "AJo"])) or
+            random.random() < bluff_frequency * 0.5):  # Small chance to consider marginal hands as medium
+            is_medium_hand = True
+            logger.info(f"Range widening: Treating {hand_category} as medium strength hand due to aggression factor")
 
     if is_medium_hand:
         actual_raise_amount = raise_amount_calculated
@@ -401,16 +440,14 @@ def make_preflop_decision(
 
         if num_raises_this_street == 0: # Opening
             can_open = True
-            # Tighten up opening ranges from UTG/MP for some medium hands
-            if position in ['UTG', 'MP']:
-                if hand_category == "Medium Pair" and not any(p in str(my_player.get('hand','')) for p in ["99"]): # 77,88 from UTG/MP
+            # Less tight opening ranges due to increased aggression
+            if position in ['UTG'] and effective_aggression < 1.5:  # Only restrict in UTG with low aggression
+                if hand_category == "Medium Pair" and not any(p in str(my_player.get('hand','')) for p in ["99"]): # 77,88 from UTG
                     can_open = False
-                if hand_category == "Suited Ace" and "ATs" in str(my_player.get('hand','')) and position == 'UTG': 
+                if hand_category == "Suited Ace" and "ATs" in str(my_player.get('hand','')) and random.random() > effective_aggression * 0.4: 
                     can_open = False
-                if hand_category == "Offsuit Ace" and "AQo" in str(my_player.get('hand','')) and position == 'UTG': # AQo UTG is borderline, consider table
-                    if table_dynamics and 'tight' not in table_dynamics.get('table_type',''): can_open = False # Fold AQo UTG unless table is tight
 
-            if not can_open:
+            if not can_open and random.random() > bluff_frequency:  # Chance to open anyway based on bluff_frequency
                 logger.info(f"Medium hand ({hand_category}) too weak to open from {position}. Action: FOLD")
                 return action_fold_const, 0
 

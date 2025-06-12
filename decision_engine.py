@@ -36,7 +36,15 @@ class DecisionEngine:
         self.config = config if config is not None else {}
         self.big_blind_amount = self.config.get_setting('big_blind', 0.02) # Renamed for clarity
         self.small_blind_amount = self.config.get_setting('small_blind', 0.01) # Renamed for clarity
-        self.base_aggression_factor = self.config.get_setting('base_aggression_factor_postflop', 1.0) # Renamed for clarity
+        
+        # Get strategy settings with increased aggression defaults
+        self.base_aggression_factor = self.config.get_setting('strategy', {}).get('base_aggression_factor_postflop', 1.8)
+        self.preflop_aggression_factor = self.config.get_setting('strategy', {}).get('base_aggression_factor_preflop', 2.0)
+        self.bluff_frequency = self.config.get_setting('strategy', {}).get('bluff_frequency', 0.25)
+        self.semi_bluff_frequency = self.config.get_setting('strategy', {}).get('semi_bluff_frequency', 0.6)
+        self.continuation_bet_frequency = self.config.get_setting('strategy', {}).get('continuation_bet_frequency', 0.8)
+        
+        logger.info(f"Decision Engine initialized with aggression factors - preflop: {self.preflop_aggression_factor}, postflop: {self.base_aggression_factor}")
         
         # Initialize equity calculator system
         self.equity_calculator = EquityCalculator()

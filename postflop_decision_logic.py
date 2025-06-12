@@ -1,6 +1,7 @@
 # postflop_decision_logic.py
 
 import logging
+import random  # Added for bluffing randomization
 from implied_odds import should_call_with_draws # Ensure this import is present
 
 # Setup debug logging first
@@ -138,8 +139,48 @@ def make_postflop_decision(
     if action_history is None:
         action_history = []
 
+    # Get config parameters with defaults for enhanced aggression
+    config = getattr(decision_engine_instance, 'config', None)
+    
+    # Enhanced aggression parameters with aggressive defaults
+    effective_aggression = base_aggression_factor
+    bluff_frequency = 0.25
+    semi_bluff_frequency = 0.6
+    continuation_bet_frequency = 0.8
+    value_betting_threshold = 0.5
+    call_threshold_adjustment = -0.1  # Negative means more likely to call
+    position_aggression_multipliers = {
+        'BTN': 1.5, 'CO': 1.3, 'MP': 1.1, 'UTG': 0.9, 'SB': 1.2, 'BB': 1.0
+    }
+    
+    # Try to get values from config if available
+    if config:
+        effective_aggression = config.get_setting('strategy', {}).get('base_aggression_factor_postflop', base_aggression_factor)
+        bluff_frequency = config.get_setting('strategy', {}).get('bluff_frequency', bluff_frequency)
+        semi_bluff_frequency = config.get_setting('strategy', {}).get('semi_bluff_frequency', semi_bluff_frequency)
+        continuation_bet_frequency = config.get_setting('strategy', {}).get('continuation_bet_frequency', continuation_bet_frequency)
+        value_betting_threshold = config.get_setting('strategy', {}).get('value_betting_threshold', value_betting_threshold)
+        call_threshold_adjustment = config.get_setting('strategy', {}).get('call_threshold_adjustment', call_threshold_adjustment)
+        position_aggression_multipliers = config.get_setting('strategy', {}).get('position_aggression_multipliers', position_aggression_multipliers)
+    
     # Extract position for clarity and consistent use
     position = my_player_data.get('position', 'Unknown')
+    
+    # Apply position-based aggression multiplier
+    position_multiplier = position_aggression_multipliers.get(position, 1.0)
+    effective_aggression *= position_multiplier
+    
+    logger.info(f"Postflop decision with aggression={effective_aggression}, position={position}, win_probability={win_probability}")
+    
+    # Adjust win probability threshold for betting/raising based on aggression
+    # Higher aggression means we'll bet/raise with weaker hands
+    adjusted_value_threshold = max(0.4, value_betting_threshold - ((effective_aggression - 1.0) * 0.05))
+    
+    # Adjust call threshold - negative adjustment makes more likely to call
+    adjusted_call_threshold = pot_odds_to_call + call_threshold_adjustment
+    
+    # Log the adjusted thresholds
+    logger.debug(f"Adjusted value threshold: {adjusted_value_threshold}, Adjusted call threshold: {adjusted_call_threshold}")
 
     logger.debug(
         f"make_postflop_decision: street={street}, my_player_data={my_player_data}, "
@@ -352,45 +393,48 @@ def make_postflop_decision(
             return action_raise_const, bet_amount
 
         elif is_medium:
-            can_bet_medium = False 
-            bet_purpose_detail = "thin value bet" 
-            bet_factor = 0.5 
+            # More aggressive with medium hands due to our enhanced settings
+            can_bet_medium = True  # Default to betting with medium hands
+            bet_purpose_detail = "aggressive value bet" 
+            bet_factor = 0.6 * effective_aggression  # Scale bet size with aggression
 
             if was_pfr:
                 fold_to_cbet_stat = final_opponent_analysis.get(f'fold_to_{street.lower()}_cbet', 0.5)
                 logger.info(f"Medium hand, PFR on {street}. Opponent fold to C-bet: {fold_to_cbet_stat:.2f}. Win prob: {win_probability:.2f}, Opps: {active_opponents_count}")
-
-                if win_probability > (0.55 / (active_opponents_count or 1)) and fold_to_cbet_stat < 0.45:
+                
+                # More aggressive cbetting logic - reduced threshold from 0.55 to 0.45
+                if win_probability > (0.45 / (active_opponents_count or 1)) or random.random() < continuation_bet_frequency:
                     can_bet_medium = True
-                    bet_purpose_detail = f"c-bet for value vs sticky opponent on {street}"
-                    bet_factor = 0.65
-                elif fold_to_cbet_stat > 0.55 and active_opponents_count <= 2:
+                    bet_purpose_detail = "continuation bet"
+                    bet_factor = 0.65 * effective_aggression  # More aggressive
+                else:
+                    logger.info(f"Medium hand not strong enough for c-bet, checking.")
+                    can_bet_medium = False
+            else:
+                # More aggressive when not the preflop raiser - try to take initiative
+                can_bet_medium = win_probability > adjusted_value_threshold
+                if position in ['BTN', 'CO'] and active_opponents_count <= 2:
+                    # More aggressive in position
+                    can_bet_medium = win_probability > (adjusted_value_threshold - 0.05)
+                
+                if random.random() < bluff_frequency and not can_bet_medium:
+                    logger.info(f"Medium hand converted to bluff due to aggression settings")
                     can_bet_medium = True
-                    bet_purpose_detail = f"c-bet as bluff/semi-bluff vs folding opponent on {street}"
-                    bet_factor = 0.55
-                elif win_probability > 0.45 and active_opponents_count <= 2: 
-                    can_bet_medium = True
-                    bet_purpose_detail = f"c-bet with medium strength on {street} (fallback logic)"
-                    bet_factor = 0.6
+                    bet_purpose_detail = "position bluff"
+                    bet_factor = 0.5  # Smaller bet for bluffs
             
-            if not can_bet_medium and is_thin_value_spot(hand_strength_final_decision, win_probability, final_opponent_analysis.get('table_type', 'unknown'), position):
-                can_bet_medium = True 
-                bet_purpose_detail = "thin value bet (non-PFR or PFR check-bet)"
-                bet_factor = 0.5
-
             if can_bet_medium:
-                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff= (bet_purpose_detail.startswith("c-bet as bluff")), purpose=bet_purpose_detail) * bet_factor
-                bet_amount = max(bet_amount, big_blind_amount if big_blind_amount else 0) 
-                logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Medium hand, {bet_purpose_detail})")
+                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, 
+                                               street, big_blind_amount, active_opponents_count, 
+                                               purpose=bet_purpose_detail)
+                
+                # Adjust bet sizing based on aggression factor
+                bet_amount = min(my_stack, bet_amount * bet_factor)
+                
+                logger.info(f"Decision: {action_raise_const} {bet_amount} (Medium hand, {bet_purpose_detail})")
                 return action_raise_const, bet_amount
             else:
-                if ENHANCED_MODULES_AVAILABLE and should_check_instead_of_bet:
-                    should_check_flag, check_reason = should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street)
-                    if should_check_flag:
-                        logger.info(f"Decision: {action_check_const} (Medium hand, {('PFR but ' if was_pfr else '')}checking because: {check_reason})")
-                        return action_check_const, 0
-                
-                logger.info(f"Decision: {action_check_const} (Medium hand, {('PFR ' if was_pfr else '')}choosing to check-evaluate or pot control)")
+                logger.info(f"Decision: {action_check_const} (Medium hand, checking)")
                 return action_check_const, 0
 
         elif is_drawing: 
@@ -399,20 +443,36 @@ def make_postflop_decision(
                 fold_to_cbet_stat_draw = final_opponent_analysis.get(f'fold_to_{street.lower()}_cbet', 0.5)
                 logger.info(f"Drawing hand, PFR on {street}. Opponent fold to C-bet: {fold_to_cbet_stat_draw:.2f}. Win prob (draw equity): {win_probability:.2f}, Opps: {active_opponents_count}")
 
-                if fold_to_cbet_stat_draw > 0.5 and win_probability > 0.20 and active_opponents_count <= 2 :
+                # More aggressive with drawing hands
+                # Lowered thresholds for semi-bluffing and increased willingness to bet with draws
+                if fold_to_cbet_stat_draw > 0.4 and win_probability > 0.15 and active_opponents_count <= 3:
                     can_semi_bluff_cbet = True
-                elif win_probability > 0.30 and active_opponents_count <= 1 and fold_to_cbet_stat_draw > 0.35 : 
+                elif win_probability > 0.25 and active_opponents_count <= 2:
                     can_semi_bluff_cbet = True
-                    logger.info("Strong draw, considering semi-bluff c-bet with moderate opponent fold equity.")
+                    logger.info("Drawing hand, being aggressive with semi-bluff.")
+                
+                # Occasionally semi-bluff regardless of stats due to aggression settings
+                if random.random() < semi_bluff_frequency * effective_aggression / 2 and not can_semi_bluff_cbet:
+                    can_semi_bluff_cbet = True
+                    logger.info(f"Semi-bluff triggered by aggression settings (eff. aggression: {effective_aggression})")
 
                 if can_semi_bluff_cbet:
                     bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True, purpose=f"semi_bluff_cbet_on_{street}")
+                    # Scale bet size with aggression factor for draws
+                    bet_amount = min(my_stack, bet_amount * (0.8 + (effective_aggression * 0.1)))
                     logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Drawing hand, PFR semi-bluff c-bet on {street})")
                     return action_raise_const, bet_amount
                 else:
                     logger.info(f"Decision: {action_check_const} (Drawing hand, PFR choosing to check on {street}, not ideal semi-bluff or taking free card)")
                     return action_check_const, 0
             else: 
+                # Even if not preflop raiser, occasionally semi-bluff with draws in position
+                if position in ['BTN', 'CO'] and win_probability > 0.25 and random.random() < semi_bluff_frequency * 0.7:
+                    bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True, purpose=f"position_semi_bluff_on_{street}")
+                    bet_amount = min(my_stack, bet_amount * 0.65)  # Smaller bet when not PFR
+                    logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Drawing hand, non-PFR position semi-bluff on {street})")
+                    return action_raise_const, bet_amount
+                    
                 logger.info(f"Decision: {action_check_const} (Drawing hand, not PFR, checking to see next card on {street})")
                 return action_check_const, 0
             
@@ -482,6 +542,14 @@ def make_postflop_decision(
                         is_multi_street_aggressor = True 
                         logger.info(f"Aggressor {last_aggressor_on_street} bet the turn and is now betting the {street} (2nd consecutive barrel from them).")
             # --- End multi-street aggression detection ---
+            
+            # More aggressive call adjustments based on aggression factor
+            adjusted_win_probability = win_probability * (1.0 + (effective_aggression - 1.0) * 0.15)
+            adjusted_pot_odds_requirement = pot_odds_to_call + call_threshold_adjustment * effective_aggression
+            
+            # Log the adjusted values for transparency
+            logger.debug(f"Adjusted win probability: {adjusted_win_probability:.2f} (raw: {win_probability:.2f})")
+            logger.debug(f"Adjusted pot odds requirement: {adjusted_pot_odds_requirement:.2f} (raw pot odds: {pot_odds_to_call:.2f})")
 
             if is_facing_donk_bet:
                 logger.info(f"Specifically handling a donk bet of {bet_to_call} from {last_aggressor_on_street} on {street}.")
@@ -496,22 +564,26 @@ def make_postflop_decision(
                     logger.info(f"Decision: {action_raise_const} {raise_amount} (Very strong hand vs donk bet)")
                     return action_raise_const, raise_amount
                 elif is_strong:
-                    if fold_to_raise_after_donk < 0.3 and spr > 3: # Opponent rarely folds to raise after donking, high SPR
+                    # Less likely to flat call with strong hands
+                    if fold_to_raise_after_donk < 0.3 and spr > 3 and random.random() > effective_aggression * 0.3:
                         logger.info(f"Decision: {action_call_const} (Strong hand vs sticky donk bettor, high SPR, calling to keep bluffs in or evaluate further)")
                         return action_call_const, bet_to_call
                     else:
                         raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="raise_vs_donk_value_strong", bet_to_call=bet_to_call, opponent_profile=aggressor_profile)
+                        # More aggressive sizing
+                        raise_amount = min(my_stack, raise_amount * (1.0 + (effective_aggression - 1.0) * 0.2))
                         logger.info(f"Decision: {action_raise_const} {raise_amount} (Strong hand vs donk bet, raising for value)")
                         return action_raise_const, raise_amount
                 elif is_medium:
                     # Consider raising as a bluff if opponent folds often to raises after donking
-                    if fold_to_raise_after_donk > 0.6 and win_probability > 0.25: # Decent fold equity and some backdoor/improvement chance
+                    # More aggressive bluffing threshold
+                    if fold_to_raise_after_donk > 0.5 or random.random() < bluff_frequency * effective_aggression:
                         raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="bluff_raise_vs_donk_medium_hand", bet_to_call=bet_to_call, opponent_profile=aggressor_profile, bluff=True)
-                        logger.info(f"Decision: {action_raise_const} {raise_amount} (Medium hand vs donk bet, bluff-raising due to high fold_to_raise_after_donk)")
+                        logger.info(f"Decision: {action_raise_const} {raise_amount} (Medium hand vs donk bet, bluff-raising due to aggression settings)")
                         return action_raise_const, raise_amount
-                    # Check pot odds for calling
-                    elif pot_odds_to_call >= (1 / (win_probability + 0.05) if win_probability > 0 else 100): # Adding a small buffer for implied odds
-                        logger.info(f"Decision: {action_call_const} (Medium hand vs donk bet, calling based on pot odds: {pot_odds_to_call:.2f} vs required: {1/win_probability if win_probability > 0 else 100:.2f})")
+                    # More liberal calling with pot odds
+                    elif adjusted_pot_odds_requirement >= (1 / (adjusted_win_probability + 0.08)):
+                        logger.info(f"Decision: {action_call_const} (Medium hand vs donk bet, calling based on adjusted pot odds)")
                         return action_call_const, bet_to_call
                     else:
                         logger.info(f"Decision: {action_fold_const} (Medium hand vs donk bet, insufficient pot odds or bluff equity)")
@@ -520,33 +592,48 @@ def make_postflop_decision(
                     # Calculate required equity for calling
                     required_equity_to_call = bet_to_call / (pot_size + bet_to_call + bet_to_call) # bet_to_call / (current_pot + bet_to_call)
                     
-                    # Semi-bluff raise potential
-                    can_semi_bluff_raise = fold_to_raise_after_donk > 0.5 and win_probability > 0.20 # Good fold equity and reasonable draw
+                    # Apply aggression factor to required equity - more liberal calling with draws
+                    required_equity_with_aggression = required_equity_to_call * max(0.7, 1.0 - (effective_aggression - 1.0) * 0.15)
+                    
+                    # More aggressive semi-bluff raising
+                    can_semi_bluff_raise = (fold_to_raise_after_donk > 0.4 and win_probability > 0.15) or random.random() < semi_bluff_frequency * effective_aggression
+                    
+                    logger.debug(f"Drawing hand facing donk bet: Required equity adjusted={required_equity_with_aggression:.2f} (raw={required_equity_to_call:.2f}), Win prob={win_probability:.2f}")
                     
                     if can_semi_bluff_raise:
                         raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="semi_bluff_raise_vs_donk_drawing_hand", bet_to_call=bet_to_call, opponent_profile=aggressor_profile, bluff=True)
                         logger.info(f"Decision: {action_raise_const} {raise_amount} (Drawing hand vs donk bet, semi-bluff raising)")
                         return action_raise_const, raise_amount
-                    elif win_probability >= required_equity_to_call:
-                        logger.info(f"Decision: {action_call_const} (Drawing hand vs donk bet, calling based on direct odds. Win prob: {win_probability:.2f}, Req. equity: {required_equity_to_call:.2f})")
+                    elif win_probability >= required_equity_with_aggression:
+                        logger.info(f"Decision: {action_call_const} (Drawing hand vs donk bet, calling based on adjusted odds. Win prob: {win_probability:.2f}, Adj. req. equity: {required_equity_with_aggression:.2f})")
                         return action_call_const, bet_to_call
                     else:
-                        # Consider implied odds if direct odds are not met but close, and stack sizes allow
-                        implied_odds_factor = 1.5 # Simplified: look for 1.5x implied odds if direct odds slightly off
-                        if win_probability * implied_odds_factor >= required_equity_to_call and (my_stack > bet_to_call * 5 and estimated_opponent_stack_for_implied_odds > bet_to_call * 5):
-                             logger.info(f"Decision: {action_call_const} (Drawing hand vs donk bet, calling based on implied odds. Win prob: {win_probability:.2f}, Req. equity: {required_equity_to_call:.2f})")
-                             return action_call_const, bet_to_call
+                        # More liberal implied odds calculation
+                        implied_odds_factor = 1.5 * effective_aggression # Scale implied odds with aggression
+                        # Check if we have a strong draw worth calling for implied odds 
+                        outs = 0
+                        if my_player_data.get('hand') and community_cards:
+                            if any(card.endswith('♥') for card in my_player_data.get('hand', [])) and sum(card.endswith('♥') for card in community_cards) >= 2:
+                                outs = 9  # Flush draw
+                            elif len([c for c in my_player_data.get('hand', []) + community_cards if c[0] in "AKQJ1098765432"]) >= 4:
+                                outs = 8  # Open-ended straight draw
+                        
+                        # Strong draws get more liberal implied odds
+                        if outs >= 8:
+                            implied_odds_factor *= 1.2
+                            
+                        if win_probability * implied_odds_factor >= required_equity_to_call:
+                            logger.info(f"Decision: {action_call_const} (Drawing hand vs donk bet, calling based on implied odds. Win prob: {win_probability:.2f}, Implied factor: {implied_odds_factor:.1f})")
+                            return action_call_const, bet_to_call
+                            
+                        # Even if odds aren't there, occasionally call with aggression factor
+                        if random.random() < bluff_frequency * effective_aggression:
+                            logger.info(f"Decision: {action_call_const} (Drawing hand vs donk bet, speculative call due to aggression settings)")
+                            return action_call_const, bet_to_call
+                            
+
                         logger.info(f"Decision: {action_fold_const} (Drawing hand vs donk bet, insufficient odds to call. Win prob: {win_probability:.2f}, Req. equity: {required_equity_to_call:.2f})")
                         return action_fold_const, 0
-                else: # Weak made hand or very weak
-                    # Pure bluff raise potential if opponent folds very often
-                    if fold_to_raise_after_donk > 0.7: # High threshold for pure bluff
-                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="pure_bluff_raise_vs_donk_weak_hand", bet_to_call=bet_to_call, opponent_profile=aggressor_profile, bluff=True)
-                        logger.info(f"Decision: {action_raise_const} {raise_amount} (Weak hand vs donk bet, pure bluff-raising due to very high fold_to_raise_after_donk)")
-                        return action_raise_const, raise_amount
-                    logger.info(f"Decision: {action_fold_const} (Weak hand vs donk bet, folding)")
-                    return action_fold_const, 0
-
             # General response to a bet/raise (if not a donk bet or if donk bet logic fell through)
             logger.debug(f"Continuing to general bet/raise response logic for bet of {bet_to_call}.")
             aggressor_profile = final_opponent_analysis.get('opponent_profiles', {}).get(last_aggressor_on_street, {})

@@ -22008,3 +22008,1899 @@ TypeError: make_postflop_decision() missing 1 required positional argument: 'com
 2025-06-11 21:42:15,152 - __main__ - INFO - Poker Bot stopped by user (KeyboardInterrupt).
 2025-06-11 21:42:15,154 - __main__ - INFO - Poker Bot - Main Loop Ended
 2025-06-11 21:42:15,156 - __main__ - INFO - Closing logger handlers.
+2025-06-12 07:03:36,848 - __main__ - INFO - Logger setup complete.
+2025-06-12 07:03:36,850 - __main__ - INFO - OpponentTracker initialized.
+2025-06-12 07:03:36,850 - __main__ - WARNING - Config object passed to UIController is not of expected type, loading from file.
+2025-06-12 07:03:36,851 - __main__ - INFO - Poker Bot - Main Loop Started
+2025-06-12 07:03:36,851 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:03:38,258 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:38,259 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:38,261 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:38,261 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:38,261 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:38,262 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:38,262 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:38,263 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:38,263 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:38,263 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:38,264 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:38,264 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:38,264 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:38,265 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:38,277 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:38,279 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:38,284 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:38,286 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:38,286 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:38,287 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:38,287 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:38,288 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:38,288 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:38,288 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:38,289 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:38,290 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:38,290 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:38,291 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:38,291 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:38,296 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:38,299 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:38,305 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:38,305 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:38,306 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:38,306 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:38,307 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:38,307 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:38,307 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:38,307 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:38,308 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:38,308 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:38,308 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:38,308 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:38,308 - __main__ - INFO - New hand detected (ID: N/A). Resetting action history.
+2025-06-12 07:03:38,322 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:38,323 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:38,326 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:38,326 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:38,327 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:38,327 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:38,327 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:38,328 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:38,328 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:38,329 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:38,329 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:38,330 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:38,332 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:38,333 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:38,333 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:38,334 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Player 3', 'action_type': 'BET', 'amount': 0.08, 'street': 'flop', 'position': 'SB', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 0}
+2025-06-12 07:03:38,334 - __main__ - INFO - Creating new profile for opponent: Player 3
+2025-06-12 07:03:38,336 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:38,338 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:38,339 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:38,339 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:38,340 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:38,340 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:38,340 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:38,341 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:38,342 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:38,342 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:38,342 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:38,343 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:38,343 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:38,344 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:03:39,345 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:03:40,734 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:40,735 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:40,738 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:40,738 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:40,738 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:40,738 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:40,739 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:40,739 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:40,739 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:40,739 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:40,739 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:40,739 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:40,740 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:40,740 - __main__ - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-12 07:03:40,751 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:40,752 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:40,754 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:40,755 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:40,755 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:40,756 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:40,756 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:40,756 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:40,756 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:40,756 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:40,756 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:40,757 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:40,757 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:40,757 - __main__ - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-12 07:03:40,758 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:40,760 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:40,760 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:40,763 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:40,764 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:40,764 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:40,765 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:40,765 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:40,765 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:40,766 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:40,766 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:40,766 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:40,767 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:40,767 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:40,767 - __main__ - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-12 07:03:40,778 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:40,779 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:40,782 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:40,783 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:40,783 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:40,783 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:40,783 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:40,783 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:40,784 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:40,784 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:40,784 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:40,784 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:40,785 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:40,785 - __main__ - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-12 07:03:40,785 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:40,785 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'N/A', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'SB', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 1}
+2025-06-12 07:03:40,785 - __main__ - INFO - Creating new profile for opponent: N/A
+2025-06-12 07:03:40,785 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Player 5', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'BB', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 2}
+2025-06-12 07:03:40,785 - __main__ - INFO - Creating new profile for opponent: Player 5
+2025-06-12 07:03:40,786 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Player 6', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'UTG', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 3}
+2025-06-12 07:03:40,786 - __main__ - INFO - Creating new profile for opponent: Player 6
+2025-06-12 07:03:40,786 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Player 1', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'BTN', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 4}
+2025-06-12 07:03:40,786 - __main__ - INFO - Creating new profile for opponent: Player 1
+2025-06-12 07:03:40,787 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Player 8', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'MP', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 5}
+2025-06-12 07:03:40,787 - __main__ - INFO - Creating new profile for opponent: Player 8
+2025-06-12 07:03:40,788 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'warriorwonder25', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'CO', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 6}
+2025-06-12 07:03:40,788 - __main__ - INFO - Creating new profile for opponent: warriorwonder25
+2025-06-12 07:03:40,789 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:40,792 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:40,792 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:40,793 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:40,793 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:40,793 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:40,793 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:40,793 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:40,793 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:40,794 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:40,794 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:40,794 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:40,795 - __main__ - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-12 07:03:40,795 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:03:41,795 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:03:43,181 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:43,182 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:43,185 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:43,185 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:43,186 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:43,186 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:43,186 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:43,186 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:43,186 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:43,187 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:43,187 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:43,188 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:43,188 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:43,188 - __main__ - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-12 07:03:43,199 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:43,201 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:43,204 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:43,205 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:43,205 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:43,205 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:43,206 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:43,206 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:43,206 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:43,206 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:43,207 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:43,207 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:43,207 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:43,208 - __main__ - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-12 07:03:43,208 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:43,211 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:43,212 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:43,214 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:43,214 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:43,215 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:43,215 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:43,215 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:43,216 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:43,216 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:43,216 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:43,217 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:43,217 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:43,217 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:43,217 - __main__ - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-12 07:03:43,226 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:43,227 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:43,230 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:43,230 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:43,231 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:43,231 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:43,231 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:43,232 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:43,232 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:43,233 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:43,233 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:43,233 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:43,234 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:43,234 - __main__ - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-12 07:03:43,234 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:43,235 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:43,239 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:43,239 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:43,240 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:43,240 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:43,241 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:43,241 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:43,241 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:43,241 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:43,242 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:43,242 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:43,242 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:43,243 - __main__ - INFO - Player N/A in seat 6 assigned position: SB
+2025-06-12 07:03:43,243 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:03:44,244 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:03:45,641 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:45,642 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:45,645 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:45,645 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:45,646 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:45,646 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:45,647 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:45,647 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:45,647 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:45,647 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:45,648 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:45,648 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:45,649 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:45,649 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:45,659 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:45,660 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:45,663 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:45,664 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:45,665 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:45,666 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:45,667 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:45,667 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:45,667 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:45,668 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:45,668 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:45,669 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:45,669 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:45,669 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:45,669 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:45,673 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:45,674 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:45,676 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:45,677 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:45,677 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:45,678 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:45,678 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:45,678 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:45,679 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:45,679 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:45,680 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:45,680 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:45,681 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:45,681 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:45,700 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:45,702 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:45,706 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:45,706 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:45,706 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:45,706 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:45,707 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:45,707 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:45,708 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:45,708 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:45,708 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:45,708 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:45,709 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:45,709 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:45,709 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:45,709 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Player 3', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'SB', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 7}
+2025-06-12 07:03:45,711 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:45,714 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:45,714 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:45,715 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:45,716 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:45,716 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:45,716 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:45,716 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:45,717 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:45,717 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:45,717 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:45,718 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:45,718 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:45,718 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:03:46,719 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:03:48,101 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:48,102 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:48,105 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:48,106 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:48,106 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:48,106 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:48,106 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:48,107 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:48,107 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:48,107 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:48,107 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:48,108 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:48,108 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:48,108 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:48,121 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:48,123 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:48,125 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:48,125 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:48,126 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:48,126 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:48,126 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:48,126 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:48,127 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:48,127 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:48,127 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:48,127 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:48,128 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:48,128 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:48,128 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:48,132 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:48,134 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:48,136 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:48,137 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:48,137 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:48,138 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:48,138 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:48,138 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:48,138 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:48,139 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:48,139 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:48,139 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:48,140 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:48,140 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:48,155 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:48,157 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:48,159 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:48,160 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:48,160 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:48,161 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:48,161 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:48,161 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:48,161 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:48,161 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:48,162 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:48,163 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:48,163 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:48,164 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:48,165 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:48,165 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Player 3', 'action_type': 'BET', 'amount': 0.5, 'street': 'turn', 'position': 'SB', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 8}
+2025-06-12 07:03:48,167 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:48,170 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:48,170 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:48,171 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:48,171 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:03:48,172 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:48,172 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:48,172 - __main__ - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-12 07:03:48,172 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:48,172 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:48,172 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:48,173 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:48,173 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:48,173 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:03:49,174 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:03:50,551 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:50,552 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:50,555 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:50,555 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:50,555 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:50,556 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:50,557 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:50,559 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:50,559 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:50,561 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:50,563 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:50,564 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:50,565 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:50,565 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:50,585 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:50,587 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:50,592 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:50,593 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:50,594 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:50,594 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:50,595 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:50,596 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:50,597 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:50,597 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:50,598 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:50,598 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:50,599 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:50,600 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:50,601 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:50,605 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:50,608 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:50,611 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:50,612 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:50,612 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:50,613 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:50,614 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:50,615 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:50,616 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:50,617 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:50,618 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:50,619 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:50,620 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:50,621 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:50,644 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:50,645 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:50,648 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:50,649 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:50,649 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:50,650 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:50,650 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:50,650 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:50,651 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:50,651 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:50,651 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:50,651 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:50,651 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:50,651 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:50,651 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:50,652 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:50,654 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:50,655 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:50,655 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:50,656 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:50,656 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:50,657 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:50,657 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:50,657 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:50,657 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:50,658 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:50,658 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:50,658 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:50,658 - __main__ - INFO - Not my turn, but my player data exists. Waiting...
+2025-06-12 07:03:51,659 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:03:53,066 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:53,069 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:53,076 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:53,077 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:53,078 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:53,081 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:53,082 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:53,084 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:53,086 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:53,087 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:53,089 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:53,089 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:53,090 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:53,091 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:53,118 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:53,122 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:53,127 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:53,128 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:53,130 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:53,131 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:53,132 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:53,133 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:53,135 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:53,136 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:53,137 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:53,137 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:53,138 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:53,138 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:53,139 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:53,145 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:53,147 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:53,154 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:53,154 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:53,155 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:53,157 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:53,157 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:53,158 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:53,159 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:53,160 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:53,161 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:53,161 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:53,162 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:53,163 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:53,193 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:53,197 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:53,203 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:53,204 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:53,205 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:53,206 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:53,207 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:53,208 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:53,208 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:53,209 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:53,210 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:53,211 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:53,211 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:53,212 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:53,213 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:53,216 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:53,224 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:53,225 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:53,226 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:53,227 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:53,227 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:53,227 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:53,228 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:53,228 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:53,228 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:53,230 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:53,231 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:53,232 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:53,233 - __main__ - INFO - Not my turn, but my player data exists. Waiting...
+2025-06-12 07:03:54,234 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:03:55,620 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:55,621 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:55,623 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:55,624 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:55,624 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:55,624 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:55,624 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:55,625 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:55,625 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:55,625 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:55,626 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:55,626 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:55,626 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:55,626 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:55,639 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:55,641 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:55,643 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:55,643 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:55,644 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:55,644 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:55,644 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:55,645 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:55,645 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:55,645 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:55,646 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:55,646 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:55,647 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:55,648 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:55,648 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:55,652 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:55,653 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:55,656 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:55,657 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:55,657 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:55,657 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:55,658 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:55,658 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:55,659 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:55,659 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:55,659 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:55,660 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:55,660 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:55,661 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:55,672 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:55,674 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:55,676 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:55,676 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:55,677 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:55,677 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:55,677 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:55,678 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:55,678 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:55,678 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:55,678 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:55,678 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:55,678 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:55,679 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:55,679 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:55,682 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:55,685 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:55,686 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:55,686 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:55,686 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:55,687 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:55,687 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:55,687 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:55,687 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:55,688 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:55,688 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:55,689 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:55,689 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:55,690 - __main__ - INFO - Not my turn, but my player data exists. Waiting...
+2025-06-12 07:03:56,691 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:03:58,088 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:58,089 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:58,091 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:58,092 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:58,093 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:58,093 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:58,093 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:58,094 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:58,094 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:58,094 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:58,095 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:58,095 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:58,096 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:58,096 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:58,110 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:58,111 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:58,115 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:58,116 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:58,116 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:58,116 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:58,116 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:58,117 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:58,117 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:58,117 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:58,118 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:58,118 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:58,118 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:58,119 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:58,119 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:58,123 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:58,123 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:58,126 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:58,126 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:58,126 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:58,126 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:58,127 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:58,127 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:58,127 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:58,128 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:58,128 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:58,128 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:58,128 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:58,129 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:58,139 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:03:58,141 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:58,143 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:58,143 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:58,144 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:58,144 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:58,145 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:58,145 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:58,145 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:58,146 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:58,146 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:58,146 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:58,147 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:58,147 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:58,148 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:03:58,148 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Player 3', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'SB', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 9}
+2025-06-12 07:03:58,148 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Player 5', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'BB', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 10}
+2025-06-12 07:03:58,148 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Player 6', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'UTG', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 11}
+2025-06-12 07:03:58,149 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Player 1', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'BTN', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 12}
+2025-06-12 07:03:58,150 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Player 8', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'MP', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 13}
+2025-06-12 07:03:58,150 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'warriorwonder25', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'CO', 'is_bot': False, 'hand_id': 'N/A', 'sequence': 14}
+2025-06-12 07:03:58,152 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:03:58,158 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:03:58,159 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:03:58,159 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:03:58,159 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:03:58,160 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:03:58,161 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:03:58,161 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:03:58,161 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:03:58,161 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:03:58,162 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:03:58,162 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:03:58,162 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:03:58,163 - __main__ - INFO - Not my turn, but my player data exists. Waiting...
+2025-06-12 07:03:59,164 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:00,554 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:04:00,555 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:00,559 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:00,559 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:00,559 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:00,560 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:00,560 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:04:00,560 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:04:00,561 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:04:00,561 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:04:00,561 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:04:00,561 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:04:00,562 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:04:00,563 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:04:00,574 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:04:00,575 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:00,578 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:00,579 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:00,580 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:00,581 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:00,582 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:04:00,582 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:04:00,582 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:04:00,583 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:04:00,583 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:04:00,583 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:04:00,584 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:04:00,584 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:04:00,585 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:00,587 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:04:00,588 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:00,591 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:00,592 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:00,592 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:00,593 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:00,593 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:04:00,593 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:04:00,594 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:04:00,594 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:04:00,594 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:04:00,595 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:04:00,595 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:04:00,595 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:04:00,607 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:04:00,609 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:00,611 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:00,612 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:00,612 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:00,612 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:00,612 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:04:00,613 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:04:00,613 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:04:00,614 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:04:00,614 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:04:00,615 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:04:00,615 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:04:00,615 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:04:00,616 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:00,617 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:00,619 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:00,620 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:00,620 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:00,621 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:00,621 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:04:00,622 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:04:00,622 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:04:00,622 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:04:00,623 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:04:00,623 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:04:00,623 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:04:00,623 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:04:00,623 - __main__ - INFO - Not my turn, but my player data exists. Waiting...
+2025-06-12 07:04:01,624 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:03,030 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:04:03,032 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:03,038 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:03,039 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:03,040 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:03,042 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:03,043 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:04:03,044 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:04:03,045 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:04:03,046 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:04:03,047 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:04:03,049 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:04:03,049 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:04:03,050 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:04:03,094 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:04:03,098 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:03,107 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:03,108 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:03,109 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:03,110 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:03,110 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:04:03,111 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:04:03,112 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:04:03,112 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:04:03,113 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:04:03,115 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:04:03,116 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:04:03,117 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:04:03,118 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:03,123 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:04:03,125 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:03,130 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:03,131 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:03,132 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:03,133 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:03,133 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:04:03,135 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:04:03,135 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:04:03,136 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:04:03,136 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:04:03,137 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:04:03,138 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:04:03,138 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:04:03,158 - __main__ - INFO - Found visible dealer button at seat 5
+2025-06-12 07:04:03,161 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:03,169 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:03,170 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:03,171 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:03,172 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:03,173 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:04:03,173 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:04:03,174 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:04:03,174 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:04:03,175 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:04:03,176 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:04:03,176 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:04:03,178 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:04:03,178 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:03,183 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:03,191 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:03,192 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:03,194 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:03,194 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:03,195 - __main__ - INFO - Using dealer position: 5
+2025-06-12 07:04:03,196 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-12 07:04:03,197 - __main__ - INFO - Player Player 5 in seat 1 assigned position: BB
+2025-06-12 07:04:03,198 - __main__ - INFO - Player Player 6 in seat 2 assigned position: UTG
+2025-06-12 07:04:03,199 - __main__ - INFO - Player Player 8 in seat 3 assigned position: MP
+2025-06-12 07:04:03,199 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-12 07:04:03,200 - __main__ - INFO - Player Player 1 in seat 5 assigned position: BTN
+2025-06-12 07:04:03,201 - __main__ - INFO - Player Player 3 in seat 6 assigned position: SB
+2025-06-12 07:04:03,202 - __main__ - INFO - Not my turn, but my player data exists. Waiting...
+2025-06-12 07:04:04,204 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:05,592 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:05,594 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:05,596 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:05,597 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:05,599 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:05,600 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:05,601 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:05,601 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:05,602 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:05,603 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:05,604 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:05,605 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:05,606 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:05,606 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:05,621 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:05,622 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:05,624 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:05,624 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:05,625 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:05,625 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:05,625 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:05,625 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:05,626 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:05,626 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:05,627 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:05,627 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:05,627 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:05,627 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:05,627 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:05,630 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:05,634 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:05,637 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:05,638 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:05,639 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:05,639 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:05,640 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:05,641 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:05,641 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:05,641 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:05,641 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:05,642 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:05,642 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:05,642 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:06,725 - __main__ - INFO - New hand detected (ID: 11506900115). Resetting action history.
+2025-06-12 07:04:06,738 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:06,740 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:06,744 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:06,744 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:06,745 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:06,745 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:06,746 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:06,746 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:06,747 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:06,748 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:06,748 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:06,749 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:06,750 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:06,750 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:06,751 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:06,752 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'SlaviusV', 'action_type': 'CALL', 'amount': 0.02, 'street': 'preflop', 'position': 'BB', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 0}
+2025-06-12 07:04:06,752 - __main__ - INFO - Creating new profile for opponent: SlaviusV
+2025-06-12 07:04:06,752 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'warriorwonder25', 'action_type': 'CALL', 'amount': 0.02, 'street': 'preflop', 'position': 'MP', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 1}
+2025-06-12 07:04:06,755 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:06,760 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:06,760 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:06,761 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:06,761 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:06,762 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:06,762 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:06,763 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:06,763 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:06,763 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:06,764 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:06,764 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:06,765 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:06,767 - __main__ - INFO - My turn to act.
+2025-06-12 07:04:06,767 - __main__ - WARNING - Config 'big_blind' is None from settings, using default 0.02 for this decision cycle.
+2025-06-12 07:04:06,767 - __main__ - WARNING - Config 'small_blind' is None from settings, using default 0.01 for this decision cycle.
+2025-06-12 07:04:06,887 - __main__ - INFO - Decision: check
+2025-06-12 07:04:07,349 - __main__ - INFO - Recorded bot action to action_history: {'player_id': 'warriorwonder25', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'preflop', 'is_bot': True, 'sequence': 2, 'hand_id': '11506900115'}
+2025-06-12 07:04:09,850 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:11,241 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:11,242 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:11,244 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:11,245 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:11,245 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:11,246 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:11,247 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:11,248 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:11,249 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:11,250 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:11,250 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:11,251 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:11,251 - __main__ - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-12 07:04:11,252 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:11,270 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:11,272 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:11,276 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:11,277 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:11,278 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:11,279 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:11,279 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:11,279 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:11,280 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:11,281 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:11,281 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:11,281 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:11,282 - __main__ - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-12 07:04:11,282 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:11,282 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:11,287 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:11,290 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:11,294 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:11,295 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:11,299 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:11,300 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:11,300 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:11,301 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:11,301 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:11,302 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:11,302 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:11,302 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:11,303 - __main__ - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-12 07:04:11,303 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:12,344 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:12,346 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:12,350 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:12,351 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:12,351 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:12,352 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:12,352 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:12,352 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:12,353 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:12,353 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:12,353 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:12,353 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:12,354 - __main__ - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-12 07:04:12,354 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:12,355 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:12,357 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:12,359 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:12,360 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:12,360 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:12,361 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:12,361 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:12,361 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:12,361 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:12,361 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:12,361 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:12,362 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:12,362 - __main__ - INFO - Player N/A in seat 5 assigned position: CO
+2025-06-12 07:04:12,362 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:12,362 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:04:13,363 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:14,759 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:14,760 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:14,763 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:14,764 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:14,766 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:14,766 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:14,767 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:14,767 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:14,768 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:14,768 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:14,769 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:14,769 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:14,769 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:14,770 - __main__ - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-12 07:04:14,795 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:14,796 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:14,799 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:14,799 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:14,800 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:14,800 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:14,801 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:14,801 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:14,802 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:14,802 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:14,803 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:14,803 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:14,803 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:14,804 - __main__ - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-12 07:04:14,804 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:14,807 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:14,809 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:14,816 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:14,817 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:14,818 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:14,818 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:14,819 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:14,819 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:14,819 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:14,820 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:14,820 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:14,821 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:14,821 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:14,821 - __main__ - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-12 07:04:15,894 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:15,895 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:15,903 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:15,903 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:15,904 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:15,904 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:15,904 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:15,905 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:15,905 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:15,905 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:15,906 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:15,906 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:15,906 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:15,906 - __main__ - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-12 07:04:15,906 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:15,907 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:15,910 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:15,910 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:15,911 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:15,911 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:15,912 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:15,912 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:15,913 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:15,913 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:15,913 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:15,913 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:15,914 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:15,914 - __main__ - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-12 07:04:15,914 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:04:16,915 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:18,310 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:18,311 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:18,316 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:18,317 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:18,318 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:18,319 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:18,319 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:18,320 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:18,320 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:18,320 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:18,321 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:18,321 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:18,322 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:18,322 - __main__ - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-12 07:04:18,335 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:18,337 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:18,340 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:18,340 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:18,341 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:18,342 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:18,342 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:18,343 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:18,343 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:18,344 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:18,344 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:18,344 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:18,344 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:18,344 - __main__ - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-12 07:04:18,345 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:18,350 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:18,352 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:18,355 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:18,356 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:18,356 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:18,357 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:18,357 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:18,357 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:18,358 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:18,358 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:18,358 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:18,358 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:18,358 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:18,359 - __main__ - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-12 07:04:19,380 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:19,382 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:19,385 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:19,386 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:19,387 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:19,387 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:19,387 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:19,387 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:19,388 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:19,388 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:19,389 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:19,389 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:19,389 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:19,389 - __main__ - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-12 07:04:19,390 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:19,391 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:19,393 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:19,393 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:19,394 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:19,394 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:19,395 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:19,395 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:19,395 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:19,396 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:19,396 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:19,397 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:19,397 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:19,398 - __main__ - INFO - Player N/A in seat 6 assigned position: BTN
+2025-06-12 07:04:19,399 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:04:20,399 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:21,787 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:21,790 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:21,800 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:21,800 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:21,801 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:21,801 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:21,802 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:21,802 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:21,803 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:21,803 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:21,803 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:21,804 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:21,805 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:21,805 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:21,837 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:21,839 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:21,844 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:21,845 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:21,846 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:21,847 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:21,847 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:21,848 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:21,849 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:21,849 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:21,850 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:21,851 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:21,852 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:21,852 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:21,852 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:21,855 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:21,857 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:21,859 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:21,860 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:21,861 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:21,861 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:21,862 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:21,862 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:21,863 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:21,863 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:21,863 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:21,864 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:21,864 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:21,864 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:22,912 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:22,913 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:22,918 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:22,919 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:22,921 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:22,921 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:22,921 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:22,922 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:22,922 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:22,922 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:22,922 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:22,923 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:22,923 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:22,923 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:22,923 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:22,925 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:22,927 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:22,927 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:22,928 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:22,928 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:22,928 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:22,928 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:22,929 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:22,929 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:22,929 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:22,929 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:22,930 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:22,930 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:22,931 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:04:23,931 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:25,322 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:25,324 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:25,327 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:25,328 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:25,329 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:25,330 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:25,331 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:25,331 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:25,332 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:25,333 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:25,333 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:25,334 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:25,334 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:25,334 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:25,346 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:25,348 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:25,352 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:25,352 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:25,353 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:25,354 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:25,354 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:25,354 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:25,355 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:25,355 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:25,356 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:25,356 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:25,356 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:25,357 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:25,357 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:25,360 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:25,361 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:25,363 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:25,364 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:25,365 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:25,365 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:25,366 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:25,366 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:25,367 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:25,367 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:25,367 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:25,367 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:25,368 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:25,368 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:26,411 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:26,412 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:26,417 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:26,418 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:26,420 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:26,421 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:26,421 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:26,422 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:26,423 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:26,423 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:26,423 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:26,423 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:26,424 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:26,424 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:26,425 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:26,425 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'tagis1', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'flop', 'position': 'BTN', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 3}
+2025-06-12 07:04:26,425 - __main__ - INFO - Creating new profile for opponent: tagis1
+2025-06-12 07:04:26,425 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'N/A', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'flop', 'position': 'SB', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 4}
+2025-06-12 07:04:26,426 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'SlaviusV', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'flop', 'position': 'BB', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 5}
+2025-06-12 07:04:26,426 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'FeDoRcA1', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'flop', 'position': 'CO', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 6}
+2025-06-12 07:04:26,426 - __main__ - INFO - Creating new profile for opponent: FeDoRcA1
+2025-06-12 07:04:26,426 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Iplayer88', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'flop', 'position': 'UTG', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 7}
+2025-06-12 07:04:26,427 - __main__ - INFO - Creating new profile for opponent: Iplayer88
+2025-06-12 07:04:26,427 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'warriorwonder25', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'flop', 'position': 'MP', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 8}
+2025-06-12 07:04:26,428 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:26,432 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:26,433 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:26,434 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:26,435 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:26,435 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:26,435 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:26,435 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:26,436 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:26,436 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:26,436 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:26,436 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:26,436 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:26,436 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:04:27,437 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:28,837 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:28,839 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:28,847 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:28,848 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:28,849 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:28,850 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:28,850 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:28,850 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:28,851 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:28,851 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:28,851 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:28,851 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:28,852 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:28,852 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:28,867 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:28,870 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:28,873 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:28,874 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:28,875 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:28,875 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:28,875 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:28,875 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:28,876 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:28,876 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:28,877 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:28,877 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:28,877 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:28,878 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:28,878 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:28,881 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:28,883 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:28,887 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:28,887 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:28,888 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:28,888 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:28,888 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:28,888 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:28,889 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:28,889 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:28,889 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:28,890 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:28,890 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:28,890 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:30,051 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:30,052 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:30,055 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:30,056 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:30,057 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:30,057 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:30,057 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:30,057 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:30,058 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:30,058 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:30,058 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:30,059 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:30,059 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:30,060 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:30,060 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:30,061 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:30,065 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:30,066 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:30,067 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:30,067 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:30,068 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:30,068 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:30,068 - __main__ - INFO - Player N/A in seat 1 assigned position: SB
+2025-06-12 07:04:30,068 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:30,069 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:30,069 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:30,069 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:30,070 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:30,070 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:04:31,071 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:32,458 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:32,460 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:32,463 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:32,464 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:32,465 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:32,466 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:32,467 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:32,468 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:32,469 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:32,470 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:32,470 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:32,470 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:32,471 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:32,471 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:32,486 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:32,489 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:32,493 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:32,494 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:32,495 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:32,495 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:32,496 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:32,496 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:32,497 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:32,497 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:32,498 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:32,498 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:32,500 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:32,501 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:32,502 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:32,508 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:32,510 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:32,512 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:32,513 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:32,514 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:32,514 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:32,515 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:32,516 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:32,517 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:32,518 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:32,518 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:32,519 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:32,520 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:32,521 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:33,592 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:33,593 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:33,596 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:33,596 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:33,597 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:33,598 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:33,599 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:33,600 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:33,600 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:33,600 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:33,601 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:33,601 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:33,602 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:33,602 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:33,603 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:33,603 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'VESNA1967', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'flop', 'position': 'SB', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 9}
+2025-06-12 07:04:33,604 - __main__ - INFO - Creating new profile for opponent: VESNA1967
+2025-06-12 07:04:33,605 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:33,608 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:33,608 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:33,609 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:33,609 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:33,609 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:33,610 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:33,610 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:33,610 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:33,611 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:33,611 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:33,611 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:33,612 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:33,612 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:04:34,613 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:36,006 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:36,008 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:36,011 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:36,012 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:36,013 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:36,014 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:36,015 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:36,016 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:36,016 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:36,017 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:36,017 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:36,017 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:36,018 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:36,019 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:36,032 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:36,034 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:36,036 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:36,037 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:36,038 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:36,038 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:36,039 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:36,039 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:36,039 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:36,039 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:36,040 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:36,040 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:36,040 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:36,041 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:36,041 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:36,043 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:36,045 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:36,047 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:36,048 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:36,049 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:36,050 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:36,050 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:36,050 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:36,050 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:36,051 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:36,051 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:36,051 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:36,052 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:36,052 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:37,056 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:37,057 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:37,060 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:37,060 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:37,062 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:37,062 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:37,063 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:37,063 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:37,064 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:37,065 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:37,065 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:37,065 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:37,066 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:37,066 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:37,066 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:37,069 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:37,074 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:37,074 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:37,076 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:37,076 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:37,077 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:37,077 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:37,077 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:37,078 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:37,079 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:37,079 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:37,079 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:37,079 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:37,080 - __main__ - INFO - My turn to act.
+2025-06-12 07:04:37,080 - __main__ - WARNING - Config 'big_blind' is None from settings, using default 0.02 for this decision cycle.
+2025-06-12 07:04:37,081 - __main__ - WARNING - Config 'small_blind' is None from settings, using default 0.01 for this decision cycle.
+2025-06-12 07:04:37,193 - __main__ - INFO - Decision: check
+2025-06-12 07:04:37,666 - __main__ - INFO - Recorded bot action to action_history: {'player_id': 'warriorwonder25', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'flop', 'is_bot': True, 'sequence': 10, 'hand_id': '11506900115'}
+2025-06-12 07:04:40,167 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:41,565 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:41,566 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:41,570 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:41,571 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:41,572 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:41,573 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:41,573 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:41,573 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:41,574 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:41,574 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:41,574 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:41,575 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:41,575 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:41,575 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:41,594 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:41,595 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:41,599 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:41,600 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:41,600 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:41,601 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:41,601 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:41,602 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:41,602 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:41,603 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:41,603 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:41,603 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:41,603 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:41,604 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:41,604 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:41,609 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:41,610 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:41,612 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:41,612 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:41,613 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:41,613 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:41,614 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:41,614 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:41,615 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:41,615 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:41,615 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:41,616 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:41,616 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:41,616 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:42,706 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:42,709 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:42,712 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:42,713 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:42,714 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:42,714 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:42,715 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:42,716 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:42,716 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:42,716 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:42,717 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:42,717 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:42,718 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:42,718 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:42,719 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:42,719 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'tagis1', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'BTN', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 11}
+2025-06-12 07:04:42,720 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'VESNA1967', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'SB', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 12}
+2025-06-12 07:04:42,721 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'N/A', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'BB', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 13}
+2025-06-12 07:04:42,721 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'FeDoRcA1', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'CO', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 14}
+2025-06-12 07:04:42,721 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Iplayer88', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'UTG', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 15}
+2025-06-12 07:04:42,722 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'warriorwonder25', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'MP', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 16}
+2025-06-12 07:04:42,724 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:42,727 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:42,728 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:42,729 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:42,730 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:42,731 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:42,731 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:42,732 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:42,733 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:42,734 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:42,735 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:42,735 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:42,736 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:42,737 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:04:43,737 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:45,128 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:45,129 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:45,133 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:45,134 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:45,135 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:45,135 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:45,135 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:45,136 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:45,137 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:45,137 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:45,137 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:45,138 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:45,139 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:45,139 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:45,153 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:45,154 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:45,157 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:45,158 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:45,159 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:45,159 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:45,159 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:45,160 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:45,160 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:45,160 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:45,160 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:45,161 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:45,161 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:45,161 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:45,161 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:45,165 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:45,167 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:45,170 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:45,171 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:45,171 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:45,172 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:45,172 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:45,172 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:45,173 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:45,173 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:45,173 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:45,173 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:45,174 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:45,174 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:46,263 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:46,265 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:46,269 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:46,269 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:46,270 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:46,271 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:46,271 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:46,271 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:46,271 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:46,272 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:46,272 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:46,272 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:46,272 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:46,273 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:46,273 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:46,273 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'SlaviusV', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'position': 'BB', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 17}
+2025-06-12 07:04:46,274 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:46,277 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:46,277 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:46,278 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:46,279 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:46,279 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:46,279 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:46,280 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:46,280 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:46,280 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:46,280 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:46,281 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:46,281 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:46,282 - __main__ - INFO - My turn to act.
+2025-06-12 07:04:46,282 - __main__ - WARNING - Config 'big_blind' is None from settings, using default 0.02 for this decision cycle.
+2025-06-12 07:04:46,283 - __main__ - WARNING - Config 'small_blind' is None from settings, using default 0.01 for this decision cycle.
+2025-06-12 07:04:46,397 - __main__ - INFO - Decision: check
+2025-06-12 07:04:46,867 - __main__ - INFO - Recorded bot action to action_history: {'player_id': 'warriorwonder25', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'turn', 'is_bot': True, 'sequence': 18, 'hand_id': '11506900115'}
+2025-06-12 07:04:49,368 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:50,748 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:50,750 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:50,754 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:50,754 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:50,755 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:50,755 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:50,756 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:50,756 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:50,757 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:50,757 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:50,758 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:50,758 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:50,758 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:50,759 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:50,775 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:50,776 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:50,779 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:50,779 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:50,781 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:50,781 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:50,781 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:50,781 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:50,782 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:50,783 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:50,783 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:50,784 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:50,784 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:50,785 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:50,785 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:50,788 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:50,790 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:50,794 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:50,794 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:50,795 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:50,796 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:50,796 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:50,796 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:50,796 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:50,797 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:50,797 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:50,797 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:50,797 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:50,798 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:51,757 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:51,759 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:51,763 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:51,763 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:51,765 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:51,765 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:51,766 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:51,766 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:51,767 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:51,767 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:51,768 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:51,768 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:51,768 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:51,769 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:51,769 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:51,770 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'tagis1', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'BTN', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 19}
+2025-06-12 07:04:51,770 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'VESNA1967', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'SB', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 20}
+2025-06-12 07:04:51,770 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'N/A', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'BB', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 21}
+2025-06-12 07:04:51,771 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'FeDoRcA1', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'CO', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 22}
+2025-06-12 07:04:51,771 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'Iplayer88', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'UTG', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 23}
+2025-06-12 07:04:51,771 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'warriorwonder25', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'MP', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 24}
+2025-06-12 07:04:51,773 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:51,775 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:51,775 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:51,776 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:51,776 - __main__ - INFO - Successfully identified active player: N/A
+2025-06-12 07:04:51,777 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:51,777 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:51,777 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:51,777 - __main__ - INFO - Player N/A in seat 2 assigned position: BB
+2025-06-12 07:04:51,778 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:51,778 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:51,778 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:51,778 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:51,778 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-12 07:04:52,779 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:54,182 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:54,184 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:54,186 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:54,187 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:54,188 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:54,188 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:54,189 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:54,189 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:54,190 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:54,190 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:54,190 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:54,190 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:54,191 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:54,191 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:54,205 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:54,207 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:54,219 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:54,219 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:54,221 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:54,221 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:54,221 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:54,222 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:54,222 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:54,223 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:54,223 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:54,223 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:54,223 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:54,224 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:54,224 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:54,228 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:54,229 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:54,234 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:54,235 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:54,236 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:54,236 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:54,237 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:54,237 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:54,237 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:54,238 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:54,238 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:54,238 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:54,239 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:54,239 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:55,299 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:55,302 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:55,304 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:55,305 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:55,306 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:55,306 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:55,306 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:55,311 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:55,311 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:55,312 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:55,312 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:55,313 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:55,313 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:55,314 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:55,315 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:55,316 - __main__ - INFO - Added parsed opponent action to history: {'player_id': 'SlaviusV', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'position': 'BB', 'is_bot': False, 'hand_id': '11506900115', 'sequence': 25}
+2025-06-12 07:04:55,318 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:55,323 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:55,324 - __main__ - INFO - Found 3 potential action elements.
+2025-06-12 07:04:55,325 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:55,325 - __main__ - INFO - Successfully identified active player: warriorwonder25
+2025-06-12 07:04:55,325 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:55,325 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:55,326 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:55,326 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:55,326 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:55,326 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:55,326 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:55,327 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:55,327 - __main__ - INFO - My turn to act.
+2025-06-12 07:04:55,327 - __main__ - WARNING - Config 'big_blind' is None from settings, using default 0.02 for this decision cycle.
+2025-06-12 07:04:55,327 - __main__ - WARNING - Config 'small_blind' is None from settings, using default 0.01 for this decision cycle.
+2025-06-12 07:04:55,446 - __main__ - INFO - Decision: check
+2025-06-12 07:04:55,916 - __main__ - INFO - Recorded bot action to action_history: {'player_id': 'warriorwonder25', 'action_type': 'CHECK', 'amount': 0.0, 'street': 'river', 'is_bot': True, 'sequence': 26, 'hand_id': '11506900115'}
+2025-06-12 07:04:58,417 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-12 07:04:59,807 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:59,808 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:59,811 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:59,811 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:59,811 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:59,812 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:59,812 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:59,812 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:59,812 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:59,812 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:59,812 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:59,813 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:59,813 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:59,813 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:59,830 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:59,833 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:59,837 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:59,837 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:59,838 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:59,839 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:59,839 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:59,839 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:59,840 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:59,840 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:59,840 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:59,841 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:59,842 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:59,843 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:04:59,844 - __main__ - WARNING - Bot player name not configured; skipping self-exclusion in action parsing.
+2025-06-12 07:04:59,846 - __main__ - INFO - Found visible dealer button at seat 6
+2025-06-12 07:04:59,847 - __main__ - INFO - Found 6 'div.player-area' elements to process.
+2025-06-12 07:04:59,851 - __main__ - INFO - Found actions area. Analyzing buttons...
+2025-06-12 07:04:59,851 - __main__ - INFO - Found 0 potential action elements.
+2025-06-12 07:04:59,852 - __main__ - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-12 07:04:59,853 - __main__ - INFO - No player identified as active in this parse.
+2025-06-12 07:04:59,853 - __main__ - INFO - Using dealer position: 6
+2025-06-12 07:04:59,854 - __main__ - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-12 07:04:59,854 - __main__ - INFO - Player VESNA1967 in seat 1 assigned position: SB
+2025-06-12 07:04:59,854 - __main__ - INFO - Player SlaviusV in seat 2 assigned position: BB
+2025-06-12 07:04:59,855 - __main__ - INFO - Player Iplayer88 in seat 3 assigned position: UTG
+2025-06-12 07:04:59,855 - __main__ - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-12 07:04:59,855 - __main__ - INFO - Player FeDoRcA1 in seat 5 assigned position: CO
+2025-06-12 07:04:59,856 - __main__ - INFO - Player tagis1 in seat 6 assigned position: BTN
+2025-06-12 07:05:00,319 - __main__ - INFO - Poker Bot stopped by user (KeyboardInterrupt).
+2025-06-12 07:05:00,320 - __main__ - INFO - Poker Bot - Main Loop Ended
+2025-06-12 07:05:00,321 - __main__ - INFO - Closing logger handlers.
