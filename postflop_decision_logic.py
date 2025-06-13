@@ -275,14 +275,14 @@ def make_postflop_decision(
     if ADVANCED_MODULES_AVAILABLE:
         try:
             if community_cards is not None: # Ensure community_cards is not None
-                board_analyzer = EnhancedBoardAnalyzer(community_cards)
-                board_texture_analysis = board_analyzer.analyze_board_texture()
+                board_analyzer = EnhancedBoardAnalyzer()
+                board_texture_analysis = board_analyzer.analyze_board(community_cards)
                 board_texture = board_texture_analysis.get('overall_texture', 'unknown')
                 logger.debug(f"Advanced board analysis: {board_texture_analysis}")
             else:
                 logger.warning("Community cards are None, cannot perform advanced board analysis.")
         except NameError: # EnhancedBoardAnalyzer might not be defined if import failed silently
-             logger.warning("EnhancedBoardAnalyzer not available for advanced board analysis.")
+            logger.warning("EnhancedBoardAnalyzer not available for advanced board analysis.")
         except Exception as e:
             logger.warning(f"Could not perform advanced board analysis: {e}")
     else: # Fallback basic board texture
@@ -291,16 +291,11 @@ def make_postflop_decision(
             if len(set(suits)) <= 2 and len(suits) >=3 : board_texture = "wet_flush_possible"
         logger.debug(f"Basic board texture (placeholder): {board_texture}")
 
-
     if ENHANCED_MODULES_AVAILABLE and _get_fixed_opponent_analysis_func and opponent_tracker:
         try:
             final_opponent_analysis = _get_fixed_opponent_analysis_func(
                 opponent_tracker=opponent_tracker, 
-                all_players_data=all_players_raw_data, 
-                current_street=street,
-                active_opponents_count=active_opponents_count,
-                pot_size=pot_size,
-                action_history=action_history 
+                active_opponents_count=active_opponents_count
             )
             if not isinstance(final_opponent_analysis, dict): # Ensure it's a dict
                 logger.warning(f"Opponent analysis returned non-dict: {final_opponent_analysis}. Using default.")
@@ -315,23 +310,40 @@ def make_postflop_decision(
             final_opponent_analysis = {'table_type': 'unknown', 'is_weak_passive': False, 'fold_to_cbet': 0.5}
     else:
         logger.warning("Enhanced opponent analysis not available or opponent_tracker missing.")
-
+    
     try:
-        hand_strength_final_decision = determine_final_decision_hand_strength(
-            numerical_hand_rank=numerical_hand_rank, hand_description=hand_description,
-            community_cards=community_cards, street=street, win_probability=win_probability, spr=spr,
-            opponent_analysis_data=final_opponent_analysis, action_history=action_history,
-            board_texture=board_texture # Pass board_texture
-        )
-        logger.debug(f"Determined final hand strength: {hand_strength_final_decision}")
+        if _classify_hand_strength_basic_func:
+            hand_strength_final_decision, hand_details = _classify_hand_strength_basic_func(
+                numerical_hand_rank=numerical_hand_rank,
+                win_probability=win_probability,
+                board_texture=board_texture,
+                position=position
+            )
+            logger.debug(f"Determined final hand strength: {hand_strength_final_decision}")
+        else:
+            # Fallback classification
+            if numerical_hand_rank >= VERY_STRONG_HAND_THRESHOLD: 
+                hand_strength_final_decision = "very_strong"
+            elif numerical_hand_rank >= STRONG_HAND_THRESHOLD: 
+                hand_strength_final_decision = "strong"
+            elif numerical_hand_rank >= MEDIUM_HAND_THRESHOLD: 
+                hand_strength_final_decision = "medium"
+            elif community_cards and my_player_data.get('hand') and is_drawing_hand(win_probability, numerical_hand_rank, street):
+                hand_strength_final_decision = "drawing"
+            else: 
+                hand_strength_final_decision = "weak_made"
     except Exception as e:
         logger.error(f"Error determining final hand strength: {e}")
-        if numerical_hand_rank >= VERY_STRONG_HAND_THRESHOLD: hand_strength_final_decision = "very_strong"
-        elif numerical_hand_rank >= STRONG_HAND_THRESHOLD: hand_strength_final_decision = "strong"
-        elif numerical_hand_rank >= MEDIUM_HAND_THRESHOLD: hand_strength_final_decision = "medium"
-        elif community_cards and my_player_data.get('hand') and is_drawing_hand(my_player_data.get('hand', []), community_cards):
+        if numerical_hand_rank >= VERY_STRONG_HAND_THRESHOLD: 
+            hand_strength_final_decision = "very_strong"
+        elif numerical_hand_rank >= STRONG_HAND_THRESHOLD: 
+            hand_strength_final_decision = "strong"
+        elif numerical_hand_rank >= MEDIUM_HAND_THRESHOLD: 
+            hand_strength_final_decision = "medium"
+        elif community_cards and my_player_data.get('hand') and is_drawing_hand(win_probability, numerical_hand_rank, street):
             hand_strength_final_decision = "drawing"
-        else: hand_strength_final_decision = "weak_made"
+        else: 
+            hand_strength_final_decision = "weak_made"
 
     is_very_strong = hand_strength_final_decision == "very_strong"
     is_strong = hand_strength_final_decision == "strong"
