@@ -9,7 +9,7 @@ import random # Added for bluffing randomization
 
 logger = logging.getLogger(__name__) # Use module's name for the logger
 
-# Constants for actions (consider moving to a shared constants file)
+# Constants for actions (consider moving to a shared constants                if can_make_valid_raise and (hand_category in ["Suited Ace", "Suited Broadway"] or (hand_category == "Medium Pair" and "99" in str(my_player.get('hand','')))):  # Note: 99 is now in Strong Pair, but keeping this logic for 88,77file)
 ACTION_FOLD = 'fold'
 ACTION_CHECK = 'check'
 ACTION_CALL = 'call'
@@ -330,13 +330,10 @@ def make_preflop_decision(
             return action_check_const, 0
         else: 
             logger.warning(f"Premium Pair in unexpected fold situation. B2C:{bet_to_call}, MyStack:{my_stack} Action: FOLD")
-            return action_fold_const, 0
-
-
-    # --- STRONG HANDS (AKs, AKo, AQs, JJ, TT) ---
+            return action_fold_const, 0    # --- STRONG HANDS (AKs, AKo, AQs, AQo, JJ, TT, 99) ---
     is_strong_hand = hand_category in ["Strong Pair"] or \
                      (hand_category == "Suited Ace" and any(h in str(my_player.get('hand','')) for h in ["AKs", "AQs"])) or \
-                     (hand_category == "Offsuit Ace" and "AKo" in str(my_player.get('hand','')))
+                     (hand_category == "Offsuit Ace" and any(h in str(my_player.get('hand','')) for h in ["AKo", "AQo"]))
 
     if is_strong_hand:
         actual_raise_amount = raise_amount_calculated
@@ -411,24 +408,18 @@ def make_preflop_decision(
         if bet_to_call == 0 and can_check: return action_check_const, 0
         if bet_to_call > 0 and bet_to_call < my_stack: return action_call_const, bet_to_call
         if bet_to_call >= my_stack and bet_to_call > 0 : return action_call_const, my_stack 
-        return action_fold_const, 0
-
-
-    # --- MEDIUM STRENGTH HANDS (AQo, AJs, KQs, ATs, KJs, QJs, 99, 88, 77) ---
-    is_medium_hand = hand_category in ["Medium Pair", "Suited Playable"] or \
-                     (hand_category == "Offsuit Ace" and "AQo" in str(my_player.get('hand',''))) or \
+        return action_fold_const, 0    # --- MEDIUM STRENGTH HANDS (AJs, ATs, KQs, KJs, QJs, JTs, 88, 77) ---
+    is_medium_hand = hand_category in ["Medium Pair"] or \
                      (hand_category == "Suited Ace" and any(h in str(my_player.get('hand','')) for h in ["AJs", "ATs"])) or \
-                     (hand_category == "Suited King" and any(h in str(my_player.get('hand','')) for h in ["KQs", "KJs"])) or \
-                     (hand_category == "Playable Broadway" and "QJs" in str(my_player.get('hand','')))
-
-    # Apply range widening to consider more hands as medium strength
+                     (hand_category == "Suited Broadway" and any(h in str(my_player.get('hand','')) for h in ["KQs", "KJs", "QJs", "JTs"]))    # Apply range widening to consider more hands as medium strength
     if effective_range_widening > 0 and not is_medium_hand:
         # Widening the medium hand range based on aggression factor
         if ((hand_category == "Suited Ace" and "A9s" in str(my_player.get('hand',''))) or
             (hand_category == "Suited Playable" and any(h in str(my_player.get('hand','')) for h in ["KTs", "QTs", "JTs"])) or
             (hand_category == "Suited Connector" and position in ['BTN', 'CO', 'SB']) or
             (hand_category == "Small Pair" and position in ['BTN', 'CO']) or
-            (hand_category == "Offsuit Broadway" and any(h in str(my_player.get('hand','')) for h in ["KQo", "AJo"])) or
+            (hand_category == "Offsuit Broadway" and any(h in str(my_player.get('hand','')) for h in ["KQo", "KJo", "QJo", "JTo"])) or
+            (hand_category == "Offsuit Ace" and any(h in str(my_player.get('hand','')) for h in ["AJo", "ATo"])) or
             random.random() < bluff_frequency * 0.5):  # Small chance to consider marginal hands as medium
             is_medium_hand = True
             logger.info(f"Range widening: Treating {hand_category} as medium strength hand due to aggression factor")
@@ -484,7 +475,7 @@ def make_preflop_decision(
                 should_3bet_bluff = True
             
             # Specific hands good for semi-bluff 3-betting (blockers, playability)
-            can_semi_bluff_3bet_hand = hand_category in ["Suited Ace", "Suited King"] or \
+            can_semi_bluff_3bet_hand = hand_category in ["Suited Ace", "Suited Broadway"] or \
                                       (hand_category == "Medium Pair" and any(p in str(my_player.get('hand','')) for p in ["99","88","77"])) or \
                                       (hand_category == "Suited Playable" and any(h in str(my_player.get('hand','')) for h in ["KQs", "QJs"])) 
 
@@ -527,7 +518,7 @@ def make_preflop_decision(
                         return action_raise_const, actual_raise_amount
                 
                 # Call 3-bet with AQ, 99, 88, sometimes 77, AJs, KQs if opponent is loose or we have position/deep stacks
-                if hand_category in ["Offsuit Ace", "Medium Pair"] or (hand_category == "Suited Ace" and "AJs" in str(my_player.get('hand',''))) or (hand_category == "Suited King" and "KQs" in str(my_player.get('hand',''))):
+                if hand_category in ["Offsuit Ace", "Medium Pair"] or (hand_category == "Suited Ace" and "AJs" in str(my_player.get('hand',''))) or (hand_category == "Suited Broadway" and any(h in str(my_player.get('hand','')) for h in ["KQs", "KJs", "QJs"])):
                     if raiser_player_type in ["loose_aggressive", "maniac"] or (three_bet_stat is not None and three_bet_stat > 8):
                         if position != 'SB': # Avoid calling 3bets OOP from SB too often
                             can_call_3bet = True
