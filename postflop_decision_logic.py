@@ -316,8 +316,8 @@ def make_postflop_decision(
             hand_strength_final_decision, hand_details = _classify_hand_strength_basic_func(
                 numerical_hand_rank=numerical_hand_rank,
                 win_probability=win_probability,
-                board_texture=board_texture,
-                position=position
+                street=street,
+                board_texture=board_texture
             )
             logger.debug(f"Determined final hand strength: {hand_strength_final_decision}")
         else:
@@ -360,7 +360,7 @@ def make_postflop_decision(
         try:
             spr_strategy_result = _get_spr_strategy_recommendation_func( # Renamed to avoid conflict
                 spr=spr, hand_strength=hand_strength_final_decision, street=street,
-                pot_size=pot_size, effective_stack=my_stack
+                position=position, opponent_count=active_opponents_count, board_texture=board_texture
             )
             if isinstance(spr_strategy_result, dict): spr_strategy = spr_strategy_result
             
@@ -390,7 +390,7 @@ def make_postflop_decision(
                 if should_check_flag:
                     logger.info(f"Decision: {action_check_const} (Very strong hand, checking because: {check_reason})")
                     return action_check_const, 0
-            bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="value_bet_very_strong")
+            bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
             logger.info(f"Decision: {action_raise_const} {bet_amount} (Very strong hand, value bet)")
             return action_raise_const, bet_amount
         
@@ -400,7 +400,7 @@ def make_postflop_decision(
                 if should_check_flag:
                     logger.info(f"Decision: {action_check_const} (Strong hand, checking because: {check_reason})")
                     return action_check_const, 0
-            bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="value_bet_strong")
+            bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
             logger.info(f"Decision: {action_raise_const} {bet_amount} (Strong hand, value bet)")
             return action_raise_const, bet_amount
 
@@ -418,8 +418,7 @@ def make_postflop_decision(
                 if win_probability > (0.45 / (active_opponents_count or 1)) or random.random() < continuation_bet_frequency:
                     can_bet_medium = True
                     bet_purpose_detail = "continuation bet"
-                    bet_factor = 0.65 * effective_aggression  # More aggressive
-                else:
+                    bet_factor = 0.65 * effective_aggression  # More aggressive                else:
                     logger.info(f"Medium hand not strong enough for c-bet, checking.")
                     can_bet_medium = False
             else:
@@ -436,9 +435,11 @@ def make_postflop_decision(
                     bet_factor = 0.5  # Smaller bet for bluffs
             
             if can_bet_medium:
+                # Convert purpose to bluff boolean for get_dynamic_bet_size
+                is_bluff = "bluff" in bet_purpose_detail.lower()
                 bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, 
                                                street, big_blind_amount, active_opponents_count, 
-                                               purpose=bet_purpose_detail)
+                                               bluff=is_bluff)
                 
                 # Adjust bet sizing based on aggression factor
                 bet_amount = min(my_stack, bet_amount * bet_factor)
@@ -469,7 +470,7 @@ def make_postflop_decision(
                     logger.info(f"Semi-bluff triggered by aggression settings (eff. aggression: {effective_aggression})")
 
                 if can_semi_bluff_cbet:
-                    bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True, purpose=f"semi_bluff_cbet_on_{street}")
+                    bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                     # Scale bet size with aggression factor for draws
                     bet_amount = min(my_stack, bet_amount * (0.8 + (effective_aggression * 0.1)))
                     logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Drawing hand, PFR semi-bluff c-bet on {street})")
@@ -480,7 +481,7 @@ def make_postflop_decision(
             else: 
                 # Even if not preflop raiser, occasionally semi-bluff with draws in position
                 if position in ['BTN', 'CO'] and win_probability > 0.25 and random.random() < semi_bluff_frequency * 0.7:
-                    bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True, purpose=f"position_semi_bluff_on_{street}")
+                    bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                     bet_amount = min(my_stack, bet_amount * 0.65)  # Smaller bet when not PFR
                     logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Drawing hand, non-PFR position semi-bluff on {street})")
                     return action_raise_const, bet_amount
@@ -499,7 +500,7 @@ def make_postflop_decision(
                     can_bluff = True
             
             if can_bluff: 
-                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True, purpose=f"pure_cbet_bluff_on_{street}")
+                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                 logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Weak made hand, PFR {log_message_detail_prefix}bluffing on {street} due to high opponent fold rate)")
                 return action_raise_const, bet_amount
             else:
@@ -572,7 +573,7 @@ def make_postflop_decision(
                 logger.debug(f"Donk bettor ({last_aggressor_on_street}) profile: Donk freq on {street}: {donk_bet_freq:.2f}, Fold to raise after donk: {fold_to_raise_after_donk:.2f}")
 
                 if is_very_strong:
-                    raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="raise_vs_donk_value_very_strong", bet_to_call=bet_to_call, opponent_profile=aggressor_profile)
+                    raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
                     logger.info(f"Decision: {action_raise_const} {raise_amount} (Very strong hand vs donk bet)")
                     return action_raise_const, raise_amount
                 elif is_strong:
@@ -581,7 +582,7 @@ def make_postflop_decision(
                         logger.info(f"Decision: {action_call_const} (Strong hand vs sticky donk bettor, high SPR, calling to keep bluffs in or evaluate further)")
                         return action_call_const, bet_to_call
                     else:
-                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="raise_vs_donk_value_strong", bet_to_call=bet_to_call, opponent_profile=aggressor_profile)
+                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
                         # More aggressive sizing
                         raise_amount = min(my_stack, raise_amount * (1.0 + (effective_aggression - 1.0) * 0.2))
                         logger.info(f"Decision: {action_raise_const} {raise_amount} (Strong hand vs donk bet, raising for value)")
@@ -590,7 +591,7 @@ def make_postflop_decision(
                     # Consider raising as a bluff if opponent folds often to raises after donking
                     # More aggressive bluffing threshold
                     if fold_to_raise_after_donk > 0.5 or random.random() < bluff_frequency * effective_aggression:
-                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="bluff_raise_vs_donk_medium_hand", bet_to_call=bet_to_call, opponent_profile=aggressor_profile, bluff=True)
+                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                         logger.info(f"Decision: {action_raise_const} {raise_amount} (Medium hand vs donk bet, bluff-raising due to aggression settings)")
                         return action_raise_const, raise_amount
                     # More liberal calling with pot odds
@@ -613,7 +614,7 @@ def make_postflop_decision(
                     logger.debug(f"Drawing hand facing donk bet: Required equity adjusted={required_equity_with_aggression:.2f} (raw={required_equity_to_call:.2f}), Win prob={win_probability:.2f}")
                     
                     if can_semi_bluff_raise:
-                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="semi_bluff_raise_vs_donk_drawing_hand", bet_to_call=bet_to_call, opponent_profile=aggressor_profile, bluff=True)
+                        raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                         logger.info(f"Decision: {action_raise_const} {raise_amount} (Drawing hand vs donk bet, semi-bluff raising)")
                         return action_raise_const, raise_amount
                     elif win_probability >= required_equity_with_aggression:
@@ -659,7 +660,7 @@ def make_postflop_decision(
                 if spr < 1.0 or is_pot_committed: 
                      raise_amount = my_stack 
                 else:
-                    raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="value_raise_general_very_strong", bet_to_call=bet_to_call, opponent_profile=aggressor_profile)
+                    raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
                 logger.info(f"Decision: {action_raise_const} {raise_amount} (Very strong hand, raising for value vs bet)")
                 return action_raise_const, raise_amount
             elif is_strong:
@@ -671,7 +672,7 @@ def make_postflop_decision(
                         logger.info(f"Decision: {action_fold_const} (Strong hand, pot committed but equity too low vs bet, folding)")
                         return action_fold_const, 0
                 if opponent_fold_to_raise_street > 0.5 and win_probability > 0.6: 
-                    raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="value_raise_general_strong", bet_to_call=bet_to_call, opponent_profile=aggressor_profile)
+                    raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
                     logger.info(f"Decision: {action_raise_const} {raise_amount} (Strong hand, raising vs bet due to opponent fold equity)")
                     return action_raise_const, raise_amount
                 elif win_probability > pot_odds_to_call: 
@@ -683,7 +684,7 @@ def make_postflop_decision(
             elif is_medium:
                 is_opponent_passive_value_bettor = opponent_aggression_street < 0.2 and barrels == 0 
                 if opponent_fold_to_raise_street > 0.65 and win_probability < 0.4: 
-                    raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True, purpose="bluff_raise_medium_hand", bet_to_call=bet_to_call, opponent_profile=aggressor_profile)
+                    raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                     logger.info(f"Decision: {action_raise_const} {raise_amount} (Medium hand, bluff-raising bet due to high opponent fold equity)")
                     return action_raise_const, raise_amount
                 if is_opponent_passive_value_bettor and bet_to_call > pot_size * 0.5: 
@@ -705,7 +706,7 @@ def make_postflop_decision(
                     win_probability > 0.25 and opponent_fold_to_raise_street > 0.5 and
                     active_opponents_count <= 2 and spr > 2 and spr < 10 )
                 if can_semibluff_raise:
-                    raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True, purpose="semi_bluff_raise_drawing_hand", bet_to_call=bet_to_call, opponent_profile=aggressor_profile)
+                    raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                     logger.info(f"Decision: {action_raise_const} {raise_amount} (Drawing hand, semi-bluff raising bet)")
                     return action_raise_const, raise_amount
                 if can_call_for_draw:
@@ -722,7 +723,7 @@ def make_postflop_decision(
                      logger.info(f"Decision: {action_call_const} (Weak hand, but pot committed with some equity, calling bet)")
                      return action_call_const, bet_to_call
                 if can_pure_bluff_raise:
-                    raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True, purpose="pure_bluff_raise_weak_hand", bet_to_call=bet_to_call, opponent_profile=aggressor_profile)
+                    raise_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=True)
                     logger.info(f"Decision: {action_raise_const} {raise_amount} (Weak hand, pure bluff-raising bet against suitable opponent)")
                     return action_raise_const, raise_amount
                 else:
@@ -733,13 +734,13 @@ def make_postflop_decision(
         else: # This implies (not can_check originally) AND (bet_to_call == 0)
             logger.warning(f"Unusual state: bet_to_call is 0, but can_check is False. Evaluating bet/fold. Hand strength: {hand_strength_final_decision}")
             if is_very_strong or is_strong:
-                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="forced_bet_strong_hand")
+                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
                 logger.info(f"Decision: {action_raise_const} {bet_amount} (Strong/Very Strong hand, forced to act, betting)")
                 return action_raise_const, bet_amount
             elif is_medium and win_probability > 0.4: # Medium hand, some equity
-                 bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, purpose="forced_bet_medium_hand")
-                 logger.info(f"Decision: {action_raise_const} {bet_amount} (Medium hand, forced to act, betting)")
-                 return action_raise_const, bet_amount
+                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False)
+                logger.info(f"Decision: {action_raise_const} {bet_amount} (Medium hand, forced to act, betting)")
+                return action_raise_const, bet_amount
             else: # Weak, drawing, or medium with low equity
                 logger.info(f"Decision: {action_fold_const} (Weak/Drawing/Low-equity Medium hand, forced to act, cannot check, folding)")
                 return action_fold_const, 0

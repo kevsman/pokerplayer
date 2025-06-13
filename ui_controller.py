@@ -21,13 +21,17 @@ class UIController:
         self.logger = logger
         self.positions = {}
         self.delays = DEFAULT_DELAYS.copy() # Initialize with defaults
-        self.config = {} # Initialize config dictionary
+        self.config = {} # Initialize config dictionary for internal use
+        self.config_object = config_object  # Keep original config object for passing to other components
         
         # If a config_object is passed (e.g. from PokerBot), use it
         if config_object:
             # Assuming config_object has a method to get all settings or is a dict
             if hasattr(config_object, 'get_all_settings'):
                 self.config = config_object.get_all_settings()
+            elif hasattr(config_object, 'settings') and isinstance(config_object.settings, dict):
+                # For Config objects that have a settings attribute
+                self.config = config_object.settings
             elif isinstance(config_object, dict):
                 self.config = config_object
             else:
@@ -265,12 +269,13 @@ class UIController:
                         print("Successfully captured HTML with new capture point!")
                         return html_content
             return None
-        
-        # Test if the captured HTML contains player areas
+          # Test if the captured HTML contains player areas
         if auto_retry:
             try:
                 from html_parser import PokerPageParser
-                parser = PokerPageParser(logger=self.logger, config=self.config) # Pass logger and config
+                # Use the original config object if available, otherwise fall back to self.config dict
+                config_to_pass = self.config_object if self.config_object else self.config
+                parser = PokerPageParser(logger=self.logger, config=config_to_pass) # Pass logger and config object
                 parsed_result = parser.parse_html(html_content)
                 players_data = parsed_result.get('all_players_data', [])
                 
