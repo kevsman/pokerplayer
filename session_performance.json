@@ -1,29 +1,29 @@
 {
-  "session_start_time": 1750015368.4278326,
+  "session_start_time": 1750015511.6644723,
   "hands_played_count": 4,
-  "total_decisions": 6,
-  "final_bankroll": 100.13000000000001,
-  "session_profit": 0.13000000000000966,
+  "total_decisions": 8,
+  "final_bankroll": 100.34,
+  "session_profit": 0.3400000000000034,
   "statistics": {
-    "session_duration_minutes": 1.5467188040415445,
+    "session_duration_minutes": 1.8819764574368796,
     "hands_played": 4,
     "starting_bankroll": 100.0,
-    "current_bankroll": 100.13000000000001,
-    "peak_bankroll": 100.15,
+    "current_bankroll": 100.34,
+    "peak_bankroll": 100.34,
     "valley_bankroll": 100.0,
-    "total_profit": 0.13000000000000966,
-    "net_profit": 0.13000000000000966,
-    "roi_percentage": 0.13000000000000966,
+    "total_profit": 0.3400000000000034,
+    "net_profit": 0.3400000000000034,
+    "roi_percentage": 0.3400000000000034,
     "win_rate": 100.0,
-    "hands_per_hour": 155.16718318344934,
-    "bb_per_hour": 252.14664028389046,
+    "hands_per_hour": 127.52550599217551,
+    "bb_per_hour": 541.9833169288737,
     "vpip": 100.0,
     "pfr": 0.0,
     "aggression_factor": 0.0,
     "decision_breakdown": {
-      "call": 6
+      "call": 8
     },
     "recent_trend": "insufficient_data"
   },
-  "timestamp": "2025-06-15T21:24:21.231017"
+  "timestamp": "2025-06-15T21:27:04.583177"
 }

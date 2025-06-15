@@ -1,0 +1,1271 @@
+2025-06-15 21:25:11,660 - poker_bot - INFO - Logger setup complete.
+2025-06-15 21:25:11,661 - poker_bot - INFO - OpponentTracker initialized.
+2025-06-15 21:25:11,663 - poker_bot - INFO - Enhanced Poker Bot initialized with all improvements
+2025-06-15 21:25:11,664 - poker_bot - INFO - Enhanced Poker Bot - Main Loop Started
+2025-06-15 21:25:13,670 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:25:15,065 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:15,067 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:15,071 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:15,072 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:15,072 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:15,073 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:15,073 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:15,073 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:15,074 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:15,074 - poker_bot - INFO - Player N/A in seat 2 assigned position: MP
+2025-06-15 21:25:15,074 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:15,074 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:15,074 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:15,075 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:15,086 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:15,087 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:15,091 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:15,091 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:15,093 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:15,093 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:15,093 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:15,094 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:15,094 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:15,094 - poker_bot - INFO - Player N/A in seat 2 assigned position: MP
+2025-06-15 21:25:15,095 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:15,095 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:15,096 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:15,096 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:15,098 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:15,099 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:15,104 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:15,106 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:15,106 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:15,107 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:15,107 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:15,107 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:15,108 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:15,108 - poker_bot - INFO - Player N/A in seat 2 assigned position: MP
+2025-06-15 21:25:15,108 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:15,109 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:15,109 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:15,110 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:15,954 - poker_bot - INFO - New hand detected: 11513999038, starting stack: $0.87
+2025-06-15 21:25:15,955 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:25:18,956 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:25:20,344 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:20,345 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:20,349 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:20,349 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:20,350 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:20,351 - poker_bot - INFO - No player identified as active in this parse.
+2025-06-15 21:25:20,352 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:20,352 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:20,352 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:20,353 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:20,353 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:20,353 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:20,353 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:20,354 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:20,381 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:20,383 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:20,388 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:20,389 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:20,390 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:20,390 - poker_bot - INFO - No player identified as active in this parse.
+2025-06-15 21:25:20,390 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:20,391 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:20,391 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:20,391 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:20,391 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:20,391 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:20,392 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:20,392 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:20,395 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:20,396 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:20,399 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:20,400 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:20,403 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:20,404 - poker_bot - INFO - No player identified as active in this parse.
+2025-06-15 21:25:20,404 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:20,405 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:20,405 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:20,405 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:20,405 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:20,406 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:20,406 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:20,407 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:21,505 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:25:24,506 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:25:25,896 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:25,898 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:25,901 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:25,902 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:25,902 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:25,903 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:25,903 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:25,904 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:25,904 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:25,904 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:25,905 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:25,906 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:25,906 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:25,907 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:25,931 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:25,932 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:25,939 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:25,940 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:25,942 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:25,942 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:25,943 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:25,943 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:25,944 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:25,944 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:25,944 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:25,944 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:25,944 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:25,945 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:25,950 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:25,952 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:25,957 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:25,957 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:25,958 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:25,958 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:25,958 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:25,959 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:25,959 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:25,960 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:25,960 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:25,961 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:25,961 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:25,961 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:27,032 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:25:30,033 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:25:31,428 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:31,430 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:31,433 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:31,434 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:25:31,438 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:31,439 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:25:31,439 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:31,439 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:31,439 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:31,440 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:31,440 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:31,440 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:31,440 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:31,440 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:31,481 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:31,482 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:31,486 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:31,489 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:25:31,490 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:31,491 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:25:31,491 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:31,491 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:31,491 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:31,491 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:31,491 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:31,492 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:31,492 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:31,492 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:31,494 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:31,495 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:31,498 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:31,499 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:25:31,499 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:31,500 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:25:31,501 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:31,501 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:31,502 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:31,503 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:31,503 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:31,503 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:31,504 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:31,504 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:32,726 - poker_bot - INFO - Postflop decision: street=preflop, position=BTN, win_probability=0.516, pot_size=0.13, bet_to_call=0.10, can_check=False
+2025-06-15 21:25:32,727 - poker_bot - INFO - Decision: call 0.10 (Enhanced logic: call based on win_prob=0.52, pot_odds=0.43)
+2025-06-15 21:25:33,187 - poker_bot - INFO - Successfully executed: call 0.1
+2025-06-15 21:25:34,989 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:25:36,375 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:36,377 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:36,380 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:36,380 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:36,380 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:36,381 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:36,381 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:36,381 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:36,381 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:36,382 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:36,383 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:36,383 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:36,384 - poker_bot - INFO - Player N/A in seat 5 assigned position: SB
+2025-06-15 21:25:36,387 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:36,430 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:36,431 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:36,436 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:36,437 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:36,439 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:36,440 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:36,441 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:36,441 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:36,441 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:36,442 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:36,442 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:36,443 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:36,443 - poker_bot - INFO - Player N/A in seat 5 assigned position: SB
+2025-06-15 21:25:36,444 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:36,449 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:36,450 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:36,459 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:36,459 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:36,461 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:36,462 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:36,462 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:36,463 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:36,463 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:36,463 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:36,463 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:36,464 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:36,464 - poker_bot - INFO - Player N/A in seat 5 assigned position: SB
+2025-06-15 21:25:36,464 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:37,644 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:25:38,547 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:25:39,946 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:39,948 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:39,951 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:39,953 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:39,955 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:39,956 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:39,956 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:39,956 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:39,956 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:39,957 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:39,957 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:39,957 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:39,957 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:39,957 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:39,991 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:39,994 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:39,997 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:39,997 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:39,998 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:39,998 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:39,999 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:39,999 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:39,999 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:39,999 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:40,000 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:40,000 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:40,000 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:40,000 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:40,004 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:40,006 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:40,009 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:40,009 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:40,010 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:40,011 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:40,011 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:40,012 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:40,012 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:40,012 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:40,012 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:40,013 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:40,013 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:40,014 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:41,128 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:25:42,129 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:25:43,534 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:43,540 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:43,544 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:43,545 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:25:43,547 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:43,548 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:25:43,548 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:43,549 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:43,549 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:43,549 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:43,549 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:43,550 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:43,550 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:43,551 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:43,578 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:43,580 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:43,585 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:43,586 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:25:43,590 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:43,591 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:25:43,591 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:43,592 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:43,592 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:43,592 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:43,592 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:43,593 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:43,593 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:43,594 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:43,598 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:43,600 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:43,608 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:43,609 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:25:43,609 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:43,610 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:25:43,610 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:43,610 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:43,610 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:43,611 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:43,611 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:43,611 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:43,612 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:43,612 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:44,710 - poker_bot - INFO - Postflop decision: street=flop, position=BTN, win_probability=0.695, pot_size=0.23, bet_to_call=0.00, can_check=False
+2025-06-15 21:25:44,711 - poker_bot - INFO - Decision: call 0.00 (Enhanced logic: call based on win_prob=0.69, pot_odds=0.00)
+2025-06-15 21:25:45,190 - poker_bot - INFO - Successfully executed: call 0
+2025-06-15 21:25:46,992 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:25:48,391 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:48,393 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:48,395 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:48,396 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:25:48,398 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:48,398 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:25:48,399 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:48,399 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:48,399 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:48,400 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:48,400 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:48,400 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:48,401 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:48,402 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:48,434 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:48,436 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:48,444 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:48,446 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:25:48,446 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:48,447 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:25:48,447 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:48,448 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:48,448 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:48,449 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:48,449 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:48,450 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:48,450 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:48,451 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:48,459 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:48,461 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:48,466 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:48,467 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:25:48,468 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:48,468 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:25:48,469 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:48,469 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:48,471 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:48,472 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:48,474 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:48,475 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:48,476 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:48,476 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:49,628 - poker_bot - INFO - Postflop decision: street=turn, position=BTN, win_probability=0.586, pot_size=0.23, bet_to_call=0.00, can_check=False
+2025-06-15 21:25:49,629 - poker_bot - INFO - Decision: call 0.00 (Enhanced logic: call based on win_prob=0.59, pot_odds=0.00)
+2025-06-15 21:25:50,105 - poker_bot - INFO - Successfully executed: call 0
+2025-06-15 21:25:51,907 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:25:53,316 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:53,318 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:53,326 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:53,327 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:53,329 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:53,329 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:53,330 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:53,330 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:53,330 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:53,331 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:53,331 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:53,332 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:53,333 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:53,334 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:53,362 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:53,363 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:53,366 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:53,366 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:53,367 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:53,367 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:53,368 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:53,369 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:53,371 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:53,371 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:53,372 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:53,373 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:53,374 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:53,374 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:53,378 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:53,380 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:53,383 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:53,383 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:53,384 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:53,385 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:53,386 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:53,387 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:53,388 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:53,388 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:53,390 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:53,390 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:53,391 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:53,391 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:54,472 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:25:55,375 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:25:56,766 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:56,772 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:56,780 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:56,795 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:56,797 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:56,798 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:56,798 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:56,798 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:56,799 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:56,799 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:56,799 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:56,800 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:56,801 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:56,802 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:56,842 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:56,844 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:56,847 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:56,848 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:56,848 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:56,849 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:56,849 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:56,849 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:56,849 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:56,850 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:56,850 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:56,851 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:56,851 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:56,851 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:56,855 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:25:56,860 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:25:56,865 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:25:56,866 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:25:56,868 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:25:56,869 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:25:56,871 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:25:56,872 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:25:56,872 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:25:56,873 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:25:56,873 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:25:56,874 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:25:56,874 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:25:56,874 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:25:57,925 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:25:58,927 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:00,313 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:26:00,315 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:00,320 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:00,320 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:00,321 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:00,321 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:00,321 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:26:00,322 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:26:00,323 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:26:00,323 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:26:00,323 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:26:00,323 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:26:00,324 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:26:00,325 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:26:00,345 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:26:00,346 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:00,348 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:00,348 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:00,349 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:00,350 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:00,350 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:26:00,350 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:26:00,351 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:26:00,351 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:26:00,352 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:26:00,352 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:26:00,352 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:26:00,353 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:26:00,357 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:26:00,358 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:00,361 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:00,362 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:00,367 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:00,368 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:00,370 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:26:00,370 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:26:00,371 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:26:00,372 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:26:00,372 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:26:00,372 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:26:00,373 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:26:00,374 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:26:01,629 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:26:02,631 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:04,032 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:26:04,033 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:04,040 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:04,042 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:04,043 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:04,044 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:04,045 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:26:04,045 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:26:04,046 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:26:04,046 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:26:04,047 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:26:04,047 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:26:04,048 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:26:04,048 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:26:04,096 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:26:04,097 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:04,102 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:04,105 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:04,108 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:04,109 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:04,109 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:26:04,109 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:26:04,110 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:26:04,110 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:26:04,110 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:26:04,111 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:26:04,111 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:26:04,111 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:26:04,113 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:26:04,116 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:04,124 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:04,125 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:04,127 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:04,127 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:04,128 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:26:04,128 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:26:04,128 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:26:04,129 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:26:04,130 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:26:04,130 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:26:04,130 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:26:04,131 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:26:05,319 - poker_bot - INFO - Postflop decision: street=river, position=BTN, win_probability=0.623, pot_size=0.29, bet_to_call=0.06, can_check=False
+2025-06-15 21:26:05,319 - poker_bot - INFO - Decision: call 0.06 (Enhanced logic: call based on win_prob=0.62, pot_odds=0.17)
+2025-06-15 21:26:05,790 - poker_bot - INFO - Successfully executed: call 0.06
+2025-06-15 21:26:07,592 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:08,997 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:26:09,000 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:09,008 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:09,009 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:09,012 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:09,013 - poker_bot - INFO - No player identified as active in this parse.
+2025-06-15 21:26:09,013 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:26:09,014 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:26:09,015 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:26:09,016 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:26:09,017 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:26:09,018 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:26:09,020 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:26:09,021 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:26:09,074 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:26:09,077 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:09,082 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:09,083 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:09,085 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:09,086 - poker_bot - INFO - No player identified as active in this parse.
+2025-06-15 21:26:09,087 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:26:09,088 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:26:09,089 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:26:09,090 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:26:09,091 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:26:09,091 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:26:09,092 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:26:09,093 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:26:09,105 - poker_bot - INFO - Found visible dealer button at seat 4
+2025-06-15 21:26:09,108 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:09,114 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:09,116 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:09,117 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:09,118 - poker_bot - INFO - No player identified as active in this parse.
+2025-06-15 21:26:09,120 - poker_bot - INFO - Using dealer position: 4
+2025-06-15 21:26:09,122 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-15 21:26:09,123 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: UTG
+2025-06-15 21:26:09,123 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: MP
+2025-06-15 21:26:09,124 - poker_bot - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-15 21:26:09,125 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-15 21:26:09,125 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: SB
+2025-06-15 21:26:09,126 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BB
+2025-06-15 21:26:10,282 - poker_bot - INFO - New hand detected: N/A, starting stack: $1.04
+2025-06-15 21:26:10,282 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:26:11,186 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:12,581 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:12,584 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:12,591 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:12,592 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:12,593 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:12,594 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:12,594 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:12,595 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:12,595 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:12,596 - poker_bot - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-15 21:26:12,596 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:12,597 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:12,598 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:12,598 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:12,618 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:12,620 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:12,628 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:12,629 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:12,630 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:12,630 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:12,631 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:12,631 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:12,632 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:12,632 - poker_bot - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-15 21:26:12,632 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:12,632 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:12,633 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:12,633 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:12,635 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:12,637 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:12,644 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:12,645 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:12,646 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:12,647 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:12,647 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:12,647 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:12,647 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:12,647 - poker_bot - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-15 21:26:12,648 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:12,649 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:12,650 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:12,650 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:13,878 - poker_bot - INFO - New hand detected: 11514000415, starting stack: $1.04
+2025-06-15 21:26:13,878 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:26:14,879 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:16,283 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:16,284 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:16,289 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:16,289 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:16,290 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:16,291 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:16,291 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:16,292 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:16,292 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:16,293 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:16,293 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:16,294 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:16,294 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:16,294 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:16,329 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:16,331 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:16,333 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:16,334 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:16,338 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:16,339 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:16,340 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:16,341 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:16,341 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:16,342 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:16,342 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:16,342 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:16,342 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:16,343 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:16,345 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:16,346 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:16,351 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:16,351 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:16,355 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:16,356 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:16,357 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:16,358 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:16,358 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:16,359 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:16,359 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:16,359 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:16,359 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:16,360 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:17,497 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:26:18,499 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:19,898 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:19,899 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:19,905 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:19,907 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:19,909 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:19,909 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:19,910 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:19,910 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:19,910 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:19,911 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:19,911 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:19,911 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:19,911 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:19,911 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:19,933 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:19,935 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:19,941 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:19,942 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:19,943 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:19,943 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:19,944 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:19,944 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:19,945 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:19,945 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:19,945 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:19,945 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:19,946 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:19,946 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:19,950 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:19,951 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:19,961 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:19,962 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:19,965 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:19,965 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:19,966 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:19,966 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:19,967 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:19,967 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:19,968 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:19,969 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:19,969 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:19,970 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:21,095 - poker_bot - INFO - Postflop decision: street=preflop, position=CO, win_probability=0.775, pot_size=0.05, bet_to_call=0.02, can_check=False
+2025-06-15 21:26:21,095 - poker_bot - INFO - Decision: call 0.02 (Enhanced logic: call based on win_prob=0.78, pot_odds=0.29)
+2025-06-15 21:26:21,559 - poker_bot - INFO - Successfully executed: call 0.02
+2025-06-15 21:26:23,360 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:24,759 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:24,760 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:24,764 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:24,764 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:24,765 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:24,766 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:24,767 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:24,767 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:24,767 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:24,768 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:24,769 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:24,769 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:24,770 - poker_bot - INFO - Player N/A in seat 5 assigned position: BTN
+2025-06-15 21:26:24,771 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:24,803 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:24,807 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:24,811 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:24,812 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:24,814 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:24,815 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:24,816 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:24,816 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:24,817 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:24,817 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:24,818 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:24,819 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:24,819 - poker_bot - INFO - Player N/A in seat 5 assigned position: BTN
+2025-06-15 21:26:24,820 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:24,828 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:24,832 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:24,840 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:24,840 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:24,842 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:24,843 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:24,843 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:24,843 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:24,844 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:24,844 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:24,845 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:24,845 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:24,845 - poker_bot - INFO - Player N/A in seat 5 assigned position: BTN
+2025-06-15 21:26:24,845 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:26,010 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:26:26,912 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:28,300 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:28,301 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:28,305 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:28,306 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:28,307 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:28,308 - poker_bot - INFO - No player identified as active in this parse.
+2025-06-15 21:26:28,309 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:28,310 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:28,310 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:28,310 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:28,311 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:28,312 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:28,312 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:28,314 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:28,360 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:28,362 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:28,367 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:28,368 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:28,371 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:28,372 - poker_bot - INFO - No player identified as active in this parse.
+2025-06-15 21:26:28,372 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:28,373 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:28,375 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:28,375 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:28,375 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:28,376 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:28,376 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:28,376 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:28,380 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:28,381 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:28,383 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:28,384 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:28,385 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:28,385 - poker_bot - INFO - No player identified as active in this parse.
+2025-06-15 21:26:28,386 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:28,386 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:28,386 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:28,386 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:28,387 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:28,389 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:28,390 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:28,391 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:29,518 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:26:30,519 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:31,916 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:31,918 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:31,925 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:31,926 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:31,928 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:31,929 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:31,929 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:31,930 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:31,930 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:31,930 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:31,931 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:31,931 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:31,932 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:31,933 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:31,972 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:31,973 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:31,978 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:31,978 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:31,979 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:31,980 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:31,981 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:31,981 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:31,981 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:31,982 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:31,982 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:31,982 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:31,982 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:31,983 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:31,987 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:31,990 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:31,994 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:31,995 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:31,996 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:31,996 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:31,997 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:31,997 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:31,997 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:31,997 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:31,998 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:31,998 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:31,998 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:31,998 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:33,060 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:26:34,060 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:35,445 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:35,446 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:35,450 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:35,451 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:35,452 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:35,452 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:35,453 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:35,456 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:35,456 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:35,457 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:35,457 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:35,458 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:35,458 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:35,458 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:35,484 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:35,486 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:35,493 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:35,493 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:35,495 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:35,495 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:35,496 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:35,496 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:35,496 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:35,497 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:35,497 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:35,498 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:35,499 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:35,499 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:35,502 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:35,506 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:35,510 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:35,510 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:35,512 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:35,513 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:35,513 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:35,514 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:35,514 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:35,515 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:35,515 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:35,516 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:35,516 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:35,516 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:36,666 - poker_bot - INFO - Postflop decision: street=flop, position=CO, win_probability=0.716, pot_size=0.13, bet_to_call=0.04, can_check=False
+2025-06-15 21:26:36,667 - poker_bot - INFO - Decision: call 0.04 (Enhanced logic: call based on win_prob=0.72, pot_odds=0.24)
+2025-06-15 21:26:37,142 - poker_bot - INFO - Successfully executed: call 0.04
+2025-06-15 21:26:38,945 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:40,346 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:40,347 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:40,350 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:40,350 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:40,351 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:40,352 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:40,352 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:40,353 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:40,353 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:40,354 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:40,354 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:40,356 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:40,357 - poker_bot - INFO - Player N/A in seat 5 assigned position: BTN
+2025-06-15 21:26:40,358 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:40,387 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:40,391 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:40,394 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:40,395 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:40,396 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:40,396 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:40,397 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:40,397 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:40,398 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:40,398 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:40,399 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:40,399 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:40,399 - poker_bot - INFO - Player N/A in seat 5 assigned position: BTN
+2025-06-15 21:26:40,400 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:40,402 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:40,404 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:40,407 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:40,408 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:40,408 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:40,409 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:40,409 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:40,410 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:40,410 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:40,411 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:40,411 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:40,412 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:40,412 - poker_bot - INFO - Player N/A in seat 5 assigned position: BTN
+2025-06-15 21:26:40,412 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:41,556 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:26:42,459 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:43,857 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:43,858 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:43,861 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:43,861 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:43,862 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:43,862 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:43,863 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:43,863 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:43,863 - poker_bot - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-15 21:26:43,864 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:43,864 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:43,864 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:43,864 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:43,865 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:43,894 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:43,896 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:43,901 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:43,902 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:43,904 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:43,904 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:43,905 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:43,905 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:43,906 - poker_bot - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-15 21:26:43,906 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:43,906 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:43,906 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:43,907 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:43,907 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:43,909 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:43,911 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:43,913 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:43,914 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:43,915 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:43,915 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:43,915 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:43,915 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:43,916 - poker_bot - INFO - Player N/A in seat 1 assigned position: BB
+2025-06-15 21:26:43,916 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:43,916 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:43,916 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:43,916 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:43,917 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:45,101 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:26:46,102 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:47,516 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:47,518 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:47,527 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:47,528 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:47,529 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:47,530 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:47,530 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:47,530 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:47,531 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:47,531 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:47,531 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:47,531 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:47,532 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:47,532 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:47,565 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:47,567 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:47,572 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:47,574 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:47,575 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:47,576 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:47,577 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:47,577 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:47,578 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:47,578 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:47,578 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:47,579 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:47,579 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:47,580 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:47,583 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:47,585 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:47,589 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:47,591 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:47,593 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:47,594 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:47,595 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:47,595 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:47,595 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:47,595 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:47,595 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:47,596 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:47,596 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:47,597 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:48,873 - poker_bot - INFO - Postflop decision: street=turn, position=CO, win_probability=0.700, pot_size=0.17, bet_to_call=0.00, can_check=False
+2025-06-15 21:26:48,873 - poker_bot - INFO - Decision: call 0.00 (Enhanced logic: call based on win_prob=0.70, pot_odds=0.00)
+2025-06-15 21:26:49,340 - poker_bot - INFO - Successfully executed: call 0
+2025-06-15 21:26:51,142 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:52,557 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:52,560 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:52,564 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:52,565 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:52,566 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:52,567 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:52,568 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:52,569 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:52,569 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:52,571 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:52,572 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:52,573 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:52,574 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:52,574 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:52,618 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:52,622 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:52,626 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:52,627 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:52,628 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:52,628 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:52,629 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:52,629 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:52,629 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:52,630 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:52,630 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:52,631 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:52,631 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:52,631 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:52,634 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:52,635 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:52,644 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:52,645 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:26:52,646 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:52,646 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:26:52,647 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:52,647 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:52,647 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:52,647 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:52,648 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:52,648 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:52,649 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:52,649 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:53,750 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:26:54,653 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:26:56,059 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:56,061 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:56,063 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:56,064 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:56,064 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:56,065 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:56,065 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:56,065 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:56,065 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:56,066 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:56,066 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:56,067 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:56,067 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:56,067 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:56,098 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:56,100 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:56,106 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:56,107 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:56,108 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:56,109 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:56,109 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:56,110 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:56,110 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:56,110 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:56,110 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:56,111 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:56,111 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:56,112 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:56,114 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:26:56,115 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:26:56,117 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:26:56,118 - poker_bot - INFO - Found 3 potential action elements.
+2025-06-15 21:26:56,118 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:26:56,119 - poker_bot - INFO - Successfully identified active player: warriorwonder25
+2025-06-15 21:26:56,119 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:26:56,120 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:26:56,121 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:26:56,122 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:26:56,122 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:26:56,123 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:26:56,123 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:26:56,123 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:26:57,183 - poker_bot - INFO - Postflop decision: street=river, position=CO, win_probability=0.912, pot_size=0.25, bet_to_call=0.08, can_check=False
+2025-06-15 21:26:57,183 - poker_bot - INFO - Decision: call 0.08 (Enhanced logic: call based on win_prob=0.91, pot_odds=0.24)
+2025-06-15 21:26:57,657 - poker_bot - INFO - Successfully executed: call 0.08
+2025-06-15 21:26:59,459 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:27:00,866 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:27:00,868 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:27:00,876 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:27:00,878 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:27:00,881 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:27:00,882 - poker_bot - INFO - No player identified as active in this parse.
+2025-06-15 21:27:00,883 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:27:00,884 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:27:00,885 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:27:00,885 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:27:00,886 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:27:00,887 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:27:00,888 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:27:00,889 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:27:00,938 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:27:00,942 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:27:00,947 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:27:00,948 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:27:00,949 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:27:00,950 - poker_bot - INFO - No player identified as active in this parse.
+2025-06-15 21:27:00,950 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:27:00,951 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:27:00,952 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:27:00,952 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:27:00,953 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:27:00,954 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:27:00,954 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:27:00,955 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:27:00,961 - poker_bot - INFO - Found visible dealer button at seat 5
+2025-06-15 21:27:00,964 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:27:00,969 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:27:00,970 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:27:00,972 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:27:00,973 - poker_bot - INFO - No player identified as active in this parse.
+2025-06-15 21:27:00,974 - poker_bot - INFO - Using dealer position: 5
+2025-06-15 21:27:00,975 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 5
+2025-06-15 21:27:00,976 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: BB
+2025-06-15 21:27:00,976 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: UTG
+2025-06-15 21:27:00,977 - poker_bot - INFO - Player N/A in seat 3 assigned position: MP
+2025-06-15 21:27:00,978 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: CO
+2025-06-15 21:27:00,978 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: BTN
+2025-06-15 21:27:00,979 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: SB
+2025-06-15 21:27:02,058 - poker_bot - INFO - New hand detected: N/A, starting stack: $1.21
+2025-06-15 21:27:02,058 - poker_bot - INFO - Waiting... No active player detected
+2025-06-15 21:27:02,961 - poker_bot - INFO - 
+--- Enhanced Decision Cycle ---
+2025-06-15 21:27:04,352 - poker_bot - INFO - Found visible dealer button at seat 6
+2025-06-15 21:27:04,354 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:27:04,360 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:27:04,361 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:27:04,363 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:27:04,364 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:27:04,365 - poker_bot - INFO - Using dealer position: 6
+2025-06-15 21:27:04,365 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-15 21:27:04,366 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: SB
+2025-06-15 21:27:04,366 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: BB
+2025-06-15 21:27:04,367 - poker_bot - INFO - Player N/A in seat 3 assigned position: UTG
+2025-06-15 21:27:04,367 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-15 21:27:04,368 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: CO
+2025-06-15 21:27:04,368 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BTN
+2025-06-15 21:27:04,401 - poker_bot - INFO - Found visible dealer button at seat 6
+2025-06-15 21:27:04,402 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:27:04,410 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:27:04,412 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:27:04,412 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:27:04,413 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:27:04,413 - poker_bot - INFO - Using dealer position: 6
+2025-06-15 21:27:04,413 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-15 21:27:04,414 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: SB
+2025-06-15 21:27:04,415 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: BB
+2025-06-15 21:27:04,415 - poker_bot - INFO - Player N/A in seat 3 assigned position: UTG
+2025-06-15 21:27:04,415 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-15 21:27:04,415 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: CO
+2025-06-15 21:27:04,416 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BTN
+2025-06-15 21:27:04,419 - poker_bot - INFO - Found visible dealer button at seat 6
+2025-06-15 21:27:04,423 - poker_bot - INFO - Found 6 'div.player-area' elements to process.
+2025-06-15 21:27:04,427 - poker_bot - INFO - Found actions area. Analyzing buttons...
+2025-06-15 21:27:04,428 - poker_bot - INFO - Found 0 potential action elements.
+2025-06-15 21:27:04,429 - poker_bot - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-15 21:27:04,429 - poker_bot - INFO - Successfully identified active player: N/A
+2025-06-15 21:27:04,430 - poker_bot - INFO - Using dealer position: 6
+2025-06-15 21:27:04,430 - poker_bot - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-15 21:27:04,431 - poker_bot - INFO - Player stoopedrat in seat 1 assigned position: SB
+2025-06-15 21:27:04,431 - poker_bot - INFO - Player 39zem1 in seat 2 assigned position: BB
+2025-06-15 21:27:04,431 - poker_bot - INFO - Player N/A in seat 3 assigned position: UTG
+2025-06-15 21:27:04,432 - poker_bot - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-15 21:27:04,432 - poker_bot - INFO - Player JLmoulaga in seat 5 assigned position: CO
+2025-06-15 21:27:04,432 - poker_bot - INFO - Player marsas14 in seat 6 assigned position: BTN
+2025-06-15 21:27:04,582 - poker_bot - INFO - Enhanced Poker Bot stopped by user
+2025-06-15 21:27:04,584 - poker_bot - INFO - Session Report:
+
+=== POKER SESSION REPORT ===
+Session Duration: 1.9 minutes
+Hands Played: 4
+
+=== FINANCIAL PERFORMANCE ===
+Starting Bankroll: $100.00
+Current Bankroll: $100.34
+Total Profit/Loss: $+0.34
+ROI: +0.3%
+BB/Hour: +542.0
+
+=== PLAYING STATISTICS ===
+VPIP: 100.0%
+PFR: 0.0%
+Aggression Factor: 0.00
+Win Rate: 100.0%
+Hands/Hour: 127.5
+
+=== RECENT TREND ===
+Insufficient Data
+
+=== RECOMMENDATIONS ===
+Overall Strategy: Maintain
+Risk Management: Normal
+
+2025-06-15 21:27:04,585 - poker_bot - INFO - Total decisions made: 8
+2025-06-15 21:27:04,585 - poker_bot - INFO - Successful parses: 26
+2025-06-15 21:27:04,586 - poker_bot - INFO - Failed parses: 0
+2025-06-15 21:27:04,587 - poker_bot - INFO - Parse success rate: 100.0%
+2025-06-15 21:27:04,588 - poker_bot - INFO - Closing logger handlers.
