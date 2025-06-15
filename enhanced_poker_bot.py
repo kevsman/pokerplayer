@@ -393,9 +393,11 @@ class EnhancedPokerBot(PokerBot):
             
             # Calculate pot odds
             pot_odds = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 0
-            
-            # Get available actions
+              # Get available actions
             available_actions = [action['type'] for action in game_analysis.get('actions_available', [])]
+              # Debug logging for available actions
+            self.logger.info(f"Available actions detected: {available_actions}")
+            self.logger.info(f"Bet to call: {bet_to_call}, Pot size: {pot_size}, Win probability: {win_probability}")
             
             # Get opponent profiles
             opponent_profiles = []
@@ -423,9 +425,23 @@ class EnhancedPokerBot(PokerBot):
             
             # Apply adaptive adjustments
             self._apply_strategy_adjustments_to_context(context)
-            
-            # Make advanced decision
+              # Make advanced decision
             action, amount, reasoning = self.decision_engine_advanced.make_advanced_decision(context)
+              # CRITICAL SAFEGUARD: Never fold when check is available
+            if action == 'fold' and 'check' in available_actions:
+                action = 'check'
+                amount = 0.0
+                reasoning += " [SAFEGUARD: Changed fold to check when check available]"
+                self.logger.warning(f"SAFEGUARD ACTIVATED: Changed fold to check when check was available. Actions: {available_actions}")
+            
+            # Additional safeguard: If bet_to_call is 0, we should check not fold
+            elif action == 'fold' and bet_to_call == 0.0:
+                action = 'check'
+                amount = 0.0
+                reasoning += " [SAFEGUARD: Changed fold to check when no bet to call]"
+                self.logger.warning(f"SAFEGUARD ACTIVATED: Changed fold to check when bet_to_call was 0. Bet to call: {bet_to_call}")
+            
+            self.logger.info(f"Final decision after safeguards: {action} {amount:.2f} - {reasoning}")
             
             # Record decision
             self.total_decisions_made += 1
@@ -699,36 +715,31 @@ class EnhancedPokerBot(PokerBot):
             }
             
             self.actions_taken_this_session.append(action_record)
-            self.current_hand_actions.append(action_record)
-            
-            # Execute the action
+            self.current_hand_actions.append(action_record)            # Execute the action
             if action == ACTION_FOLD:
-                self.ui_controller.click_fold()
+                self.ui_controller.action_fold()
                 self.logger.info(f"FOLD executed - {reasoning}")
             elif action == ACTION_CHECK:
-                self.ui_controller.click_check()
+                self.ui_controller.action_check_call()
                 self.logger.info(f"CHECK executed - {reasoning}")
             elif action == ACTION_CALL:
-                self.ui_controller.click_call()
+                self.ui_controller.action_check_call()
                 self.logger.info(f"CALL executed - {reasoning}")
             elif action == ACTION_RAISE:
                 if amount > 0:
                     # Set raise amount and execute
-                    self.ui_controller.set_raise_amount(amount)
-                    time.sleep(0.5)  # Brief pause for UI update
-                    self.ui_controller.click_raise()
+                    self.ui_controller.action_raise(amount)
                     self.logger.info(f"RAISE {amount:.2f} executed - {reasoning}")
                 else:
-                    # Default raise
-                    self.ui_controller.click_raise()
-                    self.logger.info(f"RAISE (default) executed - {reasoning}")
+                    # Default raise - use action_all_in for simplicity
+                    self.ui_controller.action_all_in()
+                    self.logger.info(f"RAISE (all-in) executed - {reasoning}")
             
             # Record successful action execution
             self.last_decision_time = time.time()
             
             # Update opponent tracking with our action
             self._update_opponent_tracking_with_action(action_record, game_analysis)
-            
         except Exception as e:
             self.logger.error(f"Error executing enhanced action: {e}", exc_info=True)
     
@@ -754,19 +765,22 @@ class EnhancedPokerBot(PokerBot):
     def _update_opponent_tracking_with_action(self, action_record: Dict, game_analysis: Dict):
         """Update opponent tracking with our action."""
         try:
-            # Track our action in opponent modeling
-            action_data = ActionData(
-                action_type=action_record['action_type'],
-                amount=action_record['amount'],
-                position=self._get_last_known_position(),
-                street=game_analysis.get('table_data', {}).get('game_stage', 'preflop'),
-                pot_size_before=game_analysis.get('table_data', {}).get('pot_size', 0.0),
-                stack_size=action_record['stack_size'],
-                timestamp=action_record['timestamp']
-            )
+            # Get our player name
+            my_player = game_analysis.get('my_player', {})
+            my_name = my_player.get('name', 'Hero')
             
-            # Notify enhanced opponent tracker
-            self.opponent_tracker_enhanced.record_hero_action(action_data)
+            # Track our action in opponent modeling using log_action method
+            self.opponent_tracker_enhanced.log_action(
+                player_name=my_name,
+                action_type=action_record['action_type'],
+                street=game_analysis.get('table_data', {}).get('game_stage', 'preflop'),
+                position=self._get_last_known_position(),
+                amount=action_record['amount'],
+                pot_size_before_action=game_analysis.get('table_data', {}).get('pot_size', 0.0),
+                stack_size=action_record['stack_size'],
+                hand_id=game_analysis.get('table_data', {}).get('hand_id', ''),
+                decision_time=0.0  # We could track this if needed
+            )
             
         except Exception as e:
             self.logger.error(f"Error updating opponent tracking with action: {e}")
@@ -818,15 +832,14 @@ class EnhancedPokerBot(PokerBot):
                 self._complete_hand_performance_tracking()
               # Get final session metrics
             session_metrics = self.performance_monitor.get_current_metrics()
-            
-            # Log session summary
+              # Log session summary
             self.logger.info(f"Session Summary:")
             self.logger.info(f"  - Total hands: {session_metrics.hands_played}")
             self.logger.info(f"  - Total decisions: {self.total_decisions_made}")
             self.logger.info(f"  - Successful parses: {self.successful_parses}")
             self.logger.info(f"  - Failed parses: {self.failed_parses}")
             self.logger.info(f"  - Parse success rate: {(self.successful_parses / max(1, self.successful_parses + self.failed_parses)) * 100:.1f}%")
-            self.logger.info(f"  - Session profit/loss: ${session_metrics.session_profit_loss:.2f}")
+            self.logger.info(f"  - Session profit/loss: ${session_metrics.total_profit:.2f}")
             self.logger.info(f"  - Win rate: {session_metrics.win_rate * 100:.1f}%")
             
             # Save enhanced opponent data
