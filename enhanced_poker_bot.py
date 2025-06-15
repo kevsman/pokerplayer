@@ -319,9 +319,12 @@ class EnhancedPokerBot(PokerBot):
             # Get aggression factor from session performance
             session_stats = self.session_tracker.get_session_statistics()
             base_aggression = session_stats.get('aggression_factor', 1.0)
-            
-            # Use improved postflop decision logic
-            action, amount = make_improved_postflop_decision(
+              # Use improved postflop decision logic
+            decision_result = make_improved_postflop_decision(
+                game_analysis=game_analysis,
+                equity_calculator=self.equity_calculator,
+                opponent_analysis=opponent_analysis,
+                logger_instance=self.logger,
                 street=game_analysis['game_stage'].lower(),
                 my_player_data=my_player,
                 pot_size=pot_size,
@@ -336,6 +339,10 @@ class EnhancedPokerBot(PokerBot):
                 aggression_factor=base_aggression,
                 position=my_player.get('position', 'Unknown')
             )
+            
+            # Extract action and amount from result
+            action = decision_result.get('action', 'fold')
+            amount = decision_result.get('amount', 0.0)
             
             # Record decision
             decision_context = {
@@ -397,8 +404,7 @@ class EnhancedPokerBot(PokerBot):
                 
                 # Record in action history for opponent tracking
                 self.action_history.append(action_record)
-                
-                # Take break after action
+                  # Take break after action
                 time.sleep(self.config.get_setting('delays', {}).get('after_action_delay', 2.0))
             else:
                 self.logger.warning(f"Failed to execute action: {action}")
@@ -414,16 +420,16 @@ class EnhancedPokerBot(PokerBot):
         for attempt in range(max_retries):
             try:
                 if action == ACTION_FOLD:
-                    return self.ui_controller.click_fold()
+                    return self.ui_controller.action_fold()
                 elif action == ACTION_CHECK:
-                    return self.ui_controller.click_check()
+                    return self.ui_controller.action_check_call()
                 elif action == ACTION_CALL:
-                    return self.ui_controller.click_call()
+                    return self.ui_controller.action_check_call()
                 elif action == ACTION_RAISE:
                     if amount > 0:
-                        return self.ui_controller.click_raise_with_amount(amount)
+                        return self.ui_controller.action_raise(amount)
                     else:
-                        return self.ui_controller.click_raise()
+                        return self.ui_controller.action_raise(0)
                 else:
                     self.logger.warning(f"Unknown action type: {action}")
                     return False
