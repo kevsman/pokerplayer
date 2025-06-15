@@ -48,25 +48,34 @@
     },
     "big_blind": 0.02,
     "small_blind": 0.01,
-    "LOG_LEVEL": "INFO",
-    "strategy": {
-        "base_aggression_factor_preflop": 2.0,
-        "base_aggression_factor_postflop": 1.8,
-        "bluff_frequency": 0.25,
-        "semi_bluff_frequency": 0.6,
-        "continuation_bet_frequency": 0.8,
-        "value_betting_threshold": 0.5,
-        "call_threshold_adjustment": -0.1,
+    "LOG_LEVEL": "INFO",    "strategy": {
+        "base_aggression_factor_preflop": 3.5,
+        "base_aggression_factor_postflop": 3.2,
+        "bluff_frequency": 0.60,
+        "semi_bluff_frequency": 0.85,
+        "continuation_bet_frequency": 0.95,
+        "value_betting_threshold": 0.30,
+        "call_threshold_adjustment": -0.25,
         "position_aggression_multipliers": {
-            "BTN": 1.5,
-            "CO": 1.3,
-            "MP": 1.1,
-            "UTG": 0.9,
-            "SB": 1.2,
-            "BB": 1.0
+            "BTN": 2.2,
+            "CO": 2.0,
+            "MP": 1.7,
+            "UTG": 1.4,
+            "SB": 1.8,
+            "BB": 1.6
         },
-        "preflop_range_widening": 0.2,
-        "three_bet_frequency": 0.4,
-        "four_bet_frequency": 0.3
+        "preflop_range_widening": 0.55,
+        "three_bet_frequency": 0.75,
+        "four_bet_frequency": 0.65,
+        "table_control_mode": true,
+        "isolation_raise_frequency": 0.85,
+        "squeeze_play_frequency": 0.70,
+        "barrel_bluff_frequency": 0.80,
+        "min_raise_size_multiplier": 1.5,
+        "value_bet_size_multiplier": 1.35,
+        "maximum_table_control": true,
+        "steal_frequency": 0.90,
+        "bluff_catch_frequency": 0.40,
+        "pressure_bet_multiplier": 1.8
     }
 }

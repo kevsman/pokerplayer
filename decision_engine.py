@@ -8,6 +8,7 @@ from tournament_adjustments import get_tournament_adjustment_factor, adjust_pref
 from hand_utils import get_hand_strength_value, calculate_stack_to_pot_ratio, get_preflop_hand_category, normalize_card_list
 from preflop_decision_logic import make_preflop_decision
 from postflop_decision_logic import make_postflop_decision
+from table_control_strategies import TableControlManager, get_enhanced_aggression_factor
 import logging
 
 ACTION_FOLD = "fold"
@@ -35,16 +36,18 @@ class DecisionEngine:
         self.hand_evaluator = hand_evaluator
         self.config = config if config is not None else {}
         self.big_blind_amount = self.config.get_setting('big_blind', 0.02) # Renamed for clarity
-        self.small_blind_amount = self.config.get_setting('small_blind', 0.01) # Renamed for clarity
+        self.small_blind_amount = self.config.get_setting('small_blind', 0.01) # Renamed for clarity        # Get strategy settings with MAXIMUM aggression defaults for table control
+        self.base_aggression_factor = self.config.get_setting('strategy', {}).get('base_aggression_factor_postflop', 3.2)
+        self.preflop_aggression_factor = self.config.get_setting('strategy', {}).get('base_aggression_factor_preflop', 3.5)
+        self.bluff_frequency = self.config.get_setting('strategy', {}).get('bluff_frequency', 0.60)
+        self.semi_bluff_frequency = self.config.get_setting('strategy', {}).get('semi_bluff_frequency', 0.85)
+        self.continuation_bet_frequency = self.config.get_setting('strategy', {}).get('continuation_bet_frequency', 0.95)
         
-        # Get strategy settings with increased aggression defaults
-        self.base_aggression_factor = self.config.get_setting('strategy', {}).get('base_aggression_factor_postflop', 1.8)
-        self.preflop_aggression_factor = self.config.get_setting('strategy', {}).get('base_aggression_factor_preflop', 2.0)
-        self.bluff_frequency = self.config.get_setting('strategy', {}).get('bluff_frequency', 0.25)
-        self.semi_bluff_frequency = self.config.get_setting('strategy', {}).get('semi_bluff_frequency', 0.6)
-        self.continuation_bet_frequency = self.config.get_setting('strategy', {}).get('continuation_bet_frequency', 0.8)
+        # Initialize table control manager for aggressive play
+        self.table_control_manager = TableControlManager(config)
         
-        logger.info(f"Decision Engine initialized with aggression factors - preflop: {self.preflop_aggression_factor}, postflop: {self.base_aggression_factor}")
+        logger.info(f"Decision Engine initialized with MAXIMUM AGGRESSION factors - preflop: {self.preflop_aggression_factor}, postflop: {self.base_aggression_factor}")
+        logger.info("MAXIMUM TABLE CONTROL mode enabled for complete table dominance")
         
         # Initialize equity calculator system
         self.equity_calculator = EquityCalculator()
@@ -54,7 +57,7 @@ class DecisionEngine:
         
         # Tournament settings (default to cash game)
         self.tournament_level = self.config.get_setting('tournament_level', 0)  # 0 = cash game, 1-3 = tournament levels
-        
+
         # Make helper functions available as instance methods or attributes
         self.get_optimal_bet_size_func = get_optimal_bet_size
         self.calculate_expected_value_func = calculate_expected_value

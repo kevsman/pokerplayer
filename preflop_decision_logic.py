@@ -32,21 +32,21 @@ def make_preflop_decision(
     
     # Retrieve config parameters with defaults
     # Added support for config-based aggression parameters
-    config = getattr(my_player, 'config', None)
+    config = getattr(my_player, 'config', None)      # Default values for MAXIMUM AGGRESSION - enhanced for table control
+    base_aggression = 3.5  # Much higher default aggression
+    preflop_range_widening = 0.55  # Significantly wider ranges
+    bluff_frequency = 0.60  # Much higher bluff frequency
+    three_bet_frequency = 0.75  # Very aggressive 3-betting
+    four_bet_frequency = 0.65  # High 4-bet frequency
+    position_aggression = {'BTN': 2.2, 'CO': 2.0, 'MP': 1.7, 'UTG': 1.4, 'SB': 1.8, 'BB': 1.6}
     
-    # Default values if config doesn't exist or values aren't set
-    base_aggression = 2.0  # Increased default aggression
-    preflop_range_widening = 0.2
-    bluff_frequency = 0.25
-    three_bet_frequency = 0.4
-    position_aggression = {'BTN': 1.5, 'CO': 1.3, 'MP': 1.1, 'UTG': 0.9, 'SB': 1.2, 'BB': 1.0}
-    
-    # Try to get values from config if available
+    # Try to get values from config if available (should be enhanced values)
     if config:
         base_aggression = config.get_setting('strategy', {}).get('base_aggression_factor_preflop', base_aggression)
         preflop_range_widening = config.get_setting('strategy', {}).get('preflop_range_widening', preflop_range_widening)
         bluff_frequency = config.get_setting('strategy', {}).get('bluff_frequency', bluff_frequency)
         three_bet_frequency = config.get_setting('strategy', {}).get('three_bet_frequency', three_bet_frequency)
+        four_bet_frequency = config.get_setting('strategy', {}).get('four_bet_frequency', four_bet_frequency)
         position_aggression = config.get_setting('strategy', {}).get('position_aggression_multipliers', position_aggression)
     
     # Position-specific aggression adjustment
@@ -178,16 +178,16 @@ def make_preflop_decision(
         size_of_last_raise_increment = last_raise_total_bet - previous_bet_level
         if size_of_last_raise_increment <=0 : # Should not happen if bet_levels are correct
             size_of_last_raise_increment = big_blind # Fallback
-    
-    open_raise_multiplier_bb = 3.0 # Multiplier of Big Blind for open raise
-    if position == 'BTN' and num_limpers == 0: open_raise_multiplier_bb = 2.5
-    if position == 'SB' and num_limpers == 0: open_raise_multiplier_bb = 3.0
+      # AGGRESSIVE opening raise sizing for table control
+    open_raise_multiplier_bb = 3.5  # Much larger opens for pressure (was 3.0)
+    if position == 'BTN' and num_limpers == 0: open_raise_multiplier_bb = 3.0  # Still big from button
+    if position == 'SB' and num_limpers == 0: open_raise_multiplier_bb = 3.5   # Big SB opens
 
     if table_dynamics:
         if 'loose' in table_dynamics.get('table_type', ''):
-            open_raise_multiplier_bb += 0.5 
+            open_raise_multiplier_bb += 0.8  # Much bigger vs loose players (was 0.5)
         elif 'tight' in table_dynamics.get('table_type', ''):
-            open_raise_multiplier_bb = max(2.0, open_raise_multiplier_bb - 0.25)
+            open_raise_multiplier_bb = max(3.0, open_raise_multiplier_bb - 0.25)  # Still big vs tight players (was 2.0)
 
 
     if num_raises_this_street == 0: # This is an opening raise or isolation raise.
@@ -680,36 +680,99 @@ def make_preflop_decision(
 
         else: # Facing 3-bet or more
             logger.info(f"Other Suited Ace ({str(my_player.get('hand',''))}) facing 3bet+ from {last_aggressor_name_from_history}. Action: FOLD")
-            return action_fold_const, 0
-
-
-    # --- WEAK HANDS ---
+            return action_fold_const, 0    # --- WEAK HANDS - ULTRA AGGRESSIVE TABLE CONTROL ---
     if hand_category == "Weak":
         logger.debug(f"Preflop: Entered Weak hand category. NumRaises: {num_raises_this_street}, B2C: {bet_to_call}, Pos: {position}, is_bb: {is_bb}")
         
-        # Defend BB vs single small raise if opponent is a frequent stealer from BTN/CO/SB
-        if is_bb and num_raises_this_street == 1 and bet_to_call <= 3.5 * big_blind:
+        # Define can_make_valid_raise for weak hands
+        actual_raise_amount = raise_amount_calculated
+        can_make_valid_raise = actual_raise_amount > bet_to_call or \
+                               (actual_raise_amount == my_stack and my_stack > bet_to_call)
+        
+        # Apply massive range widening for table control
+        should_bluff_open = False
+        should_steal_attempt = False
+        should_defend_aggressively = False
+        
+        # Position-based opening with weak hands for table control
+        if num_raises_this_street == 0:  # No one has raised yet
+            position_steal_frequencies = {
+                'BTN': 0.85,   # Steal almost always from button
+                'CO': 0.75,    # Very aggressive from cutoff  
+                'MP': 0.50,    # Moderate stealing from middle
+                'UTG': 0.25,   # Even steal some from UTG for image
+                'SB': 0.80,    # Aggressive stealing from small blind
+                'BB': 0.0      # Can't steal from BB
+            }
+            
+            steal_threshold = position_steal_frequencies.get(position, 0.0)
+            steal_threshold *= effective_aggression / 2.0  # Scale with aggression
+            
+            if random.random() < steal_threshold and can_make_valid_raise:
+                should_steal_attempt = True
+                steal_size = min(raise_amount_calculated * 1.5, my_stack)  # Larger steal sizing
+                logger.info(f"AGGRESSIVE STEAL: Weak hand ({hand_category}) stealing from {position}. Action: RAISE, Amount: {steal_size}")
+                return action_raise_const, steal_size
+                
+        elif num_raises_this_street == 1:  # Facing one raise
+            # Bluff 3-bet with weak hands for table control
+            three_bet_bluff_frequencies = {
+                'BTN': 0.45,   # Very aggressive 3-bet bluffing from button
+                'CO': 0.35,    # Aggressive from cutoff
+                'SB': 0.40,    # Squeeze from small blind
+                'BB': 0.35,    # Defend with 3-bet bluffs
+                'MP': 0.20,    # Some 3-bet bluffs from middle
+                'UTG': 0.10    # Minimal from UTG
+            }
+            
+            bluff_3bet_threshold = three_bet_bluff_frequencies.get(position, 0.0)
+            bluff_3bet_threshold *= effective_aggression / 3.0  # Scale with aggression
+            
+            # Increase frequency vs likely steal attempts
+            if last_raiser_action_info:
+                raiser_pos = last_raiser_action_info.get('position', '')
+                if raiser_pos in ['BTN', 'CO', 'SB']:
+                    bluff_3bet_threshold *= 1.4  # Much more aggressive vs steals
+                    
+            if random.random() < bluff_3bet_threshold and can_make_valid_raise:
+                three_bet_size = min(raise_amount_calculated * 1.8, my_stack)  # Large 3-bet sizing
+                logger.info(f"AGGRESSIVE 3-BET BLUFF: Weak hand ({hand_category}) 3-betting vs {last_aggressor_name_from_history}. Action: RAISE, Amount: {three_bet_size}")
+                return action_raise_const, three_bet_size
+        
+        # Defend BB vs single small raise much more aggressively
+        if is_bb and num_raises_this_street == 1 and bet_to_call <= 4.0 * big_blind:
+            bb_defense_threshold = 0.75  # Defend 75% of hands from BB
+            
             if last_aggressor_profile and last_raiser_action_info:
                 raiser_pos = last_raiser_action_info.get('position')
-                # aggressor_steal_attempt_freq = last_aggressor_profile.get_steal_frequency(raiser_pos) # Needs specific stat
-                # Using PFR from steal positions as proxy
-                pfr_from_steal_pos = 0
-                if raiser_pos in ['CO','BTN','SB'] and last_aggressor_profile.position_stats[raiser_pos]['hands_dealt'] > 10: # Min sample
-                    pfr_from_steal_pos = (last_aggressor_profile.position_stats[raiser_pos]['pfr_hands'] / last_aggressor_profile.position_stats[raiser_pos]['hands_dealt']) * 100
+                # Much more aggressive defense vs likely steals
+                if raiser_pos in ['BTN', 'CO', 'SB']:
+                    bb_defense_threshold = 0.85  # Defend even more vs steals
+                    
+                pot_odds = (pot_size + bet_to_call) / bet_to_call if bet_to_call > 0 else 0
                 
-                if pfr_from_steal_pos > 30 or last_aggressor_profile.get_pfr() > 28 : # Raiser is active or stealing often
-                    pot_odds = (pot_size + bet_to_call) / bet_to_call if bet_to_call > 0 else 0
-                    # Required equity approx 1 / (pot_odds + 1)
-                    # If getting better than 2:1 or 2.5:1, might be worth calling with many hands.
-                    if pot_odds > 2.0 : 
-                        logger.info(f"Weak hand in BB vs steal from active player ({last_aggressor_name_from_history} from {raiser_pos}), good pot odds ({pot_odds:.1f}:1). Action: CALL, Amount: {bet_to_call}")
+                if random.random() < bb_defense_threshold:
+                    # Sometimes 3-bet, sometimes call for deception
+                    if random.random() < 0.35 and can_make_valid_raise:  # 35% 3-bet frequency
+                        defense_3bet_size = min(raise_amount_calculated * 1.6, my_stack)
+                        logger.info(f"AGGRESSIVE BB DEFENSE: Weak hand 3-betting vs steal from {raiser_pos}. Action: RAISE, Amount: {defense_3bet_size}")
+                        return action_raise_const, defense_3bet_size
+                    else:
+                        logger.info(f"AGGRESSIVE BB DEFENSE: Weak hand calling vs steal from {raiser_pos}, pot odds ({pot_odds:.1f}:1). Action: CALL, Amount: {bet_to_call}")
                         return action_call_const, bet_to_call
         
+        # Check if possible, otherwise fold
         if can_check and bet_to_call == 0:
             logger.info(f"Weak hand, can check. Action: CHECK")
             return action_check_const, 0
         
-        logger.info(f"Weak hand, default. Action: FOLD (B2C: {bet_to_call}, CanCheck: {can_check})")
+        # Final aggressive chance - call some weak hands for deception/image
+        if bet_to_call > 0 and bet_to_call <= 2.5 * big_blind:
+            if random.random() < (bluff_frequency * 0.3):  # Small chance to call with weak hands
+                logger.info(f"DECEPTION CALL: Weak hand making aggressive call for table image. Action: CALL, Amount: {bet_to_call}")
+                return action_call_const, bet_to_call
+        
+        logger.info(f"Weak hand, folding after considering all aggressive options. Action: FOLD (B2C: {bet_to_call}, CanCheck: {can_check})")
         return action_fold_const, 0
 
     # Fallback: This should ideally not be reached if all categories are handled.
