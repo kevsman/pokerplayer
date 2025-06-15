@@ -139,8 +139,7 @@ class EnhancedPokerBot(PokerBot):
                 
                 # Apply adaptive strategy adjustments
                 self._apply_adaptive_adjustments()
-                
-                # Adaptive timing based on game activity
+                  # Adaptive timing based on game activity
                 recommended_delay = self.timing_controller.get_recommended_delay()
                 time.sleep(recommended_delay)
                 
@@ -193,7 +192,7 @@ class EnhancedPokerBot(PokerBot):
         return GameStateSnapshot(
             hand_id=table_data.get('hand_id'),
             pot_size=table_data.get('pot_size', 0.0),
-            active_player=parsed_result.get('active_player', {}).get('name'),
+            active_player=parsed_result.get('active_player', {}).get('name') if parsed_result.get('active_player') else None,
             game_stage=table_data.get('game_stage', 'preflop'),
             my_turn=my_player.get('has_turn', False),
             actions_available=len(actions),
@@ -817,9 +816,8 @@ class EnhancedPokerBot(PokerBot):
             if self.current_hand_id_for_history and self.current_hand_start_time:
                 self._complete_hand_tracking()
                 self._complete_hand_performance_tracking()
-            
-            # Get final session metrics
-            session_metrics = self.performance_monitor.get_session_metrics()
+              # Get final session metrics
+            session_metrics = self.performance_monitor.get_current_metrics()
             
             # Log session summary
             self.logger.info(f"Session Summary:")
