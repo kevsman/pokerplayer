@@ -431,8 +431,7 @@ def make_postflop_decision(
                 can_bet_medium = win_probability > adjusted_value_threshold
                 if position in ['BTN', 'CO'] and active_opponents_count <= 2:
                     # More aggressive in position
-                    can_bet_medium = win_probability > (adjusted_value_threshold - 0.05)
-                
+                    can_bet_medium = win_probability > (adjusted_value_threshold - 0.05)                
                 if random.random() < bluff_frequency and not can_bet_medium:
                     logger.info(f"Medium hand converted to bluff due to aggression settings")
                     can_bet_medium = True
@@ -448,6 +447,20 @@ def make_postflop_decision(
                 
                 # Adjust bet sizing based on aggression factor
                 bet_amount = min(my_stack, bet_amount * bet_factor)
+                
+                # Safety check: prevent massive overbets with marginal hands on wet boards
+                if board_texture in ['very_wet', 'wet'] and hand_strength_final_decision in ['medium', 'weak_made']:
+                    # Limit bet size to reasonable amounts on dangerous boards
+                    max_safe_bet = min(pot_size * 0.75, my_stack * 0.4)
+                    if bet_amount > max_safe_bet:
+                        bet_amount = max_safe_bet
+                        logger.info(f"Bet size reduced from {bet_amount:.2f} to {max_safe_bet:.2f} due to wet board and marginal hand")
+                
+                # Additional safety: never bet more than 80% of stack with one pair
+                if numerical_hand_rank == 2 and bet_amount > my_stack * 0.8:
+                    bet_amount = my_stack * 0.6
+                    logger.info(f"Bet size capped at 60% of stack with one pair")
+                
                 
                 logger.info(f"Decision: {action_raise_const} {bet_amount} (Medium hand, {bet_purpose_detail})")
                 return action_raise_const, bet_amount

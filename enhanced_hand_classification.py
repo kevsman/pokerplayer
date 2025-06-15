@@ -197,8 +197,7 @@ class EnhancedHandClassifier:
             'strong': 4,
             'medium': 3,
             'weak_made': 2,
-            'weak': 1
-        }
+            'weak': 1        }
         return strength_map.get(classification, 1)
     
     def _adjust_for_board_texture(
@@ -212,9 +211,20 @@ class EnhancedHandClassifier:
         if board_texture == 'unknown':
             return classification
         
-        # On very wet boards, downgrade medium hands slightly
-        if board_texture in ['very_wet', 'coordinated'] and classification == 'medium':
-            if numerical_rank == 2:  # One pair on wet board
+        # On very wet boards, be much more conservative with one pair
+        if board_texture in ['very_wet', 'coordinated']:
+            if numerical_rank == 2:  # One pair on very wet board
+                if classification in ['strong', 'medium']:
+                    return 'weak_made'  # Downgrade significantly
+                elif classification == 'weak_made':
+                    return 'weak'  # Downgrade further if already weak_made
+            elif numerical_rank == 3:  # Two pair on very wet board
+                if classification == 'strong':
+                    return 'medium'  # Slight downgrade
+        
+        # On wet boards, downgrade medium hands
+        elif board_texture == 'wet':
+            if numerical_rank == 2 and classification == 'medium':
                 return 'weak_made'
         
         # On very dry boards, upgrade certain hands slightly

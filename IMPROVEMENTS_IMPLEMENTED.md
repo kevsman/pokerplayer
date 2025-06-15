@@ -48,38 +48,62 @@
 
 **Impact**: Better recognition of strong holdings for more aggressive value betting.
 
-### 5. Overly Conservative C-Betting
+### 6. CRITICAL: Massive Overbet Issue with Marginal Hands
 
-**Issue**: Bot was not c-betting with strong hands like AK on ace-high boards.
+**Issue**: Bot was making huge overbets (like €0.47 with €0.47 stack = 100% all-in) with just top pair on very wet boards with flush draws. This occurred due to:
+
+- Insufficient board texture consideration in hand classification
+- Excessive aggression multiplication in bet sizing
+- No safety limits for marginal hands on dangerous boards
 
 **Fix**:
 
-- Lowered c-betting threshold for medium hands from 45% to 35% win probability
-- Made threshold scale better with opponent count
-- Improved logic to be more aggressive with high win probability hands
+- **Enhanced board texture analysis**: One pair on very wet boards now downgraded from "strong/medium" to "weak_made/weak"
+- **Bet sizing safety checks**: Added limits to prevent >75% pot bets with marginal hands on wet boards
+- **Stack protection**: Never bet >80% of stack with one pair, capped at 60%
+- **Improved texture adjustment**: More aggressive downgrades for dangerous board textures
 
-**Impact**: Increased value extraction from strong hands and better pot building.
+**Impact**: Prevents catastrophic overbets and preserves stack with marginal hands on dangerous boards.
+
+### 7. Enhanced Board Texture Awareness
+
+**Issue**: Bot was not properly adjusting hand strength based on board texture, leading to overvaluation of hands on dangerous boards.
+
+**Fix**:
+
+- Improved `_adjust_for_board_texture()` logic in hand classification
+- More aggressive downgrades for one pair and two pair on very wet boards
+- Better recognition of flush and straight dangers
+
+**Impact**: More conservative play on dangerous boards, better hand evaluation.
+
+## Expected Performance Improvements
 
 ## Expected Performance Improvements
 
 1. **Elimination of Errors**: No more SPR strategy errors logged
-2. **Better Value Extraction**: More aggressive c-betting with strong hands
-3. **Improved Hand Recognition**: Better classification of premium holdings
-4. **Cleaner Logging**: No more bot player name warnings
-5. **More Balanced Play**: Appropriate aggression with strong hands while maintaining selectivity
+2. **Prevention of Catastrophic Overbets**: No more all-in bets with marginal hands on wet boards
+3. **Better Value Extraction**: More aggressive c-betting with strong hands, conservative with marginal hands
+4. **Improved Hand Recognition**: Better classification considering board texture
+5. **Stack Preservation**: Protection against massive losses with one pair
+6. **Cleaner Logging**: No more bot player name warnings
+7. **More Balanced Play**: Appropriate aggression with strong hands while maintaining selectivity on dangerous boards
 
 ## Key Metrics to Monitor
 
-- Reduced error frequency in logs
+- Reduced error frequency in logs (especially SPR errors)
+- Elimination of >80% stack bets with one pair
+- Better hand classification on wet vs dry boards
+- Reduced variance from avoiding catastrophic overbets
 - Increased c-betting frequency with strong hands (70%+ win probability)
-- Better classification of one-pair hands with strong kickers
+- More conservative play with marginal hands on wet boards
 - No more "Bot player name not configured" warnings
 
 ## Files Modified
 
-1. `postflop_decision_logic.py` - Fixed SPR function call and c-betting logic
+1. `postflop_decision_logic.py` - Fixed SPR function call, c-betting logic, and added bet sizing safety checks
 2. `config.json` - Added bot player name configuration
-3. `enhanced_hand_classification.py` - Improved hand strength classification
+3. `enhanced_hand_classification.py` - Improved hand strength classification and board texture adjustments
 4. `IMPROVEMENTS_IMPLEMENTED.md` - This documentation
 
 ## Validation Required
