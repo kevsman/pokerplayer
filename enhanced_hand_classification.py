@@ -144,11 +144,12 @@ class EnhancedHandClassifier:
         # If classifications match, use them
         if rank_class == prob_class:
             return rank_class
-        
-        # Special handling for one pair (rank=2)
+          # Special handling for one pair (rank=2)
         if rank == 2:  # One pair
-            if win_prob >= 0.60:
-                return 'medium'  # Strong pair (overpair, top pair good kicker)
+            if win_prob >= 0.75:
+                return 'strong'  # Very strong pair (overpair with good kicker, top pair top kicker)
+            elif win_prob >= 0.60:
+                return 'medium'  # Strong pair (top pair good kicker)
             elif win_prob >= 0.45:
                 return 'weak_made'  # Decent pair
             else:

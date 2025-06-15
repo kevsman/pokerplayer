@@ -46,9 +46,9 @@
         "step_size": 5,
         "max_attempts": 60
     },
-    "big_blind": 0.02,
-    "small_blind": 0.01,
-    "LOG_LEVEL": "INFO",    "strategy": {
+    "big_blind": 0.02,    "small_blind": 0.01,
+    "bot_player_name": "warriorwonder25",
+    "LOG_LEVEL": "INFO","strategy": {
         "base_aggression_factor_preflop": 3.5,
         "base_aggression_factor_postflop": 3.2,
         "bluff_frequency": 0.60,

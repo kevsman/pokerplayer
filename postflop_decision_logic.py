@@ -353,8 +353,9 @@ def make_postflop_decision(
     is_weak_made = hand_strength_final_decision == "weak_made"
     is_very_weak = hand_strength_final_decision == "very_weak" # Assuming this category exists
     is_drawing = hand_strength_final_decision == "drawing"
-    is_weak_final = is_weak_made or is_very_weak # Drawing is handled separately in decision branches
-
+    is_weak_final = is_weak_made or is_very_weak # Drawing is handled separately in decision branches    # Calculate pot commitment ratio for SPR analysis
+    pot_commitment_ratio = (pot_size + bet_to_call) / max(my_stack, 0.01) if my_stack > 0 else 0
+    
     # Potentially committed based on SPR and hand strength
     if ENHANCED_MODULES_AVAILABLE and _get_spr_strategy_recommendation_func and _should_commit_stack_spr_func:
         try:
@@ -365,8 +366,10 @@ def make_postflop_decision(
             if isinstance(spr_strategy_result, dict): spr_strategy = spr_strategy_result
             
             is_pot_committed_result = _should_commit_stack_spr_func( # Renamed
-                spr=spr, hand_strength=hand_strength_final_decision,
-                strategy_recommendation=spr_strategy 
+                spr=spr, 
+                hand_strength=hand_strength_final_decision,
+                pot_commitment_ratio=pot_commitment_ratio,
+                street=street
             )
             if isinstance(is_pot_committed_result, bool): is_pot_committed = is_pot_committed_result
             logger.debug(f"SPR Strategy: {spr_strategy}, Pot Committed: {is_pot_committed}")
@@ -414,11 +417,13 @@ def make_postflop_decision(
                 fold_to_cbet_stat = final_opponent_analysis.get(f'fold_to_{street.lower()}_cbet', 0.5)
                 logger.info(f"Medium hand, PFR on {street}. Opponent fold to C-bet: {fold_to_cbet_stat:.2f}. Win prob: {win_probability:.2f}, Opps: {active_opponents_count}")
                 
-                # More aggressive cbetting logic - reduced threshold from 0.55 to 0.45
-                if win_probability > (0.45 / (active_opponents_count or 1)) or random.random() < continuation_bet_frequency:
+                # More aggressive cbetting logic - lowered threshold for high win probability
+                min_win_prob_threshold = 0.35 / max(active_opponents_count, 1)
+                if win_probability > min_win_prob_threshold or random.random() < continuation_bet_frequency:
                     can_bet_medium = True
                     bet_purpose_detail = "continuation bet"
-                    bet_factor = 0.65 * effective_aggression  # More aggressive                else:
+                    bet_factor = 0.65 * effective_aggression  # More aggressive
+                else:
                     logger.info(f"Medium hand not strong enough for c-bet, checking.")
                     can_bet_medium = False
             else:
