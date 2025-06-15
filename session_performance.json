@@ -1,0 +1,27 @@
+{
+  "session_start_time": 1750014955.4110997,
+  "hands_played_count": 1,
+  "total_decisions": 0,
+  "final_bankroll": 100.0,
+  "session_profit": 0.0,
+  "statistics": {
+    "session_duration_minutes": 0.41907976468404134,
+    "hands_played": 1,
+    "starting_bankroll": 100.0,
+    "current_bankroll": 100.0,
+    "peak_bankroll": 100.0,
+    "valley_bankroll": 100.0,
+    "total_profit": 0.0,
+    "net_profit": 0.0,
+    "roi_percentage": 0.0,
+    "win_rate": 0.0,
+    "hands_per_hour": 143.17083537840597,
+    "bb_per_hour": 0.0,
+    "vpip": 0.0,
+    "pfr": 0.0,
+    "aggression_factor": 0.0,
+    "decision_breakdown": {},
+    "recent_trend": "insufficient_data"
+  },
+  "timestamp": "2025-06-15T21:16:20.555946"
+}

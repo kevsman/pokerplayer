@@ -2,8 +2,10 @@
 # Enhanced opponent modeling and tracking for poker bot
 
 import logging
+import time
 from collections import defaultdict, deque
 from typing import Dict, List, Optional, Tuple, Any # Added Any
+import time # For generating placeholder hand IDs
 
 # logger = logging.getLogger(__name__) # Will be passed in
 
@@ -77,9 +79,7 @@ class OpponentProfile:
             })
         self.current_hand_actions = []
         self.current_hand_id = hand_id
-        self.hands_seen_count += 1 # Increment when a new hand starts and player is involved
-
-        # Reset per-hand flags (e.g., for C-bet opportunities)
+        self.hands_seen_count += 1 # Increment when a new hand starts and player is involved        # Reset per-hand flags (e.g., for C-bet opportunities)
         self._reset_per_hand_street_flags()
 
     def _reset_per_hand_street_flags(self):
@@ -92,6 +92,11 @@ class OpponentProfile:
         self.faced_cbet_flop = False
         self.faced_cbet_turn = False
         self.faced_cbet_river = False
+        
+        # Reset per-hand counting flags
+        self._preflop_opportunity_counted_this_hand = False
+        self._vpip_counted_this_hand = False
+        self._pfr_counted_this_hand = False
 
 
     def log_action(self, action_type: str, street: str, amount: float = 0, pot_size_before_action: float = 0, 
@@ -102,8 +107,9 @@ class OpponentProfile:
         """
         if not self.current_hand_id:
             self.logger.warning(f"Player {self.player_name}: Log_action called without current_hand_id. Action: {action_type} on {street}")
-            # Potentially initialize a placeholder hand_id or queue action if this is valid
-            return
+            # Initialize a placeholder hand_id for tracking
+            self.current_hand_id = f"unknown_{int(time.time())}"
+            self.logger.info(f"Created placeholder hand_id: {self.current_hand_id} for {self.player_name}")
 
         action_record = {
             "action_type": action_type.upper(), # Standardize to uppercase
@@ -115,79 +121,62 @@ class OpponentProfile:
             # Add more context if needed, e.g., board cards at time of action
         }
         self.current_hand_actions.append(action_record)
+        
+        # Enhanced logging for debugging
+        self.logger.debug(f"Player {self.player_name}: Logged action {action_type} on {street} - Total actions this hand: {len(self.current_hand_actions)}")
 
         # --- PREFLOP Stats ---
-        if street == PREFLOP:
+        if street.lower() == PREFLOP:
             # This assumes player is dealt cards if an action is logged for them preflop
             # A more robust way would be to have an explicit "dealt_in" signal per hand
             if not hasattr(self, '_preflop_opportunity_counted_this_hand') or not self._preflop_opportunity_counted_this_hand:
                 self.preflop_opportunities += 1
                 self._preflop_opportunity_counted_this_hand = True # Flag to count only once per hand
+                self.logger.debug(f"Player {self.player_name}: Preflop opportunity counted. Total: {self.preflop_opportunities}")
 
             action_upper = action_type.upper()
             if action_upper in ["CALL", "BET", "RAISE"]:
                 if not hasattr(self, '_vpip_counted_this_hand') or not self._vpip_counted_this_hand:
                     self.preflop_vpip_actions += 1
                     self._vpip_counted_this_hand = True # Count VPIP only once per hand
+                    self.logger.debug(f"Player {self.player_name}: VPIP action counted. Total: {self.preflop_vpip_actions}")
                 if position:
                     self.position_stats[position]["vpip_hands"] += 1
-
 
             if action_upper in ["BET", "RAISE"]: # PFR includes open bets (limped pot) or raises
                 if not hasattr(self, '_pfr_counted_this_hand') or not self._pfr_counted_this_hand:
                     self.preflop_pfr_actions += 1
                     self._pfr_counted_this_hand = True # Count PFR only once per hand
                     self.was_preflop_aggressor_this_hand = True
+                    self.logger.debug(f"Player {self.player_name}: PFR action counted. Total: {self.preflop_pfr_actions}")
                 if position:
                     self.position_stats[position]["pfr_hands"] += 1
                 
                 # Store bet sizing (as ratio to pot or BBs)
-                # Example: if it's an open raise, amount / big_blind_amount
-                # if it's a 3-bet, amount / previous_raise_amount
-                # This needs more context from the game state (e.g. big blind, previous action)
-                if pot_size_before_action > 0 and amount > 0 : # Basic bet sizing as % of pot
+                if pot_size_before_action > 0 and amount > 0: # Basic bet sizing as % of pot
                      self.bet_sizes[PREFLOP][action_upper].append(amount / pot_size_before_action)
 
-
-            if position:
-                self.position_stats[position]["hands_dealt"] +=1 # Total hands seen from this position
-                self.position_stats[position][f"{action_upper}_actions"] += 1
-
-
         # --- POSTFLOP Stats ---
-        # This section needs significant expansion based on the detailed stats to track.
-        # For example, C-betting, folding to C-bets, aggression per street.
-        elif street in [FLOP, TURN, RIVER]:
-            if street == FLOP and not self.saw_flop_this_hand:
-                self.saw_flop_this_hand = True
-                self.street_stats[FLOP]["saw_flop_count"] += 1
-                if self.was_preflop_aggressor_this_hand:
-                    self.cbet_opportunity_flop = True # Player was PFR and saw flop
-                    self.street_stats[FLOP]["cbet_opportunities"] += 1
+        elif street.lower() in [FLOP, TURN, RIVER]:
+            street_lower = street.lower()
+            
+            # Track total actions on street for aggression frequency calculation
+            self.street_stats[street_lower]["total_actions_on_street"] += 1
             
             action_upper = action_type.upper()
-            self.street_stats[street][f"{action_upper}_count"] += 1
-            self.street_stats[street]["total_actions_on_street"] += 1
+            self.street_stats[street_lower][f"{action_upper}_count"] += 1
+            
+            # Bet sizing tracking for postflop
+            if action_upper in ["BET", "RAISE"] and pot_size_before_action > 0 and amount > 0:
+                self.bet_sizes[street_lower][action_upper].append(amount / pot_size_before_action)
+            
+            self.logger.debug(f"Player {self.player_name}: Postflop action {action_type} on {street_lower} - Street total actions: {self.street_stats[street_lower]['total_actions_on_street']}")
 
-            if amount > 0 and pot_size_before_action > 0:
-                 self.bet_sizes[street][action_upper].append(amount / pot_size_before_action)
-
-            # C-bet Made (Flop)
-            if street == FLOP and self.cbet_opportunity_flop and action_upper in ["BET", "RAISE"]:
-                self.street_stats[FLOP]["cbets_made"] += 1
-                self.cbet_opportunity_flop = False # Action taken, opportunity consumed
-
-            # Fold to Flop C-bet
-            # Need to identify if the player is facing a C-bet.
-            # This requires knowing who the C-bettor was (the PFR).
-            # If facing_cbet_flop and action_upper == "FOLD":
-            #    self.street_stats[FLOP]["fold_to_cbet_count"] += 1
-
-            # Aggression Frequency (AFq) on this street
-            # AFq = (Bets + Raises) / (Bets + Raises + Calls + Folds) * 100
-            # This is typically calculated at the end of a hand or session for overall AFq.
-            # Per-street AFq can also be tracked.
-            # For now, just count actions, calculation can be done in getter methods.
+        # --- General Action Tracking ---
+        # Increment hands played if this is their first action of the hand
+        if len(self.current_hand_actions) == 1:
+            self.hands_played_count += 1
+            self.logger.debug(f"Player {self.player_name}: First action of hand. Hands played: {self.hands_played_count}")
 
         # Reset per-hand flags at the start of a new hand via new_hand()
         if street == PREFLOP and action_type.upper() == "FOLD": # If player folds preflop
