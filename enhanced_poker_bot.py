@@ -751,7 +751,6 @@ class EnhancedPokerBot(PokerBot):
             
             bet_to_call = my_player.get('bet_to_call', 0.0)
             pot_size = table_data.get('pot_size', 0.0)
-            
             if isinstance(bet_to_call, str):
                 bet_to_call = self._parse_stack_amount(bet_to_call)
             if isinstance(pot_size, str):
@@ -769,11 +768,16 @@ class EnhancedPokerBot(PokerBot):
             my_player = game_analysis.get('my_player', {})
             my_name = my_player.get('name', 'Hero')
             
+            # Get street and normalize it
+            street = game_analysis.get('table_data', {}).get('game_stage', 'preflop')
+            if isinstance(street, str):
+                street = street.lower()  # Normalize to lowercase
+            
             # Track our action in opponent modeling using log_action method
             self.opponent_tracker_enhanced.log_action(
                 player_name=my_name,
                 action_type=action_record['action_type'],
-                street=game_analysis.get('table_data', {}).get('game_stage', 'preflop'),
+                street=street,
                 position=self._get_last_known_position(),
                 amount=action_record['amount'],
                 pot_size_before_action=game_analysis.get('table_data', {}).get('pot_size', 0.0),
@@ -783,7 +787,14 @@ class EnhancedPokerBot(PokerBot):
             )
             
         except Exception as e:
+            # Enhanced error logging
             self.logger.error(f"Error updating opponent tracking with action: {e}")
+            self.logger.error(f"Action record: {action_record}")
+            self.logger.error(f"Game analysis keys: {list(game_analysis.keys())}")
+            if 'table_data' in game_analysis:
+                self.logger.error(f"Table data: {game_analysis['table_data']}")
+            import traceback
+            self.logger.error(f"Full traceback: {traceback.format_exc()}")
     
     def _handle_waiting_state(self, game_analysis: Dict):
         """Handle state when it's not our turn."""
