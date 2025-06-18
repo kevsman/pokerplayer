@@ -6,6 +6,7 @@ from html_parser import PokerPageParser
 from decision_engine import DecisionEngine, ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE
 from ui_controller import UIController
 from equity_calculator import EquityCalculator # Added import
+from hand_history_tracker import get_hand_history_tracker  # Import hand history tracker
 import time
 import logging
 
@@ -92,6 +93,7 @@ class PokerBot:
         self.decision_engine = DecisionEngine(self.hand_evaluator, config=self.config) 
         self.ui_controller = UIController()
         self.equity_calculator = EquityCalculator() # Added instantiation
+        self.hand_history_tracker = get_hand_history_tracker()  # Get the global hand history tracker instance
         self.table_data = {}
         self.player_data = []
         # self.big_blind and self.small_blind are already set from config or defaults
@@ -128,6 +130,32 @@ class PokerBot:
 
     def analyze_table(self):
         self.table_data = self.parser.analyze_table()
+        
+        # Check if this is a new hand and update the hand history tracker
+        hand_id = self.table_data.get('hand_id')
+        if hand_id:
+            # Check if this is a new hand
+            current_hand = self.hand_history_tracker.get_current_hand()
+            if not current_hand or current_hand.hand_id != hand_id:
+                # Start tracking a new hand
+                self.logger.info(f"Starting to track new hand: {hand_id}")
+                self.hand_history_tracker.start_new_hand(hand_id)
+            
+            # Update pot size and community cards for the current hand
+            game_stage = self.table_data.get('game_stage', 'preflop').lower()
+            pot_size = self.table_data.get('pot_size', 0)
+            community_cards = self.table_data.get('community_cards', [])
+            
+            # Update pot size for the current street
+            self.hand_history_tracker.update_pot_size(pot_size, game_stage)
+            
+            # Update community cards based on the game stage
+            if game_stage == 'flop' and len(community_cards) >= 3:
+                self.hand_history_tracker.add_community_cards(community_cards, 'flop')
+            elif game_stage == 'turn' and len(community_cards) >= 4:
+                self.hand_history_tracker.add_community_cards(community_cards, 'turn')
+            elif game_stage == 'river' and len(community_cards) >= 5:
+                self.hand_history_tracker.add_community_cards(community_cards, 'river')
 
     def analyze_players(self):
         self.player_data = self.parser.analyze_players() 
@@ -135,9 +163,38 @@ class PokerBot:
         community_cards_for_equity = self.table_data.get('community_cards', [])
         # Ensure community_cards_for_equity are in the string format EquityCalculator expects, if not already.
         # Assuming parser already provides them as list of strings like ['Ah', 'Ks']
+        
+        game_stage = self.table_data.get('game_stage', 'preflop').lower()
 
         for player_info in self.player_data:
             player_hole_cards = player_info.get('cards')
+            player_name = player_info.get('name', 'Unknown')
+            player_position = player_info.get('position', 'Unknown')
+            
+            # Track player's cards in hand history if they're known
+            if player_hole_cards and len(player_hole_cards) > 0:
+                self.hand_history_tracker.add_player_cards(player_name, player_hole_cards)
+            
+            # Track player's actions in hand history
+            # Note: This requires the parser to detect the last action of each player
+            last_action = player_info.get('last_action')
+            if last_action:
+                action_type = last_action.lower()  # e.g. 'call', 'raise', 'check', 'fold'
+                amount = 0.0
+                
+                # Convert bet amounts to float
+                if action_type in ['bet', 'raise', 'call']:
+                    amount = parse_currency_string(player_info.get('current_bet', 0))
+                
+                # Record the action in hand history
+                if action_type in ['bet', 'raise', 'call', 'check', 'fold']:
+                    self.hand_history_tracker.record_action(
+                        player_name=player_name, 
+                        action_type=action_type,
+                        amount=amount,
+                        street=game_stage,
+                        position=player_position
+                    )
             
             if player_info.get('is_my_player') and player_hole_cards:
                 # Calculate hand evaluation (rank, description)
@@ -216,6 +273,46 @@ class PokerBot:
 
         if not my_player:
             return "Could not find my player data."
+        
+        # Get the current hand history and include aggression information
+        current_hand = self.hand_history_tracker.get_current_hand()
+        if current_hand:
+            # Add hand history information to my_player
+            my_player_name = my_player.get('name', '')
+            
+            # Was I the preflop aggressor?
+            was_preflop_aggressor = current_hand.is_player_aggressor(my_player_name, 'preflop')
+            my_player['was_preflop_aggressor'] = was_preflop_aggressor
+            
+            # Get my action history for this hand
+            action_summary = current_hand.get_player_action_summary(my_player_name)
+            my_player['action_history'] = action_summary
+            
+            # Add current street aggression information
+            game_stage = self.table_data.get('game_stage', 'preflop').lower()
+            previous_streets = []
+            street_order = ["preflop", "flop", "turn", "river"]
+            
+            # Get all previous streets
+            current_index = street_order.index(game_stage)
+            for i in range(current_index):
+                previous_streets.append(street_order[i])
+            
+            # Check if I was the aggressor on previous streets
+            aggression_history = {}
+            for street in previous_streets:
+                aggression_history[street] = current_hand.is_player_aggressor(my_player_name, street)
+            
+            my_player['aggression_history'] = aggression_history
+            
+            # Log hand history information for debugging
+            self.logger.debug(f"Hand history for decision-making - Player: {my_player_name}")
+            self.logger.debug(f"  Was preflop aggressor: {was_preflop_aggressor}")
+            self.logger.debug(f"  Action history: {action_summary}")
+            self.logger.debug(f"  Aggression history: {aggression_history}")
+            
+            # Add hand history to the table data
+            self.table_data['hand_history'] = current_hand
         
         # The DecisionEngine's make_decision expects: my_player, table_data, all_players_data
         # It also internally checks if it's the player's turn.
@@ -538,12 +635,12 @@ class PokerBot:
                             "players": processed_players_list, # Use the fully processed list
                             "pot_size": table_data.get('pot_size'),
                             "community_cards": table_data.get('community_cards'),
-                            "current_round": table_data.get('street', table_data.get('game_stage', 'preflop')).lower(),
+                            "current_round": table_data.get('game_stage', 'preflop').lower(),
                             "big_blind": self.config.get('big_blind'),
                             "small_blind": self.config.get('small_blind'),
                             "min_raise": self.config.get('big_blind') * 2, # Example, adjust as needed
                             "board": table_data.get('community_cards'), 
-                            "street": table_data.get('street', table_data.get('game_stage', 'preflop')).lower()
+                            "street": table_data.get('game_stage', 'preflop').lower()
                         }
                         action_tuple = self.decision_engine.make_decision(game_state_for_decision, my_player_index)
                     
@@ -572,6 +669,14 @@ class PokerBot:
 
                     if action == ACTION_FOLD:
                         self.ui_controller.action_fold()
+                        # Record our action in hand history
+                        self.hand_history_tracker.record_action(
+                            player_name=my_player_data.get('name', 'My Player'),
+                            action_type='fold',
+                            amount=0.0,
+                            street=table_data.get('game_stage', 'preflop').lower(),
+                            position=my_player_data.get('position', 'Unknown')
+                        )
                     elif action == ACTION_CHECK or action == ACTION_CALL:
                         # If the action is CALL and it's an all-in situation, 
                         # and the decision was to call the all-in, we might need a specific button click.
@@ -581,8 +686,24 @@ class PokerBot:
                         if action == ACTION_CALL and amount is not None and amount >= my_current_stack and my_player_data.get('is_all_in_call_available'):
                             self.logger.info("Performing All-in Call action.")
                             self.ui_controller.action_all_in() # Assumes action_all_in handles this specific click
+                            # Record our action in hand history
+                            self.hand_history_tracker.record_action(
+                                player_name=my_player_data.get('name', 'My Player'),
+                                action_type='call',
+                                amount=my_current_stack,
+                                street=table_data.get('game_stage', 'preflop').lower(),
+                                position=my_player_data.get('position', 'Unknown')
+                            )
                         else:
                             self.ui_controller.action_check_call()
+                            # Record our action in hand history
+                            self.hand_history_tracker.record_action(
+                                player_name=my_player_data.get('name', 'My Player'),
+                                action_type=action.lower(),
+                                amount=amount if action == ACTION_CALL else 0.0,
+                                street=table_data.get('game_stage', 'preflop').lower(),
+                                position=my_player_data.get('position', 'Unknown')
+                            )
                     elif action == ACTION_RAISE:
                         # If the raise amount is the player's entire stack, it's an all-in raise.
                         # The UI might have a dedicated all-in button for this instead of raise + amount.
@@ -590,12 +711,36 @@ class PokerBot:
                         # Ensure amount is not None and is a number before comparison
                         if amount is not None and isinstance(amount, (int, float)) and my_current_stack <= amount: 
                             self.logger.info("Performing All-in Raise action.")
-                            self.ui_controller.action_all_in() 
+                            self.ui_controller.action_all_in()
+                            # Record our action in hand history
+                            self.hand_history_tracker.record_action(
+                                player_name=my_player_data.get('name', 'My Player'),
+                                action_type='raise',
+                                amount=my_current_stack,
+                                street=table_data.get('game_stage', 'preflop').lower(),
+                                position=my_player_data.get('position', 'Unknown')
+                            )
                         else:
                             self.ui_controller.action_raise(amount) # Pass amount to action_raise
+                            # Record our action in hand history
+                            self.hand_history_tracker.record_action(
+                                player_name=my_player_data.get('name', 'My Player'),
+                                action_type='raise',
+                                amount=amount,
+                                street=table_data.get('game_stage', 'preflop').lower(),
+                                position=my_player_data.get('position', 'Unknown')
+                            )
                     else:
                         self.logger.warning(f"Unknown action type: {action}. Performing FOLD.")
                         self.ui_controller.action_fold()
+                        # Record our action in hand history
+                        self.hand_history_tracker.record_action(
+                            player_name=my_player_data.get('name', 'My Player'),
+                            action_type='fold',
+                            amount=0.0,
+                            street=table_data.get('game_stage', 'preflop').lower(),
+                            position=my_player_data.get('position', 'Unknown')
+                        )
                     
                     time.sleep(self.config.get('delays', {}).get('after_action_delay', 5.0))
 

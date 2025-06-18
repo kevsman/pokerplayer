@@ -81,64 +81,58 @@ VERY_STRONG_HAND_THRESHOLD = 7  # e.g., Two Pair or better
 STRONG_HAND_THRESHOLD = 4       # e.g., Top Pair or better
 MEDIUM_HAND_THRESHOLD = 2       # e.g., Middle Pair or better
 
-# Define action constants if not imported (assuming they are globally available or passed)
-# ACTION_FOLD = "fold"
-# ACTION_CHECK = "check"
-# ACTION_CALL = "call"
-# ACTION_BET = "bet"
-# ACTION_RAISE = "raise"
-
-# Functions previously here have been moved to the postflop directory
-
-
-# Helper function for parsing stack values
-def _parse_stack_value_for_postflop(stack_str: str) -> float:
-    if isinstance(stack_str, (int, float)):
-        return float(stack_str)
-    if isinstance(stack_str, str):
-        cleaned_str = stack_str.replace('€', '').replace('$', '').replace(',', '').strip()
-        if not cleaned_str:
-            return 0.0
-        try:
-            return float(cleaned_str)
-        except ValueError:
-            logger.warning(f"Could not parse stack value string: {stack_str}")
-            return 0.0
-    return 0.0
-
-
+# Define make_postflop_decision function
 def make_postflop_decision(
-    decision_engine_instance, 
-    numerical_hand_rank, 
-    hand_description,     
-    bet_to_call,
-    can_check,
-    pot_size,
-    my_stack,
-    win_probability,       
-    pot_odds_to_call,
-    game_stage, # This is 'street'
-    spr,
-    action_fold_const,
-    action_check_const,
-    action_call_const,
-    action_raise_const,
-    my_player_data,
-    big_blind_amount,
-    base_aggression_factor,
-    max_bet_on_table, # Added this parameter
-    active_opponents_count=1, # Add opponent count for multiway considerations
-    opponent_tracker=None,  # Add opponent tracking data
-    all_players_raw_data=None # New parameter for all players' data from parser
+    decision_engine_instance, numerical_hand_rank, hand_description,
+    bet_to_call, can_check, pot_size, my_stack, win_probability,
+    pot_odds_to_call, game_stage, spr,
+    action_fold_const, action_check_const, action_call_const, action_raise_const,
+    my_player_data, all_players_raw_data, big_blind_amount, base_aggression_factor,
+    max_bet_on_table, active_opponents_count, opponent_tracker,
+    was_preflop_aggressor=False, action_history=None, aggression_history=None
 ):
     street = game_stage # Use game_stage as street    
     logger.debug(
         f"make_postflop_decision: street={street}, my_player_data={my_player_data}, "
         f"pot_size={pot_size}, win_prob={win_probability}, pot_odds={pot_odds_to_call}, "
         f"bet_to_call={bet_to_call}, max_bet_on_table={max_bet_on_table}, "
-        f"active_opponents_count={active_opponents_count}, can_check={can_check}"
+        f"active_opponents_count={active_opponents_count}, can_check={can_check}, "
+        f"was_preflop_aggressor={was_preflop_aggressor}, action_history={action_history}"
     )
     
+    # We'll set this flag even if it was passed in, for backward compatibility
+    was_pfr = was_preflop_aggressor
+    if action_history and 'preflop' in action_history and 'raise' in action_history['preflop']:
+        was_pfr = True
+    
+    # Check if we were the aggressor on the previous street
+    was_aggressor_previous_street = False
+    previous_street = None
+    
+    if street == 'flop':
+        previous_street = 'preflop'
+    elif street == 'turn':
+        previous_street = 'flop'
+    elif street == 'river':
+        previous_street = 'turn'
+    
+    if aggression_history and previous_street in aggression_history:
+        was_aggressor_previous_street = aggression_history[previous_street]
+    
+    logger.info(f"Hand history context: was_pfr={was_pfr}, was_aggressor_previous_street={was_aggressor_previous_street}")
+    
+    # Adjust strategy based on hand history
+    aggression_multiplier = 1.0
+    if was_pfr:
+        # More aggressive if we were the preflop raiser
+        aggression_multiplier *= 1.2
+    if was_aggressor_previous_street:
+        # More aggressive if we were the aggressor on the previous street
+        aggression_multiplier *= 1.1
+    
+    # Log the aggression multiplier
+    logger.info(f"Using aggression_multiplier={aggression_multiplier} based on hand history")
+
     # Calculate pot commitment variables first
     committed_amount = my_player_data.get('current_bet', 0)
     total_commitment_if_call = committed_amount + bet_to_call
@@ -389,11 +383,11 @@ def make_postflop_decision(
                         
                         bet_description = "PFR semi-bluff c-bet" if was_pfr else "position-based semi-bluff"
                         logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Drawing hand, {bet_description})")
-                        return action_raise_const, bet_amount
+                        return action_raise_const, bet_amount                    
                     else:
                         logger.info(f"Decision: {action_check_const} (Drawing hand, {('PFR' if was_pfr else 'in position')} choosing to check)")
                         return action_check_const, 0
-                else: # Not PFR and not in favorable position
+                else:  # Not PFR and not in favorable position
                     # Still consider semi-bluffing in certain scenarios even when not PFR
                     if win_probability > 0.30 and active_opponents_count == 1:
                         fold_equity_for_draw_bluff = calculate_fold_equity(

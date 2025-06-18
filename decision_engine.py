@@ -8,6 +8,7 @@ from tournament_adjustments import get_tournament_adjustment_factor, adjust_pref
 from hand_utils import get_hand_strength_value, calculate_stack_to_pot_ratio, get_preflop_hand_category, normalize_card_list
 from preflop_decision_logic import make_preflop_decision
 from postflop_decision_logic import make_postflop_decision
+from hand_history_tracker import get_hand_history_tracker  # Import hand history tracker
 import logging
 
 ACTION_FOLD = "fold"
@@ -43,6 +44,9 @@ class DecisionEngine:
         
         # Initialize opponent tracking system
         self.opponent_tracker = OpponentTracker()
+        
+        # Initialize hand history tracker system
+        self.hand_history_tracker = get_hand_history_tracker()
         
         # Tournament settings (default to cash game)
         self.tournament_level = self.config.get('tournament_level', 0)  # 0 = cash game, 1-3 = tournament levels
@@ -121,27 +125,43 @@ class DecisionEngine:
         # Update opponent tracking before making decision
         self.update_opponents_from_game_state(game_state, player_index)
 
-        # Determine if this player was the pre-flop aggressor
-        # This needs to be tracked across streets. For now, we check if they made the last raise preflop.
-        # A more robust solution would store this state in OpponentTracker or similar.
+        # Extract hand history information
+        player_name = my_player.get('name', '')
+        current_hand = self.hand_history_tracker.get_current_hand()
         was_preflop_aggressor = False
-        if current_round != 'preflop': # Only relevant post-flop
-            # Check preflop actions from game_state if available, or rely on opponent_tracker
-            # This is a simplified check. A full implementation would look at the action history.
-            # For now, we'll assume if the player is in `my_player` and has a specific flag or we can infer it.
-            # This part needs to be properly implemented by tracking who made the last preflop raise.
-            # Placeholder: Assume it's passed in my_player data or we can retrieve it.
-            # For the purpose of this change, we'll add it to my_player_data before calling postflop.
-            # This would typically be set by a part of the system that processes game history.
-            if hasattr(self.opponent_tracker, 'get_preflop_aggressor_info'):
-                pfr_info = self.opponent_tracker.get_preflop_aggressor_info()
-                if pfr_info and pfr_info.get('name') == my_player.get('name'):
-                    was_preflop_aggressor = True
-                    logger.debug(f"Player {my_player.get('name')} identified as pre-flop aggressor by opponent_tracker.")
-            # If not available from tracker, it might be in my_player from a previous stage or log parsing
-            elif my_player.get('was_preflop_aggressor') is True:
-                 was_preflop_aggressor = True
-                 logger.debug(f"Player {my_player.get('name')} has 'was_preflop_aggressor' flag set to True.")
+        action_history = {}
+        aggression_history = {}
+        
+        if current_hand:
+            # Check if player was preflop aggressor
+            was_preflop_aggressor = current_hand.is_player_aggressor(player_name, 'preflop')
+            
+            # Get action history
+            action_history = current_hand.get_player_action_summary(player_name)
+            
+            # Get aggression history for each previous street
+            previous_streets = []
+            street_order = ["preflop", "flop", "turn", "river"]
+            current_street_index = street_order.index(current_round) if current_round in street_order else -1
+            
+            if current_street_index > 0:
+                for i in range(current_street_index):
+                    previous_street = street_order[i]
+                    aggression_history[previous_street] = current_hand.is_player_aggressor(player_name, previous_street)
+            
+            logger.debug(f"Hand history for {player_name}: preflop_aggressor={was_preflop_aggressor}, action_history={action_history}, aggression_history={aggression_history}")
+        else:
+            # Old method of determining preflop aggressor
+            if current_round != 'preflop': # Only relevant post-flop
+                if hasattr(self.opponent_tracker, 'get_preflop_aggressor_info'):
+                    pfr_info = self.opponent_tracker.get_preflop_aggressor_info()
+                    if pfr_info and pfr_info.get('name') == my_player.get('name'):
+                        was_preflop_aggressor = True
+                        logger.debug(f"Player {my_player.get('name')} identified as pre-flop aggressor by opponent_tracker.")
+                # If not available from tracker, it might be in my_player from a previous stage or log parsing
+                elif my_player.get('was_preflop_aggressor') is True:
+                     was_preflop_aggressor = True
+                     logger.debug(f"Player {my_player.get('name')} has 'was_preflop_aggressor' flag set to True.")
             
             # Store this in my_player data for postflop_decision_logic to use
             my_player['was_preflop_aggressor'] = was_preflop_aggressor
@@ -310,7 +330,13 @@ class DecisionEngine:
             else:
                 spr = float('inf') if my_stack > 0 else 0
             
+            # Extract hand history information from my_player if available
+            was_preflop_aggressor = my_player.get('was_preflop_aggressor', False)
+            action_history = my_player.get('action_history', {})
+            aggression_history = my_player.get('aggression_history', {})
+            
             logger.debug(f"  DEBUG ENGINE: PRE-CALL to make_postflop_decision: final_bet_to_call={final_bet_to_call}, max_bet_on_table={max_bet_on_table}")
+            logger.debug(f"  DEBUG ENGINE: Hand history information: preflop_aggressor={was_preflop_aggressor}, action_history={action_history}, aggression_history={aggression_history}")
             # sys.stderr.flush() # Not needed with logger
             
             action, amount = make_postflop_decision(
@@ -335,7 +361,10 @@ class DecisionEngine:
                 base_aggression_factor=self.base_aggression_factor,
                 max_bet_on_table=max_bet_on_table,
                 active_opponents_count=active_opponents_count,
-                opponent_tracker=self.opponent_tracker  # Pass opponent tracking data
+                opponent_tracker=self.opponent_tracker,  # Pass opponent tracking data
+                was_preflop_aggressor=was_preflop_aggressor,  # Pass preflop aggressor info
+                action_history=action_history,  # Pass action history
+                aggression_history=aggression_history  # Pass aggression history
             )
         
         # Ensure amount is a float before returning
