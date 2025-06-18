@@ -297,15 +297,15 @@ def make_postflop_decision(
             # Fallback or if not checking for trap
             bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
             logger.info(f"Decision: {action_raise_const} {bet_amount} (Very strong hand, value bet)")
-            return action_raise_const, bet_amount
-        
+            return action_raise_const, bet_amount        
         elif is_strong:
             if ENHANCED_MODULES_AVAILABLE: # Check if enhanced modules are available
                 should_check_flag, check_reason = should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street)
                 if should_check_flag:
                     logger.info(f"Decision: {action_check_const} (Strong hand, checking because: {check_reason})")
                     return action_check_const, 0
-            # Fallback or if not checking for specific reason            bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
+            # Fallback or if not checking for specific reason
+            bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
             logger.info(f"Decision: {action_raise_const} {bet_amount} (Strong hand, value bet)")
             return action_raise_const, bet_amount
             
@@ -328,17 +328,17 @@ def make_postflop_decision(
                     # This ensures the log reflects the PFR c-bet if that's the primary driver
                     bet_purpose_detail = "c-bet with medium strength (PFR)"
                     bet_factor = 0.6 
-                elif is_thin_value_spot(hand_strength_final_decision, win_probability, final_opponent_analysis.get('table_type', 'unknown'), position) and not can_cbet_medium:
-                     # Original thin value spot, not PFR driven or PFR conditions not met but thin value spot is.
+                elif is_thin_value_spot(hand_strength_final_decision, win_probability, final_opponent_analysis.get('table_type', 'unknown'), position) and not can_cbet_medium:                     # Original thin value spot, not PFR driven or PFR conditions not met but thin value spot is.
                      bet_purpose_detail = "thin value bet"
                      bet_factor = 0.5
-
+                
                 bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count, bluff=False) * bet_factor
                 bet_amount = max(bet_amount, big_blind_amount) # Ensure min bet
                 logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Medium hand, {bet_purpose_detail})")
                 return action_raise_const, bet_amount
             else:
-                # If not betting, consider if specific check conditions apply                if ENHANCED_MODULES_AVAILABLE:
+                # If not betting, consider if specific check conditions apply
+                if ENHANCED_MODULES_AVAILABLE:
                     should_check_flag, check_reason = should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street)
                     if should_check_flag:
                         logger.info(f"Decision: {action_check_const} (Medium hand, {('PFR but ' if was_pfr else '')}checking because: {check_reason})")
@@ -411,15 +411,13 @@ def make_postflop_decision(
                                 street, 
                                 big_blind_amount, 
                                 active_opponents_count, 
-                                bluff=True
-                            ) * 0.8  # Smaller sizing when not PFR
-                            
+                                bluff=True                            ) * 0.8  # Smaller sizing when not PFR
                             logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Drawing hand, opportunistic semi-bluff)")
                             return action_raise_const, bet_amount
                     
                     logger.info(f"Decision: {action_check_const} (Drawing hand, checking to see next card)")
                     return action_check_const, 0
-              elif hand_strength_final_decision == 'weak_made':
+            elif hand_strength_final_decision == 'weak_made':
                 # More aggressive with weak made hands - use 0.65 pot bet for higher fold equity
                 fold_equity = calculate_fold_equity(final_opponent_analysis.get('table_type', 'unknown'), board_texture, pot_size * 0.65, pot_size) # Increased from 0.5 pot bet
                 
@@ -449,7 +447,7 @@ def make_postflop_decision(
     else: # This means (bet_to_call > 0) OR (not can_check originally)
         if bet_to_call > 0:
             logger.debug(f"Facing a bet of {bet_to_call} (can_check was {can_check}). Evaluating call, raise, or fold.")
-        else: # implies can_check was False and bet_to_call is 0
+        else: # implies can_check was False and bet_to_call is 0            
             logger.debug(f"Cannot check (can_check=False, bet_to_call=0). Evaluating options.")
         
         min_raise = max_bet_on_table * 2 # Simplified min raise logic
@@ -459,7 +457,8 @@ def make_postflop_decision(
             if ENHANCED_MODULES_AVAILABLE and spr_strategy.get('base_strategy') == 'commit' or is_pot_committed:
                 bet_amount = my_stack # All-in
                 logger.info(f"Decision: {action_raise_const} {bet_amount} (Very strong hand, committing stack, SPR={spr:.1f})")
-            else:                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
+            else:
+                bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
                 bet_amount = max(bet_amount, min_raise)
                 logger.info(f"Decision: {action_raise_const} {bet_amount} (Very strong hand, value raise)")
             return action_raise_const, min(bet_amount, my_stack)
@@ -497,7 +496,8 @@ def make_postflop_decision(
                 if bet_to_call > pot_size * 0.75 and win_probability < 0.25:
                     logger.info(f"Decision: {action_fold_const} (Strong hand, folding to large bet with poor equity: {win_probability:.2f})")
                     return action_fold_const, 0
-                else:                    logger.info(f"Decision: {action_call_const} {bet_to_call} (Strong hand, calling despite marginal odds)")
+                else:                    
+                    logger.info(f"Decision: {action_call_const} {bet_to_call} (Strong hand, calling despite marginal odds)")
                     return action_call_const, bet_to_call
                     
         elif is_medium:
