@@ -81,6 +81,21 @@ VERY_STRONG_HAND_THRESHOLD = 7  # e.g., Two Pair or better
 STRONG_HAND_THRESHOLD = 4       # e.g., Top Pair or better
 MEDIUM_HAND_THRESHOLD = 2       # e.g., Middle Pair or better
 
+# Helper function for parsing stack values
+def _parse_stack_value_for_postflop(stack_str: str) -> float:
+    if isinstance(stack_str, (int, float)):
+        return float(stack_str)
+    if isinstance(stack_str, str):
+        cleaned_str = stack_str.replace('€', '').replace('$', '').replace(',', '').strip()
+        if not cleaned_str:
+            return 0.0
+        try:
+            return float(cleaned_str)
+        except ValueError:
+            logger.error(f"Could not parse stack value: {stack_str}")
+            return 0.0
+    return 0.0
+
 # Define make_postflop_decision function
 def make_postflop_decision(
     decision_engine_instance, numerical_hand_rank, hand_description,
