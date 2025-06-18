@@ -142,7 +142,13 @@ class AdvancedOpponentAnalyzer:
             'avg_pfr': 0.18,
             'avg_aggression': 1.8
         }
-    
+        
+        # New attributes for quick profiling
+        self.default_table_type = 'balanced'  # Default assumption
+        self.quick_profiling_enabled = True   # New flag to enable quick profiling
+        self.min_hands_for_accurate_profile = 5  # Reduced from typical 10+ for faster profiling
+        self.exploit_level = 0.8  # How aggressively to exploit (0-1 scale)
+
     def get_or_create_profile(self, player_name: str) -> OpponentProfile:
         """Get existing profile or create new one."""
         if player_name not in self.profiles:
@@ -299,8 +305,125 @@ class AdvancedOpponentAnalyzer:
             return 'bluff_less'
         else:
             return 'standard_bluffing'
-
-
+    
+    def analyze_opponent(self, opponent_id, tracked_data=None, history=None, position=None, hand_strength=None):
+        """
+        Analyze opponent and get exploitative adjustments.
+        Returns a dict with opponent profile and adjustment recommendations.
+        """
+        # Quick profiling if we have limited data but quick profiling is enabled
+        if tracked_data and self.quick_profiling_enabled:
+            # Use even minimal data to make faster assessments
+            if tracked_data.get('hands_seen', 0) >= 3:  # Reduced threshold for quicker profiling
+                return self._perform_quick_profiling(tracked_data, position, hand_strength)
+        
+        # Default profile for unknown opponents based on table type
+        return self._get_default_profile(position, hand_strength)
+    
+    def _perform_quick_profiling(self, data, position=None, hand_strength=None):
+        """
+        More aggressive quick profiling to make faster assessments of opponents.
+        Even with minimal data, make exploitative adjustments more quickly.
+        """
+        # Extract key stats
+        vpip = data.get('vpip', 25.0)
+        pfr = data.get('pfr', 15.0)
+        aggression = data.get('aggression_factor', 1.0)
+        
+        # Quick classifications with lower thresholds
+        is_tight = vpip < 20.0
+        is_loose = vpip > 30.0
+        is_passive = aggression < 1.0
+        is_aggressive = aggression > 2.0
+        
+        # Fast profile determination
+        if is_tight and is_aggressive:
+            player_type = 'tag'  # Tight-aggressive
+            fold_equity = 65.0   # High fold equity against tight players
+        elif is_loose and is_aggressive:
+            player_type = 'lag'  # Loose-aggressive
+            fold_equity = 40.0   # Lower fold equity against loose players
+        elif is_loose and is_passive:
+            player_type = 'calling_station'
+            fold_equity = 30.0   # Very low fold equity against calling stations
+        elif is_tight and is_passive:
+            player_type = 'nit'  # Very tight player
+            fold_equity = 75.0   # Very high fold equity against tight players
+        else:
+            player_type = 'balanced'
+            fold_equity = 50.0   # Average fold equity
+        
+        # Exploitative recommendations tailored to opponent type and our hand
+        adjustments = {}
+        
+        # Against tight-aggressive players
+        if player_type == 'tag':
+            adjustments['value_bet_size'] = 0.8  # Slightly smaller value bets
+            adjustments['bluff_frequency'] = 1.2  # More bluffs
+            adjustments['call_threshold'] = 0.9   # Tighter calling vs their aggression
+        
+        # Against loose-aggressive players
+        elif player_type == 'lag':
+            adjustments['value_bet_size'] = 1.2   # Larger value bets
+            adjustments['bluff_frequency'] = 0.6  # Fewer bluffs
+            adjustments['call_threshold'] = 0.8   # Wider calling range
+        
+        # Against calling stations
+        elif player_type == 'calling_station':
+            adjustments['value_bet_size'] = 1.3   # Much larger value bets
+            adjustments['bluff_frequency'] = 0.2   # Almost never bluff
+            adjustments['call_threshold'] = 0.5   # Much tighter calling
+        
+        # Against nitty players
+        elif player_type == 'nit':
+            adjustments['value_bet_size'] = 0.6   # Smaller value bets
+            adjustments['bluff_frequency'] = 1.5   # Much more bluffing
+            adjustments['call_threshold'] = 1.1    # Much wider calling
+        
+        return {
+            'player_type': player_type,
+            'fold_equity': fold_equity,
+            'adjustments': adjustments,
+            'confidence': min(0.7, data.get('hands_seen', 0) / 10)  # Limited confidence with quick profiling
+        }
+    
+    def _get_default_profile(self, position=None, hand_strength=None):
+        """
+        Get default opponent profile based on table position and hand strength.
+        This is a fallback for unknown opponents.
+        """
+        # Default to balanced profile
+        default_profile = {
+            'vpip': 0.25,
+            'pfr': 0.15,
+            'aggression_factor': 1.0,
+            'fold_to_3bet': 0.5,
+            'cbet_frequency': 0.6,
+            'fold_to_cbet': 0.4,
+            'turn_aggression': 0.5,
+            'river_aggression': 0.5,
+            'hands_seen': 10
+        }
+        
+        # Adjust based on position (early, middle, late, blind)
+        if position in ['UTG', 'EP']:
+            default_profile['vpip'] -= 0.05
+            default_profile['pfr'] -= 0.05
+        elif position in ['BTN', 'LP']:
+            default_profile['vpip'] += 0.05
+            default_profile['pfr'] += 0.05
+        
+        # Further adjust based on hand strength (for initial hand ranges)
+        if hand_strength:
+            if hand_strength == 'strong':
+                default_profile['vpip'] -= 0.05
+                default_profile['pfr'] -= 0.05
+            elif hand_strength == 'weak':
+                default_profile['vpip'] += 0.1
+                default_profile['pfr'] += 0.1
+        
+        return default_profile
+    
 def integrate_with_existing_tracker(opponent_tracker, active_opponents_count: int) -> Dict:
     """Integration function with existing opponent tracker."""
     try:

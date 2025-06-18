@@ -9,41 +9,81 @@ logger = logging.getLogger(__name__)
 
 class OpponentProfile:
     """
-    Track and analyze opponent tendencies for better decision making.
+    Enhanced tracking and analysis of opponent tendencies for better decision making.
+    Significantly improved to track more detailed patterns and support quicker profiling.
     """
     
-    def __init__(self, player_name: str, max_hands_tracked: int = 100):
+    def __init__(self, player_name: str, max_hands_tracked: int = 150):  # Increased from 100
         self.player_name = player_name
         self.max_hands_tracked = max_hands_tracked
         
-        # Basic stats
+        # Basic stats - expanded
         self.hands_played = 0
         self.hands_seen = 0
         self.preflop_raises = 0
         self.preflop_calls = 0
         self.preflop_folds = 0
+        self.vpip = 0.0  # Voluntarily Put Money In Pot
+        self.pfr = 0.0   # PreFlop Raise %
+        self.three_bet = 0.0  # 3-bet frequency
+        self.fold_to_three_bet = 0.0  # Folding to 3-bets
         
-        # Positional stats
-        self.position_stats = defaultdict(lambda: {'hands': 0, 'raises': 0, 'calls': 0, 'folds': 0})
+        # Positional stats - enhanced
+        self.position_stats = defaultdict(lambda: {
+            'hands': 0, 
+            'raises': 0, 
+            'calls': 0, 
+            'folds': 0,
+            'vpip': 0.0,
+            'pfr': 0.0,
+            'steal_attempt': 0,
+            'fold_to_steal': 0
+        })
         
-        # Postflop aggression
+        # Postflop aggression - enhanced tracking
         self.postflop_bets = 0
         self.postflop_raises = 0
         self.postflop_calls = 0
         self.postflop_checks = 0
         self.postflop_folds = 0
+        self.aggression_factor = 0.0
+        self.fold_to_cbet = 0.0
+        self.cbet_frequency = 0.0
+        
+        # Street-specific tendencies
+        self.street_tendencies = {
+            'flop': {'aggression': 0.0, 'fold_to_bet': 0.0, 'bet_frequency': 0.0},
+            'turn': {'aggression': 0.0, 'fold_to_bet': 0.0, 'bet_frequency': 0.0},
+            'river': {'aggression': 0.0, 'fold_to_bet': 0.0, 'bet_frequency': 0.0}
+        }
         
         # Recent hand history (for tracking patterns)
         self.recent_actions = deque(maxlen=max_hands_tracked)
+        self.showdown_hands = []  # Track actual hands shown down
         
-        # Bet sizing patterns
+        # Bet sizing patterns - expanded
         self.bet_sizes = {
             'preflop_open': [],
             'preflop_3bet': [],
+            'preflop_4bet': [],
             'flop_bet': [],
+            'flop_raise': [],
             'turn_bet': [],
-            'river_bet': []
+            'turn_raise': [],
+            'river_bet': [],
+            'river_raise': []
         }
+        
+        # Quick profiling flags - helps with faster opponent classification
+        self.is_tight = False
+        self.is_loose = False
+        self.is_passive = False
+        self.is_aggressive = False
+        self.is_calling_station = False
+        self.is_maniac = False
+        self.is_rock = False
+        self.is_tag = False  # Tight-Aggressive
+        self.is_lag = False  # Loose-Aggressive
         
     def update_preflop_action(self, action: str, position: str, bet_size: float = 0, pot_size: float = 0):
         """Update preflop statistics for this opponent."""

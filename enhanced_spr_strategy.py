@@ -22,61 +22,61 @@ class EnhancedSPRStrategy:
             'very_high': (12, 25),   # 12-25 SPR: Extreme pot control
             'massive': (25, float('inf'))  # 25+ SPR: Play for implied odds
         }
-        
-        # Hand strength recommendations by SPR category
+          # Hand strength recommendations by SPR category
+        # Less conservative strategy recommendations to reduce over-folding
         self.spr_strategies = {
             'very_low': {
                 'very_strong': 'push_all_in',
                 'strong': 'push_all_in',
-                'medium': 'call_if_committed_fold_otherwise',
-                'weak_made': 'fold_to_aggression',
-                'weak': 'fold'
+                'medium': 'commit_stack',  # Was call_if_committed_fold_otherwise - more aggressive
+                'weak_made': 'call_small_bets',  # Was fold_to_aggression - more willing to call
+                'weak': 'bluff_or_fold_to_aggression'  # Was just fold - allows some bluffing
             },
             'low': {
                 'very_strong': 'commit_and_build_pot',
                 'strong': 'commit_and_build_pot',
-                'medium': 'play_carefully_fold_to_big_bets',
-                'weak_made': 'fold_to_aggression',
-                'weak': 'fold_or_small_bluff'
+                'medium': 'value_bet_call_raises',  # Was play_carefully_fold_to_big_bets - more aggressive
+                'weak_made': 'check_call_small_bets',  # Was fold_to_aggression - more calling
+                'weak': 'semi_bluff_or_check_fold'  # Was fold_or_small_bluff - more bluffing
             },
             'medium': {
                 'very_strong': 'value_bet_build_pot',
-                'strong': 'value_bet_standard',
-                'medium': 'thin_value_or_pot_control',
-                'weak_made': 'pot_control_check_call',
-                'weak': 'bluff_with_equity_fold_without'
+                'strong': 'value_bet_aggressive',  # Was value_bet_standard - more aggressive
+                'medium': 'thin_value_bet',  # Was thin_value_or_pot_control - more betting
+                'weak_made': 'check_call_or_small_bet',  # Was pot_control_check_call - allows some betting
+                'weak': 'semi_bluff_aggressively'  # Was bluff_with_equity_fold_without - more aggressive
             },
             'high': {
-                'very_strong': 'extract_value_carefully',
-                'strong': 'pot_control_value_bet',
-                'medium': 'pot_control_check_behind',
-                'weak_made': 'check_fold',
-                'weak': 'check_fold_or_small_bluff'
+                'very_strong': 'build_pot_aggressively',  # Was extract_value_carefully - more aggressive
+                'strong': 'value_bet_moderate',  # Was pot_control_value_bet - more value betting
+                'medium': 'thin_value_or_check_call',  # Was pot_control_check_behind - more calling
+                'weak_made': 'check_call_small_bets',  # Was check_fold - more calling
+                'weak': 'bluff_with_equity'  # Was check_fold_or_small_bluff - more bluffing
             },
             'very_high': {
-                'very_strong': 'small_value_bets',
-                'strong': 'pot_control_small_bets',
-                'medium': 'check_behind_pot_control',
-                'weak_made': 'check_fold',
-                'weak': 'check_fold'
+                'very_strong': 'moderate_value_bets',  # Was small_value_bets - larger bets
+                'strong': 'value_bet_small',  # Was pot_control_small_bets - more betting
+                'medium': 'check_call_small_bets',  # Was check_behind_pot_control - more calling
+                'weak_made': 'check_call_tiny_bets',  # Was check_fold - more calling 
+                'weak': 'opportunistic_bluff'  # Was check_fold - allows some bluffing
             },
             'massive': {
-                'very_strong': 'implied_odds_play',
-                'strong': 'check_call_implied_odds',
-                'medium': 'check_fold_no_value',
-                'weak_made': 'check_fold',
-                'weak': 'fold_or_bluff_with_nuts_potential'
+                'very_strong': 'value_bet_for_calls',  # Was implied_odds_play - more proactive
+                'strong': 'thin_value_bet_small',  # Was check_call_implied_odds - more betting
+                'medium': 'check_call_or_small_bet',  # Was check_fold_no_value - more calling/betting
+                'weak_made': 'check_call_tiny_bets',  # Was check_fold - more calling
+                'weak': 'semi_bluff_with_equity'  # Was fold_or_bluff_with_nuts_potential - more bluffing
             }
         }
-        
-        # Betting size adjustments by SPR
+          # Betting size adjustments by SPR
+        # Increased bet sizing across all SPR levels for more aggression
         self.spr_bet_size_adjustments = {
             'very_low': 1.0,    # Standard sizing (going all-in anyway)
-            'low': 1.1,         # Slightly larger to commit
-            'medium': 1.0,      # Standard sizing
-            'high': 0.8,        # Smaller for pot control
-            'very_high': 0.6,   # Much smaller
-            'massive': 0.4      # Very small
+            'low': 1.2,         # Larger to commit (was 1.1)
+            'medium': 1.15,     # Larger standard sizing (was 1.0)
+            'high': 1.0,        # Standard sizing (was 0.8)
+            'very_high': 0.85,  # Closer to standard (was 0.6)
+            'massive': 0.7      # Larger than before (was 0.4)
         }
     
     def get_spr_strategy(

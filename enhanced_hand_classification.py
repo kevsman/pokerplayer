@@ -26,28 +26,28 @@ class EnhancedHandClassifier:
             # High Card = 1
             'weak': [1]  # High Card / Drawing hands
         }
-        
-        # Win probability thresholds for each street
+          # Win probability thresholds for each street
+        # Lowered thresholds to reduce fold frequency and allow more calls and raises
         self.win_prob_thresholds = {
             'flop': {
-                'very_strong': 0.85,
-                'strong': 0.70,
-                'medium': 0.55,
-                'weak_made': 0.35,
+                'very_strong': 0.80, # Was 0.85
+                'strong': 0.65, # Was 0.70
+                'medium': 0.45, # Was 0.55
+                'weak_made': 0.30, # Was 0.35
                 'weak': 0.0
             },
             'turn': {
-                'very_strong': 0.90,
-                'strong': 0.75,
-                'medium': 0.60,
-                'weak_made': 0.40,
+                'very_strong': 0.85, # Was 0.90
+                'strong': 0.70, # Was 0.75
+                'medium': 0.50, # Was 0.60
+                'weak_made': 0.35, # Was 0.40
                 'weak': 0.0
             },
             'river': {
-                'very_strong': 0.95,
-                'strong': 0.80,
-                'medium': 0.65,
-                'weak_made': 0.45,
+                'very_strong': 0.90, # Was 0.95
+                'strong': 0.75, # Was 0.80
+                'medium': 0.55, # Was 0.65
+                'weak_made': 0.40, # Was 0.45
                 'weak': 0.0
             }
         }

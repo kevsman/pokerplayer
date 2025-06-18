@@ -37,16 +37,23 @@ def adjust_for_implied_odds(hand_category, position, my_stack, effective_stack, 
 def should_play_wider_in_position(hand_category, position, num_limpers, bet_to_call, big_blind):
     """
     Determine if we should play wider ranges based on position.
-    This implements the key recommendation to play more hands in late position.
+    This implements the key recommendation to play more hands in position with a more aggressive approach.
     """
-    if position in ['CO', 'BTN']:
-        # Late position - play wider ranges
-        if hand_category in ['Offsuit Playable', 'Suited Playable', 'Medium Pair', 'Small Pair']:
-            # More liberal in late position
-            if bet_to_call <= big_blind * 3:  # Up to 3bb
+    # Enhanced position-based play: much more aggressive in position
+    if position in ['CO', 'BTN', 'SB']:
+        # Late position - play significantly wider ranges
+        if hand_category in ['Offsuit Playable', 'Suited Playable', 'Medium Pair', 'Small Pair', 'Suited Connector']:
+            # Much more liberal in late position
+            if bet_to_call <= big_blind * 4:  # Up to 4bb (was 3bb)
                 return True
         
-        # Button steal spots - even wider
+        # Button and cutoff steal spots - even wider
+        if position in ['BTN', 'CO'] and num_limpers <= 1 and bet_to_call <= big_blind * 2:
+            # Include marginal hands in steal positions
+            if hand_category in ['Weak Ace', 'Suited Gappers', 'Small Pair']:
+                return True
+                
+        # Button steal spots - widest ranges
         if position == 'BTN' and num_limpers == 0 and bet_to_call <= big_blind:
             if hand_category in ['Suited Connector', 'Offsuit Playable', 'Small Pair']:
                 return True

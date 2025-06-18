@@ -12,42 +12,44 @@ logger = logging.getLogger(__name__)
 class EnhancedBetSizing:
     """Provides consistent and strategic bet sizing."""
     
-    def __init__(self):
-        # Base bet sizing by hand strength (as fraction of pot)
+    def __init__(self):        # Base bet sizing by hand strength (as fraction of pot)
+        # Increased bet sizes to extract more value from strong hands
         self.base_sizing = {
             'very_strong': {
-                'value': 0.75,    # Large value bets
-                'protection': 0.85,  # Even larger for protection
-                'thin_value': 0.60   # Smaller for thin value
+                'value': 0.90,    # Large value bets (was 0.75)
+                'protection': 1.0,  # Even larger for protection (was 0.85)
+                'thin_value': 0.75   # Smaller for thin value (was 0.60)
             },
             'strong': {
-                'value': 0.65,
-                'protection': 0.75,
-                'thin_value': 0.50
+                'value': 0.80,    # Increased from 0.65
+                'protection': 0.90, # Increased from 0.75
+                'thin_value': 0.65  # Increased from 0.50
             },
             'medium': {
-                'value': 0.50,
-                'protection': 0.60,
-                'thin_value': 0.40
+                'value': 0.65,     # Increased from 0.50
+                'protection': 0.75, # Increased from 0.60
+                'thin_value': 0.55  # Increased from 0.40
             },
             'weak_made': {
-                'value': 0.35,
-                'protection': 0.45,
-                'thin_value': 0.30
+                'value': 0.50,      # Increased from 0.35
+                'protection': 0.60, # Increased from 0.45
+                'thin_value': 0.45  # Increased from 0.30
             },
             'bluff': {
-                'small': 0.33,     # Small bluffs
-                'standard': 0.60,  # Standard bluffs
-                'large': 0.90      # Large bluffs/semi-bluffs
+                'small': 0.50,     # Small bluffs (was 0.33)
+                'standard': 0.75,  # Standard bluffs (was 0.60)
+                'large': 1.0       # Large bluffs/semi-bluffs (was 0.90)
             }
         }
-        
-        # Position adjustments
+          # Position adjustments
+        # Enhanced position-based play with more aggressive adjustments
         self.position_adjustments = {
-            'UTG': 0.90,    # Smaller from early position
-            'MP': 0.95,     # Slightly smaller from middle
-            'CO': 1.0,      # Standard from cutoff
-            'BTN': 1.05,    # Slightly larger from button
+            'UTG': 0.95,    # Smaller from early position (was 0.90)
+            'MP': 1.0,      # Standard from middle (was 0.95)
+            'CO': 1.15,     # Much more aggressive from cutoff (was 1.0)
+            'BTN': 1.25,    # Much more aggressive from button (was 1.05)
+            'SB': 1.10,     # Added small blind adjustment
+            'BB': 1.05,     # Added big blind adjustment
             'SB': 0.85,     # Smaller from small blind
             'BB': 0.90      # Smaller from big blind
         }
