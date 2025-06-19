@@ -268,8 +268,10 @@ class OpponentTracker:
     def update_opponent_action(self, player_name: str, action: str, street: str, 
                              position: str = 'unknown', bet_size: float = 0, pot_size: float = 0):
         """Update opponent statistics based on their action."""
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f"[DEBUG] update_opponent_action: player={player_name}, action={action}, street={street}, position={position}, bet_size={bet_size}, pot_size={pot_size}")
         profile = self.get_or_create_profile(player_name)
-        
         if street == 'preflop':
             profile.update_preflop_action(action, position, bet_size, pot_size)
         else:
@@ -325,8 +327,11 @@ class OpponentTracker:
     
     def save_all_profiles(self, file_path=None):
         """Save all opponent profiles to disk."""
+        import logging
+        logger = logging.getLogger(__name__)
         if file_path is None:
             file_path = OPPONENT_ANALYSIS_FILE
+        logger.info(f"[DEBUG] save_all_profiles: {len(self.opponents)} profiles to save: {list(self.opponents.keys())}")
         data = {name: vars(profile) for name, profile in self.opponents.items()}
         save_opponent_analysis(data, file_path)
 
