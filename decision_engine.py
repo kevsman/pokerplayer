@@ -297,7 +297,8 @@ class DecisionEngine:
                 action_fold_const=ACTION_FOLD,
                 action_check_const=ACTION_CHECK,
                 action_call_const=ACTION_CALL,
-                action_raise_const=ACTION_RAISE
+                action_raise_const=ACTION_RAISE,
+                opponent_tracker=self.opponent_tracker
             )
             
             logger.info(f"DEBUG ENGINE: make_preflop_decision returned: action={action}, amount={amount}")

@@ -4,7 +4,7 @@
 import logging
 from collections import defaultdict, deque
 from typing import Dict, List, Optional, Tuple
-from opponent_persistence import save_opponent_analysis, load_opponent_analysis
+from opponent_persistence import save_opponent_analysis, load_opponent_analysis, OPPONENT_ANALYSIS_FILE
 
 logger = logging.getLogger(__name__)
 
@@ -325,11 +325,15 @@ class OpponentTracker:
     
     def save_all_profiles(self, file_path=None):
         """Save all opponent profiles to disk."""
+        if file_path is None:
+            file_path = OPPONENT_ANALYSIS_FILE
         data = {name: vars(profile) for name, profile in self.opponents.items()}
         save_opponent_analysis(data, file_path)
 
     def load_all_profiles(self, file_path=None):
         """Load all opponent profiles from disk."""
+        if file_path is None:
+            file_path = OPPONENT_ANALYSIS_FILE
         data = load_opponent_analysis(file_path)
         for name, profile_data in data.items():
             profile = self.get_or_create_profile(name)

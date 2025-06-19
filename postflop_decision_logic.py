@@ -107,9 +107,12 @@ def make_postflop_decision(
     max_bet_on_table, active_opponents_count, opponent_tracker,
     was_preflop_aggressor=False, action_history=None, aggression_history=None
 ):
-    # --- Opponent analysis persistence integration ---
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.info(f"[DEBUG] make_postflop_decision: opponent_tracker type={type(opponent_tracker)}, id={id(opponent_tracker) if opponent_tracker is not None else 'None'}")
     if opponent_tracker is not None:
         if hasattr(opponent_tracker, 'load_all_profiles'):
+            logger.info("Calling opponent_tracker.load_all_profiles() in make_postflop_decision")
             opponent_tracker.load_all_profiles()
     
     # --- Opponent analysis integration (latest range/FE) ---
@@ -646,6 +649,7 @@ def make_postflop_decision(
     # At the end, after any updates to opponent_tracker:
     if opponent_tracker is not None:
         if hasattr(opponent_tracker, 'save_all_profiles'):
+            logger.info("Calling opponent_tracker.save_all_profiles() in make_postflop_decision")
             opponent_tracker.save_all_profiles()
 
     # Fallback, should not be reached if logic is complete

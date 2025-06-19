@@ -110,9 +110,12 @@ def make_preflop_decision(
     opponent_tracker=None, action_history=None
 ):
     # --- Opponent analysis integration ---
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.info(f"[DEBUG] make_preflop_decision: opponent_tracker type={type(opponent_tracker)}, id={id(opponent_tracker) if opponent_tracker is not None else 'None'}")
     if opponent_tracker is not None:
-        # Load persisted profiles before analysis
         if hasattr(opponent_tracker, 'load_all_profiles'):
+            logger.info("Calling opponent_tracker.load_all_profiles() in make_preflop_decision")
             opponent_tracker.load_all_profiles()
     opponent_analysis = None
     if opponent_tracker is not None:
@@ -746,4 +749,7 @@ def make_preflop_decision(
 
     # Fallback for unhandled preflop categories or logic fall-through
     print(f"WARNING: Unhandled preflop_category '{preflop_category}' or major logic fall-through in make_preflop_decision. Defaulting to FOLD.")
+    if opponent_tracker is not None and hasattr(opponent_tracker, 'save_all_profiles'):
+        logger.info("Calling opponent_tracker.save_all_profiles() in make_preflop_decision")
+        opponent_tracker.save_all_profiles()
     return action_fold_const, 0
