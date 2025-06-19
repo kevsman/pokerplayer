@@ -2,6 +2,7 @@
 
 import logging
 from implied_odds import should_call_with_draws # Ensure this import is present
+from opponent_persistence import save_opponent_analysis, load_opponent_analysis
 
 # Setup debug logging first
 logger = logging.getLogger(__name__)
@@ -106,7 +107,22 @@ def make_postflop_decision(
     max_bet_on_table, active_opponents_count, opponent_tracker,
     was_preflop_aggressor=False, action_history=None, aggression_history=None
 ):
-    street = game_stage # Use game_stage as street    
+    # --- Opponent analysis persistence integration ---
+    if opponent_tracker is not None:
+        if hasattr(opponent_tracker, 'load_all_profiles'):
+            opponent_tracker.load_all_profiles()
+    
+    # --- Opponent analysis integration (latest range/FE) ---
+    from postflop.opponent_analysis import estimate_opponent_range, calculate_fold_equity
+    position = my_player_data.get('position', 'BB')
+    preflop_action = 'raise' if (action_history and 'preflop' in action_history and 'raise' in action_history['preflop']) else 'call'
+    board_texture = my_player_data.get('board_texture', 'unknown')
+    street = game_stage
+    opp_range = estimate_opponent_range(position, preflop_action, bet_to_call, pot_size, street, board_texture)
+    fold_equity = calculate_fold_equity(opp_range, board_texture, bet_to_call, pot_size)
+    # Use opp_range and fold_equity in decision logic below as needed
+    # Example: If fold_equity is high, increase bluff frequency; if opp_range is strong, tighten value betting
+
     logger.debug(
         f"make_postflop_decision: street={street}, my_player_data={my_player_data}, "
         f"pot_size={pot_size}, win_prob={win_probability}, pot_odds={pot_odds_to_call}, "
@@ -626,6 +642,11 @@ def make_postflop_decision(
             else: # very_weak
                 logger.info(f"Decision: {action_fold_const} (Very weak hand, folding to bet)")
                 return action_fold_const, 0
+
+    # At the end, after any updates to opponent_tracker:
+    if opponent_tracker is not None:
+        if hasattr(opponent_tracker, 'save_all_profiles'):
+            opponent_tracker.save_all_profiles()
 
     # Fallback, should not be reached if logic is complete
     logger.error("Fell through all decision logic in postflop. Defaulting to FOLD.")

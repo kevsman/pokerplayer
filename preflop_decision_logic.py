@@ -3,6 +3,8 @@ import math # For round
 from hand_utils import get_preflop_hand_category # Ensure this is imported
 import logging
 import math # Ensure math is imported
+from postflop.opponent_analysis import analyze_opponents
+from opponent_persistence import save_opponent_analysis, load_opponent_analysis
 
 logger = logging.getLogger(__name__) # Use module's name for the logger
 
@@ -104,8 +106,45 @@ def make_preflop_decision(
     small_blind, big_blind, my_current_bet_this_street, max_bet_on_table, min_raise,
     is_sb, is_bb,
     action_fold_const, action_check_const, action_call_const, action_raise_const,
-    opponent_stats=None, opener_position=None, num_limpers=0
+    opponent_stats=None, opener_position=None, num_limpers=0,
+    opponent_tracker=None, action_history=None
 ):
+    # --- Opponent analysis integration ---
+    if opponent_tracker is not None:
+        # Load persisted profiles before analysis
+        if hasattr(opponent_tracker, 'load_all_profiles'):
+            opponent_tracker.load_all_profiles()
+    opponent_analysis = None
+    if opponent_tracker is not None:
+        try:
+            opponent_analysis = analyze_opponents(opponent_tracker, active_opponents_count, bet_to_call, pot_size)
+        except Exception as e:
+            logger.warning(f"Opponent analysis failed: {e}")
+    table_type = opponent_analysis['table_type'] if opponent_analysis and 'table_type' in opponent_analysis else 'unknown'
+    avg_vpip = opponent_analysis['avg_vpip'] if opponent_analysis and 'avg_vpip' in opponent_analysis else 25.0
+    fold_equity_estimate = opponent_analysis['fold_equity_estimate'] if opponent_analysis and 'fold_equity_estimate' in opponent_analysis else 0.5
+
+    # --- Hand history integration ---
+    recent_aggression = 0
+    if action_history and 'preflop' in action_history:
+        preflop_actions = action_history['preflop']
+        if isinstance(preflop_actions, list):
+            recent_aggression = sum(1 for act in preflop_actions if act in ['raise', '3bet', '4bet'])
+        elif isinstance(preflop_actions, str):
+            recent_aggression = preflop_actions.count('raise') + preflop_actions.count('3bet') + preflop_actions.count('4bet')
+
+    # Example: Widen range if table is loose, tighten if tight
+    widen_range = table_type == 'loose' or avg_vpip > 35
+    tighten_range = table_type == 'nit' or avg_vpip < 15
+    increase_bluff = fold_equity_estimate > 0.6 or (recent_aggression == 0 and fold_equity_estimate > 0.5)
+    decrease_bluff = fold_equity_estimate < 0.3 or recent_aggression > 2
+
+    # Use these flags to adjust logic below (examples):
+    # - If widen_range, allow more hands to play/raise
+    # - If tighten_range, fold more marginal hands
+    # - If increase_bluff, allow more 3-bet/4-bet bluffs
+    # - If decrease_bluff, avoid marginal bluffs
+
     preflop_category = hand_category
     win_probability = 0
     num_limpers = 0
