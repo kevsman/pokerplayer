@@ -15,6 +15,7 @@ ACTION_FOLD = "fold"
 ACTION_CHECK = "check"
 ACTION_CALL = "call"
 ACTION_RAISE = "raise"
+ACTION_BET = "bet"
 
 logger = logging.getLogger(__name__)
 
@@ -94,6 +95,52 @@ class DecisionEngine:
           # Ensure bet_to_call is not negative
         bet_to_call = max(0.0, bet_to_call)        # logger.debug(f"_calculate_bet_to_call: my_player_bet={my_player.get('current_bet', 0.0)}, max_bet_on_table={max_bet_on_table}, initial_parsed_b2c={parsed_bet_to_call_str}, final_b2c={bet_to_call}")
         return bet_to_call, max_bet_on_table
+
+    def assign_last_actions(self, prev_players, curr_players):
+        """
+        Compare previous and current player states to infer last action (call, raise, check, fold, etc).
+        Updates curr_players in-place with 'last_action' and 'has_acted'.
+        """
+        prev_by_name = {p['name']: p for p in prev_players if p and p.get('name')}
+        for curr in curr_players:
+            if not curr or not curr.get('name'):
+                continue
+            prev = prev_by_name.get(curr['name'])
+            prev_bet = parse_monetary_value(prev.get('current_bet', 0.0)) if prev else 0.0
+            curr_bet = parse_monetary_value(curr.get('current_bet', 0.0))
+            prev_stack = parse_monetary_value(prev.get('stack', 0.0)) if prev else 0.0
+            curr_stack = parse_monetary_value(curr.get('stack', 0.0))
+            # Default
+            curr['last_action'] = None
+            curr['has_acted'] = False
+            # Infer action
+            if prev is None:
+                # New player at table
+                curr['last_action'] = None
+                curr['has_acted'] = False
+            elif curr_bet > prev_bet:
+                if prev_bet == 0:
+                    curr['last_action'] = ACTION_BET
+                else:
+                    curr['last_action'] = ACTION_RAISE if curr_bet - prev_bet > 0 else ACTION_CALL
+                curr['has_acted'] = True
+            elif curr_bet == prev_bet:
+                if curr_bet == 0:
+                    curr['last_action'] = ACTION_CHECK
+                else:
+                    curr['last_action'] = None  # No new action
+                curr['has_acted'] = False
+            elif curr_bet < prev_bet:
+                # This should not happen unless chips are returned (e.g., uncalled bet)
+                curr['last_action'] = None
+                curr['has_acted'] = False
+            # If player is missing or now empty, mark as folded
+            if prev and not curr:
+                curr['last_action'] = ACTION_FOLD
+                curr['has_acted'] = True
+            # Debug log
+            logger = logging.getLogger(__name__)
+            logger.debug(f"[ACTION INFER] Player {curr.get('name')} prev_bet={prev_bet}, curr_bet={curr_bet}, last_action={curr['last_action']}")
 
     def make_decision(self, game_state, player_index):
         # Extract player and game state information
@@ -399,23 +446,24 @@ class DecisionEngine:
         """Update opponent tracking based on current game state and recent actions."""
         try:
             all_players = game_state.get('players', [])
+            # Assign last actions before logging
+            if hasattr(self, 'prev_players') and self.prev_players:
+                self.assign_last_actions(self.prev_players, all_players)
+            self.prev_players = [p.copy() if p else None for p in all_players]
             current_round = game_state.get('current_round', 'unknown')
             pot_size = parse_monetary_value(game_state.get('pot_size', game_state.get('pot', 0)))
-            
-            # Update opponent actions based on their current state
+            logger = logging.getLogger(__name__)
+            logger.info(f"[DEBUG] update_opponents_from_game_state: round={current_round}, pot_size={pot_size}")
             for i, player in enumerate(all_players):
+                logger.info(f"[DEBUG] Player idx={i}, name={player.get('name') if player else None}, has_acted={player.get('has_acted') if player else None}, last_action={player.get('last_action') if player else None}, current_bet={player.get('current_bet') if player else None}")
                 if i == player_index or not player:  # Skip self and empty slots
                     continue
-                    
                 player_name = player.get('name', f'Player_{i}')
                 position = player.get('position', 'unknown')
-                
-                # Check if player made an action this round
                 if player.get('has_acted', False):
                     last_action = player.get('last_action', 'unknown')
                     bet_amount = parse_monetary_value(player.get('current_bet', 0))
-                    
-                    # Update opponent profile
+                    logger.info(f"[DEBUG] Calling update_opponent_action for {player_name}: action={last_action}, street={current_round}, position={position}, bet_size={bet_amount}, pot_size={pot_size}")
                     self.opponent_tracker.update_opponent_action(
                         player_name=player_name,
                         action=last_action,
@@ -424,8 +472,6 @@ class DecisionEngine:
                         bet_size=bet_amount,
                         pot_size=pot_size
                     )
-                    
                     logger.debug(f"Updated opponent {player_name}: {last_action} for {bet_amount} on {current_round}")
-                    
         except Exception as e:
             logger.warning(f"Error updating opponent tracking: {e}")

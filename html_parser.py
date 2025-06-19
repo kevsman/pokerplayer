@@ -310,6 +310,21 @@ class PokerPageParser:
                 bet_amount_element = bet_container.find('div', class_='amount')
                 if bet_amount_element and bet_amount_element.text.strip():
                     player_info['bet'] = bet_amount_element.text.strip()
+                    # New: parse and store as float for current_bet
+                    try:
+                        bet_val = bet_amount_element.text.strip().replace('€', '').replace('$', '').replace(',', '.').strip()
+                        bet_val = re.sub(r'[^\d\.]', '', bet_val)
+                        player_info['current_bet'] = float(bet_val) if bet_val else 0.0
+                    except Exception as e:
+                        self.logger.warning(f"Could not parse current bet for player {player_info.get('name', 'N/A')}: {bet_amount_element.text.strip()} ({e})")
+                        player_info['current_bet'] = None
+                    self.logger.debug(f"[ACTION PARSE] Player {player_info.get('name', 'N/A')} current_bet: {player_info['current_bet']}")
+                else:
+                    player_info['current_bet'] = 0.0
+                    self.logger.debug(f"[ACTION PARSE] Player {player_info.get('name', 'N/A')} current_bet: 0.0 (no bet element)")
+            else:
+                player_info['current_bet'] = 0.0
+                self.logger.debug(f"[ACTION PARSE] Player {player_info.get('name', 'N/A')} current_bet: 0.0 (no bet container)")
             
             current_player_meets_active_criteria = False
             

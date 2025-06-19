@@ -1,16 +1,30 @@
 import json
 import os
 import logging
+from collections import deque
 
 OPPONENT_ANALYSIS_FILE = 'opponent_analysis_data.json'
 logger = logging.getLogger(__name__)
+
+def _convert_deques_to_lists(obj):
+    """Recursively convert all deques in a dict/list structure to lists for JSON serialization."""
+    if isinstance(obj, dict):
+        return {k: _convert_deques_to_lists(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [_convert_deques_to_lists(v) for v in obj]
+    elif isinstance(obj, deque):
+        return list(obj)
+    else:
+        return obj
 
 def save_opponent_analysis(opponent_data, file_path=OPPONENT_ANALYSIS_FILE):
     """Save opponent analysis data to a file (JSON)."""
     try:
         logger.info(f"Saving opponent analysis to {file_path}. Data keys: {list(opponent_data.keys())}")
+        # Convert deques to lists for JSON serialization
+        serializable_data = _convert_deques_to_lists(opponent_data)
         with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(opponent_data, f, ensure_ascii=False, indent=2)
+            json.dump(serializable_data, f, ensure_ascii=False, indent=2)
     except Exception as e:
         logger.error(f"Error saving opponent analysis: {e}")
 
