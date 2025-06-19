@@ -286,13 +286,76 @@ def make_postflop_decision(
     # Genuine check is only possible if can_check is True AND bet_to_call is 0.
     effectively_can_genuinely_check = can_check and (bet_to_call == 0)
 
-    # Determine if the bot was the pre-flop aggressor (PFR)
-    # This flag is assumed to be set in my_player_data by the decision engine
-    was_pfr = my_player_data.get('was_preflop_aggressor', False)
-    if was_pfr:
-        logger.debug("Player was pre-flop aggressor. Considering c-bet options.")
+    # === Advanced Post-Flop Strategy Integration ===
+    # 1. Blocker Effects: Use blockers to influence bluff/value bet frequency
+    blocker_effect = has_blocker_effects(my_player_data.get('hand', []), community_cards, target_ranks=['A', 'K', 'Q'])
+    # 2. Range Merging/Polarization: Adjust value/bluff mix
+    range_strategy = should_merge_or_polarize_range(final_opponent_analysis.get('table_type', 'unknown'), board_texture)
+    # 3. Overbetting/Underbetting: Suggest non-standard bet sizes
+    overbet_suggestion = should_overbet_or_underbet(street, hand_strength_final_decision, board_texture, nut_advantage=True)
+    # 4. Multi-Street Planning: Double-barrel bluff logic
+    double_barrel = should_double_barrel_bluff(board_texture, (action_history.get('flop', '') if action_history else ''), final_opponent_analysis.get('table_type', 'unknown'))
+    # 5. Delayed C-Betting: Delayed c-bet logic
+    delay_cbet = should_delay_cbet(street, (action_history.get('flop', '') if action_history else ''), board_texture, final_opponent_analysis.get('table_type', 'unknown'))
+    # 6. Inducing Bluffs: Check to induce bluff
+    induce_bluff = should_induce_bluff(final_opponent_analysis.get('table_type', 'unknown'), hand_strength_final_decision, street, action_history)
+    # 7. River Overbluffing: Overbluff river in specific scenarios
+    river_bluff = should_river_overbluff(final_opponent_analysis.get('table_type', 'unknown'), (action_history.get('river', []) if action_history else []))
+    # 8. Multiway Pot Adjustments: Pot control in multiway pots
+    multiway_adjustment = adjust_for_multiway_pot(active_opponents_count, hand_strength_final_decision)
 
-    if effectively_can_genuinely_check:
+    # === Use advanced strategies to adjust decisions ===
+    # Example: Overbetting/Underbetting
+    if overbet_suggestion == 'overbet' and not effectively_can_genuinely_check and is_very_strong:
+        overbet_amount = min(my_stack, pot_size * 1.5)
+        logger.info(f"Decision: {action_raise_const} {overbet_amount} (Overbet suggested by advanced strategy)")
+        return action_raise_const, overbet_amount
+    if overbet_suggestion == 'underbet' and effectively_can_genuinely_check and is_medium:
+        underbet_amount = max(big_blind_amount, pot_size * 0.25)
+        logger.info(f"Decision: {action_raise_const} {underbet_amount} (Underbet suggested by advanced strategy)")
+        return action_raise_const, underbet_amount
+
+    # Example: Range merging/polarization
+    if range_strategy == 'merge' and is_medium and effectively_can_genuinely_check:
+        merge_bet = max(big_blind_amount, pot_size * 0.33)
+        logger.info(f"Decision: {action_raise_const} {merge_bet} (Range merge: betting more medium hands for value)")
+        return action_raise_const, merge_bet
+    if range_strategy == 'polarize' and is_weak_final and not effectively_can_genuinely_check:
+        # Only bluff with blockers
+        if blocker_effect:
+            polarize_bluff = max(big_blind_amount, pot_size * 0.75)
+            logger.info(f"Decision: {action_raise_const} {polarize_bluff} (Polarized bluff with blocker effect)")
+            return action_raise_const, polarize_bluff
+
+    # Example: Multiway pot adjustment
+    if multiway_adjustment == 'pot_control' and is_medium and effectively_can_genuinely_check:
+        logger.info(f"Decision: {action_check_const} (Pot control in multiway pot with medium hand)")
+        return action_check_const, 0
+
+    # Example: Double-barrel bluff
+    if double_barrel and is_weak_final and not effectively_can_genuinely_check:
+        double_barrel_amount = max(big_blind_amount, pot_size * 0.7)
+        logger.info(f"Decision: {action_raise_const} {double_barrel_amount} (Double-barrel bluff suggested)")
+        return action_raise_const, double_barrel_amount
+
+    # Example: Delayed c-bet
+    if delay_cbet and is_strong and effectively_can_genuinely_check:
+        delayed_cbet_amount = max(big_blind_amount, pot_size * 0.5)
+        logger.info(f"Decision: {action_raise_const} {delayed_cbet_amount} (Delayed c-bet suggested)")
+        return action_raise_const, delayed_cbet_amount
+
+    # Example: Induce bluff
+    if induce_bluff and is_strong and effectively_can_genuinely_check:
+        logger.info(f"Decision: {action_check_const} (Checking to induce bluff from aggressive opponent)")
+        return action_check_const, 0
+
+    # Example: River overbluff
+    if river_bluff and is_weak_final and not effectively_can_genuinely_check and street == 'river':
+        river_bluff_amount = max(big_blind_amount, pot_size * 0.9)
+        logger.info(f"Decision: {action_raise_const} {river_bluff_amount} (River overbluff suggested)")
+        return action_raise_const, river_bluff_amount
+
+    if can_check and (bet_to_call == 0):
         logger.debug("Option to genuinely check is available (can_check=True, bet_to_call=0). Evaluating check vs. bet/raise.")
         # This is the block for when we can truly check (action is on us, no prior bet in this round)
         
