@@ -13,138 +13,124 @@ ACTION_CALL = 'call'
 ACTION_RAISE = 'raise'
 
 def adjust_for_implied_odds(hand_category, position, my_stack, effective_stack, big_blind):
-    """
-    Adjust hand selection based on implied odds for suited connectors and suited aces
-    in late position with deep stacks.
-    
-    Args:
-        hand_category: The category of the hand (e.g., "Suited Connector", "Suited Ace")
-        position: Player's position (e.g., "CO", "BTN")
-        my_stack: Player's current stack size
-        effective_stack: Effective stack between player and opponents
-        big_blind: Big blind amount
-        
-    Returns:
-        bool: True if hand should be played more liberally due to implied odds
-    """
-    # Only apply to late positions with deep stacks
+    # Adjust hand selection based on implied odds for suited connectors and suited aces
     if position in ['CO', 'BTN'] and effective_stack > 50 * big_blind:
-        # More liberal with suited connectors and suited aces in late position
         if hand_category in ['Suited Connector', 'Suited Ace']:
             return True
     return False
 
+# Enhanced logic for optimal preflop decision-making
 def should_play_wider_in_position(hand_category, position, num_limpers, bet_to_call, big_blind):
-    """
-    Determine if we should play wider ranges based on position.
-    This implements the key recommendation to play more hands in position with a more aggressive approach.
-    """
-    # Enhanced position-based play: much more aggressive in position
     if position in ['CO', 'BTN', 'SB']:
-        # Late position - play significantly wider ranges
         if hand_category in ['Offsuit Playable', 'Suited Playable', 'Medium Pair', 'Small Pair', 'Suited Connector']:
-            # Much more liberal in late position
-            if bet_to_call <= big_blind * 4:  # Up to 4bb (was 3bb)
+            if bet_to_call <= big_blind * 4:
                 return True
-        
-        # Button and cutoff steal spots - even wider
         if position in ['BTN', 'CO'] and num_limpers <= 1 and bet_to_call <= big_blind * 2:
-            # Include marginal hands in steal positions
             if hand_category in ['Weak Ace', 'Suited Gappers', 'Small Pair']:
                 return True
-                
-        # Button steal spots - widest ranges
         if position == 'BTN' and num_limpers == 0 and bet_to_call <= big_blind:
             if hand_category in ['Suited Connector', 'Offsuit Playable', 'Small Pair']:
                 return True
-                
     return False
 
+# --- Additional Preflop Strategies for Cash Games ---
+
+def is_short_stack(my_stack, big_blind):
+    """Return True if stack is less than or equal to 20BB (short stack)."""
+    return my_stack <= 20 * big_blind
+
+def should_push_fold_short_stack(hand_category, position, my_stack, bet_to_call, big_blind):
+    """Push/fold logic for short stacks (<20BB)."""
+    # Example: Push with any pair, any ace, broadways, suited connectors in late position
+    if not is_short_stack(my_stack, big_blind):
+        return None
+    push_hands = [
+        'Premium Pair', 'Strong Pair', 'Medium Pair', 'Small Pair',
+        'Suited Ace', 'Offsuit Ace', 'Playable Broadway', 'Suited Connector', 'Suited Playable'
+    ]
+    if hand_category in push_hands:
+        # Push if unopened or facing a raise <= 4BB
+        if bet_to_call <= 4 * big_blind:
+            return ACTION_RAISE, my_stack  # All-in
+    # Otherwise fold
+    return ACTION_FOLD, 0
+
+def should_3bet_4bet_bluff(hand_category, position, bet_to_call, max_bet_on_table, big_blind, opponent_stats=None):
+    """Occasional 3-bet/4-bet bluffing with blockers/suited connectors."""
+    bluff_hands = ['Suited Ace', 'Offsuit Ace', 'Suited Connector', 'Suited Gappers']
+    late_positions = ['CO', 'BTN']
+    if position in late_positions and hand_category in bluff_hands:
+        # Only bluff if facing a single raise and not a huge bet
+        if big_blind < max_bet_on_table <= 3.5 * big_blind and bet_to_call <= 3.5 * big_blind:
+            # Optionally use opponent_stats to avoid bluffing vs nits
+            return ACTION_RAISE, max(3 * max_bet_on_table, 8 * big_blind)
+    return None
+
+def should_defend_bb_wider(hand_category, position, bet_to_call, big_blind, opener_position):
+    """Defend BB wider vs late position opens."""
+    if position == 'BB' and opener_position in ['CO', 'BTN']:
+        defend_hands = [
+            'Suited Connector', 'Suited Playable', 'Offsuit Playable', 'Small Pair', 'Suited Gappers',
+            'Suited Ace', 'Playable Broadway'
+        ]
+        if hand_category in defend_hands and bet_to_call <= 2.5 * big_blind:
+            return ACTION_CALL, bet_to_call
+    return None
+
+def should_overlimp_or_isoraise(hand_category, position, num_limpers, bet_to_call, big_blind):
+    """Logic for overlimping or iso-raising in multiway pots."""
+    # Overlimp with suited connectors, small pairs, suited aces in late position
+    overlimp_hands = ['Suited Connector', 'Small Pair', 'Suited Ace']
+    if num_limpers >= 2 and bet_to_call == big_blind and position in ['CO', 'BTN']:
+        if hand_category in overlimp_hands:
+            return ACTION_CALL, bet_to_call
+    # Iso-raise with strong hands
+    iso_hands = ['Premium Pair', 'Strong Pair', 'Playable Broadway', 'Suited Ace']
+    if num_limpers >= 1 and bet_to_call == big_blind and hand_category in iso_hands:
+        return ACTION_RAISE, 4 * big_blind + num_limpers * big_blind
+    return None
+
+def adjust_for_opponent_tendencies(hand_category, position, opponent_stats=None):
+    """Adjust preflop range based on opponent tendencies (loose/tight/aggro)."""
+    # Example: If opener is loose, widen 3-bet/call range; if tight, tighten up
+    # This is a placeholder; real implementation would use opponent_stats
+    # For now, just a stub for future integration
+    return None
+
+# Adjustments for raise amount calculation
 def make_preflop_decision(
     my_player, hand_category, position, bet_to_call, can_check,
     my_stack, pot_size, active_opponents_count,
     small_blind, big_blind, my_current_bet_this_street, max_bet_on_table, min_raise,
     is_sb, is_bb,
     action_fold_const, action_check_const, action_call_const, action_raise_const,
-    ):
-    """Enhanced pre-flop decision making"""
-    
-    preflop_category = hand_category # Use the passed hand_category
-    win_probability = 0 # Placeholder, as it's not directly used in this version of preflop logic after category
-                        # If win_probability was used, it should be calculated from hand + position or passed in.
-
-    # --- Limper Calculation (remains the same) ---
+    opponent_stats=None, opener_position=None, num_limpers=0
+):
+    preflop_category = hand_category
+    win_probability = 0
     num_limpers = 0
-    # Corrected: max_bet_on_table is the highest bet any single player has made *in this round*.
-    # pot_size includes all bets from previous rounds and current round.
-    # my_current_bet_this_street is what my_player has put in *this* round.
-    
-    # Limper calculation: A limper is someone who called the big blind preflop.
-    # This is tricky to calculate perfectly without full action history.
-    # Simplified: if no raise yet (max_bet_on_table <= big_blind) and pot is larger than blinds + our bet.
-    # MODIFIED CONDITION HERE:
-    if max_bet_on_table <= big_blind and not (is_sb and my_current_bet_this_street == small_blind and bet_to_call == big_blind - small_blind):
-        # If we are not SB facing an unraised pot where SB just needs to complete.
-        # The case for BB having option to check when folded to (no limpers) is handled by num_limpers being 0 later.
-        
-        # A simpler limper estimation:
-        # Money in pot beyond SB, BB, and our current bet (if we are not SB/BB and already bet)
-        money_from_others_not_blinds = pot_size - my_current_bet_this_street
-        if not is_sb and not is_bb: # If we are not blinds
-             money_from_others_not_blinds = pot_size - (small_blind + big_blind) - my_current_bet_this_street
-        elif is_sb: # If we are SB
-            money_from_others_not_blinds = pot_size - small_blind # BB is the other main component
-            if max_bet_on_table > small_blind : # BB must have at least BB
-                 money_from_others_not_blinds -= big_blind
-            else: # BB might not have posted if game just started and action is on SB weirdly
-                 money_from_others_not_blinds -= max(0, max_bet_on_table) # count what BB put
-        elif is_bb: # If we are BB
-            money_from_others_not_blinds = pot_size - big_blind - small_blind # money from others beyond blinds
-
-        money_from_others_not_blinds = max(0, money_from_others_not_blinds)
-
-        if big_blind > 0:
-            if money_from_others_not_blinds > 0:
-                num_limpers = int(math.ceil(money_from_others_not_blinds / big_blind))
-            else:
-                num_limpers = 0
-        else:
-            num_limpers = 0 # Avoid division by zero if big_blind is 0
-        num_limpers = max(0, num_limpers)    # --- Raise Amount Calculation (Revised) ---
-    if max_bet_on_table <= big_blind: # No prior actual raise, only blinds or limps posted. This is an opening or isolation raise situation.
-        # Opening raise or isolation raise over limpers.
+    if max_bet_on_table <= big_blind:
         if position == 'CO':
             base_open_multiple = 3
         elif position == 'BTN':
-            if num_limpers > 0:
-                base_open_multiple = 3  # Use 3x for isolation over limpers
-            else:
-                base_open_multiple = 2.5  # Use 2.5x for normal opens
+            base_open_multiple = 3 if num_limpers > 0 else 2.5
         else:
             base_open_multiple = 3
         raise_amount_calculated = (base_open_multiple * big_blind) + (num_limpers * big_blind)
-    else: # Facing a real raise (max_bet_on_table > big_blind). This is a re-raise (3-bet, 4-bet, etc.) situation.
-        # 3-bet/4-bet/squeeze sizing        # Squeeze: if more than one opponent has put in max_bet_on_table, use 4.5x open
+    else:
         if position in ['CO', 'BTN'] and pot_size > 2 * max_bet_on_table:
             raise_amount_calculated = 4.5 * max_bet_on_table
-        # 4-bet: if max_bet_on_table > 7*big_blind (likely a 3-bet), use 2.33x (to get 0.42 from 0.18)
         elif max_bet_on_table > 7 * big_blind:
-            raise_amount_calculated = 2.33 * max_bet_on_table        # 3-bet OOP (SB/BB): 3x open for SB value hands
+            raise_amount_calculated = 2.33 * max_bet_on_table
         elif position in ['SB', 'BB']:
-            if position == 'BB':
-                raise_amount_calculated = 4.0 * max_bet_on_table
-            else:
-                raise_amount_calculated = 3.0 * max_bet_on_table  # 3x for value hands, bluffs use custom sizing
-        # 3-bet IP: 3x open
+            raise_amount_calculated = 4.0 * max_bet_on_table if position == 'BB' else 3.0 * max_bet_on_table
         else:
             raise_amount_calculated = 3 * max_bet_on_table
-    
-    # Final adjustments and validations
     raise_amount_calculated = max(raise_amount_calculated, min_raise if min_raise > bet_to_call else 0)
     if bet_to_call > 0 and raise_amount_calculated <= bet_to_call:
         raise_amount_calculated = min_raise
     raise_amount_calculated = round(min(raise_amount_calculated, my_stack), 2)
-    
+    # Ensure raise amount is valid
     # This check was here, ensure it's still valid:
     # If we decide to raise, the amount must be at least min_raise.
     # min_raise is the *total* bet amount for a valid minimum raise.
@@ -157,6 +143,23 @@ def make_preflop_decision(
     # --- Decision Logic ---
     
     print(f"DEBUG PREFLOP: Starting decision logic with hand_category='{preflop_category}'")
+    
+    # --- Integration of implied odds and position-based widening ---
+    # Use implied odds logic for suited connectors/aces in late position with deep stacks
+    if adjust_for_implied_odds(preflop_category, position, my_stack, my_stack, big_blind):
+        print(f"{preflop_category} in {position}, deep stack implied odds adjustment. Action: CALL, Amount: {bet_to_call}")
+        if bet_to_call <= my_stack * 0.1:  # Only call if not a large portion of stack
+            return action_call_const, bet_to_call
+
+    # Use position-based widening logic for late position
+    if should_play_wider_in_position(preflop_category, position, num_limpers, bet_to_call, big_blind):
+        print(f"{preflop_category} in {position}, playing wider in position. Action: RAISE, Amount: {raise_amount_calculated}")
+        if raise_amount_calculated > bet_to_call:
+            return action_raise_const, raise_amount_calculated
+        elif can_check and bet_to_call == 0:
+            return action_check_const, 0
+        else:
+            return action_call_const, bet_to_call
     
     if preflop_category == "Weak":
         print(f"DEBUG PREFLOP: Entered Weak hand category")
@@ -252,7 +255,7 @@ def make_preflop_decision(
             
             # If not a steal situation and cannot check, fold
             if not can_check:
-                print(f"DEBUG PREFLOP: Weak hand, cannot check (e.g. UTG open), no bet to call. Action: FOLD")
+                print(f"DEBUG PREFLOP: Weak hand, cannot check (e.g., UTG open), no bet to call. Action: FOLD")
                 print(f"DEBUG PREFLOP: Details - can_check={can_check}, position={position}, bet_to_call={bet_to_call}")
                 return action_fold_const, 0# Debug logging for BB check issue investigation
         print(f"DEBUG PREFLOP: At check/fold decision point:")
@@ -540,19 +543,10 @@ def make_preflop_decision(
                     iso_raise = raise_amount_calculated # Global calc: (base_open_multiple * big_blind) + (num_limpers * big_blind)
                     iso_raise = max(iso_raise, min_raise)
                     iso_raise = round(min(iso_raise, my_stack), 2)
-                    
                     # Raise with a decent range over limpers, especially stronger hands in this category
-                    # Don't raise with weakest parts of "Medium Pair" or "Suited Playable" if many limpers (reverse implied odds)
-                    # For simplicity, if it's in this strong category, consider raising over limps.
                     if iso_raise > bet_to_call:
                         print(f"{preflop_category} in BB, isolating limpers/raising. Action: RAISE, Amount: {iso_raise}")
                         return action_raise_const, iso_raise
-                    elif can_check: # This implies bet_to_call was 0, caught above. Or raise calc failed.
-                        print(f"{preflop_category} in BB, raise calc issue or already checked to, checking. Action: CHECK")
-                        return action_check_const, 0
-                    else: # Should not happen if BB can act and not check
-                        print(f"{preflop_category} in BB, unexpected state, folding. Action: FOLD")
-                        return action_fold_const, 0
             else: # Facing a raise in BB
                 pot_odds = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 1
                 
