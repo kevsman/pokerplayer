@@ -578,6 +578,45 @@ class PokerBot:
                 table_data = self.table_data
                 raw_all_players_data = self.player_data # self.player_data is the list of all player dicts
 
+                # Always infer and track opponent actions after every HTML parse, even if it's not our turn
+                # Prepare processed_players_list for DecisionEngine compatibility
+                processed_players_list = []
+                for p_orig in raw_all_players_data:
+                    p_copy = p_orig.copy()
+                    if 'hand' not in p_copy and 'cards' in p_copy:
+                        p_copy['hand'] = p_copy['cards']
+                    elif 'hand' not in p_copy:
+                        p_copy['hand'] = []
+                    if 'position' not in p_copy or not p_copy['position']:
+                        self.logger.warning(f"Player {p_copy.get('name', 'Unknown Player')} (Seat {p_copy.get('seat', 'N/A')}, ID {p_copy.get('id', 'N/A')}) in p_copy is missing 'position' or it is empty. Defaulting to 'Unknown'.")
+                        p_copy['position'] = "Unknown"
+                    processed_players_list.append(p_copy)
+
+                # Find my_player_index in the processed list (if present)
+                my_player_index = -1
+                if my_player_data:
+                    my_player_id = my_player_data.get('id')
+                    for i, p_proc_data in enumerate(processed_players_list):
+                        if p_proc_data.get('id') == my_player_id:
+                            my_player_index = i
+                            break
+
+                # Construct the game_state dictionary using the processed player list
+                game_state_for_decision = {
+                    "players": processed_players_list,
+                    "pot_size": table_data.get('pot_size') if table_data else 0.0,
+                    "community_cards": table_data.get('community_cards') if table_data else [],
+                    "current_round": table_data.get('game_stage', 'preflop').lower() if table_data else 'preflop',
+                    "big_blind": self.config.get('big_blind'),
+                    "small_blind": self.config.get('small_blind'),
+                    "min_raise": self.config.get('big_blind', 0.02) * 2,
+                    "board": table_data.get('community_cards') if table_data else [],
+                    "street": table_data.get('game_stage', 'preflop').lower() if table_data else 'preflop'
+                }
+
+                # Always update opponent tracking, even if it's not our turn
+                self.decision_engine.update_opponents_from_game_state(game_state_for_decision, my_player_index)
+
                 if my_player_data and my_player_data.get('has_turn'):
                     hand_rank_description = my_player_data.get('hand_evaluation', (0, "N/A"))[1]
                     bet_to_call_str = my_player_data.get('bet_to_call', '0')

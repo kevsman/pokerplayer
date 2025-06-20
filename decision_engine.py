@@ -36,8 +36,8 @@ class DecisionEngine:
     def __init__(self, hand_evaluator, config=None): 
         self.hand_evaluator = hand_evaluator
         self.config = config if config is not None else {}
-        self.big_blind_amount = self.config.get('big_blind', 0.02) # Renamed for clarity
-        self.small_blind_amount = self.config.get('small_blind', 0.01) # Renamed for clarity
+        self.big_blind_amount = self.config.get('big_blind', 0.10) # Renamed for clarity
+        self.small_blind_amount = self.config.get('small_blind', 0.05) # Renamed for clarity
         self.base_aggression_factor = self.config.get('base_aggression_factor_postflop', 1.0) # Renamed for clarity
         
         # Initialize equity calculator system
