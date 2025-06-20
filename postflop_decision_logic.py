@@ -343,6 +343,25 @@ def make_postflop_decision(
             if bet_ratio > 0.5:
                 logger.info(f"Facing a large bet ({bet_to_call:.2f}) on a 4-flush board without the nut flush. Folding for safety.")
                 return action_fold_const, 0
+        # Use board_analysis for bet sizing and protection logic
+        wetness_score = board_analysis.get('wetness_score', 5)
+        betting_implications = board_analysis.get('betting_implications', {})
+        # Adjust bet sizing for strong/very strong hands on wet boards
+        if (is_very_strong or is_strong) and wetness_score >= 6:
+            # Bet larger for protection
+            bet_size_factor = 1.2
+        elif (is_very_strong or is_strong) and wetness_score <= 2:
+            # Bet smaller for thin value
+            bet_size_factor = 0.8
+        else:
+            bet_size_factor = 1.0
+        # Attach bet_size_factor to my_player_data for use in bet sizing calls
+        my_player_data['bet_size_factor'] = bet_size_factor
+        # If board is dry and betting_implications suggest thin value, allow more thin value bets with medium hands
+        allow_thin_value = False
+        if is_medium and betting_implications.get('value_betting') == 'thin_value_possible':
+            allow_thin_value = True
+        my_player_data['allow_thin_value'] = allow_thin_value
     except Exception as e:
         logger.warning(f"Enhanced board texture awareness failed: {e}")
 
@@ -428,6 +447,7 @@ def make_postflop_decision(
                     return action_check_const, 0
             # Fallback or if not checking for trap
             bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
+            bet_amount *= my_player_data.get('bet_size_factor', 1.0)  # Apply bet size factor
             logger.info(f"Decision: {action_raise_const} {bet_amount} (Very strong hand, value bet)")
             return action_raise_const, bet_amount        
         elif is_strong:
@@ -438,6 +458,7 @@ def make_postflop_decision(
                     return action_check_const, 0
             # Fallback or if not checking for specific reason
             bet_amount = get_dynamic_bet_size(numerical_hand_rank, pot_size, my_stack, street, big_blind_amount, active_opponents_count)
+            bet_amount *= my_player_data.get('bet_size_factor', 1.0)  # Apply bet size factor
             logger.info(f"Decision: {action_raise_const} {bet_amount} (Strong hand, value bet)")
             return action_raise_const, bet_amount
             
