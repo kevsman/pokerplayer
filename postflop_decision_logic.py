@@ -305,6 +305,47 @@ def make_postflop_decision(
     # Genuine check is only possible if can_check is True AND bet_to_call is 0.
     effectively_can_genuinely_check = can_check and (bet_to_call == 0)
 
+    # --- Board Texture Awareness & Hand Strength Re-Evaluation (Improvements 1, 3, 4) ---
+    # Use EnhancedBoardAnalyzer to check for dangerous board textures (e.g., 4+ of the same suit)
+    try:
+        from enhanced_board_analysis import EnhancedBoardAnalyzer
+        board_analyzer = EnhancedBoardAnalyzer()
+        board_analysis = board_analyzer.analyze_board(community_cards)
+        suits = [card[-1] for card in community_cards if len(card) >= 2]
+        suit_counts = {s: suits.count(s) for s in set(suits)}
+        max_suit_count = max(suit_counts.values()) if suit_counts else 0
+        has_four_flush = max_suit_count >= 4
+        my_hand = my_player_data.get('hand', [])
+        my_suit_cards = [card for card in my_hand if len(card) >= 2 and card[-1] == max(suit_counts, key=suit_counts.get, default=None)]
+        has_nut_flush = False
+        # Simple nut flush check: holding the highest card of the suit on a 4-flush board
+        if has_four_flush and my_suit_cards:
+            board_ranks = [card[:-1] for card in community_cards if card[-1] == my_suit_cards[0][-1]]
+            my_ranks = [card[:-1] for card in my_suit_cards]
+            all_ranks = board_ranks + my_ranks
+            # If we have the Ace of the suit, we have the nut flush
+            has_nut_flush = any(card.startswith('A') and card[-1] == my_suit_cards[0][-1] for card in my_hand)
+        # If board is very wet (4+ of a suit) and we do NOT have a flush, or only have trips, downgrade hand strength
+        if has_four_flush and not has_nut_flush:
+            # If our best hand is trips or worse, or our flush is not the nut flush, be very conservative
+            if hand_strength_final_decision in ['very_strong', 'strong', 'medium']:
+                # If we do not have a flush, or our flush is not the nut flush, treat as weak
+                if not my_suit_cards or not has_nut_flush:
+                    logger.info("Board has 4+ of a suit and we do not have the nut flush. Downgrading hand strength for safety.")
+                    hand_strength_final_decision = 'weak_made'
+                    is_weak_final = True
+                    is_very_strong = False
+                    is_strong = False
+                    is_medium = False
+        # If facing a large bet/raise on a very wet board and we do not have the nut flush, prefer folding
+        if has_four_flush and bet_to_call > 0 and not has_nut_flush:
+            bet_ratio = bet_to_call / pot_size if pot_size > 0 else 0
+            if bet_ratio > 0.5:
+                logger.info(f"Facing a large bet ({bet_to_call:.2f}) on a 4-flush board without the nut flush. Folding for safety.")
+                return action_fold_const, 0
+    except Exception as e:
+        logger.warning(f"Enhanced board texture awareness failed: {e}")
+
     # === Advanced Post-Flop Strategy Integration ===
     # 1. Blocker Effects: Use blockers to influence bluff/value bet frequency
     blocker_effect = has_blocker_effects(my_player_data.get('hand', []), community_cards, target_ranks=['A', 'K', 'Q'])
