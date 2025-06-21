@@ -66,8 +66,8 @@ class PokerBot:
         self.logger.propagate = False # Prevent logging to root logger if it has handlers
 
         self.config = config if config is not None else {}
-        self.big_blind = self.config.get('big_blind', 0.02)
-        self.small_blind = self.config.get('small_blind', 0.01)
+        self.big_blind = self.config.get('big_blind', 0.1)
+        self.small_blind = self.config.get('small_blind', 0.05)
         
         # Ensure big_blind and small_blind are in self.config for DecisionEngine and other parts
         if 'big_blind' not in self.config: self.config['big_blind'] = self.big_blind
@@ -100,7 +100,7 @@ class PokerBot:
         # self.big_blind and self.small_blind are already set from config or defaults
         self.running = False
         self.last_html_content = None
-        self.starting_stack = 0.8  # Track the starting stack for stop condition
+        self.starting_stack = 6  # Track the starting stack for stop condition
 
     def close_logger(self):
         """Close all logging handlers."""

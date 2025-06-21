@@ -67,13 +67,16 @@ def should_fold_preflop(hand_value, position, bet_size_bb):
     hand selection criteria that considers position and bet size.
     
     Args:
-        hand_value (str): Hand value such as "AKs", "T9o", "22", etc.
+        hand_value (str or list): Hand value such as "AKs", "T9o", "22", etc., or a list of card strings like ['Ah', 'Ks']
         position (str): Player position (UTG, MP, CO, BTN, SB, BB)
         bet_size_bb (float): Current bet to call in terms of big blinds
     
     Returns:
         bool: True if hand should be folded, False otherwise
     """
+    # Convert hand_value to string if it's a list
+    if isinstance(hand_value, list):
+        hand_value = ''.join(hand_value)
     # Convert to uppercase for consistency
     hand_value = hand_value.upper()
     position = position.upper()
