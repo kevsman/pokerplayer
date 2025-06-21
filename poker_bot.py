@@ -65,8 +65,8 @@ class PokerBot:
         self.logger.propagate = False # Prevent logging to root logger if it has handlers
 
         self.config = config if config is not None else {}
-        self.big_blind = self.config.get('big_blind', 0.02)
-        self.small_blind = self.config.get('small_blind', 0.01)
+        self.big_blind = self.config.get('big_blind', 0.1)
+        self.small_blind = self.config.get('small_blind', 0.05)
         
         # Ensure big_blind and small_blind are in self.config for DecisionEngine and other parts
         if 'big_blind' not in self.config: self.config['big_blind'] = self.big_blind
@@ -453,7 +453,7 @@ class PokerBot:
                     "current_round": table_data.get('game_stage', 'preflop').lower(), # Ensure current_round is present
                     "big_blind": self.config.get('big_blind'),
                     "small_blind": self.config.get('small_blind'),
-                    "min_raise": self.config.get('big_blind', 0.02) * 2, # Ensure min_raise
+                    "min_raise": self.config.get('big_blind', 0.1) * 2, # Ensure min_raise
                     # 'board' and 'street' are often aliases or similar to community_cards and current_round
                     "board": table_data.get('community_cards'), 
                     "street": table_data.get('game_stage', 'preflop').lower()
@@ -609,7 +609,7 @@ class PokerBot:
                     "current_round": table_data.get('game_stage', 'preflop').lower() if table_data else 'preflop',
                     "big_blind": self.config.get('big_blind'),
                     "small_blind": self.config.get('small_blind'),
-                    "min_raise": self.config.get('big_blind', 0.02) * 2,
+                    "min_raise": self.config.get('big_blind', 0.1) * 2,
                     "board": table_data.get('community_cards') if table_data else [],
                     "street": table_data.get('game_stage', 'preflop').lower() if table_data else 'preflop'
                 }

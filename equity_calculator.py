@@ -298,7 +298,7 @@ class EquityCalculator:
     def get_hand_strength_percentile(self, hero_cards, community_cards, num_opponents=1):
         # Normalization will happen inside calculate_equity_monte_carlo
         win_prob, _, _ = self.calculate_equity_monte_carlo(
-            hero_cards, community_cards, num_opponents, simulations=500  # Using a fixed reasonable number of sims
+            hero_cards, community_cards, num_opponents, simulations=5000  # Using a fixed reasonable number of sims
         )
         return win_prob
     

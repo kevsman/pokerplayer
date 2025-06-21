@@ -5,8 +5,24 @@ import logging
 import math # Ensure math is imported
 from postflop.opponent_analysis import analyze_opponents
 from opponent_persistence import save_opponent_analysis, load_opponent_analysis
+import os
+from equity_calculator import EquityCalculator
 
 logger = logging.getLogger(__name__) # Use module's name for the logger
+
+# Set up preflop decision logger with absolute path and flush
+preflop_log_file = os.path.abspath(os.path.join(os.path.dirname(__file__), 'debug_preflop_decision_logic.log'))
+preflop_file_handler = logging.FileHandler(preflop_log_file, mode='a', encoding='utf-8', delay=False)
+preflop_file_handler.setLevel(logging.INFO)
+preflop_file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
+preflop_logger = logging.getLogger('preflop_decision_logger')
+if not preflop_logger.hasHandlers():
+    preflop_logger.addHandler(preflop_file_handler)
+preflop_logger.setLevel(logging.INFO)
+
+# Test log to confirm logger setup
+preflop_logger.info('Preflop logger initialized. Log file: %s', preflop_log_file)
+preflop_file_handler.flush()
 
 # Constants for actions (consider moving to a shared constants file)
 ACTION_FOLD = 'fold'
@@ -109,6 +125,11 @@ def make_preflop_decision(
     opponent_stats=None, opener_position=None, num_limpers=0,
     opponent_tracker=None, action_history=None
 ):
+    # Log and print at the very start to guarantee logger is triggered
+    preflop_logger.info(f"make_preflop_decision called. Logging to: {preflop_log_file}")
+    preflop_file_handler.flush()
+    print(f"[DEBUG] make_preflop_decision called. Logging to: {preflop_log_file}")
+    
     def persist_opponents():
         if opponent_tracker is not None and hasattr(opponent_tracker, 'save_all_profiles'):
             logger.info("Calling opponent_tracker.save_all_profiles() in make_preflop_decision (persist_opponents)")
@@ -156,7 +177,9 @@ def make_preflop_decision(
     preflop_category = hand_category
     win_probability = 0
     num_limpers = 0
+    # --- Raise Sizing Logic Update (Standardized) ---
     if max_bet_on_table <= big_blind:
+        # Standard open raise: 2.5x (BTN) or 3x (others) + 1BB per limper, capped at 5x BB
         if position == 'CO':
             base_open_multiple = 3
         elif position == 'BTN':
@@ -164,15 +187,19 @@ def make_preflop_decision(
         else:
             base_open_multiple = 3
         raise_amount_calculated = (base_open_multiple * big_blind) + (num_limpers * big_blind)
+        raise_amount_calculated = min(raise_amount_calculated, 5 * big_blind)
     else:
-        if position in ['CO', 'BTN'] and pot_size > 2 * max_bet_on_table:
-            raise_amount_calculated = 4.5 * max_bet_on_table
-        elif max_bet_on_table > 7 * big_blind:
-            raise_amount_calculated = 2.33 * max_bet_on_table
-        elif position in ['SB', 'BB']:
-            raise_amount_calculated = 4.0 * max_bet_on_table if position == 'BB' else 3.0 * max_bet_on_table
-        else:
+        # Facing a raise: use 3x for 3-bet, 2.2x for 4-bet, cap at 10x BB
+        if max_bet_on_table <= 3 * big_blind:
+            # 3-bet sizing
             raise_amount_calculated = 3 * max_bet_on_table
+        elif max_bet_on_table <= 6 * big_blind:
+            # 4-bet sizing
+            raise_amount_calculated = 2.2 * max_bet_on_table
+        else:
+            # For very large bets, just add a small increment or go all-in if short
+            raise_amount_calculated = max_bet_on_table + (2 * big_blind)
+        raise_amount_calculated = min(raise_amount_calculated, 10 * big_blind, my_stack)
     raise_amount_calculated = max(raise_amount_calculated, min_raise if min_raise > bet_to_call else 0)
     if bet_to_call > 0 and raise_amount_calculated <= bet_to_call:
         raise_amount_calculated = min_raise
@@ -187,20 +214,59 @@ def make_preflop_decision(
     # Let's refine: if we intend to raise, the amount must be >= min_raise.
     # The decision to raise comes later. This is just the 'default' calculated raise.    print(f"Preflop Logic: Pos: {position}, Cat: {preflop_category}, B2Call: {bet_to_call}, CanChk: {can_check}, CalcRaise: {raise_amount_calculated}, MyStack: {my_stack}, MyBet: {my_current_bet_this_street}, MaxOppBet: {max_bet_on_table}, Pot: {pot_size}, Opps: {active_opponents_count}, BB: {big_blind}, is_bb: {is_bb}, NumLimpers: {num_limpers}")
 
+    # --- Integrate modular preflop strategies ---
+    # 1. Short stack push/fold logic
+    push_fold_result = should_push_fold_short_stack(preflop_category, position, my_stack, bet_to_call, big_blind)
+    if push_fold_result is not None:
+        action, amount = push_fold_result
+        preflop_logger.info(f"Short stack push/fold logic triggered. Action: {action.upper()}, Amount: {amount}")
+        persist_opponents(); return action, amount
+
+    # 2. 3-bet/4-bet bluff logic
+    bluff_result = should_3bet_4bet_bluff(preflop_category, position, bet_to_call, max_bet_on_table, big_blind, opponent_stats)
+    if bluff_result is not None:
+        action, amount = bluff_result
+        preflop_logger.info(f"3-bet/4-bet bluff logic triggered. Action: {action.upper()}, Amount: {amount}")
+        persist_opponents(); return action, amount
+
+    # 3. BB defense logic
+    bb_defend_result = should_defend_bb_wider(preflop_category, position, bet_to_call, big_blind, opener_position)
+    if bb_defend_result is not None:
+        action, amount = bb_defend_result
+        preflop_logger.info(f"BB defense logic triggered. Action: {action.upper()}, Amount: {amount}")
+        persist_opponents(); return action, amount
+
+    # 4. Overlimp/iso-raise logic
+    overlimp_result = should_overlimp_or_isoraise(preflop_category, position, num_limpers, bet_to_call, big_blind)
+    if overlimp_result is not None:
+        action, amount = overlimp_result
+        preflop_logger.info(f"Overlimp/iso-raise logic triggered. Action: {action.upper()}, Amount: {amount}")
+        persist_opponents(); return action, amount
+
+    # 5. Opponent tendencies adjustment (stub)
+    opponent_adjustment = adjust_for_opponent_tendencies(preflop_category, position, opponent_stats)
+    if opponent_adjustment is not None:
+        action, amount = opponent_adjustment
+        preflop_logger.info(f"Opponent tendencies adjustment logic triggered. Action: {action.upper()}, Amount: {amount}")
+        persist_opponents(); return action, amount
+
     # --- Decision Logic ---
     
     print(f"DEBUG PREFLOP: Starting decision logic with hand_category='{preflop_category}'")
+    preflop_logger.info(f"Starting decision logic with hand_category='{preflop_category}', position={position}, bet_to_call={bet_to_call}, stack={my_stack}, pot_size={pot_size}, opps={active_opponents_count}")
     
     # --- Integration of implied odds and position-based widening ---
     # Use implied odds logic for suited connectors/aces in late position with deep stacks
     if adjust_for_implied_odds(preflop_category, position, my_stack, my_stack, big_blind):
         print(f"{preflop_category} in {position}, deep stack implied odds adjustment. Action: CALL, Amount: {bet_to_call}")
+        preflop_logger.info(f"{preflop_category} in {position}, deep stack implied odds adjustment. Action: CALL, Amount: {bet_to_call}")
         if bet_to_call <= my_stack * 0.1:  # Only call if not a large portion of stack
             persist_opponents(); return action_call_const, bet_to_call
 
     # Use position-based widening logic for late position
     if should_play_wider_in_position(preflop_category, position, num_limpers, bet_to_call, big_blind):
         print(f"{preflop_category} in {position}, playing wider in position. Action: RAISE, Amount: {raise_amount_calculated}")
+        preflop_logger.info(f"{preflop_category} in {position}, playing wider in position. Action: RAISE, Amount: {raise_amount_calculated}")
         if raise_amount_calculated > bet_to_call:
             persist_opponents(); return action_raise_const, raise_amount_calculated
         elif can_check and bet_to_call == 0:
@@ -210,9 +276,11 @@ def make_preflop_decision(
     
     if preflop_category == "Weak":
         print(f"DEBUG PREFLOP: Entered Weak hand category")
+        preflop_logger.info(f"Entered Weak hand category for {preflop_category} in {position}")
         
         if can_check and is_bb and bet_to_call == 0:
             print(f"DEBUG PREFLOP: BB can check with no bet to call. Action: CHECK")
+            preflop_logger.info(f"BB can check with no bet to call. Action: CHECK")
             persist_opponents(); return action_check_const, 0
         
         # Enhanced BTN stealing with wider range
@@ -252,6 +320,7 @@ def make_preflop_decision(
                 steal_amount = round(min(steal_amount, my_stack), 2)
                 if steal_amount > bet_to_call:
                     print(f"BTN steal with weak hand ({card1_rank}{card1_suit}, {card2_rank}{card2_suit}). Action: RAISE, Amount: {steal_amount}")
+                    preflop_logger.info(f"BTN steal with weak hand ({card1_rank}{card1_suit}, {card2_rank}{card2_suit}). Action: RAISE, Amount: {steal_amount}")
                     persist_opponents(); return action_raise_const, steal_amount
         
         # CO late position play - more liberal than early position
@@ -268,10 +337,12 @@ def make_preflop_decision(
                 steal_amount = round(min(steal_amount, my_stack), 2)
                 if steal_amount > bet_to_call:
                     print(f"CO open with suited high card. Action: RAISE, Amount: {steal_amount}")
+                    preflop_logger.info(f"CO open with suited high card. Action: RAISE, Amount: {steal_amount}")
                     persist_opponents(); return action_raise_const, steal_amount
                       # If facing a raise, fold weak hands (with some exceptions)
         if bet_to_call > 0:
             print(f"DEBUG PREFLOP: Weak hand facing bet (bet_to_call={bet_to_call}). Action: FOLD")
+            preflop_logger.info(f"Weak hand facing bet (bet_to_call={bet_to_call}). Action: FOLD")
             persist_opponents(); return action_fold_const, 0
             # If no bet to call, and cannot check (e.g., UTG must act), fold weak hands.
         # Exception: BTN steal attempts with suited weak hands like K4s
@@ -298,11 +369,13 @@ def make_preflop_decision(
                     steal_amount = round(min(steal_amount, my_stack), 2)
                     if steal_amount > bet_to_call:
                         print(f"Weak suited King in BTN, steal attempt. Action: RAISE, Amount: {steal_amount}")
+                        preflop_logger.info(f"Weak suited King in BTN, steal attempt. Action: RAISE, Amount: {steal_amount}")
                         persist_opponents(); return action_raise_const, steal_amount
             
             # If not a steal situation and cannot check, fold
             if not can_check:
                 print(f"DEBUG PREFLOP: Weak hand, cannot check (e.g., UTG open), no bet to call. Action: FOLD")
+                preflop_logger.info(f"Weak hand, cannot check (e.g., UTG open), no bet to call. Action: FOLD")
                 persist_opponents(); return action_fold_const, 0# Debug logging for BB check issue investigation
         print(f"DEBUG PREFLOP: At check/fold decision point:")
         print(f"  - position: {position}")
@@ -314,6 +387,7 @@ def make_preflop_decision(
         # If no bet to call and can check (e.g. UTG limp, later position check through, or BB with no raise)
         if bet_to_call == 0 and can_check:
             print(f"DEBUG PREFLOP: Weak hand, can check (limp/check through or BB facing no bet). Action: CHECK")
+            preflop_logger.info(f"Weak hand, can check (limp/check through or BB facing no bet). Action: CHECK")
             persist_opponents(); return action_check_const, 0
         
         # Default for weak hands: if can check, check. Otherwise, fold.
@@ -340,16 +414,20 @@ def make_preflop_decision(
 
             if actual_raise_amount > bet_to_call or (actual_raise_amount == my_stack and my_stack > bet_to_call): # Must be a raise or a covering all-in
                 print(f"Premium Pair, opening/isolating. Action: RAISE, Amount: {actual_raise_amount}")
+                preflop_logger.info(f"Premium Pair, opening/isolating. Action: RAISE, Amount: {actual_raise_amount}")
                 persist_opponents(); return action_raise_const, actual_raise_amount
             else: # Should not happen if min_raise is valid and stack sufficient. Fallback to call if weird state.
                 if bet_to_call < my_stack and bet_to_call > 0:
                     print(f"Premium Pair, opening/isolating, raise calc issue, calling. Action: CALL, Amount: {bet_to_call}")
+                    preflop_logger.info(f"Premium Pair, opening/isolating, raise calc issue, calling. Action: CALL, Amount: {bet_to_call}")
                     persist_opponents(); return action_call_const, bet_to_call
                 elif can_check:
                     print(f"Premium Pair, opening/isolating, raise calc issue, checking. Action: CHECK")
+                    preflop_logger.info(f"Premium Pair, opening/isolating, raise calc issue, checking. Action: CHECK")
                     persist_opponents(); return action_check_const, 0
                 else:
                     print(f"Premium Pair, opening/isolating, raise calc issue, folding. Action: FOLD")
+                    preflop_logger.info(f"Premium Pair, opening/isolating, raise calc issue, folding. Action: FOLD")
                     persist_opponents(); return action_fold_const, 0
         else: # Facing a bet or raise (max_bet_on_table > big_blind)
             # Re-raise. Use the globally calculated raise_amount_calculated (3x max_bet_on_table)
@@ -362,23 +440,28 @@ def make_preflop_decision(
                 # Or if stack is too small. If stack is small, actual_raise_amount might be my_stack.
                 if actual_raise_amount == my_stack and my_stack > bet_to_call: # All-in raise
                      print(f"Premium Pair, facing bet, re-raising ALL-IN. Action: RAISE, Amount: {my_stack}")
+                     preflop_logger.info(f"Premium Pair, facing bet, re-raising ALL-IN. Action: RAISE, Amount: {my_stack}")
                      persist_opponents(); return action_raise_const, my_stack
                   # Fallback if raise calculation is problematic
                 # Premium pairs (AA, KK, QQ) should almost never fold preflop
                 # Call with any premium pair if we can't raise properly
                 if bet_to_call < my_stack: # Can afford to call (not an impossible all-in for more than stack)
                     print(f"Premium Pair, facing bet, raise calc failed, calling with premium hand. Action: CALL, Amount: {bet_to_call}")
+                    preflop_logger.info(f"Premium Pair, facing bet, raise calc failed, calling with premium hand. Action: CALL, Amount: {bet_to_call}")
                     persist_opponents(); return action_call_const, bet_to_call
                 else: # Only fold if the bet is somehow more than our entire stack (should never happen)
                     print(f"Premium Pair, facing bet larger than stack (impossible situation). Action: CALL ALL-IN, Amount: {my_stack}")
+                    preflop_logger.info(f"Premium Pair, facing bet larger than stack (impossible situation). Action: CALL ALL-IN, Amount: {my_stack}")
                     persist_opponents(); return action_call_const, my_stack
             
             # If calculated raise is a significant portion of stack, consider it an all-in.
             if actual_raise_amount >= my_stack * 0.85 and actual_raise_amount > bet_to_call : 
                 print(f"Premium Pair, facing bet, large re-raise. Action: RAISE (ALL-IN), Amount: {my_stack}")
+                preflop_logger.info(f"Premium Pair, facing bet, large re-raise. Action: RAISE (ALL-IN), Amount: {my_stack}")
                 persist_opponents(); return action_raise_const, my_stack
             
             print(f"Premium Pair, facing bet. Action: RAISE, Amount: {actual_raise_amount}")
+            preflop_logger.info(f"Premium Pair, facing bet. Action: RAISE, Amount: {actual_raise_amount}")
             persist_opponents(); return action_raise_const, actual_raise_amount
 
     # AKs, AKo, AQs, AQo, AJs, AJo, KQs, KQo (Playable Broadway / Suited Ace)
@@ -391,6 +474,7 @@ def make_preflop_decision(
             # Fold AJo/ATo facing UTG raise + MP 3-bet
             if bet_to_call > big_blind * 4 or (preflop_category in ["Offsuit Ace", "Offsuit Broadway"] and max_bet_on_table > 7 * big_blind):
                 print(f"{preflop_category} in {position}, facing large raise or 3-bet. Action: FOLD")
+                preflop_logger.info(f"{preflop_category} in {position}, facing large raise or 3-bet. Action: FOLD")
                 persist_opponents(); return action_fold_const, 0
 
             # Opening or raising over limpers if no one has made a 'real' raise yet
@@ -404,6 +488,7 @@ def make_preflop_decision(
                     # Filter out weaker hands in this category for UTG/MP opens if they are too weak
                     if position == 'UTG' and preflop_category in ["Medium Pair", "Suited Playable"]: # Too loose for UTG open
                          print(f"{preflop_category} in UTG, too weak to open. Action: FOLD")
+                         preflop_logger.info(f"{preflop_category} in UTG, too weak to open. Action: FOLD")
                          persist_opponents(); return action_fold_const, 0
                     if position == 'MP' and preflop_category == "Medium Pair" and preflop_category not in ["Strong Pair"]: # e.g. 77-99 from MP might be too loose for 3x open
                          # TT+ is Strong Pair. So this is for 77-99.
@@ -411,13 +496,16 @@ def make_preflop_decision(
                          pass
 
                     print(f"{preflop_category} in {position}, opening/raising limpers. Action: RAISE, Amount: {open_raise}")
+                    preflop_logger.info(f"{preflop_category} in {position}, opening/raising limpers. Action: RAISE, Amount: {open_raise}")
                     persist_opponents(); return action_raise_const, open_raise
                 else: # Raise calculation failed, try to check/fold
                      if can_check:
                          print(f"{preflop_category} in {position}, opening, raise calc issue, checking. Action: CHECK")
+                         preflop_logger.info(f"{preflop_category} in {position}, opening, raise calc issue, checking. Action: CHECK")
                          persist_opponents(); return action_check_const, 0
                      else:
                          print(f"{preflop_category} in {position}, opening, raise calc issue, folding. Action: FOLD")
+                         preflop_logger.info(f"{preflop_category} in {position}, opening, raise calc issue, folding. Action: FOLD")
                          persist_opponents(); return action_fold_const, 0
             # Facing a real raise (max_bet_on_table > big_blind)
             elif bet_to_call <= big_blind * 4: 
@@ -429,26 +517,32 @@ def make_preflop_decision(
                         three_bet_amount = round(min(three_bet_amount, my_stack), 2)
                         if three_bet_amount > bet_to_call:
                             print(f"{preflop_category} (likely AKo or strong pair) in MP, 3-betting. Action: RAISE, Amount: {three_bet_amount}")
+                            preflop_logger.info(f"{preflop_category} (likely AKo or strong pair) in MP, 3-betting. Action: RAISE, Amount: {three_bet_amount}")
                             persist_opponents(); return action_raise_const, three_bet_amount
                     
                     # If not 3-betting (e.g. TT, JJ vs larger raise, or AKo if 3-bet calc failed)
                     if bet_to_call <= big_blind * 3.5: 
                         print(f"{preflop_category} in {position}, facing raise <= 3.5x. Action: CALL, Amount: {bet_to_call}")
+                        preflop_logger.info(f"{preflop_category} in {position}, facing raise <= 3.5x. Action: CALL, Amount: {bet_to_call}")
                         persist_opponents(); return action_call_const, bet_to_call
                     else:
                         print(f"{preflop_category} in {position}, facing large raise > 3.5x. Action: FOLD")
+                        preflop_logger.info(f"{preflop_category} in {position}, facing large raise > 3.5x. Action: FOLD")
                         persist_opponents(); return action_fold_const, 0
                 # For suited aces like A8s in CO vs UTG open - should call, not 3-bet
                 # Only 3-bet stronger suited aces (AJs+) not weaker ones (A8s, A9s)
                 elif preflop_category == "Suited Ace":
                     print(f"{preflop_category} in {position}, facing raise <= 4BB. Action: CALL, Amount: {bet_to_call}")
+                    preflop_logger.info(f"{preflop_category} in {position}, facing raise <= 4BB. Action: CALL, Amount: {bet_to_call}")
                     persist_opponents(); return action_call_const, bet_to_call
                 # For other strong hands like AK, AQ, KQs in UTG/MP facing a raise.
                 # Call smaller raises.
                 print(f"{preflop_category} in {position}, facing raise <= 4BB. Action: CALL, Amount: {bet_to_call}")
+                preflop_logger.info(f"{preflop_category} in {position}, facing raise <= 4BB. Action: CALL, Amount: {bet_to_call}")
                 persist_opponents(); return action_call_const, bet_to_call
             else: # Facing a large raise
                 print(f"{preflop_category} in {position}, facing large raise > 4BB. Action: FOLD")
+                preflop_logger.info(f"{preflop_category} in {position}, facing large raise > 4BB. Action: FOLD")
                 persist_opponents(); return action_fold_const, 0
         elif position in ['CO', 'BTN']:
             # Facing a raise (max_bet_on_table > big_blind)
@@ -456,6 +550,7 @@ def make_preflop_decision(
             if preflop_category == "Offsuit Ace" and max_bet_on_table > 7 * big_blind:
                 # This might be too tight for BTN vs CO, but as a general rule for "Offsuit Ace"
                 print(f"{preflop_category} in {position}, facing large raise or 3-bet. Action: FOLD")
+                preflop_logger.info(f"{preflop_category} in {position}, facing large raise or 3-bet. Action: FOLD")
                 persist_opponents(); return action_fold_const, 0
             # For Offsuit Broadway (like AQ offsuit), check pot odds before folding to large raises
             elif preflop_category == "Offsuit Broadway" and max_bet_on_table > 7 * big_blind:
@@ -463,9 +558,11 @@ def make_preflop_decision(
                 pot_odds_needed = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 1
                 if pot_odds_needed <= 0.40:  # AQ offsuit should call with good pot odds
                     print(f"{preflop_category} in {position}, facing large raise but good pot odds ({pot_odds_needed:.1%} equity needed). Action: CALL, Amount: {bet_to_call}")
+                    preflop_logger.info(f"{preflop_category} in {position}, facing large raise but good pot odds ({pot_odds_needed:.1%} equity needed). Action: CALL, Amount: {bet_to_call}")
                     persist_opponents(); return action_call_const, bet_to_call
                 else:
                     print(f"{preflop_category} in {position}, facing large raise with poor pot odds ({pot_odds_needed:.1%} equity needed). Action: FOLD")
+                    preflop_logger.info(f"{preflop_category} in {position}, facing large raise with poor pot odds ({pot_odds_needed:.1%} equity needed). Action: FOLD")
                     persist_opponents(); return action_fold_const, 0
 
             # Squeeze logic: if pot_size > 2*max_bet_on_table, treat as squeeze (already part of raise_amount_calculated)
@@ -478,13 +575,16 @@ def make_preflop_decision(
                 open_raise = round(min(open_raise, my_stack),2)
                 if open_raise > bet_to_call or (open_raise == my_stack and my_stack > bet_to_call):
                     print(f"{preflop_category} in {position}, opening/isolating. Action: RAISE, Amount: {open_raise}")
+                    preflop_logger.info(f"{preflop_category} in {position}, opening/isolating. Action: RAISE, Amount: {open_raise}")
                     persist_opponents(); return action_raise_const, open_raise
                 else: # Raise calculation failed
                      if can_check: # Should not happen if opening unless BB
                          print(f"{preflop_category} in {position}, opening, raise calc issue, checking. Action: CHECK")
+                         preflop_logger.info(f"{preflop_category} in {position}, opening, raise calc issue, checking. Action: CHECK")
                          persist_opponents(); return action_check_const, 0
                      else:
                          print(f"{preflop_category} in {position}, opening, raise calc issue, folding. Action: FOLD")
+                         preflop_logger.info(f"{preflop_category} in {position}, opening, raise calc issue, folding. Action: FOLD")
                          persist_opponents(); return action_fold_const, 0
             # Facing a real raise (max_bet_on_table > big_blind)
             # Hands strong enough to 3-bet: "Playable Broadway", "Offsuit Broadway" (AQo, AJo), "Suited Ace", "Offsuit Ace" (AKo), "Strong Pair"
@@ -496,23 +596,29 @@ def make_preflop_decision(
                 three_bet_amount = round(min(three_bet_amount, my_stack), 2)
                 if three_bet_amount > bet_to_call:
                     print(f"{preflop_category} in {position}, 3-betting. Action: RAISE, Amount: {three_bet_amount}")
+                    preflop_logger.info(f"{preflop_category} in {position}, 3-betting. Action: RAISE, Amount: {three_bet_amount}")
                     persist_opponents(); return action_raise_const, three_bet_amount
                 elif bet_to_call < my_stack : # Fallback to call if 3-bet calc is too small but can call
                     print(f"{preflop_category} in {position}, 3-bet calc low, calling. Action: CALL, Amount: {bet_to_call}")
+                    preflop_logger.info(f"{preflop_category} in {position}, 3-bet calc low, calling. Action: CALL, Amount: {bet_to_call}")
                     persist_opponents(); return action_call_const, bet_to_call
                 else: # Cannot 3-bet effectively or call
                     print(f"{preflop_category} in {position}, cannot 3-bet/call effectively. Action: FOLD")
+                    preflop_logger.info(f"{preflop_category} in {position}, cannot 3-bet/call effectively. Action: FOLD")
                     persist_opponents(); return action_fold_const, 0
             elif bet_to_call <= big_blind * 10: # Facing a larger bet (likely 3-bet or 4-bet)
                 # Call with strong suited hands and strong pairs if odds are decent and not too much of stack.
                 if preflop_category in ["Suited Ace", "Playable Broadway", "Strong Pair"] and bet_to_call < my_stack * 0.33:
                     print(f"{preflop_category} in {position}, facing large bet, calling. Action: CALL, Amount: {bet_to_call}")
+                    preflop_logger.info(f"{preflop_category} in {position}, facing large bet, calling. Action: CALL, Amount: {bet_to_call}")
                     persist_opponents(); return action_call_const, bet_to_call
                 else:
                     print(f"{preflop_category} in {position}, facing large bet, folding. Action: FOLD")
+                    preflop_logger.info(f"{preflop_category} in {position}, facing large bet, folding. Action: FOLD")
                     persist_opponents(); return action_fold_const, 0
             else: # Facing a very large bet
                 print(f"{preflop_category} in {position}, facing very large bet. Action: FOLD")
+                preflop_logger.info(f"{preflop_category} in {position}, facing very large bet. Action: FOLD")
                 persist_opponents(); return action_fold_const, 0
         elif position == 'SB':
             # SB strategy: 3-bet or fold mostly. Call very selectively.
@@ -528,18 +634,22 @@ def make_preflop_decision(
                      if preflop_category in ["Offsuit Ace", "Medium Pair"] or \
                         (preflop_category == "Offsuit Broadway" and not any(r in hand_category for r in ["AK", "AQ", "KQ"])): # Fold weaker offsuit broadways
                          print(f"{preflop_category} in SB, too weak to open vs no limpers. Action: FOLD")
+                         preflop_logger.info(f"{preflop_category} in SB, too weak to open vs no limpers. Action: FOLD")
                          persist_opponents(); return action_fold_const, 0
 
                 if open_raise > bet_to_call: # bet_to_call should be small_blind if completing, or 0 if opening
                     print(f"{preflop_category} in SB, opening/raising. Action: RAISE, Amount: {open_raise}")
+                    preflop_logger.info(f"{preflop_category} in SB, opening/raising. Action: RAISE, Amount: {open_raise}")
                     persist_opponents(); return action_raise_const, open_raise
                 elif can_check: # Should only happen if it was checked to SB and BB, and SB wants to check.
                                 # But this block is for stronger hands, unlikely to check here.
                                 # More likely, this means raise calc failed.
                     print(f"{preflop_category} in SB, open/raise calc issue, checking. Action: CHECK")
+                    preflop_logger.info(f"{preflop_category} in SB, open/raise calc issue, checking. Action: CHECK")
                     persist_opponents(); return action_check_const, 0
                 else: # Cannot raise effectively
                     print(f"{preflop_category} in SB, open/raise calc issue, folding. Action: FOLD")
+                    preflop_logger.info(f"{preflop_category} in SB, open/raise calc issue, folding. Action: FOLD")
                     persist_opponents(); return action_fold_const, 0
             else: # Facing a raise in SB
                 my_bet_on_street_before_this_action = max_bet_on_table - bet_to_call
@@ -584,15 +694,11 @@ def make_preflop_decision(
             if max_bet_on_table <= big_blind: # Limped pot or folded to BB
                 if can_check and bet_to_call == 0: # Option to check
                     print(f"{preflop_category} in BB, can check. Action: CHECK")
+                    preflop_logger.info(f"{preflop_category} in BB, can check. Action: CHECK")
                     persist_opponents(); return action_check_const, 0
                 else: # Must be limpers, BB can raise (or complete if SB limped and bet_to_call is small)
-                    iso_raise = raise_amount_calculated # Global calc: (base_open_multiple * big_blind) + (num_limpers * big_blind)
-                    iso_raise = max(iso_raise, min_raise)
-                    iso_raise = round(min(iso_raise, my_stack), 2)
-                    # Raise with a decent range over limpers, especially stronger hands in this category
-                    if iso_raise > bet_to_call:
-                        print(f"{preflop_category} in BB, isolating limpers/raising. Action: RAISE, Amount: {iso_raise}")
-                        persist_opponents(); return action_raise_const, iso_raise
+                    # TODO: Implement BB logic for limpers or small bet_to_call
+                    pass
             else: # Facing a raise in BB
                 pot_odds = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 1
                 
@@ -613,6 +719,7 @@ def make_preflop_decision(
                     three_bet_amount = round(min(three_bet_amount, my_stack), 2)
                     if three_bet_amount > bet_to_call:
                         print(f"{preflop_category} in BB, 3-betting. Action: RAISE, Amount: {three_bet_amount}")
+                        preflop_logger.info(f"{preflop_category} in BB, 3-betting. Action: RAISE, Amount: {three_bet_amount}")
                         persist_opponents(); return action_raise_const, three_bet_amount
 
                 # Calling range: Suited Aces, Suited Kings, Playable Broadways, Offsuit Broadways, Strong/Medium Pairs, some Suited Playables
@@ -629,130 +736,73 @@ def make_preflop_decision(
 
                 if can_afford_call and bet_to_call <= reasonable_bet_to_call_threshold and is_decent_hand_to_call:
                     print(f"{preflop_category} in BB, facing raise, calling. Pot odds: {pot_odds:.2f}. Action: CALL, Amount: {bet_to_call}")
+                    preflop_logger.info(f"{preflop_category} in BB, facing raise, calling. Pot odds: {pot_odds:.2f}. Action: CALL, Amount: {bet_to_call}")
                     persist_opponents(); return action_call_const, bet_to_call
                 elif can_check and bet_to_call == 0: # Should have been caught by opening logic if folded to BB
                      print(f"{preflop_category} in BB, can check (unlikely here). Action: CHECK")
+                     preflop_logger.info(f"{preflop_category} in BB, can check (unlikely here). Action: CHECK")
                      persist_opponents(); return action_check_const, 0
                 
                 print(f"{preflop_category} in BB, facing raise, folding. Action: FOLD")
+                preflop_logger.info(f"{preflop_category} in BB, facing raise, folding. Action: FOLD")
                 persist_opponents(); return action_fold_const, 0
         # Fallback if position not matched (should not occur if all positions handled)
         else:
             print(f"WARNING: {preflop_category} in unhandled position {position}. Defaulting to check/fold.")
+            preflop_logger.warning(f"{preflop_category} in unhandled position {position}. Defaulting to check/fold.")
             if can_check:
                 return action_check_const, 0
             return action_fold_const, 0
 
-    elif preflop_category == "Suited Connector":
-        print(f"DEBUG PREFLOP: Entered Suited Connector category for hand {my_player['hand']} in position {position}")
-        # Example: Play suited connectors more conservatively from early position
-        if position in ['UTG', 'MP']:
-            if max_bet_on_table <= big_blind: # Opening or limpers
-                # Consider opening if no raise and few limpers
-                if num_limpers <= 1:
-                    open_raise = raise_amount_calculated
-                    open_raise = max(open_raise, min_raise)
-                    open_raise = round(min(open_raise, my_stack),2)
-                    if open_raise > bet_to_call:
-                        print(f"Suited Connector in {position}, opening/isolating. Action: RAISE, Amount: {open_raise}")
-                        persist_opponents(); return action_raise_const, open_raise
-                # If many limpers or cannot raise effectively, check/fold
-                if can_check:
-                    print(f"Suited Connector in {position}, checking. Action: CHECK")
-                    persist_opponents(); return action_check_const, 0
-                print(f"Suited Connector in {position}, folding. Action: FOLD")
-                persist_opponents(); return action_fold_const, 0
-            elif bet_to_call <= big_blind * 3: # Facing a small raise
-                 # Call with good implied odds, especially if multi-way
-                if active_opponents_count > 1 and bet_to_call < my_stack * 0.1:
-                    print(f"Suited Connector in {position}, calling small raise for implied odds. Action: CALL, Amount: {bet_to_call}")
-                    persist_opponents(); return action_call_const, bet_to_call
-                print(f"Suited Connector in {position}, facing small raise, folding. Action: FOLD")
-                persist_opponents(); return action_fold_const, 0
-            else: # Facing a large raise
-                print(f"Suited Connector in {position}, facing large raise, folding. Action: FOLD")
-                persist_opponents(); return action_fold_const, 0
-        elif position in ['CO', 'BTN']:
-            if max_bet_on_table <= big_blind: # Opening or limpers
-                open_raise = raise_amount_calculated
-                open_raise = max(open_raise, min_raise)
-                open_raise = round(min(open_raise, my_stack),2)
-                if open_raise > bet_to_call:
-                    print(f"Suited Connector in {position}, opening/isolating. Action: RAISE, Amount: {open_raise}")
-                    persist_opponents(); return action_raise_const, open_raise
-                if can_check: # Should not happen if opening unless BB
-                    print(f"Suited Connector in {position}, opening, raise calc issue, checking. Action: CHECK")
-                    persist_opponents(); return action_check_const, 0
-                print(f"Suited Connector in {position}, opening, raise calc issue, folding. Action: FOLD")
-                persist_opponents(); return action_fold_const, 0
-            elif bet_to_call <= big_blind * 4: # Facing a moderate raise
-                # Call more liberally in late position
-                if bet_to_call < my_stack * 0.15:
-                    print(f"Suited Connector in {position}, calling moderate raise. Action: CALL, Amount: {bet_to_call}")
-                    persist_opponents(); return action_call_const, bet_to_call
-                print(f"Suited Connector in {position}, facing moderate raise, folding. Action: FOLD")
-                persist_opponents(); return action_fold_const, 0
-            else: # Facing a large raise
-                print(f"Suited Connector in {position}, facing large raise, folding. Action: FOLD")
-                persist_opponents(); return action_fold_const, 0
-        elif position in ['SB', 'BB']: # Blinds play differently
-            if position == 'SB':
-                if max_bet_on_table <= big_blind: # Limped or folded to SB
-                    # Raise or complete
-                    open_raise = raise_amount_calculated
-                    open_raise = max(open_raise, min_raise)
-                    open_raise = round(min(open_raise, my_stack),2)
-                    if open_raise > bet_to_call :
-                         print(f"Suited Connector in SB, opening/raising. Action: RAISE, Amount: {open_raise}")
-                         persist_opponents(); return action_raise_const, open_raise
-                    # If cannot raise (e.g. completing small blind), and can call
-                    elif bet_to_call > 0 and bet_to_call < my_stack * 0.1:
-                         print(f"Suited Connector in SB, completing/calling small bet. Action: CALL, Amount: {bet_to_call}")
-                         persist_opponents(); return action_call_const, bet_to_call
-                    elif can_check : # Should not happen if SB has to act unless BB also limped.
-                         print(f"Suited Connector in SB, checking. Action: CHECK")
-                         persist_opponents(); return action_check_const, 0
-                    print(f"Suited Connector in SB, folding. Action: FOLD")
-                    persist_opponents(); return action_fold_const, 0
-                else: # Facing a raise in SB
-                    # Generally fold suited connectors from SB vs raise unless specific read/deep stacks
-                    print(f"Suited Connector in SB, facing raise, folding. Action: FOLD")
-                    persist_opponents(); return action_fold_const, 0
-            elif position == 'BB':
-                if max_bet_on_table <= big_blind: # Limped pot or folded to BB
-                    if can_check and bet_to_call == 0:
-                        print(f"Suited Connector in BB, checking. Action: CHECK")
-                        persist_opponents(); return action_check_const, 0
-                    else: # Limpers, BB can raise or call
-                        open_raise = raise_amount_calculated
-                        open_raise = max(open_raise, min_raise)
-                        open_raise = round(min(open_raise, my_stack),2)
-                        if open_raise > bet_to_call:
-                            print(f"Suited Connector in BB, isolating limpers. Action: RAISE, Amount: {open_raise}")
-                            persist_opponents(); return action_raise_const, open_raise
-                        # If cannot raise effectively, consider calling if cheap
-                        elif bet_to_call > 0 and bet_to_call < big_blind * 2 and bet_to_call < my_stack * 0.05 : # Call very cheap bets
-                             print(f"Suited Connector in BB, calling small bet over limps. Action: CALL, Amount: {bet_to_call}")
-                             persist_opponents(); return action_call_const, bet_to_call
-                        elif can_check: # Should be caught by first check
-                             print(f"Suited Connector in BB, checking. Action: CHECK")
-                             persist_opponents(); return action_check_const, 0
-                        print(f"Suited Connector in BB, folding. Action: FOLD")
-                        persist_opponents(); return action_fold_const, 0
-                else: # Facing a raise in BB
-                    pot_odds = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 1
-                    # Call with good pot odds and if not too much of stack
-                    if bet_to_call <= big_blind * 5 and bet_to_call < my_stack * 0.15: # Call raises up to 5BB if stack allows
-                        print(f"Suited Connector in BB, facing raise, calling with pot odds {pot_odds:.2f}. Action: CALL, Amount: {bet_to_call}")
-                        persist_opponents(); return action_call_const, bet_to_call
-                    print(f"Suited Connector in BB, facing raise, folding. Action: FOLD")
-                    persist_opponents(); return action_fold_const, 0
-        else: # Should not happen
-            if can_check: return action_check_const, 0
-            return action_fold_const, 0
+    # --- Win probability integration ---
+    # Estimate win probability preflop using EquityCalculator
+    try:
+        eq_calc = EquityCalculator()
+        # Assume my_player['hand'] is a list of two card strings, e.g., ['K♥', '4♥']
+        # No community cards preflop
+        hero_hand = my_player['hand']
+        community_cards = []
+        num_opps = active_opponents_count if active_opponents_count > 0 else 1
+        win_probability = eq_calc.calculate_win_probability(hero_hand, community_cards, num_opps)
+        preflop_logger.info(f"Estimated preflop win probability: {win_probability:.2%} for hand {hero_hand} vs {num_opps} opponents")
+    except Exception as e:
+        win_probability = 0.0
+        preflop_logger.warning(f"Win probability calculation failed: {e}")
+
+    # --- Decision Logic Continued ---
+    # (Incorporate win_probability into decision logic where relevant)
+    if win_probability < 0.15:
+        print(f"DEBUG PREFLOP: Very low win probability ({win_probability:.2%}), likely fold.")
+        preflop_logger.info(f"Very low win probability ({win_probability:.2%}) for hand {my_player['hand']}, position {position}. Consider folding.")
+        return action_fold_const, 0
+    elif win_probability > 0.75:
+        print(f"DEBUG PREFLOP: High win probability ({win_probability:.2%}), consider raising.")
+        preflop_logger.info(f"High win probability ({win_probability:.2%}) for hand {my_player['hand']}, position {position}. Consider raising.")
+        if raise_amount_calculated > bet_to_call:
+            return action_raise_const, raise_amount_calculated
+        else:
+            return action_call_const, bet_to_call
+
+    # --- Win probability based fallback decision ---
+    WIN_PROB_CALL_THRESHOLD = 0.6  # You can tune this threshold
+    if bet_to_call > 0 and win_probability >= WIN_PROB_CALL_THRESHOLD:
+        # If win probability is high, call or raise depending on stack and raise amount
+        if raise_amount_calculated > bet_to_call and raise_amount_calculated <= my_stack:
+            preflop_logger.info(f"Win probability {win_probability:.2%} exceeds threshold, aggressive action. Action: RAISE, Amount: {raise_amount_calculated}")
+            persist_opponents(); return action_raise_const, raise_amount_calculated
+        else:
+            preflop_logger.info(f"Win probability {win_probability:.2%} exceeds threshold, conservative action. Action: CALL, Amount: {bet_to_call}")
+            persist_opponents(); return action_call_const, bet_to_call
+    elif bet_to_call > 0 and win_probability < WIN_PROB_CALL_THRESHOLD:
+        preflop_logger.info(f"Win probability {win_probability:.2%} below threshold. Action: FOLD")
+        persist_opponents(); return action_fold_const, 0
+
+    # Default to call if in the middle range of win probabilities and no other conditions met
+    return action_call_const, bet_to_call
 
     # Fallback for unhandled preflop categories or logic fall-through
     print(f"WARNING: Unhandled preflop_category '{preflop_category}' or major logic fall-through in make_preflop_decision. Defaulting to FOLD.")
+    preflop_logger.warning(f"Unhandled preflop_category '{preflop_category}' or major logic fall-through in make_preflop_decision. Defaulting to FOLD.")
     if opponent_tracker is not None and hasattr(opponent_tracker, 'save_all_profiles'):
         logger.info("Calling opponent_tracker.save_all_profiles() in make_preflop_decision")
         opponent_tracker.save_all_profiles()
