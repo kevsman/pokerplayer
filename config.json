@@ -45,5 +45,7 @@
         "enabled": true,
         "step_size": 5,
         "max_attempts": 60
-    }
+    },
+    "big_blind": 0.02,
+    "small_blind": 0.01
 }

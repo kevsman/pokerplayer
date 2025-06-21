@@ -59,16 +59,26 @@ def is_short_stack(my_stack, big_blind):
     return my_stack <= 20 * big_blind
 
 def should_push_fold_short_stack(hand_category, position, my_stack, bet_to_call, big_blind):
-    """Push/fold logic for short stacks (<20BB)."""
-    # Example: Push with any pair, any ace, broadways, suited connectors in late position
-    if not is_short_stack(my_stack, big_blind):
+    """Push/fold logic for short stacks (<=10BB)."""
+    # Ensure big_blind is a float and not zero or None
+    try:
+        big_blind = float(big_blind)
+    except (TypeError, ValueError):
+        big_blind = 0.04  # Fallback to default if not provided
+    if big_blind <= 0:
+        big_blind = 0.04
+    if my_stack > 10 * big_blind:
         return None
+    # Only push with strong hands for all-in: pairs, strong aces, broadways
     push_hands = [
         'Premium Pair', 'Strong Pair', 'Medium Pair', 'Small Pair',
-        'Suited Ace', 'Offsuit Ace', 'Playable Broadway', 'Suited Connector', 'Suited Playable'
+        'Suited Ace', 'Offsuit Ace', 'Playable Broadway'
     ]
+    # Optionally allow suited connectors only from late position and only if very short (<=7BB)
+    if hand_category == 'Suited Connector' and position in ['CO', 'BTN'] and my_stack <= 7 * big_blind:
+        if bet_to_call <= 4 * big_blind:
+            return ACTION_RAISE, my_stack
     if hand_category in push_hands:
-        # Push if unopened or facing a raise <= 4BB
         if bet_to_call <= 4 * big_blind:
             return ACTION_RAISE, my_stack  # All-in
     # Otherwise fold
@@ -217,28 +227,15 @@ def make_preflop_decision(
 
     # --- Integrate modular preflop strategies ---
     # 1. Short stack push/fold logic
-    if my_stack <= 20 * big_blind: # Broaden entry condition to 20BB
+    # Only use push/fold logic for stacks <= 10BB
+    if my_stack <= 10 * big_blind:
         push_fold_result = should_push_fold_short_stack(preflop_category, position, my_stack, bet_to_call, big_blind)
         if push_fold_result is not None:
             action, amount = push_fold_result
             preflop_logger.info(f"Short stack push/fold logic triggered. Action: {action.upper()}, Amount: {amount}")
             if action == ACTION_RAISE:
-                # For stacks > 10BB, make a standard raise instead of pushing all-in
-                if my_stack > 10 * big_blind:
-                    if max_bet_on_table <= big_blind:  # No raise yet, we are opening
-                        raise_amount = 3 * big_blind
-                    else:  # Facing a raise, making a 3-bet
-                        raise_amount = 3 * max_bet_on_table
-                    
-                    # Ensure raise is valid and capped by stack
-                    raise_amount = max(raise_amount, min_raise)
-                    raise_amount = round(min(raise_amount, my_stack), 2)
-
-                    persist_opponents()
-                    return action_raise_const, raise_amount
-                else:
-                    persist_opponents()
-                    return action_raise_const, my_stack # Push for very short stacks (<10BB)
+                persist_opponents()
+                return action_raise_const, my_stack # Push for very short stacks (<=10BB)
             elif action == ACTION_FOLD:
                 if can_check:
                     persist_opponents()

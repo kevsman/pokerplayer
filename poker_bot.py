@@ -9,6 +9,7 @@ from equity_calculator import EquityCalculator # Added import
 from hand_history_tracker import get_hand_history_tracker  # Import hand history tracker
 import time
 import logging
+import threading
 
 # Action definitions
 
@@ -65,8 +66,8 @@ class PokerBot:
         self.logger.propagate = False # Prevent logging to root logger if it has handlers
 
         self.config = config if config is not None else {}
-        self.big_blind = self.config.get('big_blind', 0.2)
-        self.small_blind = self.config.get('small_blind', 0.1)
+        self.big_blind = self.config.get('big_blind', 0.02)
+        self.small_blind = self.config.get('small_blind', 0.01)
         
         # Ensure big_blind and small_blind are in self.config for DecisionEngine and other parts
         if 'big_blind' not in self.config: self.config['big_blind'] = self.big_blind
@@ -99,6 +100,7 @@ class PokerBot:
         # self.big_blind and self.small_blind are already set from config or defaults
         self.running = False
         self.last_html_content = None
+        self.starting_stack = None  # Track the starting stack for stop condition
 
     def close_logger(self):
         """Close all logging handlers."""
@@ -522,9 +524,25 @@ class PokerBot:
             self.ch.close()
             self.ch = None
 
+    def start_kill_switch_listener(self):
+        """Start a background thread to listen for Ctrl+Q as a kill switch."""
+        try:
+            import keyboard
+        except ImportError:
+            self.logger.warning("'keyboard' library not found. Please install it with 'pip install keyboard' for kill switch support.")
+            return
+        def listen():
+            self.logger.info("Kill switch listener started. Press Ctrl+Q to stop the bot.")
+            keyboard.wait('ctrl+q')
+            self.logger.info("Ctrl+Q detected. Stopping bot via kill switch.")
+            self.running = False
+        t = threading.Thread(target=listen, daemon=True)
+        t.start()
+
     def main_loop(self):
         self.running = True
-        self.logger.info("PokerBot started. Press Ctrl+C to stop.")
+        self.start_kill_switch_listener()
+        self.logger.info("PokerBot started. Press Ctrl+C or Ctrl+Q to stop.")
         
         if not self.ui_controller.positions:
             self.logger.warning("UI positions not calibrated. Please run calibration first or ensure config.json exists.")
@@ -555,9 +573,6 @@ class PokerBot:
                 self.last_html_content = current_html
 
                 # 2. Parse HTML to get game state
-                # Assuming self.parser.parse_html(current_html) returns a dict 
-                # like game_state = {'my_player_data': ..., 'table_data': ..., 'all_players_data': ...}
-                # or None/throws error on failure.
                 parsed_state = self.parser.parse_html(current_html)
                 
                 if parsed_state and parsed_state.get('warnings'):
@@ -569,9 +584,31 @@ class PokerBot:
                     time.sleep(1)
                     continue
 
-                # Process the parsed HTML data using PokerBot's analyze method.
-                # This populates self.table_data and self.player_data (which includes hand_evaluation).
                 self.analyze()
+
+                my_player_data = self.get_my_player()
+                table_data = self.table_data
+                raw_all_players_data = self.player_data
+
+                # --- STOP CONDITION LOGIC ---
+                if my_player_data:
+                    try:
+                        current_stack = parse_currency_string(my_player_data.get('stack', 0))
+                        if self.starting_stack is None and current_stack > 0:
+                            self.starting_stack = current_stack
+                            self.logger.info(f"Starting stack set to {self.starting_stack}")
+                        if self.starting_stack:
+                            if current_stack <= 0:
+                                self.logger.info("Bot has 0 left in its stack. Stopping bot.")
+                                self.running = False
+                                break
+                            if current_stack >= 2.5 * self.starting_stack:
+                                self.logger.info(f"Bot has reached 2.5x its starting stack ({current_stack} >= {2.5 * self.starting_stack}). Stopping bot.")
+                                self.running = False
+                                break
+                    except Exception as e:
+                        self.logger.error(f"Error checking stop condition: {e}")
+                # --- END STOP CONDITION LOGIC ---
 
                 # Get data from PokerBot's attributes after analysis
                 my_player_data = self.get_my_player()
