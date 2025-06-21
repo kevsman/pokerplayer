@@ -7,6 +7,7 @@ from postflop.opponent_analysis import analyze_opponents
 from opponent_persistence import save_opponent_analysis, load_opponent_analysis
 import os
 from equity_calculator import EquityCalculator
+from improved_poker_bot_fixes import improved_pot_odds_safeguard, should_fold_preflop, should_bluff
 
 logger = logging.getLogger(__name__) # Use module's name for the logger
 
@@ -785,20 +786,26 @@ def make_preflop_decision(
 
     # --- Win probability based fallback decision ---
     WIN_PROB_CALL_THRESHOLD = 0.6  # You can tune this threshold
-    if bet_to_call > 0 and win_probability >= WIN_PROB_CALL_THRESHOLD:
-        # If win probability is high, call or raise depending on stack and raise amount
-        if raise_amount_calculated > bet_to_call and raise_amount_calculated <= my_stack:
-            preflop_logger.info(f"Win probability {win_probability:.2%} exceeds threshold, aggressive action. Action: RAISE, Amount: {raise_amount_calculated}")
+    if bet_to_call > 0:
+        # Use improved pot odds safeguard before folding
+        action, amount, reasoning = improved_pot_odds_safeguard(
+            action_fold_const if win_probability < WIN_PROB_CALL_THRESHOLD else action_call_const,
+            bet_to_call, pot_size, win_probability, preflop_category, f"Preflop fallback: win_prob={win_probability:.2%}"
+        )
+        preflop_logger.info(f"[IMPROVED POT ODDS SAFEGUARD] {action}, {amount}, {reasoning}")
+        if action != action_fold_const:
+            persist_opponents(); return action, amount
+        # Use improved folding logic for preflop
+        if should_fold_preflop(my_player['hand'], position, bet_to_call / big_blind):
+            preflop_logger.info(f"[IMPROVED FOLD] {my_player['hand']} in {position}, bet_size_bb={bet_to_call / big_blind:.2f}")
+            persist_opponents(); return action_fold_const, 0
+        # Use improved bluffing logic if appropriate
+        if should_bluff('neutral', pot_size, 0.5, position):
+            preflop_logger.info(f"[IMPROVED BLUFF] {my_player['hand']} in {position}, bluffing preflop")
             persist_opponents(); return action_raise_const, raise_amount_calculated
-        else:
-            preflop_logger.info(f"Win probability {win_probability:.2%} exceeds threshold, conservative action. Action: CALL, Amount: {bet_to_call}")
-            persist_opponents(); return action_call_const, bet_to_call
-    elif bet_to_call > 0 and win_probability < WIN_PROB_CALL_THRESHOLD:
-        preflop_logger.info(f"Win probability {win_probability:.2%} below threshold. Action: FOLD")
-        persist_opponents(); return action_fold_const, 0
-
-    # Default to call if in the middle range of win probabilities and no other conditions met
-    return action_call_const, bet_to_call
+        # Default to call if in the middle range of win probabilities and no other conditions met
+        preflop_logger.info(f"[IMPROVED DEFAULT CALL] {my_player['hand']} in {position}, default call")
+        persist_opponents(); return action_call_const, bet_to_call
 
     # Fallback for unhandled preflop categories or logic fall-through
     print(f"WARNING: Unhandled preflop_category '{preflop_category}' or major logic fall-through in make_preflop_decision. Defaulting to FOLD.")

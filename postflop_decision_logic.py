@@ -654,11 +654,16 @@ def make_postflop_decision(
                     return action_call_const, bet_to_call
                     
         elif is_medium:
-            # More aggressive with medium hands - looser calling and raising
-            
+            # More aggressive with medium hands
             # Favor position - be more aggressive in position
             position_advantage = position in ['BTN', 'CO']
-            
+
+            # NEW: Avoid committing stack with medium hands unless win_probability is high
+            large_bet = bet_to_call > pot_size * 0.5 or bet_to_call > my_stack * 0.5
+            if large_bet and win_probability < 0.65:
+                logger.info(f"Decision: {action_fold_const} (Medium hand, folding to large bet/all-in with low win probability: {win_probability:.2f})")
+                return action_fold_const, 0
+
             # First check if we should raise instead of just calling
             if win_probability > 0.55 and position_advantage:
                 # Consider raising with good medium hands when in position
@@ -708,16 +713,68 @@ def make_postflop_decision(
                 logger.info(f"Decision: {action_fold_const} (Very weak hand, folding to bet)")
                 return action_fold_const, 0
 
-    # At the end, after any updates to opponent_tracker:
-    if opponent_tracker is not None:
-        if hasattr(opponent_tracker, 'save_all_profiles'):
-            logger.info("Calling opponent_tracker.save_all_profiles() in make_postflop_decision")
-            opponent_tracker.save_all_profiles()
+    # After all advanced strategy variables are set and before making a final decision:
+    # --- Use improved drawing hand analysis for all drawing hands ---
+    if hand_strength_final_decision == 'drawing':
+        draw_analysis = improved_drawing_hand_analysis(
+            numerical_hand_rank, win_probability, pot_odds_to_call, bet_to_call, pot_size, my_stack, street
+        )
+        logger.info(f"[IMPROVED DRAW ANALYSIS] {draw_analysis}")
+        if draw_analysis['should_call']:
+            logger.info(f"Decision: {action_call_const} {bet_to_call} (Drawing hand, improved analysis: call)")
+            return action_call_const, bet_to_call
+        else:
+            logger.info(f"Decision: {action_fold_const} (Drawing hand, improved analysis: fold)")
+            return action_fold_const, 0
 
-    # Fallback, should not be reached if logic is complete
-    logger.error("Fell through all decision logic in postflop. Defaulting to FOLD.")
-    return action_fold_const, 0
+    # --- Use improved value betting and bluffing strategies ---
+    if is_very_strong or is_strong or is_medium:
+        value_strategy = fix_value_betting_strategy(
+            hand_strength_final_decision, win_probability, spr, can_check, pot_size, my_stack, position
+        )
+        logger.info(f"[IMPROVED VALUE BETTING] {value_strategy}")
+        if value_strategy['bet_action'] == 'raise' and value_strategy['bet_size'] > 0:
+            return action_raise_const, min(value_strategy['bet_size'], my_stack)
+        elif value_strategy['bet_action'] == 'check':
+            return action_check_const, 0
 
+    # --- Use improved bluffing strategy if hand is weak or bluff spot ---
+    if is_weak_final or hand_strength_final_decision in ['bluff', 'very_weak', 'weak_made']:
+        bluff_strategy = fix_bluffing_strategy(
+            hand_strength_final_decision, win_probability, fold_equity, spr, can_check, position, street, pot_size, my_stack
+        )
+        logger.info(f"[IMPROVED BLUFFING] {bluff_strategy}")
+        if bluff_strategy['bet_action'] == 'raise' and bluff_strategy['bet_size'] > 0:
+            return action_raise_const, min(bluff_strategy['bet_size'], my_stack)
+        elif bluff_strategy['bet_action'] == 'check':
+            return action_check_const, 0
+
+    # --- Use improved multiway betting adjustment ---
+    multiway_adj = get_multiway_betting_adjustment(hand_strength_final_decision, active_opponents_count, win_probability)
+    logger.info(f"[IMPROVED MULTIWAY ADJUSTMENT] {multiway_adj}")
+    if not multiway_adj['should_bet']:
+        return action_check_const if can_check else action_fold_const, 0
+
+    # --- Use improved final decision logic for all other cases ---
+    action, amount, reasoning = improved_final_decision(
+        hand_strength_final_decision, win_probability, spr_strategy, pot_size, bet_to_call, can_check,
+        active_opponents_count=active_opponents_count, fold_equity=fold_equity, drawing_potential=drawing_potential,
+        committed_ratio=pot_commitment_ratio, hand_evaluation=None
+    )
+    logger.info(f"[IMPROVED FINAL DECISION] {action}, {amount}, {reasoning}")
+
+    # --- Use improved pot odds safeguard before folding ---
+    if action == action_fold_const and bet_to_call > 0 and pot_size > 0:
+        action, amount, reasoning = improved_pot_odds_safeguard(
+            action, bet_to_call, pot_size, win_probability, hand_strength_final_decision, reasoning
+        )
+        logger.info(f"[IMPROVED POT ODDS SAFEGUARD] {action}, {amount}, {reasoning}")
+        if action != action_fold_const:
+            return action, amount
+
+    return action, amount
+# === END: Integrate improved/tuned logic ===
+# ...existing code...
 # === Advanced Post-Flop Strategy Utilities ===
 def has_blocker_effects(my_hand, board, target_ranks, target_suits=None):
     """Returns True if hand contains blockers to key opponent holdings."""
