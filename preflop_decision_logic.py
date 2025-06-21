@@ -217,18 +217,42 @@ def make_preflop_decision(
 
     # --- Integrate modular preflop strategies ---
     # 1. Short stack push/fold logic
-    push_fold_result = should_push_fold_short_stack(preflop_category, position, my_stack, bet_to_call, big_blind)
-    if push_fold_result is not None:
-        action, amount = push_fold_result
-        preflop_logger.info(f"Short stack push/fold logic triggered. Action: {action.upper()}, Amount: {amount}")
-        persist_opponents(); return action, amount
+    if my_stack <= 20 * big_blind: # Broaden entry condition to 20BB
+        push_fold_result = should_push_fold_short_stack(preflop_category, position, my_stack, bet_to_call, big_blind)
+        if push_fold_result is not None:
+            action, amount = push_fold_result
+            preflop_logger.info(f"Short stack push/fold logic triggered. Action: {action.upper()}, Amount: {amount}")
+            if action == ACTION_RAISE:
+                # For stacks > 10BB, make a standard raise instead of pushing all-in
+                if my_stack > 10 * big_blind:
+                    if max_bet_on_table <= big_blind:  # No raise yet, we are opening
+                        raise_amount = 3 * big_blind
+                    else:  # Facing a raise, making a 3-bet
+                        raise_amount = 3 * max_bet_on_table
+                    
+                    # Ensure raise is valid and capped by stack
+                    raise_amount = max(raise_amount, min_raise)
+                    raise_amount = round(min(raise_amount, my_stack), 2)
+
+                    persist_opponents()
+                    return action_raise_const, raise_amount
+                else:
+                    persist_opponents()
+                    return action_raise_const, my_stack # Push for very short stacks (<10BB)
+            elif action == ACTION_FOLD:
+                if can_check:
+                    persist_opponents()
+                    return action_check_const, 0
+                else:
+                    persist_opponents()
+                    return action_fold_const, 0
 
     # 2. 3-bet/4-bet bluff logic
     bluff_result = should_3bet_4bet_bluff(preflop_category, position, bet_to_call, max_bet_on_table, big_blind, opponent_stats)
     if bluff_result is not None:
         action, amount = bluff_result
         preflop_logger.info(f"3-bet/4-bet bluff logic triggered. Action: {action.upper()}, Amount: {amount}")
-        persist_opponents(); return action, amount
+        persist_opponents(); return
 
     # 3. BB defense logic
     bb_defend_result = should_defend_bb_wider(preflop_category, position, bet_to_call, big_blind, opener_position)
@@ -652,44 +676,44 @@ def make_preflop_decision(
                     print(f"{preflop_category} in SB, open/raise calc issue, folding. Action: FOLD")
                     preflop_logger.info(f"{preflop_category} in SB, open/raise calc issue, folding. Action: FOLD")
                     persist_opponents(); return action_fold_const, 0
-            else: # Facing a raise in SB
-                my_bet_on_street_before_this_action = max_bet_on_table - bet_to_call
-                # Use the 'small_blind' parameter passed to the function
-                we_already_raised_this_street = my_bet_on_street_before_this_action > small_blind
+            # Facing a raise in SB
+            my_bet_on_street_before_this_action = max_bet_on_table - bet_to_call
+            # Use the 'small_blind' parameter passed to the function
+            we_already_raised_this_street = my_bet_on_street_before_this_action > small_blind
 
-                is_suited_ace_category = (preflop_category == "Suited Ace")
-                
-                if is_suited_ace_category and we_already_raised_this_street:
-                    logger.info(f"{preflop_category} in SB, facing re-raise (4-bet+), folding. Action: FOLD")
-                    persist_opponents(); return ACTION_FOLD, 0
-
-                can_consider_initial_3bet = preflop_category in ["Strong Pair", "Suited Ace", "Playable Broadway"]
-                can_consider_5bet_plus = preflop_category in ["Strong Pair", "Playable Broadway"] 
-
-                eligible_for_aggressive_action = False
-                if not we_already_raised_this_street and can_consider_initial_3bet:
-                    eligible_for_aggressive_action = True
-                elif we_already_raised_this_street and can_consider_5bet_plus:
-                    if preflop_category == "Suited Ace": 
-                        logger.info(f"{preflop_category} in SB, facing re-raise (4-bet+) (safeguard), folding. Action: FOLD")
-                        persist_opponents(); return ACTION_FOLD, 0
-                    eligible_for_aggressive_action = True
-                
-                commitment_factor = 0.45 if we_already_raised_this_street else 0.33 
-
-                if eligible_for_aggressive_action and max_bet_on_table < my_stack * commitment_factor:
-                    # raise_amount_calculated is already defined earlier in the function
-                    reraise_amount = raise_amount_calculated 
-                    reraise_amount = max(reraise_amount, min_raise) # Ensure it's a valid min raise total
-                    reraise_amount = round(min(reraise_amount, my_stack), 2)
-
-                    if reraise_amount > bet_to_call: # Ensure it's an actual raise
-                        action_type = "re-raising (4-bet+)" if we_already_raised_this_street else "3-betting"
-                        logger.info(f"{preflop_category} in SB, {action_type}. Action: RAISE, Amount: {reraise_amount}")
-                        persist_opponents(); return ACTION_RAISE, reraise_amount
-                
-                logger.info(f"{preflop_category} in SB, facing raise, folding (default path). Action: FOLD")
+            is_suited_ace_category = (preflop_category == "Suited Ace")
+            
+            if is_suited_ace_category and we_already_raised_this_street:
+                logger.info(f"{preflop_category} in SB, facing re-raise (4-bet+), folding. Action: FOLD")
                 persist_opponents(); return ACTION_FOLD, 0
+
+            can_consider_initial_3bet = preflop_category in ["Strong Pair", "Suited Ace", "Playable Broadway"]
+            can_consider_5bet_plus = preflop_category in ["Strong Pair", "Playable Broadway"] 
+
+            eligible_for_aggressive_action = False
+            if not we_already_raised_this_street and can_consider_initial_3bet:
+                eligible_for_aggressive_action = True
+            elif we_already_raised_this_street and can_consider_5bet_plus:
+                if preflop_category == "Suited Ace": 
+                    logger.info(f"{preflop_category} in SB, facing re-raise (4-bet+) (safeguard), folding. Action: FOLD")
+                    persist_opponents(); return ACTION_FOLD, 0
+                eligible_for_aggressive_action = True
+            
+            commitment_factor = 0.45 if we_already_raised_this_street else 0.33 
+
+            if eligible_for_aggressive_action and max_bet_on_table < my_stack * commitment_factor:
+                # raise_amount_calculated is already defined earlier in the function
+                reraise_amount = raise_amount_calculated 
+                reraise_amount = max(reraise_amount, min_raise) # Ensure it's a valid min raise total
+                reraise_amount = round(min(reraise_amount, my_stack), 2)
+
+                if reraise_amount > bet_to_call: # Ensure it's an actual raise
+                    action_type = "re-raising (4-bet+)" if we_already_raised_this_street else "3-betting"
+                    logger.info(f"{preflop_category} in SB, {action_type}. Action: RAISE, Amount: {reraise_amount}")
+                    persist_opponents(); return ACTION_RAISE, reraise_amount
+            
+            logger.info(f"{preflop_category} in SB, facing raise, folding (default path). Action: FOLD")
+            persist_opponents(); return ACTION_FOLD, 0
         elif position == 'BB':
             # BB strategy: Defend wider. Call, 3-bet, or check.
             if max_bet_on_table <= big_blind: # Limped pot or folded to BB
