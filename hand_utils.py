@@ -174,5 +174,14 @@ def get_preflop_hand_category(hole_cards, position): # Renamed parameters for cl
     # Small Pairs (22-55)
     if is_pair and rank1_val <= 5:
         return "Small Pair"
-    
-    return "Weak"
+
+    # Marginal hands: slightly better than trash, e.g. Q6s, J7o, T8o, etc.
+    if is_suited:
+        if (rank1_val == 12 and rank2_val == 4) or (rank1_val == 11 and rank2_val == 5):
+            return "Marginal"
+    else:
+        if (rank1_val == 12 and rank2_val == 5) or (rank1_val == 11 and rank2_val == 6) or (rank1_val == 10 and rank2_val == 7):
+            return "Marginal"
+
+    # Trash hands: everything else
+    return "Trash"

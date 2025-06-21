@@ -298,11 +298,27 @@ def make_preflop_decision(
     
     if preflop_category == "Weak":
         print(f"DEBUG PREFLOP: Entered Weak hand category")
-        preflop_logger.info(f"Entered Weak hand category for {preflop_category} in {position}")
-        
+        preflop_logger.info(f"Entered Weak hand category for {preflop_category} in {position} with hand {my_player['hand']}")
+        # Pot odds and win probability safeguard for weak hands in blinds
+        if bet_to_call > 0 and (is_bb or is_sb):
+            pot_odds = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 1
+            try:
+                eq_calc = EquityCalculator()
+                hero_hand = my_player['hand']
+                community_cards = []
+                num_opps = active_opponents_count if active_opponents_count > 0 else 1
+                win_probability = eq_calc.calculate_win_probability(hero_hand, community_cards, num_opps)
+                preflop_logger.info(f"[WEAK HAND WIN PROB] {hero_hand} in {position}, win_prob={win_probability:.2%}, pot_odds={pot_odds:.2%}")
+            except Exception as e:
+                win_probability = 0.0
+                preflop_logger.warning(f"Win probability calculation failed: {e}")
+            if win_probability > pot_odds and win_probability > 0.30:
+                preflop_logger.info(f"[WEAK HAND CALL] {hero_hand} in {position}, calling with good pot odds and win_prob.")
+                persist_opponents(); return action_call_const, bet_to_call
+        # ...existing code...
         if can_check and is_bb and bet_to_call == 0:
             print(f"DEBUG PREFLOP: BB can check with no bet to call. Action: CHECK")
-            preflop_logger.info(f"BB can check with no bet to call. Action: CHECK")
+            preflop_logger.info(f"BB can check with no bet to call. Action: CHECK. Hand: {my_player['hand']}")
             persist_opponents(); return action_check_const, 0
         
         # Enhanced BTN stealing with wider range
@@ -341,8 +357,8 @@ def make_preflop_decision(
                 steal_amount = max(steal_amount, min_raise)
                 steal_amount = round(min(steal_amount, my_stack), 2)
                 if steal_amount > bet_to_call:
-                    print(f"BTN steal with weak hand ({card1_rank}{card1_suit}, {card2_rank}{card2_suit}). Action: RAISE, Amount: {steal_amount}")
-                    preflop_logger.info(f"BTN steal with weak hand ({card1_rank}{card1_suit}, {card2_rank}{card2_suit}). Action: RAISE, Amount: {steal_amount}")
+                    print(f"BTN steal with weak hand ({card1_rank}{card1_suit}, {card2_rank}{card2_suit}) [{my_player['hand']}]. Action: RAISE, Amount: {steal_amount}")
+                    preflop_logger.info(f"BTN steal with weak hand ({card1_rank}{card1_suit}, {card2_rank}{card2_suit}) [{my_player['hand']}]. Action: RAISE, Amount: {steal_amount}")
                     persist_opponents(); return action_raise_const, steal_amount
         
         # CO late position play - more liberal than early position
@@ -358,13 +374,13 @@ def make_preflop_decision(
                 steal_amount = max(steal_amount, min_raise)
                 steal_amount = round(min(steal_amount, my_stack), 2)
                 if steal_amount > bet_to_call:
-                    print(f"CO open with suited high card. Action: RAISE, Amount: {steal_amount}")
-                    preflop_logger.info(f"CO open with suited high card. Action: RAISE, Amount: {steal_amount}")
+                    print(f"CO open with suited high card [{my_player['hand']}]. Action: RAISE, Amount: {steal_amount}")
+                    preflop_logger.info(f"CO open with suited high card [{my_player['hand']}]. Action: RAISE, Amount: {steal_amount}")
                     persist_opponents(); return action_raise_const, steal_amount
                       # If facing a raise, fold weak hands (with some exceptions)
         if bet_to_call > 0:
             print(f"DEBUG PREFLOP: Weak hand facing bet (bet_to_call={bet_to_call}). Action: FOLD")
-            preflop_logger.info(f"Weak hand facing bet (bet_to_call={bet_to_call}). Action: FOLD")
+            preflop_logger.info(f"Weak hand facing bet (bet_to_call={bet_to_call}). Action: FOLD. Hand: {my_player['hand']}")
             persist_opponents(); return action_fold_const, 0
             # If no bet to call, and cannot check (e.g., UTG must act), fold weak hands.
         # Exception: BTN steal attempts with suited weak hands like K4s
@@ -397,7 +413,7 @@ def make_preflop_decision(
             # If not a steal situation and cannot check, fold
             if not can_check:
                 print(f"DEBUG PREFLOP: Weak hand, cannot check (e.g., UTG open), no bet to call. Action: FOLD")
-                preflop_logger.info(f"Weak hand, cannot check (e.g., UTG open), no bet to call. Action: FOLD")
+                preflop_logger.info(f"Weak hand, cannot check (e.g., UTG open), no bet to call. Action: FOLD. Hand: {my_player['hand']}")
                 persist_opponents(); return action_fold_const, 0# Debug logging for BB check issue investigation
         print(f"DEBUG PREFLOP: At check/fold decision point:")
         print(f"  - position: {position}")
@@ -409,12 +425,13 @@ def make_preflop_decision(
         # If no bet to call and can check (e.g. UTG limp, later position check through, or BB with no raise)
         if bet_to_call == 0 and can_check:
             print(f"DEBUG PREFLOP: Weak hand, can check (limp/check through or BB facing no bet). Action: CHECK")
-            preflop_logger.info(f"Weak hand, can check (limp/check through or BB facing no bet). Action: CHECK")
+            preflop_logger.info(f"Weak hand, can check (limp/check through or BB facing no bet). Action: CHECK. Hand: {my_player['hand']}")
             persist_opponents(); return action_check_const, 0
         
         # Default for weak hands: if can check, check. Otherwise, fold.
         # This covers the BB case where it's checked to them (bet_to_call == 0, can_check == True)
         print(f"DEBUG PREFLOP: Weak hand, default. Action: CHECK if can_check else FOLD. (can_check={can_check}, bet_to_call={bet_to_call})")
+        preflop_logger.info(f"Weak hand, default. Action: CHECK if can_check else FOLD. Hand: {my_player['hand']}")
         return action_check_const if can_check else action_fold_const, 0
 
 
