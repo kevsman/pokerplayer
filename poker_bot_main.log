@@ -1585,3 +1585,1579 @@
 2025-06-22 21:38:43,083 - INFO - Player EmVeee in seat 5 assigned position: CO
 2025-06-22 21:38:43,083 - INFO - Player ThinMan238 in seat 6 assigned position: BTN
 2025-06-22 21:38:43,107 - INFO - Found visible dealer button at seat 6
+2025-06-22 21:42:25,186 - INFO - Found visible dealer button at seat 6
+2025-06-22 21:42:25,190 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:42:25,194 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:42:25,194 - INFO - Found 3 potential action elements.
+2025-06-22 21:42:25,195 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:42:25,195 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:42:25,195 - INFO - Using dealer position: 6
+2025-06-22 21:42:25,196 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-22 21:42:25,196 - INFO - Player Jivanmukta in seat 1 assigned position: SB
+2025-06-22 21:42:25,196 - INFO - Player TheBox in seat 2 assigned position: BB
+2025-06-22 21:42:25,196 - INFO - Player viejojhon10 in seat 3 assigned position: UTG
+2025-06-22 21:42:25,196 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-22 21:42:25,196 - INFO - Player EmVeee in seat 5 assigned position: CO
+2025-06-22 21:42:25,196 - INFO - Player ThinMan238 in seat 6 assigned position: BTN
+2025-06-22 21:42:25,209 - INFO - Found visible dealer button at seat 6
+2025-06-22 21:42:25,211 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:42:25,214 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:42:25,215 - INFO - Found 3 potential action elements.
+2025-06-22 21:42:25,216 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:42:25,216 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:42:25,216 - INFO - Using dealer position: 6
+2025-06-22 21:42:25,216 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-22 21:42:25,216 - INFO - Player Jivanmukta in seat 1 assigned position: SB
+2025-06-22 21:42:25,217 - INFO - Player TheBox in seat 2 assigned position: BB
+2025-06-22 21:42:25,217 - INFO - Player viejojhon10 in seat 3 assigned position: UTG
+2025-06-22 21:42:25,217 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-22 21:42:25,217 - INFO - Player EmVeee in seat 5 assigned position: CO
+2025-06-22 21:42:25,217 - INFO - Player ThinMan238 in seat 6 assigned position: BTN
+2025-06-22 21:42:25,219 - INFO - Found visible dealer button at seat 6
+2025-06-22 21:42:25,221 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:42:25,225 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:42:25,226 - INFO - Found 3 potential action elements.
+2025-06-22 21:42:25,226 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:42:25,226 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:42:25,227 - INFO - Using dealer position: 6
+2025-06-22 21:42:25,227 - INFO - Position calculation: 6 active players, dealer at seat 6
+2025-06-22 21:42:25,227 - INFO - Player Jivanmukta in seat 1 assigned position: SB
+2025-06-22 21:42:25,227 - INFO - Player TheBox in seat 2 assigned position: BB
+2025-06-22 21:42:25,227 - INFO - Player viejojhon10 in seat 3 assigned position: UTG
+2025-06-22 21:42:25,227 - INFO - Player warriorwonder25 in seat 4 assigned position: MP
+2025-06-22 21:42:25,227 - INFO - Player EmVeee in seat 5 assigned position: CO
+2025-06-22 21:42:25,227 - INFO - Player ThinMan238 in seat 6 assigned position: BTN
+2025-06-22 21:42:26,190 - INFO - Equity calculation complete for ['Q♠', 'A♣'] vs random. Win: 57.40%, Tie: 8.42%, Equity: 61.61% (5000 simulations)
+2025-06-22 21:42:26,191 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.15
+2025-06-22 21:42:26,191 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:42:26,191 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:42:26,191 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=None, last_action=None, current_bet=0.05
+2025-06-22 21:42:26,191 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:42:26,192 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=None, last_action=None, current_bet=0.1
+2025-06-22 21:42:26,192 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:42:26,193 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.15
+2025-06-22 21:42:26,193 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:42:26,193 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:42:26,194 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=None, current_bet=0.05
+2025-06-22 21:42:26,194 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:42:26,194 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=None, current_bet=0.1
+2025-06-22 21:42:26,194 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:42:26,201 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:42:26,202 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 21:42:26,202 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 21:42:26,203 - INFO -   my_player position: MP
+2025-06-22 21:42:26,203 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:42:26,203 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:42:26,203 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 21:42:26,204 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 21:42:26,204 - INFO -   max_bet_on_table: 0.1
+2025-06-22 21:42:26,204 - INFO -   bet_to_call_calculated: 0.1
+2025-06-22 21:42:26,205 - INFO -   my_player position: MP
+2025-06-22 21:42:26,205 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:42:26,205 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-22 21:42:26,206 - INFO -   final_bet_to_call = 0.1 (type: <class 'float'>)
+2025-06-22 21:42:26,206 - INFO -   final_bet_to_call == 0 = False
+2025-06-22 21:42:26,206 - INFO -   final_bet_to_call == 0.0 = False
+2025-06-22 21:42:26,206 - INFO -   abs(final_bet_to_call) < 1e-10 = False
+2025-06-22 21:42:26,206 - INFO -   can_check = False
+2025-06-22 21:42:26,207 - INFO - DEBUG ENGINE: Calling make_preflop_decision with:
+2025-06-22 21:42:26,207 - INFO -   - position: MP
+2025-06-22 21:42:26,207 - INFO -   - bet_to_call: 0.1
+2025-06-22 21:42:26,207 - INFO -   - can_check: False
+2025-06-22 21:42:26,207 - INFO -   - is_bb: False
+2025-06-22 21:42:26,208 - INFO -   - hand: ['Q♠', 'A♣']
+2025-06-22 21:42:26,208 - INFO - make_preflop_decision called. Logging to: C:\GitRepositories\pokerplayer\debug_preflop_decision_logic.log
+2025-06-22 21:42:26,208 - INFO - [DEBUG] make_preflop_decision: opponent_tracker type=<class 'opponent_tracking.OpponentTracker'>, id=1702861286976
+2025-06-22 21:42:26,208 - INFO - Calling opponent_tracker.load_all_profiles() in make_preflop_decision
+2025-06-22 21:42:26,208 - INFO - Loading opponent analysis from opponent_analysis_data.json.
+2025-06-22 21:42:26,211 - INFO - Starting decision logic with hand_category='Offsuit Broadway', position=MP, bet_to_call=0.1, stack=5.75, pot_size=0.15, opps=0
+2025-06-22 21:42:26,212 - INFO - Offsuit Broadway in MP, opening/raising limpers. Action: RAISE, Amount: 0.3
+2025-06-22 21:42:26,212 - INFO - Calling opponent_tracker.save_all_profiles() in make_preflop_decision (persist_opponents)
+2025-06-22 21:42:26,213 - INFO - [DEBUG] save_all_profiles: 88 profiles to save: ['Player 8', 'Player 6', 'N/A', 'ThinMan238', 'TheBox', 'Player 1', 'xylismotriw', 'Al7788ex', 'yollky', '0IQmove', 'Roos71', 'ArizonaRain', 'radons87', 'JennyDoe1', 'riha292', 'WagerWise', 'Molusqueta', 'JuicyJuicer', 'akanasta', 'Svetka2020', 'Daniel1944', 'igorrr7771', 'Missclixker99', 'MyxoMop', 'foldynamartin', 'ozrug', 'Scarface664', 'depesak7', 'Clata', 'Vory333', 'Wulverate', 'illyahalas', 'germon83', 'DiegoP', 'Sullivan1', 'Itnight', 'emzyy1', 'SirBatish', 'PhongTranCZ', 'mdx1990', 'Devinekey', 'Praxis', 'Barbarian123', 'rakamakaf0', 'MINEGRA', 'Thanassis', 'masumoto', 'imperioA', 'Hawksbill', 'Startyi', 'AssaultDance', 'Lemur666', 'Kiresander', 'sanychsan55', 'Tr1psTr1pper', 'AndelPane789', 'mediumbronzes', 'GzRED', 'AquariUM1', 'poppie', 'BusBeda', 'PolishMole1', 'TzakOHara', 'AsWin1', 'Tornrubber', 'FunMachine83', 'souzamatt', 'CardShark1882', 'stoopedrat', 'Leva136', 'AveFortuna', 'Stewe', 'fishshort93', 'ElPezEspada', 'Tulert', 'SafaCZ9999', 'CindyCampbell', 'marsas14', 'Robson23', 'MichaelOwn', 'Elsapatazo', 'Fominoff', 'GrinderMind', 'RedBourbon', 'tiltukha', 'TT193', 'SST252318', 'viejojhon10']
+2025-06-22 21:42:26,213 - INFO - Saving opponent analysis to opponent_analysis_data.json. Data keys: ['Player 8', 'Player 6', 'N/A', 'ThinMan238', 'TheBox', 'Player 1', 'xylismotriw', 'Al7788ex', 'yollky', '0IQmove', 'Roos71', 'ArizonaRain', 'radons87', 'JennyDoe1', 'riha292', 'WagerWise', 'Molusqueta', 'JuicyJuicer', 'akanasta', 'Svetka2020', 'Daniel1944', 'igorrr7771', 'Missclixker99', 'MyxoMop', 'foldynamartin', 'ozrug', 'Scarface664', 'depesak7', 'Clata', 'Vory333', 'Wulverate', 'illyahalas', 'germon83', 'DiegoP', 'Sullivan1', 'Itnight', 'emzyy1', 'SirBatish', 'PhongTranCZ', 'mdx1990', 'Devinekey', 'Praxis', 'Barbarian123', 'rakamakaf0', 'MINEGRA', 'Thanassis', 'masumoto', 'imperioA', 'Hawksbill', 'Startyi', 'AssaultDance', 'Lemur666', 'Kiresander', 'sanychsan55', 'Tr1psTr1pper', 'AndelPane789', 'mediumbronzes', 'GzRED', 'AquariUM1', 'poppie', 'BusBeda', 'PolishMole1', 'TzakOHara', 'AsWin1', 'Tornrubber', 'FunMachine83', 'souzamatt', 'CardShark1882', 'stoopedrat', 'Leva136', 'AveFortuna', 'Stewe', 'fishshort93', 'ElPezEspada', 'Tulert', 'SafaCZ9999', 'CindyCampbell', 'marsas14', 'Robson23', 'MichaelOwn', 'Elsapatazo', 'Fominoff', 'GrinderMind', 'RedBourbon', 'tiltukha', 'TT193', 'SST252318', 'viejojhon10']
+2025-06-22 21:42:26,227 - INFO - DEBUG ENGINE: make_preflop_decision returned: action=raise, amount=0.3
+2025-06-22 21:42:55,595 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:42:55,596 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:42:55,599 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:42:55,599 - INFO - Found 0 potential action elements.
+2025-06-22 21:42:55,600 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:42:55,600 - INFO - Successfully identified active player: N/A
+2025-06-22 21:42:55,600 - INFO - Using dealer position: 2
+2025-06-22 21:42:55,601 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:42:55,602 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:42:55,602 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:42:55,602 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:42:55,603 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:42:55,603 - INFO - Player N/A in seat 5 assigned position: UTG
+2025-06-22 21:42:55,603 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:42:55,618 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:42:55,619 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:42:55,621 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:42:55,622 - INFO - Found 0 potential action elements.
+2025-06-22 21:42:55,624 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:42:55,625 - INFO - Successfully identified active player: N/A
+2025-06-22 21:42:55,625 - INFO - Using dealer position: 2
+2025-06-22 21:42:55,625 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:42:55,625 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:42:55,625 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:42:55,625 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:42:55,625 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:42:55,625 - INFO - Player N/A in seat 5 assigned position: UTG
+2025-06-22 21:42:55,626 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:42:55,629 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:42:55,630 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:42:55,633 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:42:55,633 - INFO - Found 0 potential action elements.
+2025-06-22 21:42:55,634 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:42:55,634 - INFO - Successfully identified active player: N/A
+2025-06-22 21:42:55,634 - INFO - Using dealer position: 2
+2025-06-22 21:42:55,634 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:42:55,634 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:42:55,634 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:42:55,635 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:42:55,635 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:42:55,635 - INFO - Player N/A in seat 5 assigned position: UTG
+2025-06-22 21:42:55,635 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:42:56,480 - INFO - Equity calculation complete for ['3♣', 'A♥'] vs random. Win: 49.52%, Tie: 9.46%, Equity: 54.25% (5000 simulations)
+2025-06-22 21:42:56,481 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.15
+2025-06-22 21:42:56,481 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:42:56,481 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:42:56,482 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:42:56,482 - INFO - [DEBUG] Player idx=3, name=N/A, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:42:56,482 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=None, last_action=None, current_bet=0.05
+2025-06-22 21:42:56,482 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=None, last_action=None, current_bet=0.1
+2025-06-22 21:42:58,881 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:42:58,883 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:42:58,885 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:42:58,886 - INFO - Found 0 potential action elements.
+2025-06-22 21:42:58,887 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:42:58,887 - INFO - Successfully identified active player: N/A
+2025-06-22 21:42:58,887 - INFO - Using dealer position: 2
+2025-06-22 21:42:58,887 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:42:58,887 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:42:58,888 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:42:58,888 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:42:58,888 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:42:58,888 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:42:58,888 - INFO - Player N/A in seat 6 assigned position: MP
+2025-06-22 21:42:58,898 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:42:58,900 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:42:58,902 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:42:58,903 - INFO - Found 0 potential action elements.
+2025-06-22 21:42:58,903 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:42:58,904 - INFO - Successfully identified active player: N/A
+2025-06-22 21:42:58,904 - INFO - Using dealer position: 2
+2025-06-22 21:42:58,904 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:42:58,904 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:42:58,904 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:42:58,905 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:42:58,905 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:42:58,905 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:42:58,905 - INFO - Player N/A in seat 6 assigned position: MP
+2025-06-22 21:42:58,907 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:42:58,909 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:42:58,912 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:42:58,912 - INFO - Found 0 potential action elements.
+2025-06-22 21:42:58,912 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:42:58,913 - INFO - Successfully identified active player: N/A
+2025-06-22 21:42:58,913 - INFO - Using dealer position: 2
+2025-06-22 21:42:58,913 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:42:58,913 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:42:58,913 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:42:58,913 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:42:58,913 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:42:58,913 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:42:58,913 - INFO - Player N/A in seat 6 assigned position: MP
+2025-06-22 21:43:00,079 - INFO - Equity calculation complete for ['3♣', 'A♥'] vs random. Win: 48.56%, Tie: 9.76%, Equity: 53.44% (5000 simulations)
+2025-06-22 21:43:00,079 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.15
+2025-06-22 21:43:00,080 - INFO - [DEBUG] Player idx=0, name=N/A, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:00,080 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:00,080 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:00,080 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=None, current_bet=0.0
+2025-06-22 21:43:00,080 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=None, current_bet=0.05
+2025-06-22 21:43:00,080 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=None, current_bet=0.1
+2025-06-22 21:43:02,479 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:43:02,481 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:02,484 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:02,484 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:02,485 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:02,485 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:02,485 - INFO - Using dealer position: 2
+2025-06-22 21:43:02,485 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:43:02,486 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:43:02,486 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:43:02,486 - INFO - Player N/A in seat 3 assigned position: SB
+2025-06-22 21:43:02,486 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:43:02,486 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:43:02,486 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:43:02,495 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:43:02,496 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:02,499 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:02,504 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:02,506 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:02,506 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:02,506 - INFO - Using dealer position: 2
+2025-06-22 21:43:02,507 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:43:02,508 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:43:02,508 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:43:02,509 - INFO - Player N/A in seat 3 assigned position: SB
+2025-06-22 21:43:02,509 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:43:02,510 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:43:02,510 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:43:02,512 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:43:02,513 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:02,516 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:02,517 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:02,517 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:02,517 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:02,518 - INFO - Using dealer position: 2
+2025-06-22 21:43:02,518 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:43:02,518 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:43:02,518 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:43:02,518 - INFO - Player N/A in seat 3 assigned position: SB
+2025-06-22 21:43:02,518 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:43:02,518 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:43:02,518 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:43:03,614 - INFO - Equity calculation complete for ['3♣', 'A♥'] vs random. Win: 47.94%, Tie: 9.58%, Equity: 52.73% (5000 simulations)
+2025-06-22 21:43:03,615 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.4
+2025-06-22 21:43:03,615 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=None, current_bet=0.25
+2025-06-22 21:43:03,615 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:03,616 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:03,616 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:03,616 - INFO - [DEBUG] Player idx=4, name=N/A, has_acted=True, last_action=bet, current_bet=0.05
+2025-06-22 21:43:03,616 - INFO - [DEBUG] Calling update_opponent_action for N/A: action=bet, street=preflop, position=SB, bet_size=0.05, pot_size=0.4
+2025-06-22 21:43:03,616 - INFO - [DEBUG] update_opponent_action: player=N/A, action=bet, street=preflop, position=SB, bet_size=0.05, pot_size=0.4
+2025-06-22 21:43:03,616 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=None, current_bet=0.1
+2025-06-22 21:43:06,017 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:43:06,018 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:06,020 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:06,020 - INFO - Found 3 potential action elements.
+2025-06-22 21:43:06,021 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:06,021 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:43:06,021 - INFO - Using dealer position: 2
+2025-06-22 21:43:06,021 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:43:06,021 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:43:06,021 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:43:06,021 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:43:06,021 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:43:06,022 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:43:06,022 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:43:06,049 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:43:06,051 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:06,054 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:06,054 - INFO - Found 3 potential action elements.
+2025-06-22 21:43:06,055 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:06,055 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:43:06,055 - INFO - Using dealer position: 2
+2025-06-22 21:43:06,055 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:43:06,056 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:43:06,056 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:43:06,056 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:43:06,057 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:43:06,057 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:43:06,058 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:43:06,063 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:43:06,065 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:06,067 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:06,068 - INFO - Found 3 potential action elements.
+2025-06-22 21:43:06,068 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:06,068 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:43:06,069 - INFO - Using dealer position: 2
+2025-06-22 21:43:06,069 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:43:06,069 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:43:06,069 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:43:06,070 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:43:06,070 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:43:06,071 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:43:06,071 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:43:07,167 - INFO - Equity calculation complete for ['3♣', 'A♥'] vs random. Win: 49.52%, Tie: 9.26%, Equity: 54.15% (5000 simulations)
+2025-06-22 21:43:07,169 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.4
+2025-06-22 21:43:07,169 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=None, current_bet=0.25
+2025-06-22 21:43:07,169 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:07,170 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:07,170 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:07,170 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=None, current_bet=0.05
+2025-06-22 21:43:07,171 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=None, current_bet=0.1
+2025-06-22 21:43:07,172 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.4
+2025-06-22 21:43:07,173 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=None, current_bet=0.25
+2025-06-22 21:43:07,173 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:07,173 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:07,174 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:07,174 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=None, current_bet=0.05
+2025-06-22 21:43:07,174 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=None, current_bet=0.1
+2025-06-22 21:43:07,175 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:43:07,176 - INFO -   my_player raw current_bet: 0.1
+2025-06-22 21:43:07,176 - INFO -   my_current_bet parsed: 0.1
+2025-06-22 21:43:07,176 - INFO -   my_player position: BB
+2025-06-22 21:43:07,177 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:43:07,177 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:43:07,178 - INFO -   my_player raw current_bet: 0.1
+2025-06-22 21:43:07,178 - INFO -   my_current_bet parsed: 0.1
+2025-06-22 21:43:07,178 - INFO -   max_bet_on_table: 0.25
+2025-06-22 21:43:07,178 - INFO -   bet_to_call_calculated: 0.15
+2025-06-22 21:43:07,179 - INFO -   my_player position: BB
+2025-06-22 21:43:07,179 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:43:07,179 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-22 21:43:07,179 - INFO -   final_bet_to_call = 0.15 (type: <class 'float'>)
+2025-06-22 21:43:07,179 - INFO -   final_bet_to_call == 0 = False
+2025-06-22 21:43:07,180 - INFO -   final_bet_to_call == 0.0 = False
+2025-06-22 21:43:07,180 - INFO -   abs(final_bet_to_call) < 1e-10 = False
+2025-06-22 21:43:07,180 - INFO -   can_check = False
+2025-06-22 21:43:07,180 - INFO - DEBUG ENGINE: Calling make_preflop_decision with:
+2025-06-22 21:43:07,180 - INFO -   - position: BB
+2025-06-22 21:43:07,180 - INFO -   - bet_to_call: 0.15
+2025-06-22 21:43:07,180 - INFO -   - can_check: False
+2025-06-22 21:43:07,181 - INFO -   - is_bb: True
+2025-06-22 21:43:07,181 - INFO -   - hand: ['3♣', 'A♥']
+2025-06-22 21:43:07,181 - INFO - make_preflop_decision called. Logging to: C:\GitRepositories\pokerplayer\debug_preflop_decision_logic.log
+2025-06-22 21:43:07,181 - INFO - [DEBUG] make_preflop_decision: opponent_tracker type=<class 'opponent_tracking.OpponentTracker'>, id=3170803330624
+2025-06-22 21:43:07,181 - INFO - Calling opponent_tracker.load_all_profiles() in make_preflop_decision
+2025-06-22 21:43:07,181 - INFO - Loading opponent analysis from opponent_analysis_data.json.
+2025-06-22 21:43:07,206 - INFO - Starting decision logic with hand_category='Trash', position=BB, bet_to_call=0.15, stack=5.8, pot_size=0.4, opps=0
+2025-06-22 21:43:07,320 - INFO - Equity calculation complete for ['3♣', 'A♥'] vs random. Win: 50.60%, Tie: 9.40%, Equity: 55.30% (500 simulations)
+2025-06-22 21:43:07,321 - INFO - Estimated preflop win probability: 50.60% for hand ['3♣', 'A♥'] vs 1 opponents
+2025-06-22 21:43:07,322 - WARNING - IMPROVED POT ODDS: Changed fold to call with win_prob=50.60%, required=27.27% (threshold=1.8)
+2025-06-22 21:43:07,322 - INFO - [IMPROVED POT ODDS SAFEGUARD] call, 0.15, Preflop fallback: win_prob=50.60% [IMPROVED POT ODDS: 50.6% vs 27.3% required (x1.8) - calling]
+2025-06-22 21:43:07,322 - INFO - Calling opponent_tracker.save_all_profiles() in make_preflop_decision (persist_opponents)
+2025-06-22 21:43:07,322 - INFO - [DEBUG] save_all_profiles: 88 profiles to save: ['N/A', 'Player 8', 'Player 6', 'ThinMan238', 'TheBox', 'Player 1', 'xylismotriw', 'Al7788ex', 'yollky', '0IQmove', 'Roos71', 'ArizonaRain', 'radons87', 'JennyDoe1', 'riha292', 'WagerWise', 'Molusqueta', 'JuicyJuicer', 'akanasta', 'Svetka2020', 'Daniel1944', 'igorrr7771', 'Missclixker99', 'MyxoMop', 'foldynamartin', 'ozrug', 'Scarface664', 'depesak7', 'Clata', 'Vory333', 'Wulverate', 'illyahalas', 'germon83', 'DiegoP', 'Sullivan1', 'Itnight', 'emzyy1', 'SirBatish', 'PhongTranCZ', 'mdx1990', 'Devinekey', 'Praxis', 'Barbarian123', 'rakamakaf0', 'MINEGRA', 'Thanassis', 'masumoto', 'imperioA', 'Hawksbill', 'Startyi', 'AssaultDance', 'Lemur666', 'Kiresander', 'sanychsan55', 'Tr1psTr1pper', 'AndelPane789', 'mediumbronzes', 'GzRED', 'AquariUM1', 'poppie', 'BusBeda', 'PolishMole1', 'TzakOHara', 'AsWin1', 'Tornrubber', 'FunMachine83', 'souzamatt', 'CardShark1882', 'stoopedrat', 'Leva136', 'AveFortuna', 'Stewe', 'fishshort93', 'ElPezEspada', 'Tulert', 'SafaCZ9999', 'CindyCampbell', 'marsas14', 'Robson23', 'MichaelOwn', 'Elsapatazo', 'Fominoff', 'GrinderMind', 'RedBourbon', 'tiltukha', 'TT193', 'SST252318', 'viejojhon10']
+2025-06-22 21:43:07,322 - INFO - Saving opponent analysis to opponent_analysis_data.json. Data keys: ['N/A', 'Player 8', 'Player 6', 'ThinMan238', 'TheBox', 'Player 1', 'xylismotriw', 'Al7788ex', 'yollky', '0IQmove', 'Roos71', 'ArizonaRain', 'radons87', 'JennyDoe1', 'riha292', 'WagerWise', 'Molusqueta', 'JuicyJuicer', 'akanasta', 'Svetka2020', 'Daniel1944', 'igorrr7771', 'Missclixker99', 'MyxoMop', 'foldynamartin', 'ozrug', 'Scarface664', 'depesak7', 'Clata', 'Vory333', 'Wulverate', 'illyahalas', 'germon83', 'DiegoP', 'Sullivan1', 'Itnight', 'emzyy1', 'SirBatish', 'PhongTranCZ', 'mdx1990', 'Devinekey', 'Praxis', 'Barbarian123', 'rakamakaf0', 'MINEGRA', 'Thanassis', 'masumoto', 'imperioA', 'Hawksbill', 'Startyi', 'AssaultDance', 'Lemur666', 'Kiresander', 'sanychsan55', 'Tr1psTr1pper', 'AndelPane789', 'mediumbronzes', 'GzRED', 'AquariUM1', 'poppie', 'BusBeda', 'PolishMole1', 'TzakOHara', 'AsWin1', 'Tornrubber', 'FunMachine83', 'souzamatt', 'CardShark1882', 'stoopedrat', 'Leva136', 'AveFortuna', 'Stewe', 'fishshort93', 'ElPezEspada', 'Tulert', 'SafaCZ9999', 'CindyCampbell', 'marsas14', 'Robson23', 'MichaelOwn', 'Elsapatazo', 'Fominoff', 'GrinderMind', 'RedBourbon', 'tiltukha', 'TT193', 'SST252318', 'viejojhon10']
+2025-06-22 21:43:07,335 - INFO - DEBUG ENGINE: make_preflop_decision returned: action=call, amount=0.15
+2025-06-22 21:43:15,217 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:43:15,220 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:15,228 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:15,229 - INFO - Found 3 potential action elements.
+2025-06-22 21:43:15,230 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:15,230 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:43:15,231 - INFO - Using dealer position: 2
+2025-06-22 21:43:15,231 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:43:15,232 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:43:15,232 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:43:15,233 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:43:15,233 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:43:15,233 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:43:15,234 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:43:15,252 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:43:15,256 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:15,262 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:15,263 - INFO - Found 3 potential action elements.
+2025-06-22 21:43:15,265 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:15,265 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:43:15,266 - INFO - Using dealer position: 2
+2025-06-22 21:43:15,266 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:43:15,266 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:43:15,266 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:43:15,267 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:43:15,267 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:43:15,267 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:43:15,268 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:43:15,271 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:43:15,272 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:15,279 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:15,280 - INFO - Found 3 potential action elements.
+2025-06-22 21:43:15,282 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:15,282 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:43:15,283 - INFO - Using dealer position: 2
+2025-06-22 21:43:15,283 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:43:15,283 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:43:15,283 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:43:15,283 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:43:15,283 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:43:15,283 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:43:15,284 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:43:16,445 - INFO - Equity calculation complete for ['3♣', 'A♥'] vs random. Win: 32.22%, Tie: 15.90%, Equity: 40.17% (5000 simulations)
+2025-06-22 21:43:16,446 - INFO - [DEBUG] update_opponents_from_game_state: round=flop, pot_size=0.55
+2025-06-22 21:43:16,447 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=None, current_bet=0.0
+2025-06-22 21:43:16,447 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:16,447 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:16,447 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:16,447 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=None, current_bet=0.0
+2025-06-22 21:43:16,447 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=None, current_bet=0.0
+2025-06-22 21:43:16,448 - INFO - [DEBUG] update_opponents_from_game_state: round=flop, pot_size=0.55
+2025-06-22 21:43:16,448 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:16,448 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:16,448 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:16,448 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:16,448 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:16,448 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:16,449 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:43:16,449 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 21:43:16,449 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 21:43:16,449 - INFO -   my_player position: BB
+2025-06-22 21:43:16,449 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:43:16,449 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:43:16,449 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 21:43:16,449 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 21:43:16,449 - INFO -   max_bet_on_table: 0.0
+2025-06-22 21:43:16,450 - INFO -   bet_to_call_calculated: 0.0
+2025-06-22 21:43:16,450 - INFO -   my_player position: BB
+2025-06-22 21:43:16,450 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:43:16,450 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-22 21:43:16,451 - INFO -   final_bet_to_call = 0.0 (type: <class 'float'>)
+2025-06-22 21:43:16,451 - INFO -   final_bet_to_call == 0 = True
+2025-06-22 21:43:16,451 - INFO -   final_bet_to_call == 0.0 = True
+2025-06-22 21:43:16,451 - INFO -   abs(final_bet_to_call) < 1e-10 = True
+2025-06-22 21:43:16,451 - INFO -   can_check = True
+2025-06-22 21:43:16,452 - INFO - [DEBUG] make_postflop_decision: opponent_tracker type=<class 'opponent_tracking.OpponentTracker'>, id=3170803330624
+2025-06-22 21:43:16,452 - INFO - Calling opponent_tracker.load_all_profiles() in make_postflop_decision
+2025-06-22 21:43:16,453 - INFO - Loading opponent analysis from opponent_analysis_data.json.
+2025-06-22 21:43:16,495 - DEBUG - make_postflop_decision: street=flop, my_player_data={'seat': '4', 'name': 'warriorwonder25', 'stack': '€5.65', 'bet': '0', 'is_my_player': True, 'is_empty': False, 'cards': ['3♣', 'A♥'], 'has_turn': True, 'has_hidden_cards': False, 'id': '4', 'current_bet': 0.0, 'available_actions': ['fold', 'check', 'bet'], 'is_all_in_call_available': False, 'bet_to_call': 0, 'seat_int': 4, 'position': 'BB', 'hand_evaluation': (1, 'High Card', []), 'hand_rank': 'High Card', 'win_probability': 0.3222, 'tie_probability': 0.159, 'hand': ['3♣', 'A♥'], 'last_action': 'check', 'has_acted': False}, pot_size=0.55, win_prob=0.3222, pot_odds=0.0, bet_to_call=0.0, max_bet_on_table=0.0, active_opponents_count=0, can_check=True, was_preflop_aggressor=False, action_history={}
+2025-06-22 21:43:16,495 - INFO - Hand history context: was_pfr=False, was_aggressor_previous_street=False
+2025-06-22 21:43:16,496 - INFO - Using aggression_multiplier=1.0 based on hand history
+2025-06-22 21:43:16,496 - DEBUG - Estimated opponent stack for implied odds: 9.41
+2025-06-22 21:43:16,496 - INFO - Enhanced hand classification: weak_made (rank=1, win_prob=32.2%, threshold=65.0%)
+2025-06-22 21:43:16,496 - INFO - Fixed opponent analysis: tracked=84, table_type=tight, avg_vpip=3.3%, fold_equity=68.9%
+2025-06-22 21:43:16,496 - DEBUG - SPR strategy: check_call_small_bets (SPR=10.3, high)
+2025-06-22 21:43:16,497 - DEBUG - Initial Pot commitment: committed=0.00, call=0.00, total=0.00, stack=5.65, ratio=0.0%, threshold=65.0%, is_committed=False
+2025-06-22 21:43:16,506 - INFO - Cash game enhancements applied for BB flop weak_made
+2025-06-22 21:43:16,507 - INFO - Cash game enhancements applied: confidence=0.85
+2025-06-22 21:43:16,508 - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-22 21:43:16,509 - DEBUG - Performance monitoring setup.
+2025-06-22 21:43:16,509 - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'advanced_opponent_analysis', 'performance_tracker', 'decision_context_for_perf']
+2025-06-22 21:43:16,513 - DEBUG - Refined classification (enhanced_postflop_improvements): drawing, commitment_threshold: 72.60%
+2025-06-22 21:43:16,514 - DEBUG - Refined Pot commitment check: ratio=0.00%, refined_threshold=72.60%, is_pot_committed=False
+2025-06-22 21:43:16,515 - WARNING - Opponent tracker has 88 profiles, but none with hands_seen >= 3 (active_opponents_count: 0).
+2025-06-22 21:43:16,515 - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-22 21:43:16,516 - INFO - Final opponent analysis (enhanced_postflop_improvements.fix_opponent_tracker_integration): tracked=0, table_type=unknown, avg_vpip=25.0, fold_equity=50.0%
+2025-06-22 21:43:16,516 - DEBUG - Final decision hand strength: weak_made (is_weak=True). Orig rank=1, win_prob=32.22%
+2025-06-22 21:43:16,516 - INFO - Post-adjustment hand strength flags: very_strong=False, strong=False, medium=False (Final Category: weak_made)
+2025-06-22 21:43:16,516 - DEBUG - SPR analysis context: spr=10.27, initial_spr_strategy={'spr': 10.272727272727273, 'spr_category': 'high', 'base_strategy': 'check_call_small_bets', 'betting_action': 'check', 'sizing_adjustment': 1.0, 'reasoning': 'High SPR (high) - pot control focus with weak_made'}, drawing_potential=True, final_hand_strength_for_decision=weak_made
+2025-06-22 21:43:16,517 - WARNING - Board analysis failed: max() iterable argument is empty
+2025-06-22 21:43:16,517 - DEBUG - Option to genuinely check is available (can_check=True, bet_to_call=0). Evaluating check vs. bet/raise.
+2025-06-22 21:43:16,517 - INFO - Decision: check (Weak made hand, checking, low fold equity for bluff)
+2025-06-22 21:43:24,376 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:43:24,378 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:24,381 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:24,382 - INFO - Found 3 potential action elements.
+2025-06-22 21:43:24,383 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:24,383 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:43:24,384 - INFO - Using dealer position: 2
+2025-06-22 21:43:24,384 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:43:24,385 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:43:24,386 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:43:24,386 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:43:24,386 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:43:24,386 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:43:24,386 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:43:24,403 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:43:24,405 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:24,410 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:24,411 - INFO - Found 3 potential action elements.
+2025-06-22 21:43:24,412 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:24,413 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:43:24,413 - INFO - Using dealer position: 2
+2025-06-22 21:43:24,413 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:43:24,413 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:43:24,413 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:43:24,414 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:43:24,414 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:43:24,414 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:43:24,414 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:43:24,417 - INFO - Found visible dealer button at seat 2
+2025-06-22 21:43:24,418 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:24,421 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:24,421 - INFO - Found 3 potential action elements.
+2025-06-22 21:43:24,422 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:24,423 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:43:24,424 - INFO - Using dealer position: 2
+2025-06-22 21:43:24,424 - INFO - Position calculation: 6 active players, dealer at seat 2
+2025-06-22 21:43:24,426 - INFO - Player Jivanmukta in seat 1 assigned position: CO
+2025-06-22 21:43:24,426 - INFO - Player TheBox in seat 2 assigned position: BTN
+2025-06-22 21:43:24,426 - INFO - Player viejojhon10 in seat 3 assigned position: SB
+2025-06-22 21:43:24,426 - INFO - Player warriorwonder25 in seat 4 assigned position: BB
+2025-06-22 21:43:24,426 - INFO - Player EmVeee in seat 5 assigned position: UTG
+2025-06-22 21:43:24,427 - INFO - Player ThinMan238 in seat 6 assigned position: MP
+2025-06-22 21:43:25,564 - INFO - Equity calculation complete for ['3♣', 'A♥'] vs random. Win: 83.84%, Tie: 2.90%, Equity: 85.29% (5000 simulations)
+2025-06-22 21:43:25,565 - INFO - [DEBUG] update_opponents_from_game_state: round=turn, pot_size=0.55
+2025-06-22 21:43:25,565 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:25,566 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:25,566 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:25,566 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:25,566 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:25,566 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:25,567 - INFO - [DEBUG] update_opponents_from_game_state: round=turn, pot_size=0.55
+2025-06-22 21:43:25,567 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:25,567 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:25,567 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:25,567 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:25,567 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:25,567 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:25,568 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:43:25,568 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 21:43:25,568 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 21:43:25,568 - INFO -   my_player position: BB
+2025-06-22 21:43:25,568 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:43:25,568 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:43:25,568 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 21:43:25,568 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 21:43:25,568 - INFO -   max_bet_on_table: 0.0
+2025-06-22 21:43:25,576 - INFO -   bet_to_call_calculated: 0.0
+2025-06-22 21:43:25,576 - INFO -   my_player position: BB
+2025-06-22 21:43:25,577 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:43:25,577 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-22 21:43:25,577 - INFO -   final_bet_to_call = 0.0 (type: <class 'float'>)
+2025-06-22 21:43:25,578 - INFO -   final_bet_to_call == 0 = True
+2025-06-22 21:43:25,578 - INFO -   final_bet_to_call == 0.0 = True
+2025-06-22 21:43:25,578 - INFO -   abs(final_bet_to_call) < 1e-10 = True
+2025-06-22 21:43:25,578 - INFO -   can_check = True
+2025-06-22 21:43:25,578 - INFO - [DEBUG] make_postflop_decision: opponent_tracker type=<class 'opponent_tracking.OpponentTracker'>, id=3170803330624
+2025-06-22 21:43:25,579 - INFO - Calling opponent_tracker.load_all_profiles() in make_postflop_decision
+2025-06-22 21:43:25,579 - INFO - Loading opponent analysis from opponent_analysis_data.json.
+2025-06-22 21:43:25,582 - DEBUG - make_postflop_decision: street=turn, my_player_data={'seat': '4', 'name': 'warriorwonder25', 'stack': '€5.65', 'bet': '0', 'is_my_player': True, 'is_empty': False, 'cards': ['3♣', 'A♥'], 'has_turn': True, 'has_hidden_cards': False, 'id': '4', 'current_bet': 0.0, 'available_actions': ['fold', 'check', 'bet'], 'is_all_in_call_available': False, 'bet_to_call': 0, 'seat_int': 4, 'position': 'BB', 'hand_evaluation': (2, 'One Pair, As', [14, 12, 9, 5]), 'hand_rank': 'One Pair, As', 'win_probability': 0.8384, 'tie_probability': 0.029, 'hand': ['3♣', 'A♥'], 'last_action': 'check', 'has_acted': False}, pot_size=0.55, win_prob=0.8384, pot_odds=0.0, bet_to_call=0.0, max_bet_on_table=0.0, active_opponents_count=0, can_check=True, was_preflop_aggressor=False, action_history={}
+2025-06-22 21:43:25,582 - INFO - Hand history context: was_pfr=False, was_aggressor_previous_street=False
+2025-06-22 21:43:25,582 - INFO - Using aggression_multiplier=1.0 based on hand history
+2025-06-22 21:43:25,582 - DEBUG - Estimated opponent stack for implied odds: 9.41
+2025-06-22 21:43:25,583 - INFO - Enhanced hand classification: medium (rank=2, win_prob=83.8%, threshold=38.2%)
+2025-06-22 21:43:25,583 - INFO - Fixed opponent analysis: tracked=84, table_type=tight, avg_vpip=3.3%, fold_equity=68.9%
+2025-06-22 21:43:25,584 - DEBUG - SPR strategy: thin_value_or_check_call (SPR=10.3, high)
+2025-06-22 21:43:25,584 - DEBUG - Initial Pot commitment: committed=0.00, call=0.00, total=0.00, stack=5.65, ratio=0.0%, threshold=38.2%, is_committed=False
+2025-06-22 21:43:25,584 - INFO - Cash game enhancements applied for BB turn very_strong
+2025-06-22 21:43:25,584 - INFO - Cash game enhancements applied: confidence=0.85
+2025-06-22 21:43:25,585 - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-22 21:43:25,585 - DEBUG - Performance monitoring setup.
+2025-06-22 21:43:25,585 - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'advanced_opponent_analysis', 'performance_tracker', 'decision_context_for_perf']
+2025-06-22 21:43:25,585 - DEBUG - Refined classification (enhanced_postflop_improvements): strong, commitment_threshold: 36.00%
+2025-06-22 21:43:25,585 - DEBUG - Refined Pot commitment check: ratio=0.00%, refined_threshold=36.00%, is_pot_committed=False
+2025-06-22 21:43:25,586 - WARNING - Opponent tracker has 88 profiles, but none with hands_seen >= 3 (active_opponents_count: 0).
+2025-06-22 21:43:25,586 - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-22 21:43:25,586 - INFO - Final opponent analysis (enhanced_postflop_improvements.fix_opponent_tracker_integration): tracked=0, table_type=unknown, avg_vpip=25.0, fold_equity=50.0%
+2025-06-22 21:43:25,586 - DEBUG - Final decision hand strength: strong (is_weak=False). Orig rank=2, win_prob=83.84%
+2025-06-22 21:43:25,586 - INFO - Post-adjustment hand strength flags: very_strong=False, strong=True, medium=False (Final Category: strong)
+2025-06-22 21:43:25,586 - DEBUG - SPR analysis context: spr=10.27, initial_spr_strategy={'spr': 10.272727272727273, 'spr_category': 'high', 'base_strategy': 'thin_value_or_check_call', 'betting_action': 'check', 'sizing_adjustment': 1.0, 'reasoning': 'High SPR (high) - pot control focus with medium'}, drawing_potential=False, final_hand_strength_for_decision=strong
+2025-06-22 21:43:25,586 - WARNING - Board analysis failed: max() iterable argument is empty
+2025-06-22 21:43:25,586 - DEBUG - Option to genuinely check is available (can_check=True, bet_to_call=0). Evaluating check vs. bet/raise.
+2025-06-22 21:43:25,586 - INFO - Decision: raise 0.33 (Strong hand, value bet)
+2025-06-22 21:43:36,106 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:36,108 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:36,112 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:36,113 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:36,113 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:36,114 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:36,114 - INFO - Using dealer position: 3
+2025-06-22 21:43:36,114 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:36,114 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:36,115 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:43:36,115 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:43:36,115 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:36,115 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:36,116 - INFO - Player N/A in seat 6 assigned position: UTG
+2025-06-22 21:43:36,129 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:36,131 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:36,134 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:36,134 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:36,135 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:36,135 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:36,135 - INFO - Using dealer position: 3
+2025-06-22 21:43:36,135 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:36,135 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:36,135 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:43:36,136 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:43:36,136 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:36,137 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:36,137 - INFO - Player N/A in seat 6 assigned position: UTG
+2025-06-22 21:43:36,139 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:36,140 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:36,147 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:36,148 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:36,149 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:36,149 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:36,149 - INFO - Using dealer position: 3
+2025-06-22 21:43:36,149 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:36,150 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:36,150 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:43:36,150 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:43:36,151 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:36,151 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:36,151 - INFO - Player N/A in seat 6 assigned position: UTG
+2025-06-22 21:43:37,311 - INFO - Equity calculation complete for ['6♥', 'K♥'] vs random. Win: 50.40%, Tie: 8.90%, Equity: 54.85% (5000 simulations)
+2025-06-22 21:43:37,313 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.15
+2025-06-22 21:43:37,314 - INFO - [DEBUG] Player idx=0, name=N/A, has_acted=False, last_action=None, current_bet=0.0
+2025-06-22 21:43:37,314 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:37,315 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:37,315 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:37,315 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:37,316 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=True, last_action=bet, current_bet=0.05
+2025-06-22 21:43:39,724 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:39,727 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:39,731 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:39,731 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:39,733 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:39,734 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:39,735 - INFO - Using dealer position: 3
+2025-06-22 21:43:39,736 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:39,736 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:39,737 - INFO - Player N/A in seat 2 assigned position: CO
+2025-06-22 21:43:39,738 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:43:39,739 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:39,740 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:39,741 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:43:39,764 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:39,766 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:39,769 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:39,770 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:39,772 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:39,772 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:39,772 - INFO - Using dealer position: 3
+2025-06-22 21:43:39,772 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:39,773 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:39,773 - INFO - Player N/A in seat 2 assigned position: CO
+2025-06-22 21:43:39,773 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:43:39,773 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:39,773 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:39,773 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:43:39,780 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:39,783 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:39,786 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:39,787 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:39,789 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:39,789 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:39,789 - INFO - Using dealer position: 3
+2025-06-22 21:43:39,790 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:39,790 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:39,790 - INFO - Player N/A in seat 2 assigned position: CO
+2025-06-22 21:43:39,790 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:43:39,790 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:39,790 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:39,791 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:43:40,913 - INFO - Equity calculation complete for ['6♥', 'K♥'] vs random. Win: 49.64%, Tie: 9.36%, Equity: 54.32% (5000 simulations)
+2025-06-22 21:43:40,913 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.38
+2025-06-22 21:43:40,914 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=None, current_bet=0.23
+2025-06-22 21:43:40,915 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:40,915 - INFO - [DEBUG] Player idx=2, name=N/A, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:40,915 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=True, last_action=bet, current_bet=0.1
+2025-06-22 21:43:40,915 - INFO - [DEBUG] Calling update_opponent_action for EmVeee: action=bet, street=preflop, position=BB, bet_size=0.1, pot_size=0.38
+2025-06-22 21:43:40,916 - INFO - [DEBUG] update_opponent_action: player=EmVeee, action=bet, street=preflop, position=BB, bet_size=0.1, pot_size=0.38
+2025-06-22 21:43:40,917 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:40,919 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=None, current_bet=0.05
+2025-06-22 21:43:43,319 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:43,320 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:43,327 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:43,328 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:43,329 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:43,330 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:43,330 - INFO - Using dealer position: 3
+2025-06-22 21:43:43,331 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:43,331 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:43,331 - INFO - Player N/A in seat 2 assigned position: CO
+2025-06-22 21:43:43,332 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:43:43,332 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:43,333 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:43,333 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:43:43,347 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:43,350 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:43,354 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:43,355 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:43,356 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:43,356 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:43,357 - INFO - Using dealer position: 3
+2025-06-22 21:43:43,357 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:43,358 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:43,358 - INFO - Player N/A in seat 2 assigned position: CO
+2025-06-22 21:43:43,359 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:43:43,359 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:43,360 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:43,360 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:43:43,365 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:43,366 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:43,371 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:43,372 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:43,375 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:43,375 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:43,376 - INFO - Using dealer position: 3
+2025-06-22 21:43:43,377 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:43,377 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:43,378 - INFO - Player N/A in seat 2 assigned position: CO
+2025-06-22 21:43:43,379 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:43:43,379 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:43,380 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:43,380 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:43:44,422 - INFO - Equity calculation complete for ['6♥', 'K♥'] vs random. Win: 50.42%, Tie: 9.20%, Equity: 55.02% (5000 simulations)
+2025-06-22 21:43:44,423 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.38
+2025-06-22 21:43:44,423 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=None, current_bet=0.23
+2025-06-22 21:43:44,423 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:44,423 - INFO - [DEBUG] Player idx=2, name=N/A, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:44,424 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=None, current_bet=0.1
+2025-06-22 21:43:44,424 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:44,424 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=None, current_bet=0.05
+2025-06-22 21:43:46,819 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:46,821 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:46,828 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:46,838 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:46,840 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:46,841 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:46,841 - INFO - Using dealer position: 3
+2025-06-22 21:43:46,843 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:46,844 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:46,845 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:43:46,846 - INFO - Player N/A in seat 3 assigned position: BTN
+2025-06-22 21:43:46,846 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:46,846 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:46,847 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:43:46,858 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:46,860 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:46,864 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:46,865 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:46,866 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:46,866 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:46,866 - INFO - Using dealer position: 3
+2025-06-22 21:43:46,866 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:46,867 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:46,867 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:43:46,867 - INFO - Player N/A in seat 3 assigned position: BTN
+2025-06-22 21:43:46,867 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:46,867 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:46,867 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:43:46,869 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:46,870 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:46,873 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:46,873 - INFO - Found 0 potential action elements.
+2025-06-22 21:43:46,874 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:46,875 - INFO - Successfully identified active player: N/A
+2025-06-22 21:43:46,875 - INFO - Using dealer position: 3
+2025-06-22 21:43:46,875 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:46,875 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:46,876 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:43:46,876 - INFO - Player N/A in seat 3 assigned position: BTN
+2025-06-22 21:43:46,876 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:46,876 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:46,876 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:43:48,183 - INFO - Equity calculation complete for ['6♥', 'K♥'] vs random. Win: 49.06%, Tie: 9.78%, Equity: 53.95% (5000 simulations)
+2025-06-22 21:43:48,184 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.38
+2025-06-22 21:43:48,185 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=None, current_bet=0.23
+2025-06-22 21:43:48,185 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:48,185 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=None, current_bet=0.0
+2025-06-22 21:43:48,186 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=None, current_bet=0.1
+2025-06-22 21:43:48,186 - INFO - [DEBUG] Player idx=4, name=N/A, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:48,186 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=None, current_bet=0.05
+2025-06-22 21:43:50,586 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:50,588 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:50,595 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:50,596 - INFO - Found 3 potential action elements.
+2025-06-22 21:43:50,599 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:50,599 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:43:50,599 - INFO - Using dealer position: 3
+2025-06-22 21:43:50,600 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:50,600 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:50,600 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:43:50,600 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:43:50,600 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:50,600 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:50,600 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:43:50,613 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:50,615 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:50,618 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:50,618 - INFO - Found 3 potential action elements.
+2025-06-22 21:43:50,619 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:50,619 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:43:50,620 - INFO - Using dealer position: 3
+2025-06-22 21:43:50,620 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:50,620 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:50,620 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:43:50,620 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:43:50,620 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:50,620 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:50,620 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:43:50,622 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:43:50,623 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:43:50,628 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:43:50,629 - INFO - Found 3 potential action elements.
+2025-06-22 21:43:50,630 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:43:50,630 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:43:50,630 - INFO - Using dealer position: 3
+2025-06-22 21:43:50,630 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:43:50,630 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:43:50,630 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:43:50,631 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:43:50,631 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:43:50,631 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:43:50,631 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:43:51,722 - INFO - Equity calculation complete for ['6♥', 'K♥'] vs random. Win: 50.48%, Tie: 9.72%, Equity: 55.34% (5000 simulations)
+2025-06-22 21:43:51,722 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.38
+2025-06-22 21:43:51,722 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=None, current_bet=0.23
+2025-06-22 21:43:51,723 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:51,723 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:51,723 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=None, current_bet=0.1
+2025-06-22 21:43:51,724 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=None, current_bet=0.0
+2025-06-22 21:43:51,724 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=None, current_bet=0.05
+2025-06-22 21:43:51,726 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.38
+2025-06-22 21:43:51,727 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=None, current_bet=0.23
+2025-06-22 21:43:51,727 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:51,727 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:51,728 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=None, current_bet=0.1
+2025-06-22 21:43:51,728 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:43:51,729 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=None, current_bet=0.05
+2025-06-22 21:43:51,729 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:43:51,729 - INFO -   my_player raw current_bet: 0.05
+2025-06-22 21:43:51,730 - INFO -   my_current_bet parsed: 0.05
+2025-06-22 21:43:51,730 - INFO -   my_player position: SB
+2025-06-22 21:43:51,731 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:43:51,731 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:43:51,731 - INFO -   my_player raw current_bet: 0.05
+2025-06-22 21:43:51,731 - INFO -   my_current_bet parsed: 0.05
+2025-06-22 21:43:51,732 - INFO -   max_bet_on_table: 0.23
+2025-06-22 21:43:51,732 - INFO -   bet_to_call_calculated: 0.18
+2025-06-22 21:43:51,732 - INFO -   my_player position: SB
+2025-06-22 21:43:51,732 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:43:51,732 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-22 21:43:51,733 - INFO -   final_bet_to_call = 0.18 (type: <class 'float'>)
+2025-06-22 21:43:51,733 - INFO -   final_bet_to_call == 0 = False
+2025-06-22 21:43:51,733 - INFO -   final_bet_to_call == 0.0 = False
+2025-06-22 21:43:51,734 - INFO -   abs(final_bet_to_call) < 1e-10 = False
+2025-06-22 21:43:51,734 - INFO -   can_check = False
+2025-06-22 21:43:51,734 - INFO - DEBUG ENGINE: Calling make_preflop_decision with:
+2025-06-22 21:43:51,734 - INFO -   - position: SB
+2025-06-22 21:43:51,734 - INFO -   - bet_to_call: 0.18
+2025-06-22 21:43:51,734 - INFO -   - can_check: False
+2025-06-22 21:43:51,734 - INFO -   - is_bb: False
+2025-06-22 21:43:51,735 - INFO -   - hand: ['6♥', 'K♥']
+2025-06-22 21:43:51,735 - INFO - make_preflop_decision called. Logging to: C:\GitRepositories\pokerplayer\debug_preflop_decision_logic.log
+2025-06-22 21:43:51,736 - INFO - [DEBUG] make_preflop_decision: opponent_tracker type=<class 'opponent_tracking.OpponentTracker'>, id=3170803330624
+2025-06-22 21:43:51,736 - INFO - Calling opponent_tracker.load_all_profiles() in make_preflop_decision
+2025-06-22 21:43:51,736 - INFO - Loading opponent analysis from opponent_analysis_data.json.
+2025-06-22 21:43:51,738 - INFO - Starting decision logic with hand_category='Suited Playable', position=SB, bet_to_call=0.18, stack=6.12, pot_size=0.38, opps=0
+2025-06-22 21:43:51,739 - INFO - Suited Playable in SB, playing wider in position. Action: RAISE, Amount: 0.69
+2025-06-22 21:43:51,739 - INFO - Calling opponent_tracker.save_all_profiles() in make_preflop_decision (persist_opponents)
+2025-06-22 21:43:51,739 - INFO - [DEBUG] save_all_profiles: 89 profiles to save: ['N/A', 'Player 8', 'Player 6', 'ThinMan238', 'TheBox', 'Player 1', 'xylismotriw', 'Al7788ex', 'yollky', '0IQmove', 'Roos71', 'ArizonaRain', 'radons87', 'JennyDoe1', 'riha292', 'WagerWise', 'Molusqueta', 'JuicyJuicer', 'akanasta', 'Svetka2020', 'Daniel1944', 'igorrr7771', 'Missclixker99', 'MyxoMop', 'foldynamartin', 'ozrug', 'Scarface664', 'depesak7', 'Clata', 'Vory333', 'Wulverate', 'illyahalas', 'germon83', 'DiegoP', 'Sullivan1', 'Itnight', 'emzyy1', 'SirBatish', 'PhongTranCZ', 'mdx1990', 'Devinekey', 'Praxis', 'Barbarian123', 'rakamakaf0', 'MINEGRA', 'Thanassis', 'masumoto', 'imperioA', 'Hawksbill', 'Startyi', 'AssaultDance', 'Lemur666', 'Kiresander', 'sanychsan55', 'Tr1psTr1pper', 'AndelPane789', 'mediumbronzes', 'GzRED', 'AquariUM1', 'poppie', 'BusBeda', 'PolishMole1', 'TzakOHara', 'AsWin1', 'Tornrubber', 'FunMachine83', 'souzamatt', 'CardShark1882', 'stoopedrat', 'Leva136', 'AveFortuna', 'Stewe', 'fishshort93', 'ElPezEspada', 'Tulert', 'SafaCZ9999', 'CindyCampbell', 'marsas14', 'Robson23', 'MichaelOwn', 'Elsapatazo', 'Fominoff', 'GrinderMind', 'RedBourbon', 'tiltukha', 'TT193', 'SST252318', 'viejojhon10', 'EmVeee']
+2025-06-22 21:43:51,739 - INFO - Saving opponent analysis to opponent_analysis_data.json. Data keys: ['N/A', 'Player 8', 'Player 6', 'ThinMan238', 'TheBox', 'Player 1', 'xylismotriw', 'Al7788ex', 'yollky', '0IQmove', 'Roos71', 'ArizonaRain', 'radons87', 'JennyDoe1', 'riha292', 'WagerWise', 'Molusqueta', 'JuicyJuicer', 'akanasta', 'Svetka2020', 'Daniel1944', 'igorrr7771', 'Missclixker99', 'MyxoMop', 'foldynamartin', 'ozrug', 'Scarface664', 'depesak7', 'Clata', 'Vory333', 'Wulverate', 'illyahalas', 'germon83', 'DiegoP', 'Sullivan1', 'Itnight', 'emzyy1', 'SirBatish', 'PhongTranCZ', 'mdx1990', 'Devinekey', 'Praxis', 'Barbarian123', 'rakamakaf0', 'MINEGRA', 'Thanassis', 'masumoto', 'imperioA', 'Hawksbill', 'Startyi', 'AssaultDance', 'Lemur666', 'Kiresander', 'sanychsan55', 'Tr1psTr1pper', 'AndelPane789', 'mediumbronzes', 'GzRED', 'AquariUM1', 'poppie', 'BusBeda', 'PolishMole1', 'TzakOHara', 'AsWin1', 'Tornrubber', 'FunMachine83', 'souzamatt', 'CardShark1882', 'stoopedrat', 'Leva136', 'AveFortuna', 'Stewe', 'fishshort93', 'ElPezEspada', 'Tulert', 'SafaCZ9999', 'CindyCampbell', 'marsas14', 'Robson23', 'MichaelOwn', 'Elsapatazo', 'Fominoff', 'GrinderMind', 'RedBourbon', 'tiltukha', 'TT193', 'SST252318', 'viejojhon10', 'EmVeee']
+2025-06-22 21:43:51,752 - INFO - DEBUG ENGINE: make_preflop_decision returned: action=raise, amount=0.69
+2025-06-22 21:44:02,270 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:44:02,271 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:44:02,279 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:44:02,280 - INFO - Found 3 potential action elements.
+2025-06-22 21:44:02,281 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:44:02,282 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:44:02,282 - INFO - Using dealer position: 3
+2025-06-22 21:44:02,282 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:44:02,283 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:44:02,283 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:44:02,284 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:44:02,284 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:44:02,284 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:44:02,285 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:44:02,302 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:44:02,306 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:44:02,311 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:44:02,312 - INFO - Found 3 potential action elements.
+2025-06-22 21:44:02,313 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:44:02,314 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:44:02,314 - INFO - Using dealer position: 3
+2025-06-22 21:44:02,314 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:44:02,314 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:44:02,314 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:44:02,314 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:44:02,315 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:44:02,315 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:44:02,315 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:44:02,319 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:44:02,322 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:44:02,329 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:44:02,329 - INFO - Found 3 potential action elements.
+2025-06-22 21:44:02,331 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:44:02,331 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:44:02,331 - INFO - Using dealer position: 3
+2025-06-22 21:44:02,332 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:44:02,332 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:44:02,332 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:44:02,333 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:44:02,333 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:44:02,333 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:44:02,333 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:44:03,450 - INFO - Equity calculation complete for ['6♥', 'K♥'] vs random. Win: 65.10%, Tie: 4.96%, Equity: 67.58% (5000 simulations)
+2025-06-22 21:44:03,450 - INFO - [DEBUG] update_opponents_from_game_state: round=flop, pot_size=1.48
+2025-06-22 21:44:03,451 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=None, current_bet=0.0
+2025-06-22 21:44:03,451 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:03,451 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:03,452 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=None, current_bet=0.0
+2025-06-22 21:44:03,453 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:03,453 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=None, current_bet=0.0
+2025-06-22 21:44:03,454 - INFO - [DEBUG] update_opponents_from_game_state: round=flop, pot_size=1.48
+2025-06-22 21:44:03,454 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:03,454 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:03,455 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:03,455 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:03,455 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:03,455 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:03,455 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:44:03,455 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 21:44:03,455 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 21:44:03,455 - INFO -   my_player position: SB
+2025-06-22 21:44:03,455 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:44:03,455 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:44:03,456 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 21:44:03,456 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 21:44:03,456 - INFO -   max_bet_on_table: 0.0
+2025-06-22 21:44:03,456 - INFO -   bet_to_call_calculated: 0.0
+2025-06-22 21:44:03,456 - INFO -   my_player position: SB
+2025-06-22 21:44:03,456 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:44:03,456 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-22 21:44:03,456 - INFO -   final_bet_to_call = 0.0 (type: <class 'float'>)
+2025-06-22 21:44:03,458 - INFO -   final_bet_to_call == 0 = True
+2025-06-22 21:44:03,458 - INFO -   final_bet_to_call == 0.0 = True
+2025-06-22 21:44:03,458 - INFO -   abs(final_bet_to_call) < 1e-10 = True
+2025-06-22 21:44:03,459 - INFO -   can_check = True
+2025-06-22 21:44:03,459 - INFO - [DEBUG] make_postflop_decision: opponent_tracker type=<class 'opponent_tracking.OpponentTracker'>, id=3170803330624
+2025-06-22 21:44:03,459 - INFO - Calling opponent_tracker.load_all_profiles() in make_postflop_decision
+2025-06-22 21:44:03,460 - INFO - Loading opponent analysis from opponent_analysis_data.json.
+2025-06-22 21:44:03,495 - DEBUG - make_postflop_decision: street=flop, my_player_data={'seat': '4', 'name': 'warriorwonder25', 'stack': '€5.48', 'bet': '0', 'is_my_player': True, 'is_empty': False, 'cards': ['6♥', 'K♥'], 'has_turn': True, 'has_hidden_cards': False, 'id': '4', 'current_bet': 0.0, 'available_actions': ['fold', 'check', 'bet'], 'is_all_in_call_available': False, 'bet_to_call': 0, 'seat_int': 4, 'position': 'SB', 'hand_evaluation': (2, 'One Pair, Ks', [13, 10, 6, 2]), 'hand_rank': 'One Pair, Ks', 'win_probability': 0.651, 'tie_probability': 0.0496, 'hand': ['6♥', 'K♥'], 'last_action': 'check', 'has_acted': False}, pot_size=1.48, win_prob=0.651, pot_odds=0.0, bet_to_call=0.0, max_bet_on_table=0.0, active_opponents_count=0, can_check=True, was_preflop_aggressor=False, action_history={}
+2025-06-22 21:44:03,496 - INFO - Hand history context: was_pfr=False, was_aggressor_previous_street=False
+2025-06-22 21:44:03,496 - INFO - Using aggression_multiplier=1.0 based on hand history
+2025-06-22 21:44:03,496 - DEBUG - Estimated opponent stack for implied odds: 9.41
+2025-06-22 21:44:03,496 - INFO - Enhanced hand classification: medium (rank=2, win_prob=65.1%, threshold=45.0%)
+2025-06-22 21:44:03,497 - INFO - Fixed opponent analysis: tracked=85, table_type=tight, avg_vpip=3.3%, fold_equity=68.9%
+2025-06-22 21:44:03,498 - DEBUG - SPR strategy: thin_value_bet (SPR=3.7, medium)
+2025-06-22 21:44:03,498 - DEBUG - Initial Pot commitment: committed=0.00, call=0.00, total=0.00, stack=5.48, ratio=0.0%, threshold=45.0%, is_committed=False
+2025-06-22 21:44:03,498 - INFO - Cash game enhancements applied for SB flop strong
+2025-06-22 21:44:03,498 - INFO - Cash game enhancements applied: confidence=0.85
+2025-06-22 21:44:03,498 - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-22 21:44:03,499 - DEBUG - Performance monitoring setup.
+2025-06-22 21:44:03,499 - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'advanced_opponent_analysis', 'performance_tracker', 'decision_context_for_perf']
+2025-06-22 21:44:03,499 - DEBUG - Refined classification (enhanced_postflop_improvements): medium, commitment_threshold: 49.50%
+2025-06-22 21:44:03,499 - DEBUG - Refined Pot commitment check: ratio=0.00%, refined_threshold=49.50%, is_pot_committed=False
+2025-06-22 21:44:03,499 - WARNING - Opponent tracker has 89 profiles, but none with hands_seen >= 3 (active_opponents_count: 0).
+2025-06-22 21:44:03,500 - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-22 21:44:03,500 - INFO - Final opponent analysis (enhanced_postflop_improvements.fix_opponent_tracker_integration): tracked=0, table_type=unknown, avg_vpip=25.0, fold_equity=50.0%
+2025-06-22 21:44:03,500 - DEBUG - Final decision hand strength: strong (is_weak=False). Orig rank=2, win_prob=65.10%
+2025-06-22 21:44:03,500 - INFO - Post-adjustment hand strength flags: very_strong=False, strong=True, medium=False (Final Category: strong)
+2025-06-22 21:44:03,501 - DEBUG - SPR analysis context: spr=3.70, initial_spr_strategy={'spr': 3.702702702702703, 'spr_category': 'medium', 'base_strategy': 'thin_value_bet', 'betting_action': 'check', 'sizing_adjustment': 1.15, 'reasoning': 'Medium SPR (medium) - standard play with medium'}, drawing_potential=False, final_hand_strength_for_decision=strong
+2025-06-22 21:44:03,501 - WARNING - Board analysis failed: max() iterable argument is empty
+2025-06-22 21:44:03,501 - DEBUG - Option to genuinely check is available (can_check=True, bet_to_call=0). Evaluating check vs. bet/raise.
+2025-06-22 21:44:03,501 - INFO - Decision: raise 0.83 (Strong hand, value bet)
+2025-06-22 21:44:14,035 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:44:14,037 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:44:14,039 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:44:14,040 - INFO - Found 3 potential action elements.
+2025-06-22 21:44:14,040 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:44:14,041 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:44:14,042 - INFO - Using dealer position: 3
+2025-06-22 21:44:14,042 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:44:14,042 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:44:14,042 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:44:14,042 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:44:14,043 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:44:14,043 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:44:14,044 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:44:14,060 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:44:14,063 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:44:14,066 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:44:14,067 - INFO - Found 3 potential action elements.
+2025-06-22 21:44:14,067 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:44:14,068 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:44:14,068 - INFO - Using dealer position: 3
+2025-06-22 21:44:14,068 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:44:14,068 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:44:14,068 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:44:14,068 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:44:14,069 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:44:14,069 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:44:14,070 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:44:14,072 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:44:14,073 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:44:14,079 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:44:14,080 - INFO - Found 3 potential action elements.
+2025-06-22 21:44:14,081 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:44:14,081 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:44:14,081 - INFO - Using dealer position: 3
+2025-06-22 21:44:14,081 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:44:14,081 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:44:14,081 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:44:14,081 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:44:14,082 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:44:14,082 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:44:14,082 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:44:15,050 - INFO - Equity calculation complete for ['6♥', 'K♥'] vs random. Win: 52.16%, Tie: 0.30%, Equity: 52.31% (5000 simulations)
+2025-06-22 21:44:15,051 - INFO - [DEBUG] update_opponents_from_game_state: round=river, pot_size=3.14
+2025-06-22 21:44:15,052 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:15,052 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:15,052 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:15,052 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:15,053 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:15,053 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:15,054 - INFO - [DEBUG] update_opponents_from_game_state: round=river, pot_size=3.14
+2025-06-22 21:44:15,054 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:15,055 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:15,056 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:15,057 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:15,057 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:15,058 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:44:15,059 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:44:15,059 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 21:44:15,060 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 21:44:15,060 - INFO -   my_player position: SB
+2025-06-22 21:44:15,060 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:44:15,061 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:44:15,061 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 21:44:15,062 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 21:44:15,062 - INFO -   max_bet_on_table: 0.0
+2025-06-22 21:44:15,063 - INFO -   bet_to_call_calculated: 0.0
+2025-06-22 21:44:15,063 - INFO -   my_player position: SB
+2025-06-22 21:44:15,064 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:44:15,064 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-22 21:44:15,064 - INFO -   final_bet_to_call = 0.0 (type: <class 'float'>)
+2025-06-22 21:44:15,065 - INFO -   final_bet_to_call == 0 = True
+2025-06-22 21:44:15,065 - INFO -   final_bet_to_call == 0.0 = True
+2025-06-22 21:44:15,065 - INFO -   abs(final_bet_to_call) < 1e-10 = True
+2025-06-22 21:44:15,065 - INFO -   can_check = True
+2025-06-22 21:44:15,066 - INFO - [DEBUG] make_postflop_decision: opponent_tracker type=<class 'opponent_tracking.OpponentTracker'>, id=3170803330624
+2025-06-22 21:44:15,066 - INFO - Calling opponent_tracker.load_all_profiles() in make_postflop_decision
+2025-06-22 21:44:15,067 - INFO - Loading opponent analysis from opponent_analysis_data.json.
+2025-06-22 21:44:15,071 - DEBUG - make_postflop_decision: street=river, my_player_data={'seat': '4', 'name': 'warriorwonder25', 'stack': '€4.65', 'bet': '0', 'is_my_player': True, 'is_empty': False, 'cards': ['6♥', 'K♥'], 'has_turn': True, 'has_hidden_cards': False, 'id': '4', 'current_bet': 0.0, 'available_actions': ['fold', 'check', 'bet'], 'is_all_in_call_available': False, 'bet_to_call': 0, 'seat_int': 4, 'position': 'SB', 'hand_evaluation': (2, 'One Pair, Ks', [13, 10, 7, 6]), 'hand_rank': 'One Pair, Ks', 'win_probability': 0.5216, 'tie_probability': 0.003, 'hand': ['6♥', 'K♥'], 'last_action': 'check', 'has_acted': False}, pot_size=3.14, win_prob=0.5216, pot_odds=0.0, bet_to_call=0.0, max_bet_on_table=0.0, active_opponents_count=0, can_check=True, was_preflop_aggressor=False, action_history={}
+2025-06-22 21:44:15,072 - INFO - Hand history context: was_pfr=False, was_aggressor_previous_street=False
+2025-06-22 21:44:15,072 - INFO - Using aggression_multiplier=1.0 based on hand history
+2025-06-22 21:44:15,072 - DEBUG - Estimated opponent stack for implied odds: 9.22
+2025-06-22 21:44:15,073 - INFO - Enhanced hand classification: weak_made (rank=2, win_prob=52.2%, threshold=45.5%)
+2025-06-22 21:44:15,073 - INFO - Fixed opponent analysis: tracked=85, table_type=tight, avg_vpip=3.3%, fold_equity=68.9%
+2025-06-22 21:44:15,073 - DEBUG - SPR strategy: check_call_small_bets (SPR=1.5, low)
+2025-06-22 21:44:15,074 - DEBUG - Initial Pot commitment: committed=0.00, call=0.00, total=0.00, stack=4.65, ratio=0.0%, threshold=45.5%, is_committed=False
+2025-06-22 21:44:15,075 - INFO - Cash game enhancements applied for SB river medium
+2025-06-22 21:44:15,075 - INFO - Cash game enhancements applied: confidence=0.85
+2025-06-22 21:44:15,076 - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-22 21:44:15,076 - DEBUG - Performance monitoring setup.
+2025-06-22 21:44:15,076 - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'advanced_opponent_analysis', 'performance_tracker', 'decision_context_for_perf']
+2025-06-22 21:44:15,077 - DEBUG - Refined classification (enhanced_postflop_improvements): weak_made, commitment_threshold: 39.27%
+2025-06-22 21:44:15,077 - DEBUG - Refined Pot commitment check: ratio=0.00%, refined_threshold=39.27%, is_pot_committed=False
+2025-06-22 21:44:15,077 - WARNING - Opponent tracker has 89 profiles, but none with hands_seen >= 3 (active_opponents_count: 0).
+2025-06-22 21:44:15,077 - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-22 21:44:15,077 - INFO - Final opponent analysis (enhanced_postflop_improvements.fix_opponent_tracker_integration): tracked=0, table_type=unknown, avg_vpip=25.0, fold_equity=50.0%
+2025-06-22 21:44:15,078 - DEBUG - Final decision hand strength: medium (is_weak=False). Orig rank=2, win_prob=52.16%
+2025-06-22 21:44:15,078 - INFO - Post-adjustment hand strength flags: very_strong=False, strong=False, medium=True (Final Category: medium)
+2025-06-22 21:44:15,078 - DEBUG - SPR analysis context: spr=1.48, initial_spr_strategy={'spr': 1.480891719745223, 'spr_category': 'low', 'base_strategy': 'check_call_small_bets', 'betting_action': 'check', 'sizing_adjustment': 1.2, 'reasoning': 'Low SPR (low) - looking to commit with weak_made hands'}, drawing_potential=False, final_hand_strength_for_decision=medium
+2025-06-22 21:44:15,079 - WARNING - Board analysis failed: max() iterable argument is empty
+2025-06-22 21:44:15,079 - DEBUG - Option to genuinely check is available (can_check=True, bet_to_call=0). Evaluating check vs. bet/raise.
+2025-06-22 21:44:15,079 - INFO - Decision: check (Medium hand, choosing to check-evaluate or pot control)
+2025-06-22 21:44:22,943 - INFO - Found visible dealer button at seat 4
+2025-06-22 21:44:22,944 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:44:22,946 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:44:22,947 - INFO - Found 0 potential action elements.
+2025-06-22 21:44:22,947 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:44:22,947 - INFO - Successfully identified active player: N/A
+2025-06-22 21:44:22,947 - INFO - Using dealer position: 4
+2025-06-22 21:44:22,947 - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-22 21:44:22,948 - INFO - Player Jivanmukta in seat 1 assigned position: UTG
+2025-06-22 21:44:22,948 - INFO - Player N/A in seat 2 assigned position: MP
+2025-06-22 21:44:22,948 - INFO - Player viejojhon10 in seat 3 assigned position: CO
+2025-06-22 21:44:22,948 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-22 21:44:22,948 - INFO - Player EmVeee in seat 5 assigned position: SB
+2025-06-22 21:44:22,948 - INFO - Player ThinMan238 in seat 6 assigned position: BB
+2025-06-22 21:44:22,964 - INFO - Found visible dealer button at seat 4
+2025-06-22 21:44:22,965 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:44:22,968 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:44:22,968 - INFO - Found 0 potential action elements.
+2025-06-22 21:44:22,968 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:44:22,968 - INFO - Successfully identified active player: N/A
+2025-06-22 21:44:22,969 - INFO - Using dealer position: 4
+2025-06-22 21:44:22,969 - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-22 21:44:22,969 - INFO - Player Jivanmukta in seat 1 assigned position: UTG
+2025-06-22 21:44:22,969 - INFO - Player N/A in seat 2 assigned position: MP
+2025-06-22 21:44:22,969 - INFO - Player viejojhon10 in seat 3 assigned position: CO
+2025-06-22 21:44:22,969 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-22 21:44:22,969 - INFO - Player EmVeee in seat 5 assigned position: SB
+2025-06-22 21:44:22,969 - INFO - Player ThinMan238 in seat 6 assigned position: BB
+2025-06-22 21:44:22,971 - INFO - Found visible dealer button at seat 4
+2025-06-22 21:44:22,972 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:44:22,978 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:44:22,978 - INFO - Found 0 potential action elements.
+2025-06-22 21:44:22,979 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:44:22,979 - INFO - Successfully identified active player: N/A
+2025-06-22 21:44:22,979 - INFO - Using dealer position: 4
+2025-06-22 21:44:22,979 - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-22 21:44:22,979 - INFO - Player Jivanmukta in seat 1 assigned position: UTG
+2025-06-22 21:44:22,980 - INFO - Player N/A in seat 2 assigned position: MP
+2025-06-22 21:44:22,980 - INFO - Player viejojhon10 in seat 3 assigned position: CO
+2025-06-22 21:44:22,980 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-22 21:44:22,980 - INFO - Player EmVeee in seat 5 assigned position: SB
+2025-06-22 21:44:22,980 - INFO - Player ThinMan238 in seat 6 assigned position: BB
+2025-06-22 21:48:44,755 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:48:44,756 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:48:44,758 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:48:44,759 - INFO - Found 3 potential action elements.
+2025-06-22 21:48:44,760 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:48:44,760 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:48:44,760 - INFO - Using dealer position: 3
+2025-06-22 21:48:44,761 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:48:44,761 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:48:44,761 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:48:44,761 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:48:44,761 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:48:44,761 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:48:44,762 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:48:44,773 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:48:44,774 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:48:44,776 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:48:44,777 - INFO - Found 3 potential action elements.
+2025-06-22 21:48:44,777 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:48:44,777 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:48:44,778 - INFO - Using dealer position: 3
+2025-06-22 21:48:44,778 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:48:44,778 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:48:44,778 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:48:44,778 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:48:44,779 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:48:44,779 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:48:44,779 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:48:44,782 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:48:44,783 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:48:44,786 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:48:44,786 - INFO - Found 3 potential action elements.
+2025-06-22 21:48:44,787 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:48:44,787 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 21:48:44,787 - INFO - Using dealer position: 3
+2025-06-22 21:48:44,788 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:48:44,788 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:48:44,788 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:48:44,788 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:48:44,788 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:48:44,788 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:48:44,789 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:48:45,579 - INFO - Equity calculation complete for ['Q♦', '10♠'] vs random. Win: 75.10%, Tie: 0.50%, Equity: 75.35% (5000 simulations)
+2025-06-22 21:48:45,580 - INFO - [DEBUG] update_opponents_from_game_state: round=turn, pot_size=0.6
+2025-06-22 21:48:45,580 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:48:45,580 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:48:45,580 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:48:45,581 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:48:45,581 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:48:45,581 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 21:48:45,582 - INFO - [DEBUG] update_opponents_from_game_state: round=turn, pot_size=0.6
+2025-06-22 21:48:45,582 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:48:45,582 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:48:45,582 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:48:45,582 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:48:45,582 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:48:45,583 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:48:45,583 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:48:45,584 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 21:48:45,584 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 21:48:45,585 - INFO -   my_player position: SB
+2025-06-22 21:48:45,585 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:48:45,585 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 21:48:45,585 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 21:48:45,585 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 21:48:45,586 - INFO -   max_bet_on_table: 0.0
+2025-06-22 21:48:45,586 - INFO -   bet_to_call_calculated: 0.0
+2025-06-22 21:48:45,587 - INFO -   my_player position: SB
+2025-06-22 21:48:45,587 - INFO -   my_player name: warriorwonder25
+2025-06-22 21:48:45,588 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-22 21:48:45,588 - INFO -   final_bet_to_call = 0.0 (type: <class 'float'>)
+2025-06-22 21:48:45,588 - INFO -   final_bet_to_call == 0 = True
+2025-06-22 21:48:45,589 - INFO -   final_bet_to_call == 0.0 = True
+2025-06-22 21:48:45,589 - INFO -   abs(final_bet_to_call) < 1e-10 = True
+2025-06-22 21:48:45,590 - INFO -   can_check = True
+2025-06-22 21:48:45,590 - INFO - [DEBUG] make_postflop_decision: opponent_tracker type=<class 'opponent_tracking.OpponentTracker'>, id=2069094018624
+2025-06-22 21:48:45,590 - INFO - Calling opponent_tracker.load_all_profiles() in make_postflop_decision
+2025-06-22 21:48:45,591 - INFO - Loading opponent analysis from opponent_analysis_data.json.
+2025-06-22 21:48:45,594 - DEBUG - make_postflop_decision: street=turn, my_player_data={'seat': '4', 'name': 'warriorwonder25', 'stack': '€4.30', 'bet': '0', 'is_my_player': True, 'is_empty': False, 'cards': ['Q♦', '10♠'], 'has_turn': True, 'has_hidden_cards': False, 'id': '4', 'current_bet': 0.0, 'available_actions': ['fold', 'check', 'bet'], 'is_all_in_call_available': False, 'bet_to_call': 0, 'seat_int': 4, 'position': 'SB', 'hand_evaluation': (2, 'One Pair, 10s', [10, 12, 11, 5]), 'hand_rank': 'One Pair, 10s', 'win_probability': 0.751, 'tie_probability': 0.005, 'hand': ['Q♦', '10♠'], 'last_action': 'check', 'has_acted': False}, pot_size=0.6, win_prob=0.751, pot_odds=0.0, bet_to_call=0.0, max_bet_on_table=0.0, active_opponents_count=0, can_check=True, was_preflop_aggressor=False, action_history={}
+2025-06-22 21:48:45,594 - INFO - Hand history context: was_pfr=False, was_aggressor_previous_street=False
+2025-06-22 21:48:45,594 - INFO - Using aggression_multiplier=1.0 based on hand history
+2025-06-22 21:48:45,594 - DEBUG - Estimated opponent stack for implied odds: 9.35
+2025-06-22 21:48:45,594 - INFO - Enhanced hand classification: medium (rank=2, win_prob=75.1%, threshold=38.2%)
+2025-06-22 21:48:45,595 - INFO - Fixed opponent analysis: tracked=85, table_type=tight, avg_vpip=3.3%, fold_equity=68.9%
+2025-06-22 21:48:45,595 - DEBUG - SPR strategy: thin_value_or_check_call (SPR=7.2, high)
+2025-06-22 21:48:45,596 - DEBUG - Initial Pot commitment: committed=0.00, call=0.00, total=0.00, stack=4.30, ratio=0.0%, threshold=38.2%, is_committed=False
+2025-06-22 21:48:45,596 - INFO - Cash game enhancements applied for SB turn strong
+2025-06-22 21:48:45,597 - INFO - Cash game enhancements applied: confidence=0.85
+2025-06-22 21:48:45,597 - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-22 21:48:45,598 - DEBUG - Performance monitoring setup.
+2025-06-22 21:48:45,598 - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'advanced_opponent_analysis', 'performance_tracker', 'decision_context_for_perf']
+2025-06-22 21:48:45,599 - DEBUG - Refined classification (enhanced_postflop_improvements): strong, commitment_threshold: 30.00%
+2025-06-22 21:48:45,600 - DEBUG - Refined Pot commitment check: ratio=0.00%, refined_threshold=30.00%, is_pot_committed=False
+2025-06-22 21:48:45,600 - WARNING - Opponent tracker has 89 profiles, but none with hands_seen >= 3 (active_opponents_count: 0).
+2025-06-22 21:48:45,600 - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-22 21:48:45,601 - INFO - Final opponent analysis (enhanced_postflop_improvements.fix_opponent_tracker_integration): tracked=0, table_type=unknown, avg_vpip=25.0, fold_equity=50.0%
+2025-06-22 21:48:45,601 - DEBUG - Final decision hand strength: strong (is_weak=False). Orig rank=2, win_prob=75.10%
+2025-06-22 21:48:45,601 - INFO - Post-adjustment hand strength flags: very_strong=False, strong=True, medium=False (Final Category: strong)
+2025-06-22 21:48:45,602 - DEBUG - SPR analysis context: spr=7.17, initial_spr_strategy={'spr': 7.166666666666667, 'spr_category': 'high', 'base_strategy': 'thin_value_or_check_call', 'betting_action': 'check', 'sizing_adjustment': 1.0, 'reasoning': 'High SPR (high) - pot control focus with medium'}, drawing_potential=False, final_hand_strength_for_decision=strong
+2025-06-22 21:48:45,602 - WARNING - Board analysis failed: max() iterable argument is empty
+2025-06-22 21:48:45,602 - DEBUG - Option to genuinely check is available (can_check=True, bet_to_call=0). Evaluating check vs. bet/raise.
+2025-06-22 21:48:45,603 - INFO - Decision: raise 0.36 (Strong hand, value bet)
+2025-06-22 21:48:56,130 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:48:56,132 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:48:56,140 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:48:56,141 - INFO - Found 0 potential action elements.
+2025-06-22 21:48:56,142 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:48:56,143 - INFO - No player identified as active in this parse.
+2025-06-22 21:48:56,143 - INFO - Using dealer position: 3
+2025-06-22 21:48:56,144 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:48:56,144 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:48:56,145 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:48:56,146 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:48:56,146 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:48:56,147 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:48:56,147 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:48:56,176 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:48:56,178 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:48:56,184 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:48:56,184 - INFO - Found 0 potential action elements.
+2025-06-22 21:48:56,186 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:48:56,186 - INFO - No player identified as active in this parse.
+2025-06-22 21:48:56,186 - INFO - Using dealer position: 3
+2025-06-22 21:48:56,186 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:48:56,187 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:48:56,187 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:48:56,187 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:48:56,187 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:48:56,187 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:48:56,188 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:48:56,191 - INFO - Found visible dealer button at seat 3
+2025-06-22 21:48:56,192 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:48:56,195 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:48:56,196 - INFO - Found 0 potential action elements.
+2025-06-22 21:48:56,196 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:48:56,197 - INFO - No player identified as active in this parse.
+2025-06-22 21:48:56,197 - INFO - Using dealer position: 3
+2025-06-22 21:48:56,198 - INFO - Position calculation: 6 active players, dealer at seat 3
+2025-06-22 21:48:56,199 - INFO - Player Jivanmukta in seat 1 assigned position: MP
+2025-06-22 21:48:56,199 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 21:48:56,199 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 21:48:56,200 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 21:48:56,200 - INFO - Player EmVeee in seat 5 assigned position: BB
+2025-06-22 21:48:56,201 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 21:48:57,177 - INFO - Equity calculation complete for ['Q♦', '10♠'] vs random. Win: 67.42%, Tie: 0.58%, Equity: 67.71% (5000 simulations)
+2025-06-22 21:48:57,177 - INFO - [DEBUG] update_opponents_from_game_state: round=river, pot_size=0.6
+2025-06-22 21:48:57,177 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:48:57,178 - INFO - [DEBUG] Player idx=1, name=Jivanmukta, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:48:57,178 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:48:57,178 - INFO - [DEBUG] Player idx=3, name=EmVeee, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:48:57,179 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:48:57,179 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 21:48:59,575 - INFO - Found visible dealer button at seat 4
+2025-06-22 21:48:59,576 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:48:59,578 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:48:59,579 - INFO - Found 0 potential action elements.
+2025-06-22 21:48:59,580 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:48:59,581 - INFO - Successfully identified active player: N/A
+2025-06-22 21:48:59,581 - INFO - Using dealer position: 4
+2025-06-22 21:48:59,581 - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-22 21:48:59,582 - INFO - Player Jivanmukta in seat 1 assigned position: UTG
+2025-06-22 21:48:59,582 - INFO - Player N/A in seat 2 assigned position: MP
+2025-06-22 21:48:59,582 - INFO - Player viejojhon10 in seat 3 assigned position: CO
+2025-06-22 21:48:59,582 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-22 21:48:59,582 - INFO - Player EmVeee in seat 5 assigned position: SB
+2025-06-22 21:48:59,582 - INFO - Player ThinMan238 in seat 6 assigned position: BB
+2025-06-22 21:48:59,593 - INFO - Found visible dealer button at seat 4
+2025-06-22 21:48:59,595 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:48:59,597 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:48:59,598 - INFO - Found 0 potential action elements.
+2025-06-22 21:48:59,600 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:48:59,601 - INFO - Successfully identified active player: N/A
+2025-06-22 21:48:59,601 - INFO - Using dealer position: 4
+2025-06-22 21:48:59,601 - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-22 21:48:59,602 - INFO - Player Jivanmukta in seat 1 assigned position: UTG
+2025-06-22 21:48:59,602 - INFO - Player N/A in seat 2 assigned position: MP
+2025-06-22 21:48:59,602 - INFO - Player viejojhon10 in seat 3 assigned position: CO
+2025-06-22 21:48:59,603 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-22 21:48:59,603 - INFO - Player EmVeee in seat 5 assigned position: SB
+2025-06-22 21:48:59,604 - INFO - Player ThinMan238 in seat 6 assigned position: BB
+2025-06-22 21:48:59,606 - INFO - Found visible dealer button at seat 4
+2025-06-22 21:48:59,608 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 21:48:59,613 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 21:48:59,614 - INFO - Found 0 potential action elements.
+2025-06-22 21:48:59,614 - INFO - Player detection complete: 6 total seats, 6 active players, 0 empty seats
+2025-06-22 21:48:59,615 - INFO - Successfully identified active player: N/A
+2025-06-22 21:48:59,615 - INFO - Using dealer position: 4
+2025-06-22 21:48:59,615 - INFO - Position calculation: 6 active players, dealer at seat 4
+2025-06-22 21:48:59,615 - INFO - Player Jivanmukta in seat 1 assigned position: UTG
+2025-06-22 21:48:59,615 - INFO - Player N/A in seat 2 assigned position: MP
+2025-06-22 21:48:59,615 - INFO - Player viejojhon10 in seat 3 assigned position: CO
+2025-06-22 21:48:59,615 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-22 21:48:59,615 - INFO - Player EmVeee in seat 5 assigned position: SB
+2025-06-22 21:48:59,615 - INFO - Player ThinMan238 in seat 6 assigned position: BB
+2025-06-22 22:03:06,036 - INFO - Found visible dealer button at seat 3
+2025-06-22 22:03:06,038 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 22:03:06,041 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 22:03:06,041 - INFO - Found 3 potential action elements.
+2025-06-22 22:03:06,042 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-22 22:03:06,042 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 22:03:06,043 - INFO - Using dealer position: 3
+2025-06-22 22:03:06,043 - INFO - Position calculation: 5 active players, dealer at seat 3
+2025-06-22 22:03:06,043 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 22:03:06,043 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 22:03:06,043 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 22:03:06,043 - INFO - Player Garfield13T in seat 5 assigned position: BB
+2025-06-22 22:03:06,044 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 22:03:06,059 - INFO - Found visible dealer button at seat 3
+2025-06-22 22:03:06,060 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 22:03:06,063 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 22:03:06,064 - INFO - Found 3 potential action elements.
+2025-06-22 22:03:06,064 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-22 22:03:06,065 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 22:03:06,065 - INFO - Using dealer position: 3
+2025-06-22 22:03:06,065 - INFO - Position calculation: 5 active players, dealer at seat 3
+2025-06-22 22:03:06,065 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 22:03:06,065 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 22:03:06,065 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 22:03:06,065 - INFO - Player Garfield13T in seat 5 assigned position: BB
+2025-06-22 22:03:06,065 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 22:03:06,067 - INFO - Found visible dealer button at seat 3
+2025-06-22 22:03:06,070 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 22:03:06,074 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 22:03:06,074 - INFO - Found 3 potential action elements.
+2025-06-22 22:03:06,075 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-22 22:03:06,075 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 22:03:06,075 - INFO - Using dealer position: 3
+2025-06-22 22:03:06,075 - INFO - Position calculation: 5 active players, dealer at seat 3
+2025-06-22 22:03:06,076 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 22:03:06,076 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 22:03:06,076 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 22:03:06,076 - INFO - Player Garfield13T in seat 5 assigned position: BB
+2025-06-22 22:03:06,076 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 22:03:06,863 - INFO - Equity calculation complete for ['A♠', '7♠'] vs random. Win: 88.56%, Tie: 0.92%, Equity: 89.02% (5000 simulations)
+2025-06-22 22:03:06,864 - INFO - [DEBUG] update_opponents_from_game_state: round=turn, pot_size=1.28
+2025-06-22 22:03:06,864 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 22:03:06,864 - INFO - [DEBUG] Player idx=1, name=N/A, has_acted=None, last_action=None, current_bet=None
+2025-06-22 22:03:06,864 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 22:03:06,865 - INFO - [DEBUG] Player idx=3, name=Garfield13T, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 22:03:06,865 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 22:03:06,865 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=None, last_action=None, current_bet=0.0
+2025-06-22 22:03:06,866 - WARNING - Invalid monetary value received: 'N/A'. Defaulting to 0.0.
+2025-06-22 22:03:06,866 - WARNING - Invalid monetary value received: 'N/A'. Defaulting to 0.0.
+2025-06-22 22:03:06,867 - INFO - [DEBUG] update_opponents_from_game_state: round=turn, pot_size=1.28
+2025-06-22 22:03:06,867 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:06,867 - INFO - [DEBUG] Player idx=1, name=N/A, has_acted=False, last_action=check, current_bet=None
+2025-06-22 22:03:06,867 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:06,867 - INFO - [DEBUG] Player idx=3, name=Garfield13T, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:06,867 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:06,867 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:06,868 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 22:03:06,868 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 22:03:06,868 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 22:03:06,869 - INFO -   my_player position: SB
+2025-06-22 22:03:06,870 - INFO -   my_player name: warriorwonder25
+2025-06-22 22:03:06,871 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 22:03:06,871 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 22:03:06,872 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 22:03:06,872 - INFO -   max_bet_on_table: 0.0
+2025-06-22 22:03:06,873 - INFO -   bet_to_call_calculated: 0.0
+2025-06-22 22:03:06,873 - INFO -   my_player position: SB
+2025-06-22 22:03:06,873 - INFO -   my_player name: warriorwonder25
+2025-06-22 22:03:06,873 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-22 22:03:06,874 - INFO -   final_bet_to_call = 0.0 (type: <class 'float'>)
+2025-06-22 22:03:06,874 - INFO -   final_bet_to_call == 0 = True
+2025-06-22 22:03:06,874 - INFO -   final_bet_to_call == 0.0 = True
+2025-06-22 22:03:06,875 - INFO -   abs(final_bet_to_call) < 1e-10 = True
+2025-06-22 22:03:06,875 - INFO -   can_check = True
+2025-06-22 22:03:06,875 - INFO - [DEBUG] make_postflop_decision: opponent_tracker type=<class 'opponent_tracking.OpponentTracker'>, id=1410279501376
+2025-06-22 22:03:06,876 - INFO - Calling opponent_tracker.load_all_profiles() in make_postflop_decision
+2025-06-22 22:03:06,876 - INFO - Loading opponent analysis from opponent_analysis_data.json.
+2025-06-22 22:03:06,879 - DEBUG - make_postflop_decision: street=turn, my_player_data={'seat': '4', 'name': 'warriorwonder25', 'stack': '€4.48', 'bet': '0', 'is_my_player': True, 'is_empty': False, 'cards': ['A♠', '7♠'], 'has_turn': True, 'has_hidden_cards': False, 'id': '4', 'current_bet': 0.0, 'available_actions': ['fold', 'check', 'bet'], 'is_all_in_call_available': False, 'bet_to_call': 0, 'seat_int': 4, 'position': 'SB', 'hand_evaluation': (3, 'Two Pair, As and 7s', [14, 7, 2]), 'hand_rank': 'Two Pair, As and 7s', 'win_probability': 0.8856, 'tie_probability': 0.0092, 'hand': ['A♠', '7♠'], 'last_action': 'check', 'has_acted': False}, pot_size=1.28, win_prob=0.8856, pot_odds=0.0, bet_to_call=0.0, max_bet_on_table=0.0, active_opponents_count=0, can_check=True, was_preflop_aggressor=False, action_history={}
+2025-06-22 22:03:06,880 - INFO - Hand history context: was_pfr=False, was_aggressor_previous_street=False
+2025-06-22 22:03:06,880 - INFO - Using aggression_multiplier=1.0 based on hand history
+2025-06-22 22:03:06,880 - DEBUG - Estimated opponent stack for implied odds: 8.48
+2025-06-22 22:03:06,881 - INFO - Enhanced hand classification: very_strong (rank=3, win_prob=88.6%, threshold=12.8%)
+2025-06-22 22:03:06,881 - INFO - Fixed opponent analysis: tracked=85, table_type=tight, avg_vpip=3.3%, fold_equity=68.9%
+2025-06-22 22:03:06,881 - DEBUG - SPR strategy: value_bet_build_pot (SPR=3.5, medium)
+2025-06-22 22:03:06,881 - DEBUG - Initial Pot commitment: committed=0.00, call=0.00, total=0.00, stack=4.48, ratio=0.0%, threshold=12.8%, is_committed=False
+2025-06-22 22:03:06,883 - INFO - Cash game enhancements applied for SB turn very_strong
+2025-06-22 22:03:06,883 - INFO - Cash game enhancements applied: confidence=0.85
+2025-06-22 22:03:06,884 - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-22 22:03:06,884 - DEBUG - Performance monitoring setup.
+2025-06-22 22:03:06,884 - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'advanced_opponent_analysis', 'performance_tracker', 'decision_context_for_perf']
+2025-06-22 22:03:06,886 - DEBUG - Refined classification (enhanced_postflop_improvements): very_strong, commitment_threshold: 20.00%
+2025-06-22 22:03:06,886 - DEBUG - Refined Pot commitment check: ratio=0.00%, refined_threshold=20.00%, is_pot_committed=False
+2025-06-22 22:03:06,886 - WARNING - Opponent tracker has 89 profiles, but none with hands_seen >= 3 (active_opponents_count: 0).
+2025-06-22 22:03:06,886 - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-22 22:03:06,887 - INFO - Final opponent analysis (enhanced_postflop_improvements.fix_opponent_tracker_integration): tracked=0, table_type=unknown, avg_vpip=25.0, fold_equity=50.0%
+2025-06-22 22:03:06,888 - DEBUG - Final decision hand strength: very_strong (is_weak=False). Orig rank=3, win_prob=88.56%
+2025-06-22 22:03:06,888 - INFO - Post-adjustment hand strength flags: very_strong=True, strong=False, medium=False (Final Category: very_strong)
+2025-06-22 22:03:06,888 - DEBUG - SPR analysis context: spr=3.50, initial_spr_strategy={'spr': 3.5000000000000004, 'spr_category': 'medium', 'base_strategy': 'value_bet_build_pot', 'betting_action': 'bet_value', 'sizing_adjustment': 1.15, 'reasoning': 'Medium SPR (medium) - standard play with very_strong'}, drawing_potential=False, final_hand_strength_for_decision=very_strong
+2025-06-22 22:03:06,888 - WARNING - Board analysis failed: max() iterable argument is empty
+2025-06-22 22:03:06,889 - DEBUG - Option to genuinely check is available (can_check=True, bet_to_call=0). Evaluating check vs. bet/raise.
+2025-06-22 22:03:06,889 - INFO - Decision: raise 0.77 (Very strong hand, value bet)
+2025-06-22 22:03:17,425 - INFO - Found visible dealer button at seat 3
+2025-06-22 22:03:17,430 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 22:03:17,438 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 22:03:17,439 - INFO - Found 3 potential action elements.
+2025-06-22 22:03:17,440 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-22 22:03:17,441 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 22:03:17,441 - INFO - Using dealer position: 3
+2025-06-22 22:03:17,441 - INFO - Position calculation: 5 active players, dealer at seat 3
+2025-06-22 22:03:17,441 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 22:03:17,441 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 22:03:17,441 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 22:03:17,441 - INFO - Player Garfield13T in seat 5 assigned position: BB
+2025-06-22 22:03:17,442 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 22:03:17,452 - INFO - Found visible dealer button at seat 3
+2025-06-22 22:03:17,453 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 22:03:17,458 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 22:03:17,458 - INFO - Found 3 potential action elements.
+2025-06-22 22:03:17,459 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-22 22:03:17,459 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 22:03:17,459 - INFO - Using dealer position: 3
+2025-06-22 22:03:17,460 - INFO - Position calculation: 5 active players, dealer at seat 3
+2025-06-22 22:03:17,460 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 22:03:17,460 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 22:03:17,460 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 22:03:17,461 - INFO - Player Garfield13T in seat 5 assigned position: BB
+2025-06-22 22:03:17,461 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 22:03:17,463 - INFO - Found visible dealer button at seat 3
+2025-06-22 22:03:17,465 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 22:03:17,472 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 22:03:17,472 - INFO - Found 3 potential action elements.
+2025-06-22 22:03:17,474 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-22 22:03:17,474 - INFO - Successfully identified active player: warriorwonder25
+2025-06-22 22:03:17,475 - INFO - Using dealer position: 3
+2025-06-22 22:03:17,475 - INFO - Position calculation: 5 active players, dealer at seat 3
+2025-06-22 22:03:17,475 - INFO - Player TheBox in seat 2 assigned position: CO
+2025-06-22 22:03:17,475 - INFO - Player viejojhon10 in seat 3 assigned position: BTN
+2025-06-22 22:03:17,475 - INFO - Player warriorwonder25 in seat 4 assigned position: SB
+2025-06-22 22:03:17,475 - INFO - Player Garfield13T in seat 5 assigned position: BB
+2025-06-22 22:03:17,476 - INFO - Player ThinMan238 in seat 6 assigned position: UTG
+2025-06-22 22:03:18,560 - INFO - Equity calculation complete for ['A♠', '7♠'] vs random. Win: 85.02%, Tie: 0.38%, Equity: 85.21% (5000 simulations)
+2025-06-22 22:03:18,561 - WARNING - Invalid monetary value received: 'N/A'. Defaulting to 0.0.
+2025-06-22 22:03:18,561 - WARNING - Invalid monetary value received: 'N/A'. Defaulting to 0.0.
+2025-06-22 22:03:18,562 - INFO - [DEBUG] update_opponents_from_game_state: round=river, pot_size=2.82
+2025-06-22 22:03:18,563 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:18,563 - INFO - [DEBUG] Player idx=1, name=N/A, has_acted=False, last_action=check, current_bet=None
+2025-06-22 22:03:18,563 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:18,564 - INFO - [DEBUG] Player idx=3, name=Garfield13T, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:18,564 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:18,564 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:18,566 - WARNING - Invalid monetary value received: 'N/A'. Defaulting to 0.0.
+2025-06-22 22:03:18,566 - WARNING - Invalid monetary value received: 'N/A'. Defaulting to 0.0.
+2025-06-22 22:03:18,566 - INFO - [DEBUG] update_opponents_from_game_state: round=river, pot_size=2.82
+2025-06-22 22:03:18,566 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:18,566 - INFO - [DEBUG] Player idx=1, name=N/A, has_acted=False, last_action=check, current_bet=None
+2025-06-22 22:03:18,566 - INFO - [DEBUG] Player idx=2, name=TheBox, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:18,567 - INFO - [DEBUG] Player idx=3, name=Garfield13T, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:18,567 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:18,567 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:18,568 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 22:03:18,568 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 22:03:18,568 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 22:03:18,568 - INFO -   my_player position: SB
+2025-06-22 22:03:18,569 - INFO -   my_player name: warriorwonder25
+2025-06-22 22:03:18,569 - INFO - DEBUG ENGINE: BB bet calculation details:
+2025-06-22 22:03:18,569 - INFO -   my_player raw current_bet: 0.0
+2025-06-22 22:03:18,569 - INFO -   my_current_bet parsed: 0.0
+2025-06-22 22:03:18,569 - INFO -   max_bet_on_table: 0.0
+2025-06-22 22:03:18,570 - INFO -   bet_to_call_calculated: 0.0
+2025-06-22 22:03:18,570 - INFO -   my_player position: SB
+2025-06-22 22:03:18,570 - INFO -   my_player name: warriorwonder25
+2025-06-22 22:03:18,571 - INFO - DEBUG ENGINE: can_check calculation:
+2025-06-22 22:03:18,571 - INFO -   final_bet_to_call = 0.0 (type: <class 'float'>)
+2025-06-22 22:03:18,571 - INFO -   final_bet_to_call == 0 = True
+2025-06-22 22:03:18,572 - INFO -   final_bet_to_call == 0.0 = True
+2025-06-22 22:03:18,572 - INFO -   abs(final_bet_to_call) < 1e-10 = True
+2025-06-22 22:03:18,572 - INFO -   can_check = True
+2025-06-22 22:03:18,573 - INFO - [DEBUG] make_postflop_decision: opponent_tracker type=<class 'opponent_tracking.OpponentTracker'>, id=1410279501376
+2025-06-22 22:03:18,573 - INFO - Calling opponent_tracker.load_all_profiles() in make_postflop_decision
+2025-06-22 22:03:18,573 - INFO - Loading opponent analysis from opponent_analysis_data.json.
+2025-06-22 22:03:18,577 - DEBUG - make_postflop_decision: street=river, my_player_data={'seat': '4', 'name': 'warriorwonder25', 'stack': '€3.71', 'bet': '0', 'is_my_player': True, 'is_empty': False, 'cards': ['A♠', '7♠'], 'has_turn': True, 'has_hidden_cards': False, 'id': '4', 'current_bet': 0.0, 'available_actions': ['fold', 'check', 'bet'], 'is_all_in_call_available': False, 'bet_to_call': 0, 'seat_int': 4, 'position': 'SB', 'hand_evaluation': (3, 'Two Pair, As and 7s', [14, 7, 13]), 'hand_rank': 'Two Pair, As and 7s', 'win_probability': 0.8502, 'tie_probability': 0.0038, 'hand': ['A♠', '7♠'], 'last_action': 'check', 'has_acted': False}, pot_size=2.82, win_prob=0.8502, pot_odds=0.0, bet_to_call=0.0, max_bet_on_table=0.0, active_opponents_count=0, can_check=True, was_preflop_aggressor=False, action_history={}
+2025-06-22 22:03:18,577 - INFO - Hand history context: was_pfr=False, was_aggressor_previous_street=False
+2025-06-22 22:03:18,577 - INFO - Using aggression_multiplier=1.0 based on hand history
+2025-06-22 22:03:18,578 - DEBUG - Estimated opponent stack for implied odds: 8.48
+2025-06-22 22:03:18,579 - INFO - Enhanced hand classification: medium (rank=3, win_prob=85.0%, threshold=31.5%)
+2025-06-22 22:03:18,580 - INFO - Fixed opponent analysis: tracked=85, table_type=tight, avg_vpip=3.3%, fold_equity=68.9%
+2025-06-22 22:03:18,580 - DEBUG - SPR strategy: value_bet_call_raises (SPR=1.3, low)
+2025-06-22 22:03:18,580 - DEBUG - Initial Pot commitment: committed=0.00, call=0.00, total=0.00, stack=3.71, ratio=0.0%, threshold=31.5%, is_committed=False
+2025-06-22 22:03:18,581 - INFO - Cash game enhancements applied for SB river very_strong
+2025-06-22 22:03:18,582 - INFO - Cash game enhancements applied: confidence=0.85
+2025-06-22 22:03:18,582 - INFO - Advanced opponent analysis: balanced_default - insufficient_opponent_data
+2025-06-22 22:03:18,583 - DEBUG - Performance monitoring setup.
+2025-06-22 22:03:18,583 - DEBUG - Advanced enhancements integrated: ['cash_game_enhancements', 'advanced_opponent_analysis', 'performance_tracker', 'decision_context_for_perf']
+2025-06-22 22:03:18,583 - DEBUG - Refined classification (enhanced_postflop_improvements): very_strong, commitment_threshold: 12.00%
+2025-06-22 22:03:18,583 - DEBUG - Refined Pot commitment check: ratio=0.00%, refined_threshold=12.00%, is_pot_committed=False
+2025-06-22 22:03:18,583 - WARNING - Opponent tracker has 89 profiles, but none with hands_seen >= 3 (active_opponents_count: 0).
+2025-06-22 22:03:18,584 - INFO - Using opponent analysis from: enhanced_postflop_improvements.fix_opponent_tracker_integration
+2025-06-22 22:03:18,584 - INFO - Final opponent analysis (enhanced_postflop_improvements.fix_opponent_tracker_integration): tracked=0, table_type=unknown, avg_vpip=25.0, fold_equity=50.0%
+2025-06-22 22:03:18,584 - DEBUG - Final decision hand strength: very_strong (is_weak=False). Orig rank=3, win_prob=85.02%
+2025-06-22 22:03:18,584 - INFO - Post-adjustment hand strength flags: very_strong=True, strong=False, medium=False (Final Category: very_strong)
+2025-06-22 22:03:18,584 - DEBUG - SPR analysis context: spr=1.32, initial_spr_strategy={'spr': 1.3156028368794326, 'spr_category': 'low', 'base_strategy': 'value_bet_call_raises', 'betting_action': 'check', 'sizing_adjustment': 1.2, 'reasoning': 'Low SPR (low) - looking to commit with medium hands'}, drawing_potential=False, final_hand_strength_for_decision=very_strong
+2025-06-22 22:03:18,584 - WARNING - Board analysis failed: max() iterable argument is empty
+2025-06-22 22:03:18,584 - DEBUG - Option to genuinely check is available (can_check=True, bet_to_call=0). Evaluating check vs. bet/raise.
+2025-06-22 22:03:18,584 - INFO - Decision: raise 1.8 (Very strong hand, value bet)
+2025-06-22 22:03:29,075 - INFO - Found visible dealer button at seat 4
+2025-06-22 22:03:29,077 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 22:03:29,081 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 22:03:29,081 - INFO - Found 0 potential action elements.
+2025-06-22 22:03:29,082 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-22 22:03:29,082 - INFO - Successfully identified active player: N/A
+2025-06-22 22:03:29,082 - INFO - Using dealer position: 4
+2025-06-22 22:03:29,083 - INFO - Position calculation: 5 active players, dealer at seat 4
+2025-06-22 22:03:29,083 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-22 22:03:29,083 - INFO - Player viejojhon10 in seat 3 assigned position: CO
+2025-06-22 22:03:29,083 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-22 22:03:29,083 - INFO - Player Garfield13T in seat 5 assigned position: SB
+2025-06-22 22:03:29,083 - INFO - Player ThinMan238 in seat 6 assigned position: BB
+2025-06-22 22:03:29,098 - INFO - Found visible dealer button at seat 4
+2025-06-22 22:03:29,099 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 22:03:29,101 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 22:03:29,102 - INFO - Found 0 potential action elements.
+2025-06-22 22:03:29,104 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-22 22:03:29,105 - INFO - Successfully identified active player: N/A
+2025-06-22 22:03:29,105 - INFO - Using dealer position: 4
+2025-06-22 22:03:29,106 - INFO - Position calculation: 5 active players, dealer at seat 4
+2025-06-22 22:03:29,106 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-22 22:03:29,106 - INFO - Player viejojhon10 in seat 3 assigned position: CO
+2025-06-22 22:03:29,106 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-22 22:03:29,106 - INFO - Player Garfield13T in seat 5 assigned position: SB
+2025-06-22 22:03:29,106 - INFO - Player ThinMan238 in seat 6 assigned position: BB
+2025-06-22 22:03:29,110 - INFO - Found visible dealer button at seat 4
+2025-06-22 22:03:29,111 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 22:03:29,113 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 22:03:29,114 - INFO - Found 0 potential action elements.
+2025-06-22 22:03:29,114 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-22 22:03:29,114 - INFO - Successfully identified active player: N/A
+2025-06-22 22:03:29,114 - INFO - Using dealer position: 4
+2025-06-22 22:03:29,114 - INFO - Position calculation: 5 active players, dealer at seat 4
+2025-06-22 22:03:29,114 - INFO - Player N/A in seat 2 assigned position: UTG
+2025-06-22 22:03:29,114 - INFO - Player viejojhon10 in seat 3 assigned position: CO
+2025-06-22 22:03:29,115 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-22 22:03:29,115 - INFO - Player Garfield13T in seat 5 assigned position: SB
+2025-06-22 22:03:29,115 - INFO - Player ThinMan238 in seat 6 assigned position: BB
+2025-06-22 22:03:30,254 - INFO - Equity calculation complete for ['K♠', '3♠'] vs random. Win: 47.98%, Tie: 9.58%, Equity: 52.77% (5000 simulations)
+2025-06-22 22:03:30,255 - WARNING - Invalid monetary value received: 'N/A'. Defaulting to 0.0.
+2025-06-22 22:03:30,255 - WARNING - Invalid monetary value received: 'N/A'. Defaulting to 0.0.
+2025-06-22 22:03:30,255 - WARNING - Invalid monetary value received: 'N/A'. Defaulting to 0.0.
+2025-06-22 22:03:30,256 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.15
+2025-06-22 22:03:30,256 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:30,256 - INFO - [DEBUG] Player idx=1, name=N/A, has_acted=False, last_action=check, current_bet=None
+2025-06-22 22:03:30,256 - INFO - [DEBUG] Player idx=2, name=N/A, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:30,256 - INFO - [DEBUG] Player idx=3, name=Garfield13T, has_acted=True, last_action=bet, current_bet=0.05
+2025-06-22 22:03:30,256 - INFO - [DEBUG] Calling update_opponent_action for Garfield13T: action=bet, street=preflop, position=SB, bet_size=0.05, pot_size=0.15
+2025-06-22 22:03:30,256 - INFO - [DEBUG] update_opponent_action: player=Garfield13T, action=bet, street=preflop, position=SB, bet_size=0.05, pot_size=0.15
+2025-06-22 22:03:30,256 - INFO - [DEBUG] Player idx=4, name=viejojhon10, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:30,257 - INFO - [DEBUG] Player idx=5, name=warriorwonder25, has_acted=False, last_action=check, current_bet=0.0
+2025-06-22 22:03:32,652 - INFO - Found visible dealer button at seat 4
+2025-06-22 22:03:32,654 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 22:03:32,658 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 22:03:32,659 - INFO - Found 0 potential action elements.
+2025-06-22 22:03:32,660 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-22 22:03:32,660 - INFO - Successfully identified active player: N/A
+2025-06-22 22:03:32,661 - INFO - Using dealer position: 4
+2025-06-22 22:03:32,661 - INFO - Position calculation: 5 active players, dealer at seat 4
+2025-06-22 22:03:32,662 - INFO - Player TheBox in seat 2 assigned position: UTG
+2025-06-22 22:03:32,662 - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-22 22:03:32,663 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-22 22:03:32,663 - INFO - Player Garfield13T in seat 5 assigned position: SB
+2025-06-22 22:03:32,663 - INFO - Player ThinMan238 in seat 6 assigned position: BB
+2025-06-22 22:03:32,678 - INFO - Found visible dealer button at seat 4
+2025-06-22 22:03:32,680 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 22:03:32,683 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 22:03:32,684 - INFO - Found 0 potential action elements.
+2025-06-22 22:03:32,684 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-22 22:03:32,684 - INFO - Successfully identified active player: N/A
+2025-06-22 22:03:32,685 - INFO - Using dealer position: 4
+2025-06-22 22:03:32,685 - INFO - Position calculation: 5 active players, dealer at seat 4
+2025-06-22 22:03:32,685 - INFO - Player TheBox in seat 2 assigned position: UTG
+2025-06-22 22:03:32,685 - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-22 22:03:32,686 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-22 22:03:32,686 - INFO - Player Garfield13T in seat 5 assigned position: SB
+2025-06-22 22:03:32,686 - INFO - Player ThinMan238 in seat 6 assigned position: BB
+2025-06-22 22:03:32,690 - INFO - Found visible dealer button at seat 4
+2025-06-22 22:03:32,692 - INFO - Found 6 'div.player-area' elements to process.
+2025-06-22 22:03:32,695 - INFO - Found actions area. Analyzing buttons...
+2025-06-22 22:03:32,696 - INFO - Found 0 potential action elements.
+2025-06-22 22:03:32,697 - INFO - Player detection complete: 6 total seats, 5 active players, 1 empty seats
+2025-06-22 22:03:32,697 - INFO - Successfully identified active player: N/A
+2025-06-22 22:03:32,697 - INFO - Using dealer position: 4
+2025-06-22 22:03:32,697 - INFO - Position calculation: 5 active players, dealer at seat 4
+2025-06-22 22:03:32,697 - INFO - Player TheBox in seat 2 assigned position: UTG
+2025-06-22 22:03:32,697 - INFO - Player N/A in seat 3 assigned position: CO
+2025-06-22 22:03:32,697 - INFO - Player warriorwonder25 in seat 4 assigned position: BTN
+2025-06-22 22:03:32,698 - INFO - Player Garfield13T in seat 5 assigned position: SB
+2025-06-22 22:03:32,698 - INFO - Player ThinMan238 in seat 6 assigned position: BB
+2025-06-22 22:03:33,801 - INFO - Equity calculation complete for ['K♠', '3♠'] vs random. Win: 49.24%, Tie: 10.18%, Equity: 54.33% (5000 simulations)
+2025-06-22 22:03:33,802 - WARNING - Invalid monetary value received: 'N/A'. Defaulting to 0.0.
+2025-06-22 22:03:33,802 - INFO - [DEBUG] update_opponents_from_game_state: round=preflop, pot_size=0.15
+2025-06-22 22:03:33,802 - INFO - [DEBUG] Player idx=0, name=ThinMan238, has_acted=True, last_action=bet, current_bet=0.1
+2025-06-22 22:03:33,803 - INFO - [DEBUG] Calling update_opponent_action for ThinMan238: action=bet, street=preflop, position=BB, bet_size=0.1, pot_size=0.15
+2025-06-22 22:03:33,803 - INFO - [DEBUG] update_opponent_action: player=ThinMan238, action=bet, street=preflop, position=BB, bet_size=0.1, pot_size=0.15
+2025-06-22 22:03:33,804 - WARNING - Error updating opponent tracking: 'BB'

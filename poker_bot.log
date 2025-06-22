@@ -162,3 +162,165 @@
 2025-06-22 21:38:43,107 - __main__ - INFO - PokerBot stopped by user.
 2025-06-22 21:38:43,108 - __main__ - INFO - PokerBot main_loop ended.
 2025-06-22 21:38:43,109 - __main__ - INFO - Closing logger handlers.
+2025-06-22 21:42:23,788 - __main__ - WARNING - 'keyboard' library not found. Please install it with 'pip install keyboard' for kill switch support.
+2025-06-22 21:42:23,789 - __main__ - INFO - PokerBot started. Press Ctrl+C or Ctrl+Q to stop.
+2025-06-22 21:42:23,789 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:42:23,789 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:42:25,196 - __main__ - DEBUG - HTML length: 48877
+2025-06-22 21:42:25,220 - __main__ - INFO - Starting to track new hand: 11527826001
+2025-06-22 21:42:26,192 - __main__ - INFO - My turn. Hand: ['Q♠', 'A♣'], Rank: AQ offsuit, Stack: €5.75, Bet to call: 0.10 Opponent Stacks: [ThinMan238: €10.99, Jivanmukta: €0, TheBox: €9.41, EmVeee: €10.53, viejojhon10: €10.99]
+2025-06-22 21:42:26,193 - __main__ - INFO - Pot: €0.15, Community Cards: []
+2025-06-22 21:42:26,228 - __main__ - INFO - Decision: raise Amount: 0.30
+2025-06-22 21:42:32,072 - __main__ - INFO - PokerBot stopped by user.
+2025-06-22 21:42:32,072 - __main__ - INFO - PokerBot main_loop ended.
+2025-06-22 21:42:32,073 - __main__ - INFO - Closing logger handlers.
+2025-06-22 21:42:54,192 - __main__ - WARNING - 'keyboard' library not found. Please install it with 'pip install keyboard' for kill switch support.
+2025-06-22 21:42:54,193 - __main__ - INFO - PokerBot started. Press Ctrl+C or Ctrl+Q to stop.
+2025-06-22 21:42:54,193 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:42:54,193 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:42:55,603 - __main__ - DEBUG - HTML length: 46323
+2025-06-22 21:42:55,629 - __main__ - INFO - Starting to track new hand: 11527826458
+2025-06-22 21:42:56,482 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-22 21:42:57,483 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:42:57,483 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:42:58,889 - __main__ - DEBUG - HTML length: 46631
+2025-06-22 21:43:00,081 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-22 21:43:01,081 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:43:01,081 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:43:02,486 - __main__ - DEBUG - HTML length: 46169
+2025-06-22 21:43:03,617 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-22 21:43:04,617 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:43:04,618 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:43:06,022 - __main__ - DEBUG - HTML length: 47114
+2025-06-22 21:43:07,171 - __main__ - INFO - My turn. Hand: ['3♣', 'A♥'], Rank: A3 offsuit, Stack: €5.80, Bet to call: 0.15 Opponent Stacks: [ThinMan238: €10.74, Jivanmukta: €0, TheBox: €9.41, EmVeee: €10.53, viejojhon10: €10.94]
+2025-06-22 21:43:07,172 - __main__ - INFO - Pot: €0.40, Community Cards: []
+2025-06-22 21:43:07,336 - __main__ - INFO - Decision: call Amount: 0.15
+2025-06-22 21:43:13,812 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:43:13,813 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:43:15,234 - __main__ - DEBUG - HTML length: 47522
+2025-06-22 21:43:16,447 - __main__ - INFO - My turn. Hand: ['3♣', 'A♥'], Rank: High Card, Stack: €5.65, Bet to call: 0.00 Opponent Stacks: [ThinMan238: €10.74, Jivanmukta: €0, TheBox: €9.41, EmVeee: €10.53, viejojhon10: €10.94]
+2025-06-22 21:43:16,448 - __main__ - INFO - Pot: €0.55, Community Cards: ['9♦', 'Q♠', '5♥']
+2025-06-22 21:43:16,518 - __main__ - INFO - Decision: check Amount: 0.00
+2025-06-22 21:43:22,977 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:43:22,978 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:43:24,387 - __main__ - DEBUG - HTML length: 47838
+2025-06-22 21:43:25,566 - __main__ - INFO - My turn. Hand: ['3♣', 'A♥'], Rank: One Pair, As, Stack: €5.65, Bet to call: 0.00 Opponent Stacks: [ThinMan238: €10.74, Jivanmukta: €0, TheBox: €9.41, EmVeee: €10.53, viejojhon10: €10.94]
+2025-06-22 21:43:25,566 - __main__ - INFO - Pot: €0.55, Community Cards: ['9♦', 'Q♠', '5♥', 'A♠']
+2025-06-22 21:43:25,587 - __main__ - INFO - Decision: raise Amount: 0.33
+2025-06-22 21:43:34,716 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:43:34,716 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:43:36,116 - __main__ - DEBUG - HTML length: 51246
+2025-06-22 21:43:36,139 - __main__ - INFO - Starting to track new hand: 11527826975
+2025-06-22 21:43:37,316 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-22 21:43:38,316 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:43:38,318 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:43:39,741 - __main__ - DEBUG - HTML length: 47471
+2025-06-22 21:43:40,919 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-22 21:43:41,920 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:43:41,922 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:43:43,333 - __main__ - DEBUG - HTML length: 47384
+2025-06-22 21:43:44,424 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-22 21:43:45,425 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:43:45,427 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:43:46,847 - __main__ - DEBUG - HTML length: 46726
+2025-06-22 21:43:48,186 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-22 21:43:49,187 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:43:49,188 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:43:50,601 - __main__ - DEBUG - HTML length: 47768
+2025-06-22 21:43:51,725 - __main__ - INFO - My turn. Hand: ['6♥', 'K♥'], Rank: K6 suited, Stack: €6.12, Bet to call: 0.18 Opponent Stacks: [ThinMan238: €10.51, Jivanmukta: €0, TheBox: €9.41, EmVeee: €10.43, viejojhon10: €10.94]
+2025-06-22 21:43:51,726 - __main__ - INFO - Pot: €0.38, Community Cards: []
+2025-06-22 21:43:51,752 - __main__ - INFO - Decision: raise Amount: 0.69
+2025-06-22 21:44:00,878 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:44:00,879 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:44:02,285 - __main__ - DEBUG - HTML length: 47620
+2025-06-22 21:44:03,453 - __main__ - INFO - My turn. Hand: ['6♥', 'K♥'], Rank: One Pair, Ks, Stack: €5.48, Bet to call: 0.00 Opponent Stacks: [ThinMan238: €10.05, Jivanmukta: €0, TheBox: €9.41, EmVeee: €10.43, viejojhon10: €10.94]
+2025-06-22 21:44:03,454 - __main__ - INFO - Pot: €1.48, Community Cards: ['K♦', '10♦', '2♦']
+2025-06-22 21:44:03,502 - __main__ - INFO - Decision: raise Amount: 0.83
+2025-06-22 21:44:12,636 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:44:12,636 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:44:14,045 - __main__ - DEBUG - HTML length: 48336
+2025-06-22 21:44:15,053 - __main__ - INFO - My turn. Hand: ['6♥', 'K♥'], Rank: One Pair, Ks, Stack: €4.65, Bet to call: 0.00 Opponent Stacks: [ThinMan238: €9.22, Jivanmukta: €0, TheBox: €9.41, EmVeee: €10.43, viejojhon10: €10.94]
+2025-06-22 21:44:15,054 - __main__ - INFO - Pot: €3.14, Community Cards: ['K♦', '10♦', '2♦', '7♦', '3♣']
+2025-06-22 21:44:15,080 - __main__ - INFO - Decision: check Amount: 0.00
+2025-06-22 21:44:21,547 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:44:21,548 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:44:22,948 - __main__ - DEBUG - HTML length: 46293
+2025-06-22 21:44:22,971 - __main__ - INFO - Starting to track new hand: 11527830525
+2025-06-22 21:44:23,831 - __main__ - INFO - PokerBot stopped by user.
+2025-06-22 21:44:23,832 - __main__ - INFO - PokerBot main_loop ended.
+2025-06-22 21:44:23,832 - __main__ - INFO - Closing logger handlers.
+2025-06-22 21:48:43,349 - __main__ - WARNING - 'keyboard' library not found. Please install it with 'pip install keyboard' for kill switch support.
+2025-06-22 21:48:43,350 - __main__ - INFO - PokerBot started. Press Ctrl+C or Ctrl+Q to stop.
+2025-06-22 21:48:43,350 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:48:43,351 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:48:44,762 - __main__ - DEBUG - HTML length: 47857
+2025-06-22 21:48:44,782 - __main__ - INFO - Starting to track new hand: 11527843133
+2025-06-22 21:48:45,581 - __main__ - INFO - My turn. Hand: ['Q♦', '10♠'], Rank: One Pair, 10s, Stack: €4.30, Bet to call: 0.00 Opponent Stacks: [ThinMan238: €9.75, Jivanmukta: €0, TheBox: €9.35, EmVeee: €19.37, viejojhon10: €11.26]
+2025-06-22 21:48:45,581 - __main__ - INFO - Pot: €0.60, Community Cards: ['3♣', '10♥', 'J♥', '5♦']
+2025-06-22 21:48:45,603 - __main__ - INFO - Decision: raise Amount: 0.36
+2025-06-22 21:48:54,718 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:48:54,718 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:48:56,147 - __main__ - DEBUG - HTML length: 45061
+2025-06-22 21:48:57,179 - __main__ - INFO - Not my turn. My Hand: ['Q♦', '10♠']. Stack: €4.30. Opponent Stacks: [ThinMan238: €9.75, Jivanmukta: €0, TheBox: €9.35, EmVeee: €19.37, viejojhon10: €11.26]. Waiting...
+2025-06-22 21:48:58,180 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 21:48:58,180 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 21:48:59,583 - __main__ - DEBUG - HTML length: 46301
+2025-06-22 21:48:59,607 - __main__ - INFO - Starting to track new hand: 11527844666
+2025-06-22 21:49:00,612 - __main__ - INFO - PokerBot stopped by user.
+2025-06-22 21:49:00,612 - __main__ - INFO - PokerBot main_loop ended.
+2025-06-22 21:49:00,613 - __main__ - INFO - Closing logger handlers.
+2025-06-22 22:03:04,632 - __main__ - WARNING - 'keyboard' library not found. Please install it with 'pip install keyboard' for kill switch support.
+2025-06-22 22:03:04,633 - __main__ - INFO - PokerBot started. Press Ctrl+C or Ctrl+Q to stop.
+2025-06-22 22:03:04,633 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 22:03:04,633 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 22:03:06,044 - __main__ - DEBUG - HTML length: 47224
+2025-06-22 22:03:06,068 - __main__ - INFO - Starting to track new hand: 11527885489
+2025-06-22 22:03:06,864 - __main__ - WARNING - Player N/A (Seat 1, ID 1) in p_copy is missing 'position' or it is empty. Defaulting to 'Unknown'.
+2025-06-22 22:03:06,865 - __main__ - INFO - My turn. Hand: ['A♠', '7♠'], Rank: Two Pair, As and 7s, Stack: €4.48, Bet to call: 0.00 Opponent Stacks: [ThinMan238: €11.22, TheBox: €8.48, Garfield13T: €9.90, viejojhon10: €10.62]
+2025-06-22 22:03:06,865 - __main__ - INFO - Pot: €1.28, Community Cards: ['7♦', '2♠', 'A♣', '2♣']
+2025-06-22 22:03:06,866 - __main__ - WARNING - Player N/A (Seat 1, ID 1) in p_copy is missing 'position' or it is empty. Defaulting to 'Unknown'.
+2025-06-22 22:03:06,889 - __main__ - INFO - Decision: raise Amount: 0.77
+2025-06-22 22:03:16,010 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 22:03:16,011 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 22:03:17,442 - __main__ - DEBUG - HTML length: 47539
+2025-06-22 22:03:18,561 - __main__ - WARNING - Player N/A (Seat 1, ID 1) in p_copy is missing 'position' or it is empty. Defaulting to 'Unknown'.
+2025-06-22 22:03:18,565 - __main__ - INFO - My turn. Hand: ['A♠', '7♠'], Rank: Two Pair, As and 7s, Stack: €3.71, Bet to call: 0.00 Opponent Stacks: [ThinMan238: €10.45, TheBox: €8.48, Garfield13T: €9.90, viejojhon10: €10.62]
+2025-06-22 22:03:18,565 - __main__ - INFO - Pot: €2.82, Community Cards: ['7♦', '2♠', 'A♣', '2♣', 'K♣']
+2025-06-22 22:03:18,565 - __main__ - WARNING - Player N/A (Seat 1, ID 1) in p_copy is missing 'position' or it is empty. Defaulting to 'Unknown'.
+2025-06-22 22:03:18,584 - __main__ - INFO - Decision: raise Amount: 1.80
+2025-06-22 22:03:27,658 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 22:03:27,660 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 22:03:29,084 - __main__ - DEBUG - HTML length: 46031
+2025-06-22 22:03:29,110 - __main__ - INFO - Starting to track new hand: 11527886187
+2025-06-22 22:03:30,255 - __main__ - WARNING - Player N/A (Seat 1, ID 1) in p_copy is missing 'position' or it is empty. Defaulting to 'Unknown'.
+2025-06-22 22:03:30,257 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-22 22:03:31,257 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 22:03:31,258 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-22 22:03:32,663 - __main__ - DEBUG - HTML length: 45952
+2025-06-22 22:03:33,801 - __main__ - WARNING - Player N/A (Seat 1, ID 1) in p_copy is missing 'position' or it is empty. Defaulting to 'Unknown'.
+2025-06-22 22:03:33,804 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-22 22:03:34,805 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-22 22:03:34,806 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...

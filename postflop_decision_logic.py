@@ -105,7 +105,8 @@ def make_postflop_decision(
     action_fold_const, action_check_const, action_call_const, action_raise_const,
     my_player_data, all_players_raw_data, big_blind_amount, base_aggression_factor,
     max_bet_on_table, active_opponents_count, opponent_tracker,
-    was_preflop_aggressor=False, action_history=None, aggression_history=None
+    was_preflop_aggressor=False, action_history=None, aggression_history=None,
+    preflop_category=None # <-- NEW ARGUMENT
 ):
     import logging
     logger = logging.getLogger(__name__)

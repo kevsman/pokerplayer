@@ -64,13 +64,13 @@ def get_preflop_hand_category(hole_cards, position): # Renamed parameters for cl
     logger.debug(f"Enter get_preflop_hand_category with hole_cards: {hole_cards}, position: {position}")
 
     if not isinstance(hole_cards, list) or len(hole_cards) != 2:
-        logger.error(f"Invalid hole_cards (expected list of 2 cards): {hole_cards}. Returning 'Weak'.")
-        return "Weak"
+        logger.error(f"Invalid hole_cards (expected list of 2 cards): {hole_cards}. Returning 'Trash'.")
+        return "Trash"
     
     # Ensure cards in hole_cards are strings before trying to get rank/suit
     if not all(isinstance(c, str) and len(c) >= 2 for c in hole_cards):
-        logger.error(f"Elements in hole_cards are not valid card strings: {hole_cards}. Returning 'Weak'.")
-        return "Weak"
+        logger.error(f"Elements in hole_cards are not valid card strings: {hole_cards}. Returning 'Trash'.")
+        return "Trash"
 
     # Normalize card strings before processing
     cards_to_process = normalize_card_list(hole_cards)
@@ -81,11 +81,11 @@ def get_preflop_hand_category(hole_cards, position): # Renamed parameters for cl
         rank1_val = _get_rank_value(cards_to_process[0])
         rank2_val = _get_rank_value(cards_to_process[1])
         if rank1_val == 0 or rank2_val == 0: 
-            logger.error(f"Failed to get valid rank values from cards: {cards_to_process}. Ranks: {rank1_val}, {rank2_val}. Returning 'Weak'.")
-            return "Weak"
+            logger.error(f"Failed to get valid rank values from cards: {cards_to_process}. Ranks: {rank1_val}, {rank2_val}. Returning 'Trash'.")
+            return "Trash"
     except Exception as e:
-        logger.error(f"Error extracting ranks from cards_to_process: {cards_to_process}. Error: {e}. Returning 'Weak'.")
-        return "Weak"
+        logger.error(f"Error extracting ranks from cards_to_process: {cards_to_process}. Error: {e}. Returning 'Trash'.")
+        return "Trash"
 
     if rank1_val < rank2_val:
         rank1_val, rank2_val = rank2_val, rank1_val
@@ -94,94 +94,59 @@ def get_preflop_hand_category(hole_cards, position): # Renamed parameters for cl
     is_pair = (rank1_val == rank2_val)
     # Suit check directly from hole_cards
     is_suited = (cards_to_process[0][-1].lower() == cards_to_process[1][-1].lower())
+    gap = rank1_val - rank2_val
 
     logger.debug(f"Calculated is_pair: {is_pair}, is_suited: {is_suited} (from hole_cards: {cards_to_process})")
 
-    # Premium hands - AA, KK, QQ, AK suited
-    if is_pair and rank1_val >= 12: # QQ, KK, AA (Q=12, K=13, A=14)
-        return "Premium Pair" 
-    if is_suited and rank1_val == 14 and rank2_val == 13: # AKs
-        return "Premium Pair" 
-    
-    # Strong hands - JJ, TT, AK offsuit, AQ suited
-    if is_pair and rank1_val >= 10: # TT, JJ (T=10, J=11)
-        return "Strong Pair" 
-    if not is_suited and rank1_val == 14 and rank2_val == 13: # AKo
-        return "Strong Pair" 
-    if is_suited and rank1_val == 14 and rank2_val == 12: # AQs
-        return "Strong Pair" 
-    if is_pair and rank1_val >= 8: # 88, 99 (8,9)
-        return "Strong Pair"
-      # Suited Ace hands (AJs down to A2s)
-    if is_suited and rank1_val == 14 and rank2_val >= 2 and rank2_val <= 11: # A2s-AJs
-        return "Suited Ace"
-        
-    # Playable Broadway suited (KQs specifically)
-    if is_suited and rank1_val == 13 and rank2_val == 12: # KQs
-        return "Playable Broadway"
-          # Suited Connectors / Gappers
-    if is_suited and (rank1_val - rank2_val) == 1 and rank1_val >= 6: # e.g. 76s, 87s, 98s, ..., QJs (excluding KQs which is Playable Broadway)
-        return "Suited Connector"
-    if is_suited and (rank1_val - rank2_val) == 2 and rank1_val >= 8: # e.g. 86s, 97s, T8s, ..., QTs
-        return "Suited Connector" # Or "Suited Gapper"
-    
-    # Offsuit Broadway hands (excluding AKo, which is Strong Pair)
-    if not is_suited and rank1_val >= 10 and rank2_val >= 10:
-        if not (rank1_val == 14 and rank2_val == 13): # Exclude AKo
-             return "Offsuit Broadway"
-             
-    # Medium Pairs
-    if is_pair and rank1_val >= 6 and rank1_val <= 7: # 66, 77
-        return "Medium Pair"
-        
-    # Suited Playable hands (e.g. K9s, Q8s, J7s, T7s etc. that are not connectors/Aces)
-    # These are hands with a high card and a decent suited kicker, not strong enough to be "Suited Ace"
-    # and not connected enough to be "Suited Connector".
-    if is_suited:
-        # Axs is "Suited Ace"
-        # Kxs (KQs, KJs are connectors)
-        if rank1_val == 13 and rank2_val <= 11 and not (rank1_val - rank2_val <= 2): # KTs down to K2s, excluding connectors
-            if rank2_val >= 5: return "Suited Playable" # K5s+ (K2s-K4s are weak)
-        # Qxs (QJs, QTs are connectors)
-        elif rank1_val == 12 and rank2_val <= 10 and not (rank1_val - rank2_val <= 2): # Q9s down to Q2s
-            if rank2_val >= 5: return "Suited Playable" # Q5s+        # Jxs (JTs, J9s are connectors/gappers)
-        elif rank1_val == 11 and rank2_val <= 9 and not (rank1_val - rank2_val <= 2): # J8s down to J2s
-            if rank2_val >= 6: return "Suited Playable" # J6s+ (J4s and J5s are too weak)        # Txs (T9s, T8s are connectors/gappers)
-        elif rank1_val == 10 and rank2_val <= 8 and not (rank1_val - rank2_val <= 2): # T7s down to T2s
-            if rank2_val >= 6: return "Suited Playable" # T6s+ (T4s and T5s are too weak)
-        # 9xs (98s, 97s are connectors/gappers)
-        elif rank1_val == 9 and rank2_val <= 7 and not (rank1_val - rank2_val <= 2): # 96s down to 92s
-            if rank2_val >= 6: return "Suited Playable" # 96s+ (94s and 95s are too weak)
-              # Offsuit Playable hands (e.g. A9o, KTo, QTo, JTo, T9o that are not "Offsuit Broadway")
-    # These are hands with a high card and a decent offsuit kicker.
-    if not is_suited:
-        # Axs (AKo, AQo are "Strong Pair")
-        if rank1_val == 14 and rank2_val <= 11: # AJo, ATo, A9o...A2o
-            if rank2_val >= 5: return "Offsuit Playable" # A5o+ (widened for late position)
-        # Kxs (KQo, KJo, KTo are "Offsuit Broadway")
-        elif rank1_val == 13 and rank2_val <= 9: # K9o...K2o
-            if rank2_val >= 7: return "Offsuit Playable" # K7o+
-        # Qxs (QJo, QTo are "Offsuit Broadway")
-        elif rank1_val == 12 and rank2_val <= 9: # Q9o...Q2o (QTo is Offsuit Broadway)
-            if rank2_val >= 6: return "Offsuit Playable" # Q6o+
-        # Jxs (JTo is "Offsuit Broadway")
-        elif rank1_val == 11 and rank2_val <= 8: # J9o...J2o
-            if rank2_val >= 6: return "Offsuit Playable" # J6o+
-        # Txs
-        elif rank1_val == 10 and rank2_val <= 7: # T9o is often played, T8o, T7o
-            if rank2_val >= 6: return "Offsuit Playable" # T6o+
+    # 1. Premium Hands: AA, KK, QQ, AKs, AKo
+    if is_pair and rank1_val >= 12: # AA, KK, QQ
+        return "Premium"
+    if rank1_val == 14 and rank2_val == 13: # AKs, AKo
+        return "Premium"
 
-    # Small Pairs (22-55)
-    if is_pair and rank1_val <= 5:
+    # 2. Strong Hands: JJ, TT, AQs, AQo, KQs
+    if is_pair and rank1_val >= 10: # JJ, TT
+        return "Strong"
+    if rank1_val == 14 and rank2_val == 12: # AQs, AQo
+        return "Strong"
+    if is_suited and rank1_val == 13 and rank2_val == 12: # KQs
+        return "Strong"
+
+    # 3. Medium Pairs: 99, 88, 77
+    if is_pair and rank1_val >= 7: # 99, 88, 77
+        return "Medium Pair"
+
+    # 4. Small Pairs: 66-22
+    if is_pair and rank1_val < 7: # 66, 55, 44, 33, 22
         return "Small Pair"
 
-    # Marginal hands: slightly better than trash, e.g. Q6s, J7o, T8o, etc.
-    if is_suited:
-        if (rank1_val == 12 and rank2_val == 4) or (rank1_val == 11 and rank2_val == 5):
-            return "Marginal"
-    else:
-        if (rank1_val == 12 and rank2_val == 5) or (rank1_val == 11 and rank2_val == 6) or (rank1_val == 10 and rank2_val == 7):
-            return "Marginal"
+    # 5. Suited Aces: AJs-A2s
+    if is_suited and rank1_val == 14:
+        return "Suited Ace"
 
-    # Trash hands: everything else
+    # 6. Suited Broadway: KJs, KTs, QJs, QTs, JTs
+    if is_suited and rank1_val >= 11 and rank2_val >= 10:
+        return "Suited Broadway"
+
+    # 7. Offsuit Broadway: KQo, KJo, KTo, QJo, QTo, JTo
+    if not is_suited and rank1_val >= 10 and rank2_val >= 10:
+        return "Offsuit Broadway"
+
+    # 8. Suited Connectors: T9s, 98s, 87s, 76s, 65s, 54s
+    if is_suited and gap == 1 and rank1_val < 11:
+        return "Suited Connector"
+
+    # 9. Suited Gappers: K9s, Q9s, J9s, T8s, 97s, 86s, 75s, 64s
+    if is_suited and gap >= 2 and rank1_val >= 9 and rank2_val >= 4:
+        return "Suited Gapper"
+
+    # 10. Offsuit Aces: AJo-A2o
+    if not is_suited and rank1_val == 14:
+        return "Offsuit Ace"
+
+    # 11. Offsuit Kings: K9o-K2o
+    if not is_suited and rank1_val == 13:
+        return "Offsuit King"
+
+    # All other hands are considered Trash
     return "Trash"
