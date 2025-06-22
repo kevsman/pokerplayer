@@ -600,42 +600,43 @@ class PokerPageParser:
                         
                         if dealer_idx == -1:
                             self.logger.warning(f"Dealer seat {dealer_seat} not found among active players. Using first active player as fallback.")
-                            # Fallback: use the first active player as dealer
                             dealer_idx = 0
                             self.logger.info(f"Using player in seat {active_players[0]['seat']} as dealer (fallback)")
-                        
-                        # Assign positions based on number of players
+                        # --- Robust fallback: assign positions in round-robin if still missing ---
+                        assigned_positions = set()
+                        # Standard assignment as before
                         if num_players == 2:
-                            # Heads-up: Dealer is SB, other is BB
-                            active_players[dealer_idx]['position'] = "SB"
-                            active_players[(dealer_idx + 1) % num_players]['position'] = "BB"
+                            active_players[dealer_idx]['position'] = "SB"; assigned_positions.add("SB")
+                            active_players[(dealer_idx + 1) % num_players]['position'] = "BB"; assigned_positions.add("BB")
                         elif num_players > 2:
-                            # Multi-way: assign standard positions
-                            active_players[dealer_idx]['position'] = "BTN"
-                            active_players[(dealer_idx + 1) % num_players]['position'] = "SB"
-                            active_players[(dealer_idx + 2) % num_players]['position'] = "BB"
-
+                            active_players[dealer_idx]['position'] = "BTN"; assigned_positions.add("BTN")
+                            active_players[(dealer_idx + 1) % num_players]['position'] = "SB"; assigned_positions.add("SB")
+                            active_players[(dealer_idx + 2) % num_players]['position'] = "BB"; assigned_positions.add("BB")
                             if num_players == 3:
-                                pass  # Only BTN, SB, BB
+                                pass
                             elif num_players == 4:
-                                active_players[(dealer_idx + 3) % num_players]['position'] = "UTG"
+                                active_players[(dealer_idx + 3) % num_players]['position'] = "UTG"; assigned_positions.add("UTG")
                             elif num_players == 5:
-                                active_players[(dealer_idx + 3) % num_players]['position'] = "UTG"
-                                active_players[(dealer_idx + 4) % num_players]['position'] = "CO"
+                                active_players[(dealer_idx + 3) % num_players]['position'] = "UTG"; assigned_positions.add("UTG")
+                                active_players[(dealer_idx + 4) % num_players]['position'] = "CO"; assigned_positions.add("CO")
                             elif num_players >= 6:
-                                active_players[(dealer_idx + 3) % num_players]['position'] = "UTG"
+                                active_players[(dealer_idx + 3) % num_players]['position'] = "UTG"; assigned_positions.add("UTG")
                                 co_idx = (dealer_idx - 1 + num_players) % num_players
-                                active_players[co_idx]['position'] = "CO"
-                                
-                                # Assign MP to players between UTG and CO
+                                active_players[co_idx]['position'] = "CO"; assigned_positions.add("CO")
                                 current_idx = (dealer_idx + 4) % num_players
                                 while current_idx != co_idx:
                                     if 'position' not in active_players[current_idx]:
-                                        active_players[current_idx]['position'] = "MP"
+                                        active_players[current_idx]['position'] = "MP"; assigned_positions.add("MP")
                                     current_idx = (current_idx + 1) % num_players
-                                    if current_idx == dealer_idx:  # Safety check
+                                    if current_idx == dealer_idx:
                                         break
-                        
+                        # --- Fallback: assign any missing positions in round-robin order ---
+                        fallback_positions = ["BTN", "SB", "BB", "UTG", "CO", "MP"]
+                        for i, p in enumerate(active_players):
+                            if 'position' not in p:
+                                pos = fallback_positions[i % len(fallback_positions)]
+                                p['position'] = pos
+                                self.logger.warning(f"Fallback: Assigned position {pos} to player {p.get('name', 'Unknown')} in seat {p.get('seat')}")
                         # Log position assignments
                         for p in active_players:
                             pos = p.get('position', 'Unknown')

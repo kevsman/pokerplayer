@@ -713,6 +713,26 @@ def make_postflop_decision(
                 logger.info(f"Decision: {action_fold_const} (Very weak hand, folding to bet)")
                 return action_fold_const, 0
 
+    # --- Extra safeguard: Avoid overcommitting with Two Pair or similar hands on dangerous boards ---
+    if hand_description and 'Two Pair' in hand_description:
+        # If board is coordinated (3+ to straight/flush) or facing large bet, avoid all-in
+        board_is_coordinated = False
+        if community_cards:
+            suits = [c[-1] for c in community_cards if len(c) > 1]
+            ranks = [c[:-1] for c in community_cards if len(c) > 1]
+            if len(set(suits)) <= 2 and len(suits) >= 4:
+                board_is_coordinated = True  # Possible flush
+            rank_values = sorted(["--A23456789TJQK".index(r) for r in ranks if r in "A23456789TJQK"])
+            if len(rank_values) >= 4 and max(rank_values) - min(rank_values) <= 4:
+                board_is_coordinated = True  # Possible straight
+        large_bet = bet_to_call > pot_size * 0.4 or bet_to_call > my_stack * 0.4
+        if board_is_coordinated or large_bet:
+            logger.info(f"Two Pair on coordinated board or facing large bet. Avoiding stack commitment. Action: CALL or FOLD.")
+            if win_probability > 0.5 and bet_to_call <= my_stack * 0.5:
+                return action_call_const, bet_to_call
+            else:
+                return action_fold_const, 0
+
     # After all advanced strategy variables are set and before making a final decision:
     # --- Use improved drawing hand analysis for all drawing hands ---
     if hand_strength_final_decision == 'drawing':

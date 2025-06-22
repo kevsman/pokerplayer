@@ -869,6 +869,33 @@ def make_preflop_decision(
         preflop_logger.info(f"[IMPROVED DEFAULT CALL] {my_player['hand']} in {position}, default call")
         persist_opponents(); return action_call_const, bet_to_call
 
+    # --- Explicit handling for 'Trash' hand category ---
+    if preflop_category == "Trash":
+        preflop_logger.info(f"Entered Trash hand category for {preflop_category} in {position} with hand {my_player['hand']}")
+        # Only call in BB if pot odds are exceptional, otherwise always fold
+        if is_bb and bet_to_call == 0 and can_check:
+            preflop_logger.info(f"Trash hand in BB, no bet to call. Action: CHECK.")
+            persist_opponents(); return action_check_const, 0
+        elif is_bb and bet_to_call > 0:
+            pot_odds = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 1
+            try:
+                eq_calc = EquityCalculator()
+                hero_hand = my_player['hand']
+                community_cards = []
+                num_opps = active_opponents_count if active_opponents_count > 0 else 1
+                win_probability = eq_calc.calculate_win_probability(hero_hand, community_cards, num_opps)
+                preflop_logger.info(f"[TRASH HAND WIN PROB] {hero_hand} in {position}, win_prob={win_probability:.2%}, pot_odds={pot_odds:.2%}")
+            except Exception as e:
+                win_probability = 0.0
+                preflop_logger.warning(f"Win probability calculation failed: {e}")
+            # Only call if win probability is much higher than pot odds
+            if win_probability > pot_odds + 0.15 and win_probability > 0.35:
+                preflop_logger.info(f"[TRASH HAND CALL] {hero_hand} in {position}, calling with exceptional pot odds and win_prob.")
+                persist_opponents(); return action_call_const, bet_to_call
+        # Otherwise always fold Trash hands
+        preflop_logger.info(f"Trash hand in {position}, folding. Action: FOLD.")
+        persist_opponents(); return action_fold_const, 0
+
     # Fallback for unhandled preflop categories or logic fall-through
     print(f"WARNING: Unhandled preflop_category '{preflop_category}' or major logic fall-through in make_preflop_decision. Defaulting to FOLD.")
     preflop_logger.warning(f"Unhandled preflop_category '{preflop_category}' or major logic fall-through in make_preflop_decision. Defaulting to FOLD.")
