@@ -1,4 +1,257 @@
 {
+  "N/A": {
+    "player_name": "N/A",
+    "max_hands_tracked": 150,
+    "hands_played": 0,
+    "hands_seen": 2,
+    "preflop_raises": 0,
+    "preflop_calls": 0,
+    "preflop_folds": 0,
+    "vpip": 0.0,
+    "pfr": 0.0,
+    "three_bet": 0.0,
+    "fold_to_three_bet": 0.0,
+    "position_stats": {
+      "BTN": {
+        "hands": 1,
+        "raises": 0,
+        "calls": 0,
+        "folds": 0,
+        "vpip": 0.0,
+        "pfr": 0.0,
+        "steal_attempt": 0,
+        "fold_to_steal": 0
+      },
+      "BB": {
+        "hands": 1,
+        "raises": 0,
+        "calls": 0,
+        "folds": 0,
+        "vpip": 0.0,
+        "pfr": 0.0,
+        "steal_attempt": 0,
+        "fold_to_steal": 0
+      }
+    },
+    "postflop_bets": 0,
+    "postflop_raises": 0,
+    "postflop_calls": 0,
+    "postflop_checks": 0,
+    "postflop_folds": 0,
+    "aggression_factor": 0.0,
+    "fold_to_cbet": 0.0,
+    "cbet_frequency": 0.0,
+    "street_tendencies": {
+      "flop": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "turn": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "river": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      }
+    },
+    "recent_actions": [
+      {
+        "street": "preflop",
+        "action": "bet",
+        "position": "BTN",
+        "bet_size_ratio": 0.2727272727272727
+      },
+      {
+        "street": "preflop",
+        "action": "bet",
+        "position": "BB",
+        "bet_size_ratio": 0.09090909090909091
+      }
+    ],
+    "showdown_hands": [],
+    "bet_sizes": {
+      "preflop_open": [],
+      "preflop_3bet": [],
+      "preflop_4bet": [],
+      "flop_bet": [],
+      "flop_raise": [],
+      "turn_bet": [],
+      "turn_raise": [],
+      "river_bet": [],
+      "river_raise": []
+    },
+    "is_tight": false,
+    "is_loose": false,
+    "is_passive": false,
+    "is_aggressive": false,
+    "is_calling_station": false,
+    "is_maniac": false,
+    "is_rock": false,
+    "is_tag": false,
+    "is_lag": false
+  },
+  "yollky": {
+    "player_name": "yollky",
+    "max_hands_tracked": 150,
+    "hands_played": 0,
+    "hands_seen": 1,
+    "preflop_raises": 0,
+    "preflop_calls": 0,
+    "preflop_folds": 0,
+    "vpip": 0.0,
+    "pfr": 0.0,
+    "three_bet": 0.0,
+    "fold_to_three_bet": 0.0,
+    "position_stats": {
+      "SB": {
+        "hands": 1,
+        "raises": 0,
+        "calls": 0,
+        "folds": 0,
+        "vpip": 0.0,
+        "pfr": 0.0,
+        "steal_attempt": 0,
+        "fold_to_steal": 0
+      }
+    },
+    "postflop_bets": 0,
+    "postflop_raises": 0,
+    "postflop_calls": 0,
+    "postflop_checks": 0,
+    "postflop_folds": 0,
+    "aggression_factor": 0.0,
+    "fold_to_cbet": 0.0,
+    "cbet_frequency": 0.0,
+    "street_tendencies": {
+      "flop": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "turn": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "river": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      }
+    },
+    "recent_actions": [
+      {
+        "street": "preflop",
+        "action": "bet",
+        "position": "SB",
+        "bet_size_ratio": 0.33333333333333337
+      }
+    ],
+    "showdown_hands": [],
+    "bet_sizes": {
+      "preflop_open": [],
+      "preflop_3bet": [],
+      "preflop_4bet": [],
+      "flop_bet": [],
+      "flop_raise": [],
+      "turn_bet": [],
+      "turn_raise": [],
+      "river_bet": [],
+      "river_raise": []
+    },
+    "is_tight": false,
+    "is_loose": false,
+    "is_passive": false,
+    "is_aggressive": false,
+    "is_calling_station": false,
+    "is_maniac": false,
+    "is_rock": false,
+    "is_tag": false,
+    "is_lag": false
+  },
+  "0IQmove": {
+    "player_name": "0IQmove",
+    "max_hands_tracked": 150,
+    "hands_played": 0,
+    "hands_seen": 1,
+    "preflop_raises": 0,
+    "preflop_calls": 0,
+    "preflop_folds": 0,
+    "vpip": 0.0,
+    "pfr": 0.0,
+    "three_bet": 0.0,
+    "fold_to_three_bet": 0.0,
+    "position_stats": {
+      "BB": {
+        "hands": 1,
+        "raises": 0,
+        "calls": 0,
+        "folds": 0,
+        "vpip": 0.0,
+        "pfr": 0.0,
+        "steal_attempt": 0,
+        "fold_to_steal": 0
+      }
+    },
+    "postflop_bets": 0,
+    "postflop_raises": 0,
+    "postflop_calls": 0,
+    "postflop_checks": 0,
+    "postflop_folds": 0,
+    "aggression_factor": 0.0,
+    "fold_to_cbet": 0.0,
+    "cbet_frequency": 0.0,
+    "street_tendencies": {
+      "flop": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "turn": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "river": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      }
+    },
+    "recent_actions": [
+      {
+        "street": "preflop",
+        "action": "bet",
+        "position": "BB",
+        "bet_size_ratio": 0.6666666666666667
+      }
+    ],
+    "showdown_hands": [],
+    "bet_sizes": {
+      "preflop_open": [],
+      "preflop_3bet": [],
+      "preflop_4bet": [],
+      "flop_bet": [],
+      "flop_raise": [],
+      "turn_bet": [],
+      "turn_raise": [],
+      "river_bet": [],
+      "river_raise": []
+    },
+    "is_tight": false,
+    "is_loose": false,
+    "is_passive": false,
+    "is_aggressive": false,
+    "is_calling_station": false,
+    "is_maniac": false,
+    "is_rock": false,
+    "is_tag": false,
+    "is_lag": false
+  },
   "Roos71": {
     "player_name": "Roos71",
     "max_hands_tracked": 150,
@@ -307,101 +560,6 @@
         "action": "bet",
         "position": "SB",
         "bet_size_ratio": 0.33333333333333337
-      }
-    ],
-    "showdown_hands": [],
-    "bet_sizes": {
-      "preflop_open": [],
-      "preflop_3bet": [],
-      "preflop_4bet": [],
-      "flop_bet": [],
-      "flop_raise": [],
-      "turn_bet": [],
-      "turn_raise": [],
-      "river_bet": [],
-      "river_raise": []
-    },
-    "is_tight": false,
-    "is_loose": false,
-    "is_passive": false,
-    "is_aggressive": false,
-    "is_calling_station": false,
-    "is_maniac": false,
-    "is_rock": false,
-    "is_tag": false,
-    "is_lag": false
-  },
-  "N/A": {
-    "player_name": "N/A",
-    "max_hands_tracked": 150,
-    "hands_played": 0,
-    "hands_seen": 2,
-    "preflop_raises": 0,
-    "preflop_calls": 0,
-    "preflop_folds": 0,
-    "vpip": 0.0,
-    "pfr": 0.0,
-    "three_bet": 0.0,
-    "fold_to_three_bet": 0.0,
-    "position_stats": {
-      "BTN": {
-        "hands": 1,
-        "raises": 0,
-        "calls": 0,
-        "folds": 0,
-        "vpip": 0.0,
-        "pfr": 0.0,
-        "steal_attempt": 0,
-        "fold_to_steal": 0
-      },
-      "BB": {
-        "hands": 1,
-        "raises": 0,
-        "calls": 0,
-        "folds": 0,
-        "vpip": 0.0,
-        "pfr": 0.0,
-        "steal_attempt": 0,
-        "fold_to_steal": 0
-      }
-    },
-    "postflop_bets": 0,
-    "postflop_raises": 0,
-    "postflop_calls": 0,
-    "postflop_checks": 0,
-    "postflop_folds": 0,
-    "aggression_factor": 0.0,
-    "fold_to_cbet": 0.0,
-    "cbet_frequency": 0.0,
-    "street_tendencies": {
-      "flop": {
-        "aggression": 0.0,
-        "fold_to_bet": 0.0,
-        "bet_frequency": 0.0
-      },
-      "turn": {
-        "aggression": 0.0,
-        "fold_to_bet": 0.0,
-        "bet_frequency": 0.0
-      },
-      "river": {
-        "aggression": 0.0,
-        "fold_to_bet": 0.0,
-        "bet_frequency": 0.0
-      }
-    },
-    "recent_actions": [
-      {
-        "street": "preflop",
-        "action": "bet",
-        "position": "BTN",
-        "bet_size_ratio": 0.2727272727272727
-      },
-      {
-        "street": "preflop",
-        "action": "bet",
-        "position": "BB",
-        "bet_size_ratio": 0.09090909090909091
       }
     ],
     "showdown_hands": [],
@@ -4945,8 +5103,166 @@
     "is_tag": false,
     "is_lag": false
   },
-  "yollky": {
-    "player_name": "yollky",
+  "AveFortuna": {
+    "player_name": "AveFortuna",
+    "max_hands_tracked": 150,
+    "hands_played": 0,
+    "hands_seen": 1,
+    "preflop_raises": 0,
+    "preflop_calls": 0,
+    "preflop_folds": 0,
+    "vpip": 0.0,
+    "pfr": 0.0,
+    "three_bet": 0.0,
+    "fold_to_three_bet": 0.0,
+    "position_stats": {
+      "BB": {
+        "hands": 1,
+        "raises": 0,
+        "calls": 0,
+        "folds": 0,
+        "vpip": 0.0,
+        "pfr": 0.0,
+        "steal_attempt": 0,
+        "fold_to_steal": 0
+      }
+    },
+    "postflop_bets": 0,
+    "postflop_raises": 0,
+    "postflop_calls": 0,
+    "postflop_checks": 0,
+    "postflop_folds": 0,
+    "aggression_factor": 0.0,
+    "fold_to_cbet": 0.0,
+    "cbet_frequency": 0.0,
+    "street_tendencies": {
+      "flop": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "turn": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "river": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      }
+    },
+    "recent_actions": [
+      {
+        "street": "preflop",
+        "action": "bet",
+        "position": "BB",
+        "bet_size_ratio": 0.6666666666666667
+      }
+    ],
+    "showdown_hands": [],
+    "bet_sizes": {
+      "preflop_open": [],
+      "preflop_3bet": [],
+      "preflop_4bet": [],
+      "flop_bet": [],
+      "flop_raise": [],
+      "turn_bet": [],
+      "turn_raise": [],
+      "river_bet": [],
+      "river_raise": []
+    },
+    "is_tight": false,
+    "is_loose": false,
+    "is_passive": false,
+    "is_aggressive": false,
+    "is_calling_station": false,
+    "is_maniac": false,
+    "is_rock": false,
+    "is_tag": false,
+    "is_lag": false
+  },
+  "Stewe": {
+    "player_name": "Stewe",
+    "max_hands_tracked": 150,
+    "hands_played": 0,
+    "hands_seen": 1,
+    "preflop_raises": 0,
+    "preflop_calls": 0,
+    "preflop_folds": 0,
+    "vpip": 0.0,
+    "pfr": 0.0,
+    "three_bet": 0.0,
+    "fold_to_three_bet": 0.0,
+    "position_stats": {
+      "BB": {
+        "hands": 1,
+        "raises": 0,
+        "calls": 0,
+        "folds": 0,
+        "vpip": 0.0,
+        "pfr": 0.0,
+        "steal_attempt": 0,
+        "fold_to_steal": 0
+      }
+    },
+    "postflop_bets": 0,
+    "postflop_raises": 0,
+    "postflop_calls": 0,
+    "postflop_checks": 0,
+    "postflop_folds": 0,
+    "aggression_factor": 0.0,
+    "fold_to_cbet": 0.0,
+    "cbet_frequency": 0.0,
+    "street_tendencies": {
+      "flop": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "turn": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "river": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      }
+    },
+    "recent_actions": [
+      {
+        "street": "preflop",
+        "action": "bet",
+        "position": "BB",
+        "bet_size_ratio": 0.6666666666666667
+      }
+    ],
+    "showdown_hands": [],
+    "bet_sizes": {
+      "preflop_open": [],
+      "preflop_3bet": [],
+      "preflop_4bet": [],
+      "flop_bet": [],
+      "flop_raise": [],
+      "turn_bet": [],
+      "turn_raise": [],
+      "river_bet": [],
+      "river_raise": []
+    },
+    "is_tight": false,
+    "is_loose": false,
+    "is_passive": false,
+    "is_aggressive": false,
+    "is_calling_station": false,
+    "is_maniac": false,
+    "is_rock": false,
+    "is_tag": false,
+    "is_lag": false
+  },
+  "fishshort93": {
+    "player_name": "fishshort93",
     "max_hands_tracked": 150,
     "hands_played": 0,
     "hands_seen": 1,
@@ -5000,6 +5316,322 @@
         "action": "bet",
         "position": "SB",
         "bet_size_ratio": 0.33333333333333337
+      }
+    ],
+    "showdown_hands": [],
+    "bet_sizes": {
+      "preflop_open": [],
+      "preflop_3bet": [],
+      "preflop_4bet": [],
+      "flop_bet": [],
+      "flop_raise": [],
+      "turn_bet": [],
+      "turn_raise": [],
+      "river_bet": [],
+      "river_raise": []
+    },
+    "is_tight": false,
+    "is_loose": false,
+    "is_passive": false,
+    "is_aggressive": false,
+    "is_calling_station": false,
+    "is_maniac": false,
+    "is_rock": false,
+    "is_tag": false,
+    "is_lag": false
+  },
+  "ElPezEspada": {
+    "player_name": "ElPezEspada",
+    "max_hands_tracked": 150,
+    "hands_played": 0,
+    "hands_seen": 1,
+    "preflop_raises": 0,
+    "preflop_calls": 0,
+    "preflop_folds": 0,
+    "vpip": 0.0,
+    "pfr": 0.0,
+    "three_bet": 0.0,
+    "fold_to_three_bet": 0.0,
+    "position_stats": {
+      "BB": {
+        "hands": 1,
+        "raises": 0,
+        "calls": 0,
+        "folds": 0,
+        "vpip": 0.0,
+        "pfr": 0.0,
+        "steal_attempt": 0,
+        "fold_to_steal": 0
+      }
+    },
+    "postflop_bets": 0,
+    "postflop_raises": 0,
+    "postflop_calls": 0,
+    "postflop_checks": 0,
+    "postflop_folds": 0,
+    "aggression_factor": 0.0,
+    "fold_to_cbet": 0.0,
+    "cbet_frequency": 0.0,
+    "street_tendencies": {
+      "flop": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "turn": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "river": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      }
+    },
+    "recent_actions": [
+      {
+        "street": "preflop",
+        "action": "bet",
+        "position": "BB",
+        "bet_size_ratio": 0.6666666666666667
+      }
+    ],
+    "showdown_hands": [],
+    "bet_sizes": {
+      "preflop_open": [],
+      "preflop_3bet": [],
+      "preflop_4bet": [],
+      "flop_bet": [],
+      "flop_raise": [],
+      "turn_bet": [],
+      "turn_raise": [],
+      "river_bet": [],
+      "river_raise": []
+    },
+    "is_tight": false,
+    "is_loose": false,
+    "is_passive": false,
+    "is_aggressive": false,
+    "is_calling_station": false,
+    "is_maniac": false,
+    "is_rock": false,
+    "is_tag": false,
+    "is_lag": false
+  },
+  "Tulert": {
+    "player_name": "Tulert",
+    "max_hands_tracked": 150,
+    "hands_played": 0,
+    "hands_seen": 1,
+    "preflop_raises": 0,
+    "preflop_calls": 0,
+    "preflop_folds": 0,
+    "vpip": 0.0,
+    "pfr": 0.0,
+    "three_bet": 0.0,
+    "fold_to_three_bet": 0.0,
+    "position_stats": {
+      "UTG": {
+        "hands": 1,
+        "raises": 0,
+        "calls": 0,
+        "folds": 0,
+        "vpip": 0.0,
+        "pfr": 0.0,
+        "steal_attempt": 0,
+        "fold_to_steal": 0
+      }
+    },
+    "postflop_bets": 0,
+    "postflop_raises": 0,
+    "postflop_calls": 0,
+    "postflop_checks": 0,
+    "postflop_folds": 0,
+    "aggression_factor": 0.0,
+    "fold_to_cbet": 0.0,
+    "cbet_frequency": 0.0,
+    "street_tendencies": {
+      "flop": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "turn": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "river": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      }
+    },
+    "recent_actions": [
+      {
+        "street": "preflop",
+        "action": "bet",
+        "position": "UTG",
+        "bet_size_ratio": 0.6666666666666667
+      }
+    ],
+    "showdown_hands": [],
+    "bet_sizes": {
+      "preflop_open": [],
+      "preflop_3bet": [],
+      "preflop_4bet": [],
+      "flop_bet": [],
+      "flop_raise": [],
+      "turn_bet": [],
+      "turn_raise": [],
+      "river_bet": [],
+      "river_raise": []
+    },
+    "is_tight": false,
+    "is_loose": false,
+    "is_passive": false,
+    "is_aggressive": false,
+    "is_calling_station": false,
+    "is_maniac": false,
+    "is_rock": false,
+    "is_tag": false,
+    "is_lag": false
+  },
+  "SafaCZ9999": {
+    "player_name": "SafaCZ9999",
+    "max_hands_tracked": 150,
+    "hands_played": 0,
+    "hands_seen": 1,
+    "preflop_raises": 0,
+    "preflop_calls": 0,
+    "preflop_folds": 0,
+    "vpip": 0.0,
+    "pfr": 0.0,
+    "three_bet": 0.0,
+    "fold_to_three_bet": 0.0,
+    "position_stats": {
+      "BB": {
+        "hands": 1,
+        "raises": 0,
+        "calls": 0,
+        "folds": 0,
+        "vpip": 0.0,
+        "pfr": 0.0,
+        "steal_attempt": 0,
+        "fold_to_steal": 0
+      }
+    },
+    "postflop_bets": 0,
+    "postflop_raises": 0,
+    "postflop_calls": 0,
+    "postflop_checks": 0,
+    "postflop_folds": 0,
+    "aggression_factor": 0.0,
+    "fold_to_cbet": 0.0,
+    "cbet_frequency": 0.0,
+    "street_tendencies": {
+      "flop": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "turn": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "river": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      }
+    },
+    "recent_actions": [
+      {
+        "street": "preflop",
+        "action": "bet",
+        "position": "BB",
+        "bet_size_ratio": 0.22222222222222224
+      }
+    ],
+    "showdown_hands": [],
+    "bet_sizes": {
+      "preflop_open": [],
+      "preflop_3bet": [],
+      "preflop_4bet": [],
+      "flop_bet": [],
+      "flop_raise": [],
+      "turn_bet": [],
+      "turn_raise": [],
+      "river_bet": [],
+      "river_raise": []
+    },
+    "is_tight": false,
+    "is_loose": false,
+    "is_passive": false,
+    "is_aggressive": false,
+    "is_calling_station": false,
+    "is_maniac": false,
+    "is_rock": false,
+    "is_tag": false,
+    "is_lag": false
+  },
+  "CindyCampbell": {
+    "player_name": "CindyCampbell",
+    "max_hands_tracked": 150,
+    "hands_played": 0,
+    "hands_seen": 1,
+    "preflop_raises": 0,
+    "preflop_calls": 0,
+    "preflop_folds": 0,
+    "vpip": 0.0,
+    "pfr": 0.0,
+    "three_bet": 0.0,
+    "fold_to_three_bet": 0.0,
+    "position_stats": {
+      "BB": {
+        "hands": 1,
+        "raises": 0,
+        "calls": 0,
+        "folds": 0,
+        "vpip": 0.0,
+        "pfr": 0.0,
+        "steal_attempt": 0,
+        "fold_to_steal": 0
+      }
+    },
+    "postflop_bets": 0,
+    "postflop_raises": 0,
+    "postflop_calls": 0,
+    "postflop_checks": 0,
+    "postflop_folds": 0,
+    "aggression_factor": 0.0,
+    "fold_to_cbet": 0.0,
+    "cbet_frequency": 0.0,
+    "street_tendencies": {
+      "flop": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "turn": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      },
+      "river": {
+        "aggression": 0.0,
+        "fold_to_bet": 0.0,
+        "bet_frequency": 0.0
+      }
+    },
+    "recent_actions": [
+      {
+        "street": "preflop",
+        "action": "bet",
+        "position": "BB",
+        "bet_size_ratio": 0.6666666666666667
       }
     ],
     "showdown_hands": [],
