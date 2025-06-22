@@ -741,49 +741,73 @@ def make_preflop_decision(
             else: # Facing a raise in BB
                 pot_odds = bet_to_call / (pot_size + bet_to_call) if (pot_size + bet_to_call) > 0 else 1
                 
+                # --- Improved BB 3-bet and pair handling logic ---
+                # Only 3-bet with very strong hands: QQ+, AKs, AKo
                 should_3bet = False
-                # 3-bet stronger hands: AQs+, KQs, TT+, AKo.
-                if preflop_category == "Strong Pair": # TT, JJ
+                if preflop_category == "Strong Pair":  # TT, JJ (but only 3-bet JJ+)
+                    # Only 3-bet JJ+ (assuming Strong Pair includes TT/JJ)
+                    if "J" in my_player['hand'][0] or "J" in my_player['hand'][1] or \
+                       "Q" in my_player['hand'][0] or "Q" in my_player['hand'][1] or \
+                       "K" in my_player['hand'][0] or "K" in my_player['hand'][1] or \
+                       "A" in my_player['hand'][0] or "A" in my_player['hand'][1]:
+                        should_3bet = True
+                elif preflop_category == "Premium Pair":
                     should_3bet = True
-                elif preflop_category == "Suited Ace": # AQs, AKs (more broadly, strong suited aces)
-                    should_3bet = True 
-                elif preflop_category == "Playable Broadway": # KQs (more broadly, strong suited broadways)
-                    should_3bet = True
-                # AKo would be "Offsuit Ace" or "Offsuit Broadway". Need more specific check for AKo.
-                # For now, this is a simplified 3-bet range from BB.
+                elif preflop_category == "Suited Ace":
+                    # Only 3-bet with AKs, AQs
+                    ranks = [c[:-1] for c in my_player['hand']]
+                    if ("A" in ranks and ("K" in ranks or "Q" in ranks)):
+                        should_3bet = True
+                elif preflop_category == "Offsuit Ace":
+                    # Only 3-bet with AKo
+                    ranks = [c[:-1] for c in my_player['hand']]
+                    if ("A" in ranks and "K" in ranks):
+                        should_3bet = True
+                # Remove Playable Broadway from default 3-bet range
+                # Only 3-bet with KQs
+                elif preflop_category == "Playable Broadway":
+                    ranks = [c[:-1] for c in my_player['hand']]
+                    if ("K" in ranks and "Q" in ranks):
+                        should_3bet = True
 
-                if should_3bet and max_bet_on_table < my_stack * 0.4: # Avoid 3-betting too much stack
-                    three_bet_amount = raise_amount_calculated # Global calc for BB 3bet (e.g., 4.0 * max_bet_on_table)
+                # 3-bet only if not risking more than 30% of stack
+                if should_3bet and max_bet_on_table < my_stack * 0.3:
+                    three_bet_amount = raise_amount_calculated
                     three_bet_amount = max(three_bet_amount, min_raise)
                     three_bet_amount = round(min(three_bet_amount, my_stack), 2)
                     if three_bet_amount > bet_to_call:
-                        print(f"{preflop_category} in BB, 3-betting. Action: RAISE, Amount: {three_bet_amount}")
-                        preflop_logger.info(f"{preflop_category} in BB, 3-betting. Action: RAISE, Amount: {three_bet_amount}")
+                        print(f"{preflop_category} in BB, 3-betting (tightened). Action: RAISE, Amount: {three_bet_amount}")
+                        preflop_logger.info(f"{preflop_category} in BB, 3-betting (tightened). Action: RAISE, Amount: {three_bet_amount}")
                         persist_opponents(); return action_raise_const, three_bet_amount
 
-                # Calling range: Suited Aces, Suited Kings, Playable Broadways, Offsuit Broadways, Strong/Medium Pairs, some Suited Playables
+                # Improved calling range: Only call with suited aces, suited kings, KQs, strong pairs, and medium pairs if the price is right
                 can_afford_call = bet_to_call < my_stack
-                # Call if bet_to_call is not too large (e.g., vs 2-3x open, call wider. Vs 3bet, be tighter)
-                # Example: call if raise is up to 4-5x BB, or if pot odds are good.
-                reasonable_bet_to_call_threshold = big_blind * 5 
-                # If facing a 3-bet (e.g. max_bet_on_table is already > 3*BB), this threshold might be too high for calling wide.
-                if max_bet_on_table > big_blind * 3.5: # Facing a likely 3-bet
-                    reasonable_bet_to_call_threshold = big_blind * 10 # Adjust for calling 3-bets, but still be mindful of stack.
-                                                                    # This means bet_to_call is the additional amount for the 3bet.
-
-                is_decent_hand_to_call = preflop_category in ["Suited Ace", "Suited King", "Playable Broadway", "Offsuit Broadway", "Strong Pair", "Medium Pair", "Suited Playable"]
-
+                reasonable_bet_to_call_threshold = big_blind * 4  # Tighter threshold
+                if max_bet_on_table > big_blind * 3.5:
+                    reasonable_bet_to_call_threshold = big_blind * 7
+                is_decent_hand_to_call = preflop_category in [
+                    "Suited Ace", "Suited King", "Playable Broadway", "Offsuit Broadway", "Strong Pair", "Medium Pair", "Suited Playable"
+                ]
+                # For small pairs, only call if bet_to_call is very small and in multiway pots
+                if preflop_category == "Small Pair":
+                    if bet_to_call <= big_blind * 2 and active_opponents_count >= 2:
+                        print(f"Small Pair in BB, set mining. Action: CALL, Amount: {bet_to_call}")
+                        preflop_logger.info(f"Small Pair in BB, set mining. Action: CALL, Amount: {bet_to_call}")
+                        persist_opponents(); return action_call_const, bet_to_call
+                    else:
+                        print(f"Small Pair in BB, not good spot. Action: FOLD")
+                        preflop_logger.info(f"Small Pair in BB, not good spot. Action: FOLD")
+                        persist_opponents(); return action_fold_const, 0
                 if can_afford_call and bet_to_call <= reasonable_bet_to_call_threshold and is_decent_hand_to_call:
-                    print(f"{preflop_category} in BB, facing raise, calling. Pot odds: {pot_odds:.2f}. Action: CALL, Amount: {bet_to_call}")
-                    preflop_logger.info(f"{preflop_category} in BB, facing raise, calling. Pot odds: {pot_odds:.2f}. Action: CALL, Amount: {bet_to_call}")
+                    print(f"{preflop_category} in BB, facing raise, calling (tightened). Pot odds: {pot_odds:.2f}. Action: CALL, Amount: {bet_to_call}")
+                    preflop_logger.info(f"{preflop_category} in BB, facing raise, calling (tightened). Pot odds: {pot_odds:.2f}. Action: CALL, Amount: {bet_to_call}")
                     persist_opponents(); return action_call_const, bet_to_call
-                elif can_check and bet_to_call == 0: # Should have been caught by opening logic if folded to BB
-                     print(f"{preflop_category} in BB, can check (unlikely here). Action: CHECK")
-                     preflop_logger.info(f"{preflop_category} in BB, can check (unlikely here). Action: CHECK")
-                     persist_opponents(); return action_check_const, 0
-                
-                print(f"{preflop_category} in BB, facing raise, folding. Action: FOLD")
-                preflop_logger.info(f"{preflop_category} in BB, facing raise, folding. Action: FOLD")
+                elif can_check and bet_to_call == 0:
+                    print(f"{preflop_category} in BB, can check (unlikely here). Action: CHECK")
+                    preflop_logger.info(f"{preflop_category} in BB, can check (unlikely here). Action: CHECK")
+                    persist_opponents(); return action_check_const, 0
+                print(f"{preflop_category} in BB, facing raise, folding (tightened). Action: FOLD")
+                preflop_logger.info(f"{preflop_category} in BB, facing raise, folding (tightened). Action: FOLD")
                 persist_opponents(); return action_fold_const, 0
         # Fallback if position not matched (should not occur if all positions handled)
         else:
