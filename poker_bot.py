@@ -825,7 +825,7 @@ class PokerBot:
                     if active_player:
                         self.logger.info(f"Not my turn. Active player: {active_player.get('name')}. Waiting...")
                     elif my_player_data: # My player data exists, but not my turn (e.g. game ended, or observing)
-                        # Log opponent stack information even when not my turn
+                        # Log opponent stack information even when not our turn
                         opponent_stacks_info = []
                         for p_info in raw_all_players_data:
                             if not p_info.get('is_my_player') and not p_info.get('is_empty') and p_info.get('stack'):
@@ -835,7 +835,7 @@ class PokerBot:
                     else: # No player data found for me.
                         self.logger.info("My player data not found. Waiting...")
                 
-                time.sleep(self.config.get('delays', {}).get('main_loop_general_delay', 1.0))
+                time.sleep(self.config.get('delays', {}).get('main_loop_general_delay', 0.25))
 
         except KeyboardInterrupt:
             self.logger.info("PokerBot stopped by user.")
