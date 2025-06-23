@@ -36,10 +36,10 @@
     },
     "delays": {
         "main_loop_general_delay": 0.5,
-        "after_action_delay": 1.5,
+        "after_action_delay": 0.5,
         "short_pause": 0.25,
         "medium_pause": 0.5,
-        "long_pause": 1.0
+        "long_pause": 0.5
     },
     "auto_search": {
         "enabled": true,

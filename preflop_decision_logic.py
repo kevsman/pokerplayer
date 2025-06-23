@@ -146,14 +146,10 @@ def make_preflop_decision(
             logger.info("Calling opponent_tracker.save_all_profiles() in make_preflop_decision (persist_opponents)")
             opponent_tracker.save_all_profiles()
 
-    # --- Opponent analysis integration ---
-    import logging
+    # --- Opponent analysis integration ---    import logging
     logger = logging.getLogger(__name__)
     logger.info(f"[DEBUG] make_preflop_decision: opponent_tracker type={type(opponent_tracker)}, id={id(opponent_tracker) if opponent_tracker is not None else 'None'}")
-    if opponent_tracker is not None:
-        if hasattr(opponent_tracker, 'load_all_profiles'):
-            logger.info("Calling opponent_tracker.load_all_profiles() in make_preflop_decision")
-            opponent_tracker.load_all_profiles()
+    # Removed the problematic load_all_profiles() call that was overwriting progress
     opponent_analysis = None
     if opponent_tracker is not None:
         try:

@@ -336,7 +336,6 @@ class OpponentTracker:
     """
     Manages multiple opponent profiles and provides analysis.
     """
-    
     def __init__(self):
         self.opponents: Dict[str, OpponentProfile] = {}
         self.load_all_profiles()
@@ -352,12 +351,17 @@ class OpponentTracker:
         """Update opponent statistics based on their action."""
         import logging
         logger = logging.getLogger(__name__)
-        logger.info(f"[DEBUG] update_opponent_action: player={player_name}, action={action}, street={street}, position={position}, bet_size={bet_size}, pot_size={pot_size}")
+        logger.info(f"[ACTION_DEBUG] update_opponent_action called: player={player_name}, action={action}, street={street}, position={position}, bet_size={bet_size}, pot_size={pot_size}")
+        
         profile = self.get_or_create_profile(player_name)
+        logger.info(f"[ACTION_DEBUG] Before update - {player_name}: hands_seen={profile.hands_seen}, preflop_raises={profile.preflop_raises}")
+        
         if street == 'preflop':
             profile.update_preflop_action(action, position, bet_size, pot_size)
         else:
             profile.update_postflop_action(action, street, bet_size, pot_size, position)
+            
+        logger.info(f"[ACTION_DEBUG] After update - {player_name}: hands_seen={profile.hands_seen}, preflop_raises={profile.preflop_raises}, vpip={profile.get_vpip():.1f}%")
             
     def update_from_html(self, html_content: str, street_hint: str = None):
         """
@@ -556,7 +560,9 @@ class OpponentTracker:
         logger = logging.getLogger(__name__)
         if file_path is None:
             file_path = OPPONENT_ANALYSIS_FILE
-        logger.info(f"[DEBUG] save_all_profiles: {len(self.opponents)} profiles to save: {list(self.opponents.keys())}")
+        logger.info(f"[SAVE_DEBUG] save_all_profiles called: {len(self.opponents)} profiles to save")
+        for name, profile in self.opponents.items():
+            logger.info(f"[SAVE_DEBUG] Profile '{name}': hands_seen={profile.hands_seen}, preflop_raises={profile.preflop_raises}, vpip={profile.get_vpip():.1f}%")
         
         data_to_save = {}
         for name, profile in self.opponents.items():
@@ -569,16 +575,26 @@ class OpponentTracker:
             data_to_save[name] = profile_dict
             
         save_opponent_analysis(data_to_save, file_path)
+        logger.info(f"[SAVE_DEBUG] Successfully saved {len(data_to_save)} profiles to {file_path}")
 
     def load_all_profiles(self, file_path=None):
         """Load all opponent profiles from disk, correctly handling complex types."""
+        import logging
+        import traceback
+        logger = logging.getLogger(__name__)
         if file_path is None:
             file_path = OPPONENT_ANALYSIS_FILE
+        logger.info(f"[LOAD_DEBUG] load_all_profiles called, attempting to load from {file_path}")
+        logger.info(f"[LOAD_DEBUG] Call stack: {traceback.format_stack()[-3:-1]}")  # Show where this was called from
+        
         data = load_opponent_analysis(file_path)
         if not data:
+            logger.info(f"[LOAD_DEBUG] No data found or file doesn't exist")
             return
 
+        logger.info(f"[LOAD_DEBUG] Loaded {len(data)} profiles from file")
         for name, profile_data in data.items():
+            logger.info(f"[LOAD_DEBUG] Loading profile '{name}': hands_seen={profile_data.get('hands_seen', 0)}, preflop_raises={profile_data.get('preflop_raises', 0)}")
             profile = self.get_or_create_profile(name)
             
             # Pop complex types from data to handle them specially
@@ -607,3 +623,7 @@ class OpponentTracker:
             
             if bet_sizes_dict is not None:
                 profile.bet_sizes.update(bet_sizes_dict)
+                
+            logger.info(f"[LOAD_DEBUG] After loading profile '{name}': hands_seen={profile.hands_seen}, preflop_raises={profile.preflop_raises}, vpip={profile.get_vpip():.1f}%")
+        
+        logger.info(f"[LOAD_DEBUG] Finished loading all profiles. Total opponents in memory: {len(self.opponents)}")

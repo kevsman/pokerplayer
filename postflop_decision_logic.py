@@ -111,10 +111,7 @@ def make_postflop_decision(
     import logging
     logger = logging.getLogger(__name__)
     logger.info(f"[DEBUG] make_postflop_decision: opponent_tracker type={type(opponent_tracker)}, id={id(opponent_tracker) if opponent_tracker is not None else 'None'}")
-    if opponent_tracker is not None:
-        if hasattr(opponent_tracker, 'load_all_profiles'):
-            logger.info("Calling opponent_tracker.load_all_profiles() in make_postflop_decision")
-            opponent_tracker.load_all_profiles()
+    # Removed the problematic load_all_profiles() call that was overwriting progress
     
     # --- Opponent analysis integration (latest range/FE) ---
     from postflop.opponent_analysis import estimate_opponent_range, calculate_fold_equity
