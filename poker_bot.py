@@ -7,6 +7,7 @@ from decision_engine import DecisionEngine, ACTION_FOLD, ACTION_CHECK, ACTION_CA
 from ui_controller import UIController
 from equity_calculator import EquityCalculator # Added import
 from hand_history_tracker import get_hand_history_tracker  # Import hand history tracker
+from opponent_tracking import OpponentTracker # Import OpponentTracker
 import time
 import logging
 import threading
@@ -89,9 +90,10 @@ class PokerBot:
             self.logger.critical(f"Failed to instantiate or validate PokerPageParser during PokerBot initialization: {e}")
             raise
 
+        self.opponent_tracker = OpponentTracker() # Create a single instance
         self.hand_evaluator = HandEvaluator() # Initialize HandEvaluator
         # Pass the hand_evaluator and the full config to DecisionEngine
-        self.decision_engine = DecisionEngine(self.hand_evaluator, config=self.config) 
+        self.decision_engine = DecisionEngine(self.hand_evaluator, self.opponent_tracker, config=self.config) 
         self.ui_controller = UIController()
         self.equity_calculator = EquityCalculator() # Added instantiation
         self.hand_history_tracker = get_hand_history_tracker()  # Get the global hand history tracker instance
@@ -842,7 +844,7 @@ class PokerBot:
         finally:
             self.running = False
             self.logger.info("PokerBot main_loop ended.")
-            # self.close_logger() # Call close_logger here when main_loop finishes
+            self.opponent_tracker.save_all_profiles() # Save opponent data
 
 if __name__ == "__main__":
     # Basic logging setup for the __main__ block with Unicode support

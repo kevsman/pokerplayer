@@ -21,8 +21,19 @@ def analyze_board_texture(board: List[str]) -> Dict[str, any]:
             'is_wet': False, 'is_dry': True, 'high_card': 0, 'has_ace': False
         }
     ranks = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
-    suits = [c[1] for c in board if len(c) == 2]
-    rank_values = sorted([ranks[c[0]] for c in board if len(c) == 2])
+    
+    # Filter for valid cards first
+    valid_cards = [c for c in board if c and isinstance(c, str) and len(c) == 2 and c[0] in ranks]
+    
+    if not valid_cards:
+        # Return default values if no valid cards are on the board
+        return {
+            'has_flush_draw': False, 'has_straight_draw': False, 'is_paired': False,
+            'is_wet': False, 'is_dry': True, 'high_card': 0, 'has_ace': False
+        }
+
+    suits = [c[1] for c in valid_cards]
+    rank_values = sorted([ranks[c[0]] for c in valid_cards])
     
     suit_counts = {s: suits.count(s) for s in set(suits)}
     has_flush_draw = max(suit_counts.values()) >= 3 if suit_counts else False
@@ -327,6 +338,7 @@ class OpponentTracker:
     
     def __init__(self):
         self.opponents: Dict[str, OpponentProfile] = {}
+        self.load_all_profiles()
         
     def get_or_create_profile(self, player_name: str) -> OpponentProfile:
         """Get existing profile or create new one."""
@@ -417,9 +429,16 @@ class OpponentTracker:
                         action_text = 'fold'
 
             if action_text:
-                # Only update and save if this is a new action
                 profile = self.get_or_create_profile(player_name)
-                if not profile.recent_actions or profile.recent_actions[-1]['action'] != action_text:
+                
+                # Prevent logging duplicate actions for the same street
+                is_duplicate = False
+                if profile.recent_actions:
+                    last_action = profile.recent_actions[-1]
+                    if last_action['action'] == action_text and last_action['street'] == street:
+                        is_duplicate = True
+                
+                if not is_duplicate:
                     self.update_opponent_action(player_name, action_text, street=street)
                     updated = True
 
@@ -531,21 +550,59 @@ class OpponentTracker:
         return recommendations.get(player_type, "play_standard")
     
     def save_all_profiles(self, file_path=None):
-        """Save all opponent profiles to disk."""
+        """Save all opponent profiles to disk, ensuring complex types are JSON-serializable."""
         import logging
         logger = logging.getLogger(__name__)
         if file_path is None:
             file_path = OPPONENT_ANALYSIS_FILE
         logger.info(f"[DEBUG] save_all_profiles: {len(self.opponents)} profiles to save: {list(self.opponents.keys())}")
-        data = {name: vars(profile) for name, profile in self.opponents.items()}
-        save_opponent_analysis(data, file_path)
+        
+        data_to_save = {}
+        for name, profile in self.opponents.items():
+            profile_dict = profile.__dict__.copy()
+            # Convert non-serializable types to basic Python types for JSON storage
+            profile_dict['recent_actions'] = list(profile_dict.get('recent_actions', []))
+            if isinstance(profile_dict.get('position_stats'), defaultdict):
+                profile_dict['position_stats'] = dict(profile_dict['position_stats'])
+            
+            data_to_save[name] = profile_dict
+            
+        save_opponent_analysis(data_to_save, file_path)
 
     def load_all_profiles(self, file_path=None):
-        """Load all opponent profiles from disk."""
+        """Load all opponent profiles from disk, correctly handling complex types."""
         if file_path is None:
             file_path = OPPONENT_ANALYSIS_FILE
         data = load_opponent_analysis(file_path)
+        if not data:
+            return
+
         for name, profile_data in data.items():
             profile = self.get_or_create_profile(name)
+            
+            # Pop complex types from data to handle them specially
+            recent_actions_list = profile_data.pop('recent_actions', None)
+            position_stats_dict = profile_data.pop('position_stats', None)
+            street_tendencies_dict = profile_data.pop('street_tendencies', None)
+            bet_sizes_dict = profile_data.pop('bet_sizes', None)
+
+            # Load the simple attributes
             for k, v in profile_data.items():
                 setattr(profile, k, v)
+
+            # Now, restore the complex types onto the existing profile attributes
+            if recent_actions_list is not None:
+                # This ensures the deque is correctly repopulated
+                profile.recent_actions.clear()
+                profile.recent_actions.extend(recent_actions_list)
+            
+            if position_stats_dict is not None:
+                # This ensures the defaultdict is correctly repopulated
+                profile.position_stats.clear()
+                profile.position_stats.update(position_stats_dict)
+
+            if street_tendencies_dict is not None:
+                profile.street_tendencies.update(street_tendencies_dict)
+            
+            if bet_sizes_dict is not None:
+                profile.bet_sizes.update(bet_sizes_dict)

@@ -4,7 +4,7 @@
 		{
 			"label": "Apply Poker Bot Improvements",
 			"type": "shell",
-			"command": "python improved_postflop_integrator.py",
+			"command": "py improved_postflop_integrator.py",
 			"group": "build",
 			"isBackground": false,
 			"problemMatcher": []

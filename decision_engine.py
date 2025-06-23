@@ -33,7 +33,7 @@ def parse_monetary_value(value_str_or_float):
         return 0.0
 
 class DecisionEngine:    
-    def __init__(self, hand_evaluator, config=None): 
+    def __init__(self, hand_evaluator, opponent_tracker, config=None): 
         self.hand_evaluator = hand_evaluator
         self.config = config if config is not None else {}
         self.big_blind_amount = self.config.get('big_blind', 0.04) # Renamed for clarity
@@ -44,7 +44,7 @@ class DecisionEngine:
         self.equity_calculator = EquityCalculator()
         
         # Initialize opponent tracking system
-        self.opponent_tracker = OpponentTracker()
+        self.opponent_tracker = opponent_tracker
         
         # Initialize hand history tracker system
         self.hand_history_tracker = get_hand_history_tracker()
