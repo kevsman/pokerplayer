@@ -10,6 +10,49 @@ from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
+def analyze_board_texture(board: List[str]) -> Dict[str, any]:
+    """
+    Analyzes board texture for draws, pairs, etc.
+    Board cards are in format 'As', 'Td', '7c'.
+    """
+    if not board:
+        return {
+            'has_flush_draw': False, 'has_straight_draw': False, 'is_paired': False,
+            'is_wet': False, 'is_dry': True, 'high_card': 0, 'has_ace': False
+        }
+    ranks = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
+    suits = [c[1] for c in board if len(c) == 2]
+    rank_values = sorted([ranks[c[0]] for c in board if len(c) == 2])
+    
+    suit_counts = {s: suits.count(s) for s in set(suits)}
+    has_flush_draw = max(suit_counts.values()) >= 3 if suit_counts else False
+    
+    is_paired = len(set(rank_values)) != len(rank_values)
+    
+    # Straight draw detection
+    has_straight_draw = False
+    if len(rank_values) >= 3:
+        unique_ranks = sorted(list(set(rank_values)))
+        for i in range(len(unique_ranks) - 2):
+            if unique_ranks[i+2] - unique_ranks[i] <= 4 and len(set(unique_ranks[i:i+3])) == 3:
+                 has_straight_draw = True
+                 break
+        # Check for wheel draw with Ace
+        if {14, 2, 3, 4, 5}.issubset(set(rank_values)):
+            has_straight_draw = True
+
+    has_ace = 14 in rank_values
+
+    return {
+        'has_flush_draw': has_flush_draw,
+        'has_straight_draw': has_straight_draw,
+        'is_paired': is_paired,
+        'is_wet': has_flush_draw or has_straight_draw,
+        'is_dry': not has_flush_draw and not has_straight_draw and not is_paired,
+        'high_card': max(rank_values) if rank_values else 0,
+        'has_ace': has_ace
+    }
+
 class OpponentProfile:
     """
     Enhanced tracking and analysis of opponent tendencies for better decision making.
@@ -55,9 +98,9 @@ class OpponentProfile:
         
         # Street-specific tendencies
         self.street_tendencies = {
-            'flop': {'aggression': 0.0, 'fold_to_bet': 0.0, 'bet_frequency': 0.0},
-            'turn': {'aggression': 0.0, 'fold_to_bet': 0.0, 'bet_frequency': 0.0},
-            'river': {'aggression': 0.0, 'fold_to_bet': 0.0, 'bet_frequency': 0.0}
+            'flop': {'bets': 0, 'raises': 0, 'calls': 0, 'checks': 0, 'folds': 0, 'total_actions': 0},
+            'turn': {'bets': 0, 'raises': 0, 'calls': 0, 'checks': 0, 'folds': 0, 'total_actions': 0},
+            'river': {'bets': 0, 'raises': 0, 'calls': 0, 'checks': 0, 'folds': 0, 'total_actions': 0}
         }
         
         # Recent hand history (for tracking patterns)
@@ -117,18 +160,28 @@ class OpponentProfile:
         
     def update_postflop_action(self, action: str, street: str, bet_size: float = 0, pot_size: float = 0, position: str = 'unknown'):
         """Update postflop statistics for this opponent."""
+        is_postflop_street = street in self.street_tendencies
+
         if action == 'bet':
             self.postflop_bets += 1
+            if is_postflop_street: self.street_tendencies[street]['bets'] += 1
             if bet_size > 0 and pot_size > 0:
                 self.bet_sizes[f'{street}_bet'].append(bet_size / pot_size)
         elif action == 'raise':
             self.postflop_raises += 1
+            if is_postflop_street: self.street_tendencies[street]['raises'] += 1
         elif action == 'call':
             self.postflop_calls += 1
+            if is_postflop_street: self.street_tendencies[street]['calls'] += 1
         elif action == 'check':
             self.postflop_checks += 1
+            if is_postflop_street: self.street_tendencies[street]['checks'] += 1
         elif action == 'fold':
             self.postflop_folds += 1
+            if is_postflop_street: self.street_tendencies[street]['folds'] += 1
+        
+        if is_postflop_street:
+            self.street_tendencies[street]['total_actions'] += 1
             
         self.recent_actions.append({
             'street': street,
@@ -157,6 +210,19 @@ class OpponentProfile:
         if total_passive == 0:
             return float('inf') if total_aggressive > 0 else 0.0
         return total_aggressive / total_passive
+        
+    def get_street_aggression(self, street: str) -> float:
+        """Calculates aggression factor for a specific street."""
+        if street not in self.street_tendencies:
+            return 0.0
+        
+        stats = self.street_tendencies[street]
+        aggressive_actions = stats['bets'] + stats['raises']
+        passive_actions = stats['calls']
+        
+        if passive_actions == 0:
+            return float('inf') if aggressive_actions > 0 else 0.0
+        return aggressive_actions / passive_actions
         
     def get_position_tendencies(self, position: str) -> Dict[str, float]:
         """Get playing tendencies for specific position."""
@@ -384,6 +450,37 @@ class OpponentTracker:
         if action == 'fold':
             return default_decision  # No adjustment
         return default_decision
+    
+    def get_strategic_adjustment(self, player_name: str, board: List[str], situation: str) -> str:
+        """
+        Provides a strategic adjustment based on opponent tendencies and board texture.
+        """
+        if player_name not in self.opponents:
+            return "play_standard"
+            
+        profile = self.opponents[player_name]
+        player_type = profile.classify_player_type()
+        board_texture = analyze_board_texture(board)
+        
+        # Example logic
+        if board_texture['is_wet']:
+            if 'passive' in player_type:
+                # Wet board against passive player, bet for value/protection
+                return "bet_for_value_protection"
+            if 'aggressive' in player_type:
+                # Wet board against aggressive player, be cautious with bluffs
+                return "proceed_with_caution"
+        
+        if board_texture['is_dry']:
+            if 'tight' in player_type:
+                # Dry board against tight player, good bluffing spot
+                return "bluff_frequently"
+            if 'loose' in player_type:
+                # Dry board against loose player, value bet thinner
+                return "value_bet_thinly"
+
+        # Fallback to general recommendation
+        return self.get_opponent_recommendation(player_name, situation)
     
     def get_table_dynamics(self) -> Dict[str, float]:
         """Analyze overall table dynamics."""
