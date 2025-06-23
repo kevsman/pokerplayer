@@ -92,7 +92,8 @@ class OpponentProfile:
         """Update preflop statistics for this opponent."""
         self.hands_seen += 1
         
-        if action in ['raise', 'call', 'bet']:
+        # VPIP is true if player voluntarily puts money in pot (call, bet, raise)
+        if action in ['call', 'bet', 'raise']:
             self.hands_played += 1
             
         if action == 'raise':
@@ -282,13 +283,31 @@ class OpponentTracker:
     def update_from_html(self, html_content: str, street_hint: str = None):
         """
         Parse HTML to detect opponent actions from the text displayed under the opponent name.
-        The text says bet/fold/check. This should be called frequently as the text is only visible for a short time.
+        The text says bet/fold/check/call/raise. This should be called frequently as the text is only visible for a short time.
         Tries to infer preflop/postflop from context, or uses street_hint if provided.
         Automatically saves profiles if a new action is detected.
         """
         soup = BeautifulSoup(html_content, 'html.parser')
         player_areas = soup.find_all(class_=re.compile(r'player-area|table-player|player-nameplate'))
         updated = False
+        
+        # Determine current street from board cards if possible
+        board_cards = soup.find(class_=re.compile(r'board-cards|table-board'))
+        street = street_hint
+        if not street:
+            if board_cards and board_cards.find_all(class_=re.compile(r'card-image|card')):
+                num_cards = len(board_cards.find_all(class_=re.compile(r'card-image|card')))
+                if num_cards == 5:
+                    street = 'river'
+                elif num_cards == 4:
+                    street = 'turn'
+                elif num_cards >= 3:
+                    street = 'flop'
+                else:
+                    street = 'preflop'
+            else:
+                street = 'preflop'
+
         for area in player_areas:
             name_div = area.find(class_=re.compile(r'text-block nickname|target|player-name|nickname'))
             if not name_div:
@@ -296,33 +315,48 @@ class OpponentTracker:
             player_name = name_div.get_text(strip=True)
             if not player_name:
                 continue
+            
             action_text = None
-            action_div = area.find(class_=re.compile(r'action-text|player-action|action-post_bb|action-post_sb'))
-            if action_div:
-                txt = action_div.get_text(strip=True).lower()
-                if txt in ['bet', 'fold', 'check']:
-                    action_text = txt
+            # Expanded search for action text
+            action_divs = area.find_all(class_=re.compile(r'action-text|player-action|action-indicator|status-text'))
+            for div in action_divs:
+                txt = div.get_text(strip=True).lower()
+                # More robust action detection
+                if any(action in txt for action in ['bet', 'fold', 'check', 'call', 'raise']):
+                    if 'bet' in txt:
+                        action_text = 'bet'
+                    elif 'raise' in txt:
+                        action_text = 'raise'
+                    elif 'call' in txt:
+                        action_text = 'call'
+                    elif 'check' in txt:
+                        action_text = 'check'
+                    elif 'fold' in txt:
+                        action_text = 'fold'
+                    break # Found action
+
             if not action_text:
-                nameplate = area.find(class_=re.compile(r'player-nameplate'))
-                if nameplate:
-                    for sibling in nameplate.find_all_next():
-                        txt = sibling.get_text(strip=True).lower()
-                        if txt in ['bet', 'fold', 'check']:
-                            action_text = txt
-                            break
-            if action_text in ['bet', 'fold', 'check']:
-                street = 'postflop'
-                if street_hint:
-                    street = street_hint
-                else:
-                    if area.find(class_=re.compile(r'action-post_bb|action-post_sb|my-player-badge')):
-                        street = 'preflop'
+                # Fallback search in the whole player area
+                area_text = area.get_text(strip=True).lower()
+                if any(action in area_text for action in ['bet', 'fold', 'check', 'call', 'raise']):
+                    if 'bet' in area_text:
+                        action_text = 'bet'
+                    elif 'raise' in area_text:
+                        action_text = 'raise'
+                    elif 'call' in area_text:
+                        action_text = 'call'
+                    elif 'check' in area_text:
+                        action_text = 'check'
+                    elif 'fold' in area_text:
+                        action_text = 'fold'
+
+            if action_text:
                 # Only update and save if this is a new action
                 profile = self.get_or_create_profile(player_name)
-                last = profile.recent_actions[-1]['action'] if profile.recent_actions else None
-                if last != action_text:
+                if not profile.recent_actions or profile.recent_actions[-1]['action'] != action_text:
                     self.update_opponent_action(player_name, action_text, street=street)
                     updated = True
+
         if updated:
             self.save_all_profiles()
 
