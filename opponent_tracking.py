@@ -5,6 +5,8 @@ import logging
 from collections import defaultdict, deque
 from typing import Dict, List, Optional, Tuple
 from opponent_persistence import save_opponent_analysis, load_opponent_analysis, OPPONENT_ANALYSIS_FILE
+import re
+from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
@@ -90,7 +92,7 @@ class OpponentProfile:
         """Update preflop statistics for this opponent."""
         self.hands_seen += 1
         
-        if action in ['raise', 'call']:
+        if action in ['raise', 'call', 'bet']:
             self.hands_played += 1
             
         if action == 'raise':
@@ -277,6 +279,78 @@ class OpponentTracker:
         else:
             profile.update_postflop_action(action, street, bet_size, pot_size, position)
             
+    def update_from_html(self, html_content: str, street_hint: str = None):
+        """
+        Parse HTML to detect opponent actions from the text displayed under the opponent name.
+        The text says bet/fold/check. This should be called frequently as the text is only visible for a short time.
+        Tries to infer preflop/postflop from context, or uses street_hint if provided.
+        Automatically saves profiles if a new action is detected.
+        """
+        soup = BeautifulSoup(html_content, 'html.parser')
+        player_areas = soup.find_all(class_=re.compile(r'player-area|table-player|player-nameplate'))
+        updated = False
+        for area in player_areas:
+            name_div = area.find(class_=re.compile(r'text-block nickname|target|player-name|nickname'))
+            if not name_div:
+                continue
+            player_name = name_div.get_text(strip=True)
+            if not player_name:
+                continue
+            action_text = None
+            action_div = area.find(class_=re.compile(r'action-text|player-action|action-post_bb|action-post_sb'))
+            if action_div:
+                txt = action_div.get_text(strip=True).lower()
+                if txt in ['bet', 'fold', 'check']:
+                    action_text = txt
+            if not action_text:
+                nameplate = area.find(class_=re.compile(r'player-nameplate'))
+                if nameplate:
+                    for sibling in nameplate.find_all_next():
+                        txt = sibling.get_text(strip=True).lower()
+                        if txt in ['bet', 'fold', 'check']:
+                            action_text = txt
+                            break
+            if action_text in ['bet', 'fold', 'check']:
+                street = 'postflop'
+                if street_hint:
+                    street = street_hint
+                else:
+                    if area.find(class_=re.compile(r'action-post_bb|action-post_sb|my-player-badge')):
+                        street = 'preflop'
+                # Only update and save if this is a new action
+                profile = self.get_or_create_profile(player_name)
+                last = profile.recent_actions[-1]['action'] if profile.recent_actions else None
+                if last != action_text:
+                    self.update_opponent_action(player_name, action_text, street=street)
+                    updated = True
+        if updated:
+            self.save_all_profiles()
+
+    def get_last_action(self, player_name: str):
+        """Return the last action for a given opponent, or None."""
+        profile = self.opponents.get(player_name)
+        if not profile or not profile.recent_actions:
+            return None
+        return profile.recent_actions[-1]
+
+    def get_opponent_action_adjustment(self, player_name: str, default_decision: str) -> str:
+        """
+        Suggest an adjustment to the bot's decision based on the opponent's last action.
+        For example, if opponent just checked, consider betting more often.
+        """
+        last_action = self.get_last_action(player_name)
+        if not last_action:
+            return default_decision
+        action = last_action['action']
+        # Simple logic: if opponent checked, be more aggressive; if bet, be more cautious
+        if action == 'check' and default_decision == 'check':
+            return 'bet'  # Consider betting into weakness
+        if action == 'bet' and default_decision == 'bet':
+            return 'call'  # Don't raise into strength
+        if action == 'fold':
+            return default_decision  # No adjustment
+        return default_decision
+    
     def get_table_dynamics(self) -> Dict[str, float]:
         """Analyze overall table dynamics."""
         if not self.opponents:

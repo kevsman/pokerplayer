@@ -249,7 +249,7 @@ def make_preflop_decision(
     if bluff_result is not None:
         action, amount = bluff_result
         preflop_logger.info(f"3-bet/4-bet bluff logic triggered. Action: {action.upper()}, Amount: {amount}")
-        persist_opponents(); return
+        persist_opponents(); return action, amount
 
     # 3. BB defense logic
     bb_defend_result = should_defend_bb_wider(preflop_category, position, bet_to_call, big_blind, opener_position)
