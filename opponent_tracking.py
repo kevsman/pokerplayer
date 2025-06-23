@@ -15,11 +15,12 @@ def analyze_board_texture(board: List[str]) -> Dict[str, any]:
     Analyzes board texture for draws, pairs, etc.
     Board cards are in format 'As', 'Td', '7c'.
     """
-    if not board:
+    if not board or not all(isinstance(c, str) and len(c) == 2 for c in board):
         return {
             'has_flush_draw': False, 'has_straight_draw': False, 'is_paired': False,
             'is_wet': False, 'is_dry': True, 'high_card': 0, 'has_ace': False
         }
+        
     ranks = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
     
     # Filter for valid cards first
