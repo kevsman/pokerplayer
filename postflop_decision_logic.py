@@ -382,6 +382,31 @@ def make_postflop_decision(
     multiway_adjustment = adjust_for_multiway_pot(active_opponents_count, hand_strength_final_decision)
 
     # === Use advanced strategies to adjust decisions ===
+
+    # Delayed C-Betting Logic
+    if delay_cbet and street == 'flop' and was_pfr and effectively_can_genuinely_check:
+        logger.info(f"Decision: {action_check_const} (Delayed c-bet suggested by advanced strategy)")
+        return action_check_const, 0
+
+    # Double-Barrel Bluff Logic
+    if double_barrel and street == 'turn' and was_pfr and is_weak_final:
+        # Bluffing with a double barrel. Bet size can be around 2/3 pot.
+        bluff_amount = min(my_stack, pot_size * 0.67)
+        logger.info(f"Decision: {action_raise_const} {bluff_amount} (Double-barrel bluff suggested by advanced strategy)")
+        return action_raise_const, bluff_amount
+
+    # Induce Bluff Logic
+    if induce_bluff and effectively_can_genuinely_check and (is_medium or is_strong):
+        logger.info(f"Decision: {action_check_const} (Checking to induce a bluff with a medium/strong hand)")
+        return action_check_const, 0
+
+    # River Overbluffing Logic
+    if river_bluff and street == 'river' and is_weak_final:
+        # Overbluffing the river. Bet size can be large, like pot size.
+        bluff_amount = min(my_stack, pot_size)
+        logger.info(f"Decision: {action_raise_const} {bluff_amount} (River overbluff suggested by advanced strategy)")
+        return action_raise_const, bluff_amount
+
     # Example: Overbetting/Underbetting
     if overbet_suggestion == 'overbet' and not effectively_can_genuinely_check and is_very_strong:
         overbet_amount = min(my_stack, pot_size * 1.5)

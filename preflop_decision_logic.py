@@ -38,6 +38,30 @@ def adjust_for_implied_odds(hand_category, position, my_stack, effective_stack, 
             return True
     return False
 
+def should_squeeze_play(hand_category, position, active_opponents_count, max_bet_on_table, big_blind, my_stack, min_raise, bet_to_call):
+    """Identifies and executes a squeeze play opportunity."""
+    # A squeeze is a re-raise after an initial raise and one or more callers.
+    # We can identify this situation if there was a raise and there are at least 2 opponents.
+    is_squeeze_opportunity = max_bet_on_table > big_blind and active_opponents_count >= 2
+
+    if not is_squeeze_opportunity:
+        return None
+
+    # Good hands to squeeze with: premium hands for value, and hands with good blockers/playability as bluffs.
+    squeeze_hands = ['Premium', 'Strong', 'Suited Ace', 'Playable Broadway', 'Suited Connector']
+    
+    if position in ['CO', 'BTN', 'SB', 'BB'] and hand_category in squeeze_hands:
+        # Sizing a squeeze: 4x the original raise is a good starting point.
+        squeeze_amount = 4 * max_bet_on_table
+        
+        final_amount = max(squeeze_amount, min_raise)
+        final_amount = round(min(final_amount, my_stack), 2)
+
+        if final_amount > bet_to_call:
+            return 'raise', final_amount
+
+    return None
+
 # Enhanced logic for optimal preflop decision-making
 def should_play_wider_in_position(hand_category, position, num_limpers, bet_to_call, big_blind):
     if position in ['CO', 'BTN', 'SB']:
@@ -247,21 +271,28 @@ def make_preflop_decision(
         preflop_logger.info(f"3-bet/4-bet bluff logic triggered. Action: {action.upper()}, Amount: {amount}")
         persist_opponents(); return action, amount
 
-    # 3. BB defense logic
+    # 3. Squeeze play logic
+    squeeze_result = should_squeeze_play(preflop_category, position, active_opponents_count, max_bet_on_table, big_blind, my_stack, min_raise, bet_to_call)
+    if squeeze_result is not None:
+        action, amount = squeeze_result
+        preflop_logger.info(f"Squeeze play logic triggered. Action: {action.upper()}, Amount: {amount}")
+        persist_opponents(); return action, amount
+
+    # 4. BB defense logic
     bb_defend_result = should_defend_bb_wider(preflop_category, position, bet_to_call, big_blind, opener_position)
     if bb_defend_result is not None:
         action, amount = bb_defend_result
         preflop_logger.info(f"BB defense logic triggered. Action: {action.upper()}, Amount: {amount}")
         persist_opponents(); return action, amount
 
-    # 4. Overlimp/iso-raise logic
+    # 5. Overlimp/iso-raise logic
     overlimp_result = should_overlimp_or_isoraise(preflop_category, position, num_limpers, bet_to_call, big_blind)
     if overlimp_result is not None:
         action, amount = overlimp_result
         preflop_logger.info(f"Overlimp/iso-raise logic triggered. Action: {action.upper()}, Amount: {amount}")
         persist_opponents(); return action, amount
 
-    # 5. Opponent tendencies adjustment (stub)
+    # 6. Opponent tendencies adjustment (stub)
     opponent_adjustment = adjust_for_opponent_tendencies(preflop_category, position, opponent_stats)
     if opponent_adjustment is not None:
         action, amount = opponent_adjustment
