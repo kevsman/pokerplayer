@@ -3,7 +3,7 @@
         "positions": {},
         "html_capture_point": {
             "x": 1533,
-            "y": 413
+            "y": 418
         },
         "html_search_start_point": {
             "x": 1533,
@@ -35,11 +35,11 @@
         }
     },
     "delays": {
-        "main_loop_general_delay": 0.5,
-        "after_action_delay": 0.5,
+        "main_loop_general_delay": 0.25,
+        "after_action_delay": 0.25,
         "short_pause": 0.25,
-        "medium_pause": 0.5,
-        "long_pause": 0.5
+        "medium_pause": 0.25,
+        "long_pause": 0.25
     },
     "auto_search": {
         "enabled": true,
