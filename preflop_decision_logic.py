@@ -8,6 +8,7 @@ from opponent_persistence import save_opponent_analysis, load_opponent_analysis
 import os
 from equity_calculator import EquityCalculator
 from improved_poker_bot_fixes import improved_pot_odds_safeguard, should_fold_preflop, should_bluff
+from poker_tactics import should_limp_reraise
 
 logger = logging.getLogger(__name__) # Use module's name for the logger
 
@@ -164,7 +165,16 @@ def make_preflop_decision(
     preflop_logger.info(f"make_preflop_decision called. Logging to: {preflop_log_file}")
     preflop_file_handler.flush()
     print(f"[DEBUG] make_preflop_decision called. Logging to: {preflop_log_file}")
-    
+
+    # --- Advanced Tactical Plays ---
+    # Check for limp-reraise opportunity
+    if bet_to_call <= big_blind and num_limpers == 0: # Opportunity to open-limp
+        if should_limp_reraise(position, hand_category, big_blind, my_stack):
+            preflop_logger.info(f"Strategy: Attempting limp-reraise with {hand_category} from {position}. Limping.")
+            # Limping is calling the big blind amount
+            return action_call_const, big_blind
+
+    # --- Persist opponent data ---
     def persist_opponents():
         if opponent_tracker is not None and hasattr(opponent_tracker, 'save_all_profiles'):
             logger.info("Calling opponent_tracker.save_all_profiles() in make_preflop_decision (persist_opponents)")

@@ -3904,3 +3904,165 @@
 2025-06-24 14:25:15,613 - __main__ - INFO - Bot has 0 left in its stack. Stopping bot.
 2025-06-24 14:25:15,613 - __main__ - INFO - PokerBot main_loop ended.
 2025-06-24 14:25:15,658 - __main__ - INFO - Closing logger handlers.
+2025-06-24 21:04:20,026 - __main__ - INFO - Kill switch listener started. Press Ctrl+Q to stop the bot.
+2025-06-24 21:04:20,026 - __main__ - INFO - PokerBot started. Press Ctrl+C or Ctrl+Q to stop.
+2025-06-24 21:04:20,026 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:04:20,027 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:04:21,197 - __main__ - DEBUG - HTML length: 57311
+2025-06-24 21:04:21,220 - __main__ - INFO - Starting to track new hand: 11531658730
+2025-06-24 21:04:22,035 - __main__ - INFO - My turn. Hand: ['2♠', 'A♥'], Rank: High Card, Stack: €5.79, Bet to call: 0.21 Opponent Stacks: [8BallAlly: €8.41, mdx1990: €19.59, joker4poker2: €21.64, serg197211: €9.90, DukeSpy: €10.26]
+2025-06-24 21:04:22,035 - __main__ - INFO - Pot: €0.81, Community Cards: ['7♦', '10♣', 'K♠']
+2025-06-24 21:04:22,059 - __main__ - INFO - Decision: fold Amount: 0.00
+2025-06-24 21:04:27,777 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:04:27,778 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:04:28,946 - __main__ - DEBUG - HTML length: 57608
+2025-06-24 21:04:28,975 - __main__ - INFO - Starting to track new hand: 11531660039
+2025-06-24 21:04:30,169 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:04:30,420 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:04:30,421 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:04:31,590 - __main__ - DEBUG - HTML length: 56768
+2025-06-24 21:04:32,817 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:04:33,071 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:04:33,072 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:04:34,240 - __main__ - DEBUG - HTML length: 56133
+2025-06-24 21:04:35,338 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:04:35,589 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:04:35,590 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:04:36,751 - __main__ - DEBUG - HTML length: 57126
+2025-06-24 21:04:37,871 - __main__ - INFO - My turn. Hand: ['3♥', '4♦'], Rank: 43 offsuit, Stack: €5.79, Bet to call: 0.10 Opponent Stacks: [8BallAlly: €8.31, mdx1990: €19.59, joker4poker2: €21.64, serg197211: €9.95, DukeSpy: €11.03]
+2025-06-24 21:04:37,871 - __main__ - INFO - Pot: €0.15, Community Cards: []
+2025-06-24 21:04:37,903 - __main__ - INFO - Decision: fold Amount: 0.00
+2025-06-24 21:04:43,626 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:04:43,627 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:04:44,794 - __main__ - DEBUG - HTML length: 56628
+2025-06-24 21:04:44,826 - __main__ - INFO - Starting to track new hand: 11531662867
+2025-06-24 21:04:46,090 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:04:46,341 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:04:46,342 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:04:47,506 - __main__ - DEBUG - HTML length: 57415
+2025-06-24 21:04:48,890 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:04:49,140 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:04:49,141 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:04:50,316 - __main__ - DEBUG - HTML length: 56781
+2025-06-24 21:04:51,536 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:04:51,787 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:04:51,788 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:04:52,952 - __main__ - DEBUG - HTML length: 56781
+2025-06-24 21:04:54,070 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:04:54,320 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:04:54,321 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:04:55,489 - __main__ - DEBUG - HTML length: 57774
+2025-06-24 21:04:56,628 - __main__ - INFO - My turn. Hand: ['7♠', '2♠'], Rank: 72 suited, Stack: €5.79, Bet to call: 0.10 Opponent Stacks: [8BallAlly: €8.41, mdx1990: €19.49, joker4poker2: €21.64, serg197211: €10, DukeSpy: €11.03]
+2025-06-24 21:04:56,629 - __main__ - INFO - Pot: €0.15, Community Cards: []
+2025-06-24 21:04:56,659 - __main__ - INFO - Decision: fold Amount: 0.00
+2025-06-24 21:04:58,896 - __main__ - INFO - PokerBot stopped by user.
+2025-06-24 21:04:58,897 - __main__ - INFO - PokerBot main_loop ended.
+2025-06-24 21:04:58,949 - __main__ - INFO - Closing logger handlers.
+2025-06-24 21:06:16,653 - __main__ - INFO - Kill switch listener started. Press Ctrl+Q to stop the bot.
+2025-06-24 21:06:16,653 - __main__ - INFO - PokerBot started. Press Ctrl+C or Ctrl+Q to stop.
+2025-06-24 21:06:16,654 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:06:16,654 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:06:17,841 - __main__ - DEBUG - HTML length: 57090
+2025-06-24 21:06:17,865 - __main__ - INFO - Starting to track new hand: 11531663597
+2025-06-24 21:06:18,663 - __main__ - INFO - My turn. Hand: ['8♥', '8♠'], Rank: One Pair, 8s, Stack: €5.59, Bet to call: 0.00 Opponent Stacks: [8BallAlly: €8.36, mdx1990: €19.43, joker4poker2: €21.64, serg197211: €10, DukeSpy: €10.93]
+2025-06-24 21:06:18,663 - __main__ - INFO - Pot: €0.55, Community Cards: ['J♠', '2♦', '7♣']
+2025-06-24 21:06:18,676 - __main__ - INFO - Decision: raise Amount: 0.25
+2025-06-24 21:06:27,054 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:06:27,055 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:06:28,218 - __main__ - DEBUG - HTML length: 57396
+2025-06-24 21:06:29,417 - __main__ - INFO - My turn. Hand: ['8♥', '8♠'], Rank: One Pair, 8s, Stack: €5.34, Bet to call: 0.00 Opponent Stacks: [8BallAlly: €8.36, mdx1990: €19.18, joker4poker2: €21.64, serg197211: €10, DukeSpy: €10.93]
+2025-06-24 21:06:29,417 - __main__ - INFO - Pot: €1.05, Community Cards: ['J♠', '2♦', '7♣', 'A♣']
+2025-06-24 21:06:29,438 - __main__ - INFO - Decision: raise Amount: 0.50
+2025-06-24 21:06:37,767 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:06:37,768 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:06:38,928 - __main__ - DEBUG - HTML length: 54640
+2025-06-24 21:06:38,970 - __main__ - INFO - Starting to track new hand: N/A
+2025-06-24 21:06:39,931 - __main__ - INFO - Not my turn. My Hand: ['8♥', '8♠']. Stack: €5.34. Opponent Stacks: [8BallAlly: €8.36, mdx1990: €19.18, joker4poker2: €21.64, serg197211: €10, DukeSpy: €10.93]. Waiting...
+2025-06-24 21:06:40,182 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:06:40,182 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:06:41,346 - __main__ - DEBUG - HTML length: 56277
+2025-06-24 21:06:41,369 - __main__ - INFO - Starting to track new hand: 11531667176
+2025-06-24 21:06:42,349 - __main__ - INFO - PokerBot stopped by user.
+2025-06-24 21:06:42,350 - __main__ - INFO - PokerBot main_loop ended.
+2025-06-24 21:06:42,367 - __main__ - INFO - Closing logger handlers.
+2025-06-24 21:10:55,388 - __main__ - INFO - Kill switch listener started. Press Ctrl+Q to stop the bot.
+2025-06-24 21:10:55,388 - __main__ - INFO - PokerBot started. Press Ctrl+C or Ctrl+Q to stop.
+2025-06-24 21:10:55,389 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:10:55,389 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:10:56,537 - __main__ - DEBUG - HTML length: 57716
+2025-06-24 21:10:56,557 - __main__ - INFO - Starting to track new hand: 11531677682
+2025-06-24 21:10:57,346 - __main__ - INFO - My turn. Hand: ['J♦', 'Q♣'], Rank: One Pair, Qs, Stack: €6.81, Bet to call: 0.00 Opponent Stacks: [8BallAlly: €7.51, mdx1990: €19.71, joker4poker2: €21.64, serg197211: €9.70, DukeSpy: €10.38]
+2025-06-24 21:10:57,346 - __main__ - INFO - Pot: €0.95, Community Cards: ['Q♠', '3♠', '9♥']
+2025-06-24 21:10:57,360 - __main__ - INFO - Decision: raise Amount: 0.42
+2025-06-24 21:11:05,749 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:11:05,751 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:11:06,920 - __main__ - DEBUG - HTML length: 55747
+2025-06-24 21:11:08,251 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:11:08,501 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:11:08,502 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:11:09,652 - __main__ - DEBUG - HTML length: 59319
+2025-06-24 21:11:10,760 - __main__ - INFO - My turn. Hand: ['J♦', 'Q♣'], Rank: Three of a Kind, Qs, Stack: €6.39, Bet to call: 0.00 Opponent Stacks: [8BallAlly: €7.09, mdx1990: €19.71, joker4poker2: €21.64, serg197211: €9.28, DukeSpy: €10.38]
+2025-06-24 21:11:10,760 - __main__ - INFO - Pot: €2.21, Community Cards: ['Q♠', '3♠', '9♥', 'Q♦']
+2025-06-24 21:11:10,772 - __main__ - INFO - Decision: raise Amount: 1.46
+2025-06-24 21:11:19,151 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:11:19,152 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:11:20,337 - __main__ - DEBUG - HTML length: 56072
+2025-06-24 21:11:21,567 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:11:21,818 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:11:21,819 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:11:22,967 - __main__ - DEBUG - HTML length: 56171
+2025-06-24 21:11:24,162 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:11:24,413 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:11:24,413 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:11:25,586 - __main__ - DEBUG - HTML length: 56084
+2025-06-24 21:11:26,845 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:11:27,095 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:11:27,096 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:11:28,250 - __main__ - DEBUG - HTML length: 56084
+2025-06-24 21:11:29,408 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:11:29,659 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:11:29,660 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:11:30,828 - __main__ - DEBUG - HTML length: 54956
+2025-06-24 21:11:32,014 - __main__ - INFO - Not my turn. My Hand: ['J♦', 'Q♣']. Stack: €4.93. Opponent Stacks: [8BallAlly: €7.09, mdx1990: €19.71, joker4poker2: €21.64, serg197211: €7.82, DukeSpy: €10.38]. Waiting...
+2025-06-24 21:11:32,265 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:11:32,266 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:11:33,427 - __main__ - DEBUG - HTML length: 57818
+2025-06-24 21:11:34,568 - __main__ - INFO - My turn. Hand: ['J♦', 'Q♣'], Rank: Three of a Kind, Qs, Stack: €4.93, Bet to call: 0.00 Opponent Stacks: [8BallAlly: €7.09, mdx1990: €19.71, joker4poker2: €21.64, serg197211: €7.82, DukeSpy: €10.38]
+2025-06-24 21:11:34,568 - __main__ - INFO - Pot: €5.13, Community Cards: ['Q♠', '3♠', '9♥', 'Q♦', '4♠']
+2025-06-24 21:11:34,577 - __main__ - INFO - Decision: raise Amount: 3.61
+2025-06-24 21:11:42,936 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:11:42,937 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:11:44,099 - __main__ - DEBUG - HTML length: 55748
+2025-06-24 21:11:45,196 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:11:45,446 - __main__ - INFO - 
+--- New Decision Cycle ---
+2025-06-24 21:11:45,447 - __main__ - DEBUG - Attempting to retrieve game HTML from screen...
+2025-06-24 21:11:46,613 - __main__ - DEBUG - HTML length: 55748
+2025-06-24 21:11:47,676 - __main__ - INFO - Not my turn. Active player: N/A. Waiting...
+2025-06-24 21:11:47,864 - __main__ - INFO - PokerBot stopped by user.
+2025-06-24 21:11:47,865 - __main__ - INFO - PokerBot main_loop ended.
+2025-06-24 21:11:47,885 - __main__ - INFO - Closing logger handlers.

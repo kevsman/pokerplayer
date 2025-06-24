@@ -43,6 +43,17 @@ from postflop.analysis_processing import (
     consolidate_opponent_analysis,
     determine_final_decision_hand_strength
 )
+from poker_tactics import (
+    has_blocker_effects,
+    should_merge_or_polarize_range,
+    should_overbet_or_underbet,
+    adjust_for_multiway_pot,
+    should_double_barrel_bluff,
+    should_delay_cbet,
+    should_river_overbluff,
+    should_induce_bluff,
+    assess_board_danger
+)
 
 
 # Import functions that will be passed to analysis_processing
@@ -106,7 +117,7 @@ def make_postflop_decision(
     my_player_data, all_players_raw_data, big_blind_amount, base_aggression_factor,
     max_bet_on_table, active_opponents_count, opponent_tracker,
     was_preflop_aggressor=False, action_history=None, aggression_history=None,
-    preflop_category=None # <-- NEW ARGUMENT
+    preflop_category=None
 ):
     import logging
     logger = logging.getLogger(__name__)
@@ -123,6 +134,11 @@ def make_postflop_decision(
     fold_equity = calculate_fold_equity(opp_range, board_texture, bet_to_call, pot_size)
     # Use opp_range and fold_equity in decision logic below as needed
     # Example: If fold_equity is high, increase bluff frequency; if opp_range is strong, tighten value betting
+
+    # --- Tactical analysis ---
+    community_cards = my_player_data.get('community_cards', [])
+    board_danger = assess_board_danger(community_cards)
+    blockers = has_blocker_effects(my_player_data.get('hand', []), community_cards, ['A', 'K'])
 
     logger.debug(
         f"make_postflop_decision: street={street}, my_player_data={my_player_data}, "
@@ -850,113 +866,3 @@ def make_postflop_decision(
 
     return action, amount
 # === END: Integrate improved/tuned logic ===
-# ...existing code...
-# === Advanced Post-Flop Strategy Utilities ===
-def has_blocker_effects(my_hand, board, target_ranks, target_suits=None):
-    """Returns True if hand contains blockers to key opponent holdings."""
-    hand_cards = set(my_hand)
-    board_cards = set(board)
-    for rank in target_ranks:
-        for suit in (target_suits or ['s', 'h', 'd', 'c']):
-            card = f"{rank}{suit}"
-            if card in hand_cards and card not in board_cards:
-                return True
-    return False
-
-def should_merge_or_polarize_range(opponent_type, board_texture):
-    """Suggests whether to merge or polarize betting range."""
-    if opponent_type == 'calling_station':
-        return 'merge'  # bet more medium hands for value
-    if board_texture in ['dry', 'static']:
-        return 'merge'
-    return 'polarize'  # bet strong hands and bluffs
-
-def should_overbet_or_underbet(street, hand_strength, board_texture, nut_advantage):
-    """Suggests overbet or underbet opportunities."""
-    if street == 'turn' and hand_strength == 'very_strong' and nut_advantage:
-        return 'overbet'
-    if street == 'river' and hand_strength in ['very_strong', 'bluff'] and nut_advantage:
-        return 'overbet'
-    if hand_strength == 'thin_value' and board_texture == 'dry':
-        return 'underbet'
-    return None
-
-def adjust_for_multiway_pot(active_opponents_count, hand_strength):
-    """Adjusts aggression for multiway pots."""
-    if active_opponents_count > 2:
-        if hand_strength in ['medium', 'thin_value', 'bluff']:
-            return 'pot_control'
-    return None
-
-def should_double_barrel_bluff(board_runout, previous_action, opponent_type):
-    """Returns True if double-barrel bluff is recommended."""
-    if previous_action == 'cbet_flop' and board_runout in ['scare_card', 'overcard'] and opponent_type != 'calling_station':
-        return True
-    return False
-
-def should_delay_cbet(street, previous_action, board_texture, opponent_type):
-    """Returns True if delayed c-bet is optimal."""
-    if street == 'turn' and previous_action == 'check_flop' and board_texture == 'dry' and opponent_type != 'aggressive':
-        return True
-    return False
-
-def should_river_overbluff(opponent_type, river_action_history):
-    """Returns True if river overbluff is recommended."""
-    if opponent_type == 'fit_or_fold' and river_action_history.count('check') >= 2:
-        return True
-    return False
-
-def should_induce_bluff(opponent_type, hand_strength, street, action_history):
-    """Returns True if inducing a bluff is optimal."""
-    if opponent_type == 'aggressive' and hand_strength in ['strong', 'medium'] and street == 'river' and action_history and action_history.get('river', []) == ['check']:
-        return True
-    return False
-
-def assess_board_danger(community_cards):
-    """
-    Assess the danger level of the board texture.
-    Returns a danger level from 0 (safest) to 10 (most dangerous).
-    """
-    danger = 0
-    ranks = [c[0] for c in community_cards]
-    suits = [c[1] for c in community_cards]
-
-    # Three of a kind on board
-    rank_counts = {r: ranks.count(r) for r in ranks}
-    if 3 in rank_counts.values():
-        danger += 8
-
-    # Paired board
-    elif 2 in rank_counts.values():
-        danger += 4
-
-    # Flush danger
-    suit_counts = {s: suits.count(s) for s in suits}
-    if 3 in suit_counts.values():
-        danger += 3
-    if 4 in suit_counts.values():
-        danger += 6
-
-    # Straight danger
-    # This is a simplified check. A more robust check would analyze sequences.
-    unique_ranks = sorted(list(set([('--TJQKA'.index(r) if r in '--TJQKA' else int(r)) for r in ranks])))
-    if len(unique_ranks) >= 3:
-        if unique_ranks[-1] - unique_ranks[0] <= 4: # Potential straight
-            danger += 3
-        if len(unique_ranks) >= 4 and unique_ranks[-1] - unique_ranks[0] <= 5: # Very likely straight
-            danger += 5
-            
-    return min(danger, 10)
-
-# Integrate advanced strategies into make_postflop_decision
-# (Insert at appropriate points in the function, e.g., after hand strength and opponent analysis)
-# Example integration (pseudo-code, adapt as needed):
-#
-# blocker = has_blocker_effects(my_player_data.get('hand', []), community_cards, target_ranks=['A', 'K'])
-# range_strategy = should_merge_or_polarize_range(final_opponent_analysis.get('table_type', 'unknown'), board_texture)
-# overbet_suggestion = should_overbet_or_underbet(street, hand_strength_final_decision, board_texture, nut_advantage=True)
-# multiway_adjustment = adjust_for_multiway_pot(active_opponents_count, hand_strength_final_decision)
-# double_barrel = should_double_barrel_bluff(board_texture, action_history.get('flop', ''), final_opponent_analysis.get('table_type', 'unknown'))
-# delay_cbet = should_delay_cbet(street, action_history.get('flop', ''), board_texture, final_opponent_analysis.get('table_type', 'unknown'))
-# river_bluff = should_river_overbluff(final_opponent_analysis.get('table_type', 'unknown'), (action_history.get('river', []) if action_history else []))
-# induce_bluff = should_induce_bluff(final_opponent_analysis.get('table_type', 'unknown'), hand_strength_final_decision, street, action_history)
