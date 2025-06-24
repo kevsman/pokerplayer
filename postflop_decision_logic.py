@@ -587,7 +587,8 @@ def make_postflop_decision(
                                 street, 
                                 big_blind_amount, 
                                 active_opponents_count, 
-                                bluff=True                            ) * 0.8  # Smaller sizing when not PFR
+                                bluff=True
+                            ) * 0.8  # Smaller sizing when not PFR
                             logger.info(f"Decision: {action_raise_const} {bet_amount:.2f} (Drawing hand, opportunistic semi-bluff)")
                             return action_raise_const, bet_amount
                     
@@ -879,6 +880,42 @@ def should_induce_bluff(opponent_type, hand_strength, street, action_history):
         return True
     return False
 
+def assess_board_danger(community_cards):
+    """
+    Assess the danger level of the board texture.
+    Returns a danger level from 0 (safest) to 10 (most dangerous).
+    """
+    danger = 0
+    ranks = [c[0] for c in community_cards]
+    suits = [c[1] for c in community_cards]
+
+    # Three of a kind on board
+    rank_counts = {r: ranks.count(r) for r in ranks}
+    if 3 in rank_counts.values():
+        danger += 8
+
+    # Paired board
+    elif 2 in rank_counts.values():
+        danger += 4
+
+    # Flush danger
+    suit_counts = {s: suits.count(s) for s in suits}
+    if 3 in suit_counts.values():
+        danger += 3
+    if 4 in suit_counts.values():
+        danger += 6
+
+    # Straight danger
+    # This is a simplified check. A more robust check would analyze sequences.
+    unique_ranks = sorted(list(set([('--TJQKA'.index(r) if r in '--TJQKA' else int(r)) for r in ranks])))
+    if len(unique_ranks) >= 3:
+        if unique_ranks[-1] - unique_ranks[0] <= 4: # Potential straight
+            danger += 3
+        if len(unique_ranks) >= 4 and unique_ranks[-1] - unique_ranks[0] <= 5: # Very likely straight
+            danger += 5
+            
+    return min(danger, 10)
+
 # Integrate advanced strategies into make_postflop_decision
 # (Insert at appropriate points in the function, e.g., after hand strength and opponent analysis)
 # Example integration (pseudo-code, adapt as needed):
@@ -889,7 +926,3 @@ def should_induce_bluff(opponent_type, hand_strength, street, action_history):
 # multiway_adjustment = adjust_for_multiway_pot(active_opponents_count, hand_strength_final_decision)
 # double_barrel = should_double_barrel_bluff(board_texture, action_history.get('flop', ''), final_opponent_analysis.get('table_type', 'unknown'))
 # delay_cbet = should_delay_cbet(street, action_history.get('flop', ''), board_texture, final_opponent_analysis.get('table_type', 'unknown'))
-# river_bluff = should_river_overbluff(final_opponent_analysis.get('table_type', 'unknown'), action_history.get('river', []))
-# induce_bluff = should_induce_bluff(final_opponent_analysis.get('table_type', 'unknown'), hand_strength_final_decision, street, action_history)
-#
-# Use these variables to adjust betting, checking, bluffing, and value lines accordingly.
