@@ -131,8 +131,16 @@ class PokerBotV2:
         stage = self.table_data.get('game_stage', 'preflop').lower()
         actions = my_player.get('available_actions', [ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE])
 
+        # Calculate the actual number of opponents from player data
+        num_opponents = 0
+        for player in self.player_data:
+            if not player.get('is_my_player', False) and not player.get('is_empty', False):
+                num_opponents += 1
+        
+        self.logger.debug(f"Detected {num_opponents} opponents in the game")
+
         # 1. Abstract the hand and board
-        hand_bucket = self.abstraction.bucket_hand(player_hole_cards, community_cards, stage)
+        hand_bucket = self.abstraction.bucket_hand(player_hole_cards, community_cards, stage, num_opponents)
         board_bucket = self.abstraction.bucket_board(community_cards, stage)
         
         # 2. Try to get a precomputed strategy
@@ -142,7 +150,7 @@ class PokerBotV2:
         else:
             # 3. If not found, run a quick CFR solve for this spot
             self.logger.info("No precomputed strategy found. Running real-time CFR solve.")
-            strategy = self.cfr_solver.solve(player_hole_cards, community_cards, pot_size, actions, stage)
+            strategy = self.cfr_solver.solve(player_hole_cards, community_cards, pot_size, actions, stage, num_opponents)
 
         # 4. Pick the action with the highest probability
         best_action = max(strategy.items(), key=lambda x: x[1])[0]

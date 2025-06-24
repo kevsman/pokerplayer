@@ -59,11 +59,11 @@ class EquityCalculator:
         """Get cards that are not in the known cards list"""
         return [card for card in self.all_cards if card not in known_cards]
     
-    def calculate_equity_monte_carlo(self, hole_cards_str_list, community_cards_str_list, opponent_range_str_list, num_simulations):
+    def calculate_equity_monte_carlo(self, hole_cards_str_list, community_cards_str_list, opponent_range_str_list=None, num_simulations=1000, num_opponents=1):
         logger.debug(
             f"Enter calculate_equity_monte_carlo. Hole Cards: {hole_cards_str_list}, "
             f"Community Cards: {community_cards_str_list}, Opponent Range: {opponent_range_str_list}, "
-            f"Simulations: {num_simulations}"
+            f"Simulations: {num_simulations}, Num Opponents: {num_opponents}"
         )
 
         if not hole_cards_str_list or not hole_cards_str_list[0]:
@@ -120,19 +120,33 @@ class EquityCalculator:
             try:
                 num_board_cards_needed = 5 - len(community_cards_obj)
                 
-                # Check if enough cards for opponent + board
-                required_cards_for_sim = 2 + max(0, num_board_cards_needed)
+                # Check if enough cards for all opponents + board
+                required_cards_for_sim = (2 * num_opponents) + max(0, num_board_cards_needed)
                 if len(current_deck_sim_strings) < required_cards_for_sim:
                     logger.debug(f"Sim {i}: Not enough cards in deck ({len(current_deck_sim_strings)}) for simulation. Need {required_cards_for_sim}. Skipping.")
-                    continue                # Deal opponent hand (strings) - use random.sample without modifying deck
-                import random
-                if len(current_deck_sim_strings) < 2:
-                    logger.debug(f"Sim {i}: Not enough cards for opponent hand. Deck: {len(current_deck_sim_strings)}. Skipping.")
                     continue
-                opponent_hole_cards_strings = random.sample(current_deck_sim_strings, 2)
                 
-                # Remove opponent cards from available deck for board dealing
-                remaining_deck = [c for c in current_deck_sim_strings if c not in opponent_hole_cards_strings]
+                # Deal opponent hands (strings) - use random.sample without modifying deck
+                import random
+                if len(current_deck_sim_strings) < (2 * num_opponents):
+                    logger.debug(f"Sim {i}: Not enough cards for {num_opponents} opponent hands. Deck: {len(current_deck_sim_strings)}. Skipping.")
+                    continue
+                
+                # Deal cards for all opponents
+                opponent_hands = []
+                remaining_deck = list(current_deck_sim_strings)
+                
+                for opp_idx in range(num_opponents):
+                    if len(remaining_deck) < 2:
+                        break
+                    opponent_hand = random.sample(remaining_deck, 2)
+                    opponent_hands.append(opponent_hand)
+                    # Remove dealt cards from remaining deck
+                    remaining_deck = [c for c in remaining_deck if c not in opponent_hand]
+                
+                if len(opponent_hands) != num_opponents:
+                    logger.debug(f"Sim {i}: Could not deal cards for all {num_opponents} opponents. Got {len(opponent_hands)}. Skipping.")
+                    continue
                 
                 # Deal remaining board cards (strings)
                 additional_board_cards_strings = []
@@ -142,43 +156,27 @@ class EquityCalculator:
                         continue
                     additional_board_cards_strings = random.sample(remaining_deck, num_board_cards_needed)
                 
-                # Convert dealt string cards to HandEvaluator's object format for evaluation
-                opponent_hole_cards_sim_obj = [self.hand_evaluator._convert_card_to_value(c) for c in opponent_hole_cards_strings]
-                opponent_hole_cards_sim_obj = [c for c in opponent_hole_cards_sim_obj if c is not None]
-
-                additional_board_cards_obj = [self.hand_evaluator._convert_card_to_value(c) for c in additional_board_cards_strings]
-                additional_board_cards_obj = [c for c in additional_board_cards_obj if c is not None]
-
-                if len(opponent_hole_cards_sim_obj) != 2:
-                    logger.debug(f"Sim {i}: Opponent card conversion resulted in != 2 cards. Strings: {opponent_hole_cards_strings}, Objs: {opponent_hole_cards_sim_obj}. Skipping.")
-                    continue
-                
-                if num_board_cards_needed > 0 and len(additional_board_cards_obj) != num_board_cards_needed:
-                    logger.debug(f"Sim {i}: Additional board card conversion resulted in wrong count. Strings: {additional_board_cards_strings}, Objs: {additional_board_cards_obj}, Needed: {num_board_cards_needed}. Skipping.")
-                    continue
-
-                current_board_sim_obj = community_cards_obj + additional_board_cards_obj
-
-                if len(current_board_sim_obj) > 5:
-                     logger.warning(f"Sim {i}: Board length > 5 ({len(current_board_sim_obj)}). Board: {self.hand_evaluator.cards_to_strings(current_board_sim_obj) if hasattr(self.hand_evaluator, 'cards_to_strings') else current_board_sim_obj}. Skipping.")
-                     continue
-
-                # Use string cards for evaluation (evaluate_hand expects strings, not tuples)
+                # Evaluate player hand
                 current_board_sim_strings = community_cards_str_list + additional_board_cards_strings
                 player_eval = self.hand_evaluator.evaluate_hand(player_hole_cards_str_list_for_conversion, current_board_sim_strings)
-                opponent_eval = self.hand_evaluator.evaluate_hand(opponent_hole_cards_strings, current_board_sim_strings)
-                comparison_result_for_log = self._compare_hands(player_eval, opponent_eval)
+                
+                # Evaluate all opponent hands and find the best one
+                best_opponent_eval = None
+                best_opponent_hand = None
+                
+                for opponent_hand in opponent_hands:
+                    opponent_eval = self.hand_evaluator.evaluate_hand(opponent_hand, current_board_sim_strings)
+                    if best_opponent_eval is None or self._compare_hands(opponent_eval, best_opponent_eval) > 0:
+                        best_opponent_eval = opponent_eval
+                        best_opponent_hand = opponent_hand
+                
+                # Compare player vs best opponent
+                comparison_result_for_log = self._compare_hands(player_eval, best_opponent_eval)
 
                 if i < 5: # Log details for the first 5 simulations for debugging
-                    sim_board_strings_log = community_cards_str_list + additional_board_cards_strings
-                    
-                    # Assuming player_hole_cards_str_list_for_conversion and opponent_hole_cards_strings are lists of strings
-                    player_hole_cards_str_log = player_hole_cards_str_list_for_conversion
-                    opponent_hole_cards_str_log = opponent_hole_cards_strings
-
-                    logger.debug(f"SIM_DEBUG #{i}: PlayerHole: {player_hole_cards_str_log}, OpponentHole: {opponent_hole_cards_str_log}, Board: {sim_board_strings_log}")
-                    logger.debug(f"SIM_DEBUG #{i}: PlayerEval Rank: {player_eval.get('rank_value')}, Desc: {player_eval.get('description')}, Tiebreakers: {player_eval.get('tie_breakers')}")
-                    logger.debug(f"SIM_DEBUG #{i}: OpponentEval Rank: {opponent_eval.get('rank_value')}, Desc: {opponent_eval.get('description')}, Tiebreakers: {opponent_eval.get('tie_breakers')}")
+                    logger.debug(f"SIM_DEBUG #{i}: PlayerHole: {player_hole_cards_str_list_for_conversion}, BestOpponentHole: {best_opponent_hand}, Board: {current_board_sim_strings}")
+                    logger.debug(f"SIM_DEBUG #{i}: PlayerEval Rank: {player_eval.get('rank_value')}, Desc: {player_eval.get('description')}")
+                    logger.debug(f"SIM_DEBUG #{i}: BestOpponentEval Rank: {best_opponent_eval.get('rank_value')}, Desc: {best_opponent_eval.get('description')}")
                     logger.debug(f"SIM_DEBUG #{i}: ComparisonResult: {comparison_result_for_log}")
 
                 if comparison_result_for_log > 0:

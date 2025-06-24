@@ -12,19 +12,20 @@ class HandAbstraction:
         # Buckets based on equity ranges: 0-20%, 20-40%, 40-60%, 60-80%, 80-100%
         self.equity_buckets = [0.2, 0.4, 0.6, 0.8, 1.0]
 
-    def bucket_hand(self, player_hole_cards, community_cards, stage):
+    def bucket_hand(self, player_hole_cards, community_cards, stage, num_opponents=1):
         """
-        Buckets the hand based on its equity (win probability) against a single random opponent.
+        Buckets the hand based on its equity (win probability) against the actual number of opponents.
         """
         if not player_hole_cards:
             return 0
-
+        
         # Use a fast Monte Carlo simulation to estimate equity
         win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
             [player_hole_cards],
             community_cards,
-            num_opponents=1,
-            num_simulations=500  # Lower simulations for speed during real-time decision
+            None,  # opponent_range_str_list (None means random opponent)
+            500,   # num_simulations - Lower simulations for speed during real-time decision
+            num_opponents  # Use actual number of opponents
         )
 
         # Find which bucket the win probability falls into

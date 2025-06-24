@@ -13,34 +13,39 @@ class CFRSolver:
         self.hand_evaluator = hand_evaluator
         self.equity_calculator = equity_calculator
 
-    def solve(self, player_hole_cards, community_cards, pot_size, actions, stage, iterations=100):
+    def solve(self, player_hole_cards, community_cards, pot_size, actions, stage, num_opponents=2, iterations=100):
         """
         A simplified solver that uses Monte Carlo simulation to estimate action values.
         This is not a full CFR implementation but a functional placeholder.
         """
         action_values = {action: 0.0 for action in actions}
 
-        for _ in range(iterations):
-            # Simulate opponent's hand
+        for _ in range(iterations):            # Simulate multiple opponent hands
+            opponent_hands = []
             deck = self.equity_calculator.all_cards[:]
             deck = [c for c in deck if c not in player_hole_cards and c not in community_cards]
-            opponent_hand = random.sample(deck, 2)
+              # Deal 2 cards to each opponent
+            for _ in range(num_opponents):  # Use actual number of opponents
+                if len(deck) >= 2:
+                    opponent_hand = random.sample(deck, 2)
+                    opponent_hands.append(opponent_hand)
+                    deck = [c for c in deck if c not in opponent_hand]
 
             # Estimate equity for each action
             if 'raise' in actions:
-                # Simplified: assume we win the pot if opponent folds, otherwise go to showdown
-                # Assume opponent folds 50% of the time to a raise
-                if random.random() < 0.5:
+                # Simplified: assume opponents fold based on hand strength
+                fold_probability = 0.3 + (0.4 * random.random())  # 30-70% fold probability
+                if random.random() < fold_probability:
                     action_values['raise'] += pot_size
                 else:
                     win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
-                        [player_hole_cards], community_cards, num_opponents=1, num_simulations=100, opponent_hands=[opponent_hand]
+                        [player_hole_cards], community_cards, None, num_simulations=50, num_opponents=len(opponent_hands)
                     )
                     action_values['raise'] += win_prob * (pot_size * 2) # Simplified EV
 
             if 'call' in actions:
                 win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
-                    [player_hole_cards], community_cards, num_opponents=1, num_simulations=100, opponent_hands=[opponent_hand]
+                    [player_hole_cards], community_cards, None, num_simulations=50, num_opponents=len(opponent_hands)
                 )
                 action_values['call'] += win_prob * pot_size
 
