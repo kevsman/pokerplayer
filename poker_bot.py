@@ -8,6 +8,7 @@ from ui_controller import UIController
 from equity_calculator import EquityCalculator # Added import
 from hand_history_tracker import get_hand_history_tracker  # Import hand history tracker
 from opponent_tracking import OpponentTracker # Import OpponentTracker
+from deepstack_client import DeepStackClient
 import time
 import logging
 import threading
@@ -103,6 +104,7 @@ class PokerBot:
         self.running = False
         self.last_html_content = None
         self.starting_stack = 6  # Track the starting stack for stop condition
+        self.deepstack_client = DeepStackClient(logger=self.logger)
 
     def close_logger(self):
         """Close all logging handlers."""
@@ -274,53 +276,20 @@ class PokerBot:
             self.analyze() # Ensure data is up-to-date
 
         my_player = self.get_my_player()
-
         if not my_player:
             return "Could not find my player data."
-        
-        # Get the current hand history and include aggression information
-        current_hand = self.hand_history_tracker.get_current_hand()
-        if current_hand:
-            # Add hand history information to my_player
-            my_player_name = my_player.get('name', '')
-            
-            # Was I the preflop aggressor?
-            was_preflop_aggressor = current_hand.is_player_aggressor(my_player_name, 'preflop')
-            my_player['was_preflop_aggressor'] = was_preflop_aggressor
-            
-            # Get my action history for this hand
-            action_summary = current_hand.get_player_action_summary(my_player_name)
-            my_player['action_history'] = action_summary
-            
-            # Add current street aggression information
-            game_stage = self.table_data.get('game_stage', 'preflop').lower()
-            previous_streets = []
-            street_order = ["preflop", "flop", "turn", "river"]
-            
-            # Get all previous streets
-            current_index = street_order.index(game_stage)
-            for i in range(current_index):
-                previous_streets.append(street_order[i])
-            
-            # Check if I was the aggressor on previous streets
-            aggression_history = {}
-            for street in previous_streets:
-                aggression_history[street] = current_hand.is_player_aggressor(my_player_name, street)
-            
-            my_player['aggression_history'] = aggression_history
-            
-            # Log hand history information for debugging
-            self.logger.debug(f"Hand history for decision-making - Player: {my_player_name}")
-            self.logger.debug(f"  Was preflop aggressor: {was_preflop_aggressor}")
-            self.logger.debug(f"  Action history: {action_summary}")
-            self.logger.debug(f"  Aggression history: {aggression_history}")
-            
-            # Add hand history to the table data
-            self.table_data['hand_history'] = current_hand
-        
-        # The DecisionEngine's make_decision expects: my_player, table_data, all_players_data
-        # It also internally checks if it's the player's turn.
-        return self.decision_engine.make_decision(my_player, self.table_data, self.player_data)
+
+        # Find my player index
+        my_player_index = None
+        for i, p in enumerate(self.player_data):
+            if p.get('is_my_player'):
+                my_player_index = i
+                break
+
+        # Use DeepStack for decision making
+        ds_action = self.get_deepstack_action(my_player_index)
+        # Return as tuple for compatibility with rest of bot
+        return ds_action.get('action', 'fold'), ds_action.get('amount', 0)
 
     def get_summary(self):
         if not self.table_data and not self.player_data: 
@@ -845,6 +814,24 @@ class PokerBot:
             self.running = False
             self.logger.info("PokerBot main_loop ended.")
             self.opponent_tracker.save_all_profiles() # Save opponent data
+
+    def get_deepstack_action(self, my_player_index=None):
+        """
+        Uses DeepStack to get an action for the current game state.
+        :param my_player_index: index of the acting player (optional)
+        :return: dict with action info, e.g. {'action': 'raise', 'amount': 2.5}
+        """
+        # Prepare the internal state in the same format as used for decision_engine
+        game_state = {
+            "players": self.player_data,
+            "pot_size": self.table_data.get('pot_size', 0),
+            "community_cards": self.table_data.get('community_cards', []),
+            "current_round": self.table_data.get('game_stage', 'preflop').lower(),
+            "min_raise": self.config.get('big_blind', 0.1) * 2,
+            "board": self.table_data.get('community_cards', []),
+            "street": self.table_data.get('game_stage', 'preflop').lower(),
+        }
+        return self.deepstack_client.get_action_from_internal_state(game_state, my_player_index)
 
 if __name__ == "__main__":
     # Basic logging setup for the __main__ block with Unicode support
