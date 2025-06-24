@@ -53,8 +53,8 @@ class PokerBotV2:
         self.logger.propagate = False
 
         self.config = config if config is not None else {}
-        self.big_blind = self.config.get('big_blind', 0.1)
-        self.small_blind = self.config.get('small_blind', 0.05)
+        self.big_blind = self.config.get('big_blind', 0.04)
+        self.small_blind = self.config.get('small_blind', 0.02)
 
         self.parser = PokerPageParser()
         self.ui_controller = UIController()
