@@ -304,6 +304,8 @@ def make_postflop_decision(
     effectively_can_genuinely_check = can_check and (bet_to_call == 0)
 
     # --- Board Texture Awareness & Hand Strength Re-Evaluation (Improvements 1, 3, 4) ---
+    board_danger_level = assess_board_danger(community_cards)
+    logger.info(f"Board danger level: {board_danger_level}/10")
     # Use EnhancedBoardAnalyzer to check for dangerous board textures (e.g., 4+ of the same suit)
     try:
         from enhanced_board_analysis import EnhancedBoardAnalyzer
@@ -462,6 +464,11 @@ def make_postflop_decision(
         # This is the block for when we can truly check (action is on us, no prior bet in this round)
         
         if is_very_strong:
+            # NEW: Board danger check
+            if board_danger_level >= 7:
+                logger.warning(f"Very strong hand, but board is dangerous (level: {board_danger_level}). Checking cautiously.")
+                logger.info(f"Decision: {action_check_const} (Very strong hand, but checking due to dangerous board)")
+                return action_check_const, 0
             # Check if we should check instead of bet (e.g., for trapping or if board is scary)
             if ENHANCED_MODULES_AVAILABLE: # Check if enhanced modules are available
                 should_check_flag, check_reason = should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street)
@@ -474,6 +481,11 @@ def make_postflop_decision(
             logger.info(f"Decision: {action_raise_const} {bet_amount} (Very strong hand, value bet)")
             return action_raise_const, bet_amount        
         elif is_strong:
+            # NEW: Board danger check
+            if board_danger_level >= 5:
+                logger.warning(f"Strong hand, but board is dangerous (level: {board_danger_level}). Checking cautiously.")
+                logger.info(f"Decision: {action_check_const} (Strong hand, but checking due to dangerous board)")
+                return action_check_const, 0
             if ENHANCED_MODULES_AVAILABLE: # Check if enhanced modules are available
                 should_check_flag, check_reason = should_check_instead_of_bet(hand_strength_final_decision, win_probability, pot_size, active_opponents_count, position, street)
                 if should_check_flag:
@@ -486,6 +498,11 @@ def make_postflop_decision(
             return action_raise_const, bet_amount
             
         elif is_medium:
+            # NEW: Board danger check
+            if board_danger_level >= 4:
+                logger.warning(f"Medium hand, but board is dangerous (level: {board_danger_level}). Checking to be safe.")
+                logger.info(f"Decision: {action_check_const} (Medium hand, checking due to potentially dangerous board)")
+                return action_check_const, 0
             can_cbet_medium = False
             bet_purpose_detail = "thin value bet" # Default purpose
             bet_factor = 0.65 # Increased from 0.5 - more aggressive thin value bets
@@ -630,6 +647,11 @@ def make_postflop_decision(
         min_raise = max_bet_on_table * 2 # Simplified min raise logic
         
         if is_very_strong:
+            # NEW: Board danger check
+            if board_danger_level >= 7 and bet_to_call > 0:
+                logger.warning(f"Very strong hand, but board is dangerous (level: {board_danger_level}). Calling instead of raising.")
+                logger.info(f"Decision: {action_call_const} {bet_to_call} (Very strong hand, but calling due to dangerous board)")
+                return action_call_const, bet_to_call
             # Value raise, consider stack commitment based on SPR
             if ENHANCED_MODULES_AVAILABLE and spr_strategy.get('base_strategy') == 'commit' or is_pot_committed:
                 bet_amount = my_stack # All-in
@@ -641,6 +663,11 @@ def make_postflop_decision(
             return action_raise_const, min(bet_amount, my_stack)
             
         elif is_strong:
+            # NEW: Board danger check
+            if board_danger_level >= 5 and bet_to_call > 0:
+                logger.warning(f"Strong hand, but board is dangerous (level: {board_danger_level}). Calling instead of raising.")
+                logger.info(f"Decision: {action_call_const} {bet_to_call} (Strong hand, calling due to dangerous board)")
+                return action_call_const, bet_to_call
             # Much more aggressive with strong hands
             required_equity = (1 - win_probability) / win_probability if win_probability > 0 else float('inf')
             
@@ -678,6 +705,11 @@ def make_postflop_decision(
                     return action_call_const, bet_to_call
                     
         elif is_medium:
+            # NEW: Board danger check
+            if board_danger_level >= 4 and bet_to_call > 0:
+                logger.warning(f"Medium hand, but board is dangerous (level: {board_danger_level}). Folding to bet.")
+                logger.info(f"Decision: {action_fold_const} (Medium hand, folding due to dangerous board)")
+                return action_fold_const, 0
             # More aggressive with medium hands
             # Favor position - be more aggressive in position
             position_advantage = position in ['BTN', 'CO']
@@ -926,3 +958,5 @@ def assess_board_danger(community_cards):
 # multiway_adjustment = adjust_for_multiway_pot(active_opponents_count, hand_strength_final_decision)
 # double_barrel = should_double_barrel_bluff(board_texture, action_history.get('flop', ''), final_opponent_analysis.get('table_type', 'unknown'))
 # delay_cbet = should_delay_cbet(street, action_history.get('flop', ''), board_texture, final_opponent_analysis.get('table_type', 'unknown'))
+# river_bluff = should_river_overbluff(final_opponent_analysis.get('table_type', 'unknown'), (action_history.get('river', []) if action_history else []))
+# induce_bluff = should_induce_bluff(final_opponent_analysis.get('table_type', 'unknown'), hand_strength_final_decision, street, action_history)
