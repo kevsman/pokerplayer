@@ -387,17 +387,17 @@ def make_postflop_decision(
     # 2. Range Merging/Polarization: Adjust value/bluff mix
     range_strategy = should_merge_or_polarize_range(final_opponent_analysis.get('table_type', 'unknown'), board_texture)
     # 3. Overbetting/Underbetting: Suggest non-standard bet sizes
-    overbet_suggestion = should_overbet_or_underbet(street, hand_strength_final_decision, board_texture, nut_advantage=True)
+    overbet_suggestion = should_overbet_or_underbet(street, numerical_hand_rank, board_texture, nut_advantage=True)
     # 4. Multi-Street Planning: Double-barrel bluff logic
     double_barrel = should_double_barrel_bluff(board_texture, (action_history.get('flop', '') if action_history else ''), final_opponent_analysis.get('table_type', 'unknown'))
     # 5. Delayed C-Betting: Delayed c-bet logic
     delay_cbet = should_delay_cbet(street, (action_history.get('flop', '') if action_history else ''), board_texture, final_opponent_analysis.get('table_type', 'unknown'))
     # 6. Inducing Bluffs: Check to induce bluff
-    induce_bluff = should_induce_bluff(final_opponent_analysis.get('table_type', 'unknown'), hand_strength_final_decision, street, action_history)
+    induce_bluff = should_induce_bluff(final_opponent_analysis.get('table_type', 'unknown'), numerical_hand_rank, street, action_history)
     # 7. River Overbluffing: Overbluff river in specific scenarios
     river_bluff = should_river_overbluff(final_opponent_analysis.get('table_type', 'unknown'), (action_history.get('river', []) if action_history else []))
     # 8. Multiway Pot Adjustments: Pot control in multiway pots
-    multiway_adjustment = adjust_for_multiway_pot(active_opponents_count, hand_strength_final_decision)
+    multiway_adjustment = adjust_for_multiway_pot(active_opponents_count, numerical_hand_rank)
 
     # === Use advanced strategies to adjust decisions ===
 
