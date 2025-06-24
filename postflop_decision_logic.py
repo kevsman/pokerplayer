@@ -321,6 +321,19 @@ def make_postflop_decision(
 
     # --- Board Texture Awareness & Hand Strength Re-Evaluation (Improvements 1, 3, 4) ---
     board_danger_level = assess_board_danger(community_cards)
+    # If assess_board_danger returns a dict, extract a numeric danger score
+    if isinstance(board_danger_level, dict):
+        # Try common keys, fallback to a simple scoring system
+        if 'danger_score' in board_danger_level:
+            board_danger_level = board_danger_level['danger_score']
+        else:
+            # Heuristic: flush_draw + straight_draw + paired_board + high_card_board
+            score = 0
+            if board_danger_level.get('flush_draw'): score += 3
+            if board_danger_level.get('straight_draw'): score += 3
+            if board_danger_level.get('paired_board'): score += 2
+            if board_danger_level.get('high_card_board'): score += 1
+            board_danger_level = score
     logger.info(f"Board danger level: {board_danger_level}/10")
     # Use EnhancedBoardAnalyzer to check for dangerous board textures (e.g., 4+ of the same suit)
     try:
