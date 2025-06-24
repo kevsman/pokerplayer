@@ -202,10 +202,10 @@ class EquityCalculator:
         
         win_probability = player_wins / total_simulations_count
         tie_probability = ties / total_simulations_count
-          # Equity is typically win_prob + (tie_prob / 2) if splitting pot on tie.
+        # Equity is typically win_prob + (tie_prob / 2) if splitting pot on tie.
         equity = win_probability + (tie_probability / 2) # Corrected equity calculation
 
-        logger.info(
+        logger.debug(
             f"Equity calculation complete for {player_hole_cards_str_list_for_conversion} vs random. "
             f"Win: {win_probability*100:.2f}%, Tie: {tie_probability*100:.2f}%, Equity: {equity*100:.2f}% "
             f"({total_simulations_count} simulations)"
