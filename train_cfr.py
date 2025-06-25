@@ -19,8 +19,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class CFRNode:
-    def __init__(self, num_actions):
+    def __init__(self, num_actions, actions):
         self.num_actions = num_actions
+        self.actions = actions
         self.regret_sum = np.zeros(num_actions)
         self.strategy = np.zeros(num_actions)
         self.strategy_sum = np.zeros(num_actions)
@@ -54,9 +55,9 @@ class CFRTrainer:
         self.strategy_lookup = StrategyLookup()
         self.nodes = {}
 
-    def get_node(self, info_set, num_actions):
+    def get_node(self, info_set, actions):
         if info_set not in self.nodes:
-            self.nodes[info_set] = CFRNode(num_actions)
+            self.nodes[info_set] = CFRNode(len(actions), actions)
         return self.nodes[info_set]
 
     def get_available_actions(self, current_bet, player_bet):
@@ -117,7 +118,7 @@ class CFRTrainer:
         info_set = f"{street}|{hand_bucket}|{board_bucket}|{history}"
 
         actions = self.get_available_actions(max(bets), bets[current_player])
-        node = self.get_node(info_set, len(actions))
+        node = self.get_node(info_set, actions)
         strategy = node.get_strategy()
 
         action_utils = np.zeros((self.num_players, len(actions)))
@@ -194,7 +195,7 @@ class CFRTrainer:
         for info_set, node in self.nodes.items():
             try:
                 street, hand_bucket, board_bucket, history_str = info_set.split('|', 3)
-                actions = self.get_available_actions_from_history(history_str) # Needs implementation
+                actions = node.actions
                 avg_strategy = node.get_average_strategy()
                 strategy_dict = {act: p for act, p in zip(actions, avg_strategy)}
                 self.strategy_lookup.update_strategy(street, hand_bucket, board_bucket, list(strategy_dict.keys()), strategy_dict)
@@ -206,10 +207,6 @@ class CFRTrainer:
         self.strategy_lookup.save_strategies()
         logger.info(f"Strategies saved to {self.strategy_lookup.filepath}")
 
-    def get_available_actions_from_history(self, history):
-        # This is a placeholder. A real implementation would parse the history
-        # to determine the context and thus the available actions.
-        return ["fold", "call", "raise"]
 
 
 if __name__ == "__main__":
