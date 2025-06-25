@@ -8,11 +8,14 @@ import logging
 import random
 import numpy as np
 from collections import defaultdict
+import sys
 
 from hand_abstraction import HandAbstraction
 from strategy_lookup import StrategyLookup
 from hand_evaluator import HandEvaluator
 from equity_calculator import EquityCalculator
+
+sys.setrecursionlimit(2000) # Increased recursion limit for deep CFR trees
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -178,13 +181,13 @@ class CFRTrainer:
         logger.info(f"Starting CFR training for {iterations} iterations on a {self.num_players}-player table.")
         
         for i in range(iterations):
-            if i > 0 and i % 1000 == 0:
+            logger.info(f"Iteration {i}/{iterations}")
+
+            if i > 0 and i % 1 == 0:
                 logger.info(f"Iteration {i}/{iterations}")
 
             deck = self.equity_calculator._generate_deck()
             random.shuffle(deck)
-            
-            player_cards = [deck[j*2:j*2+2] for j in range(self.num_players)]
             
             # Initial game state
             pot = self.sb + self.bb
