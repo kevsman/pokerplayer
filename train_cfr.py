@@ -1,11 +1,10 @@
 """
 train_cfr.py
 This script is responsible for the offline training of the poker bot using Counterfactual Regret Minimization (CFR).
-It simulates games o            # Also terminate if the game gets too complex (too many actions)
-            if len(history) > 20:  # If history string is too long
-                logger.warning(f"CFR game too complex (history length {len(history)}), terminating early")
-                return np.zeros(self.num_players)er where the bot plays against itself, learns from its regrets, and stores the resulting
+It simulates games where the bot plays against itself, learns from its regrets, and stores the resulting
 strategies in a JSON file for the real-time bot to use.
+
+Enhanced with GPU acceleration support for faster training.
 """
 import random
 import numpy as np
@@ -17,6 +16,16 @@ from hand_abstraction import HandAbstraction
 from strategy_lookup import StrategyLookup
 from hand_evaluator import HandEvaluator
 from equity_calculator import EquityCalculator
+
+# Try to import GPU acceleration modules
+try:
+    from gpu_accelerated_equity import GPUEquityCalculator
+    from gpu_cfr_trainer import GPUCFRTrainer
+    GPU_AVAILABLE = True
+    print("GPU acceleration modules loaded successfully")
+except ImportError as e:
+    GPU_AVAILABLE = False
+    print(f"GPU acceleration not available: {e}")
 
 # Suppress DEBUG logs from hand_evaluator and all other modules unless WARNING or above
 logging.basicConfig(level=logging.INFO)
@@ -52,12 +61,25 @@ class CFRNode:
             return np.full(self.num_actions, 1.0 / self.num_actions)
 
 class CFRTrainer:
-    def __init__(self, num_players=6, big_blind=2, small_blind=1):
+    def __init__(self, num_players=6, big_blind=2, small_blind=1, use_gpu=True):
         self.num_players = num_players
         self.bb = big_blind
         self.sb = small_blind
+        self.use_gpu = use_gpu and GPU_AVAILABLE
+        
         self.hand_evaluator = HandEvaluator()
-        self.equity_calculator = EquityCalculator()
+        
+        # Use GPU-accelerated equity calculator if available
+        if self.use_gpu:
+            logger.info("Initializing CFR trainer with GPU acceleration")
+            self.equity_calculator = GPUEquityCalculator(use_gpu=True)
+            # Also initialize GPU CFR trainer for batch operations
+            self.gpu_trainer = GPUCFRTrainer(num_players, big_blind, small_blind, use_gpu=True)
+        else:
+            logger.info("Initializing CFR trainer with CPU processing")
+            self.equity_calculator = EquityCalculator()
+            self.gpu_trainer = None
+        
         self.abstraction = HandAbstraction(self.hand_evaluator, self.equity_calculator)
         self.strategy_lookup = StrategyLookup()
         self.nodes = {}
@@ -298,11 +320,10 @@ class CFRTrainer:
         logger.info(f"Starting CFR training with {iterations} iterations")
 
         for i in range(iterations):
-            logger.info(f"Starting iteration {i+1}/{iterations}")
             # Reset cycle detection for each iteration
             self._recursion_states.clear()
             
-            if i > 0 and i % 1 == 0:
+            if i > 0 and i % 100 == 0:
                 logger.info(f"Iteration {i}/{iterations}")
             deck = self.equity_calculator._generate_deck()
             random.shuffle(deck)
@@ -313,16 +334,14 @@ class CFRTrainer:
             active_mask = np.ones(self.num_players, dtype=bool)
             reach_probabilities = np.ones(self.num_players)
             try:
-                logger.info(f"Starting CFR recursion for iteration {i+1}")
                 self.cfr(cards=deck, history="", pot=pot, bets=bets, active_mask=active_mask, street=0, current_player=3 % self.num_players, reach_probabilities=reach_probabilities)
-                logger.info(f"Completed CFR recursion for iteration {i+1}")
             except Exception as e:
                 logger.error(f"Exception in iteration {i+1}: {e}")
                 logger.error(traceback.format_exc())
                 break
         
         logger.info(f"Training complete. Converting {len(self.nodes)} nodes to strategy format...")
-        strategy_count = 0
+        return self._finalize_strategies()
         for info_set, node in self.nodes.items():
             try:
                 street, hand_bucket, board_bucket, history_str = info_set.split('|', 3)
@@ -339,8 +358,95 @@ class CFRTrainer:
         self.strategy_lookup.save_strategies()
         logger.info("CFR training completed successfully")
 
+    def train_with_gpu_acceleration(self, iterations, batch_size=50):
+        """
+        Enhanced training method that uses GPU acceleration when available.
+        Processes multiple scenarios in parallel for faster training.
+        """
+        if not self.use_gpu or not self.gpu_trainer:
+            logger.warning("GPU acceleration not available, falling back to standard training")
+            return self.train(iterations)
+        
+        logger.info(f"Starting GPU-accelerated CFR training with {iterations} iterations, batch size {batch_size}")
+        
+        # Use the GPU trainer's batch processing capabilities
+        try:
+            # Create batches of training scenarios
+            for batch_start in range(0, iterations, batch_size):
+                current_batch_size = min(batch_size, iterations - batch_start)
+                logger.info(f"Processing batch {batch_start // batch_size + 1}, iterations {batch_start}-{batch_start + current_batch_size}")
+                
+                # Reset cycle detection for each batch
+                self._recursion_states.clear()
+                
+                # Generate batch of initial game states
+                batch_scenarios = []
+                for _ in range(current_batch_size):
+                    deck = self.equity_calculator._generate_deck()
+                    random.shuffle(deck)
+                    pot = self.sb + self.bb
+                    bets = np.zeros(self.num_players)
+                    bets[1] = self.sb  # Player 1 is SB
+                    bets[2] = self.bb  # Player 2 is BB
+                    active_mask = np.ones(self.num_players, dtype=bool)
+                    reach_probabilities = np.ones(self.num_players)
+                    
+                    scenario = {
+                        'cards': deck,
+                        'history': "",
+                        'pot': pot,
+                        'bets': bets,
+                        'active_mask': active_mask,
+                        'street': 0,
+                        'current_player': 3 % self.num_players,
+                        'reach_probabilities': reach_probabilities
+                    }
+                    batch_scenarios.append(scenario)
+                
+                # Process batch using GPU trainer if it has batch capabilities
+                if hasattr(self.gpu_trainer, 'process_batch_scenarios'):
+                    self.gpu_trainer.process_batch_scenarios(batch_scenarios, self.nodes)
+                else:
+                    # Fallback to individual processing with GPU equity calculations
+                    for scenario in batch_scenarios:
+                        try:
+                            self.cfr(
+                                cards=scenario['cards'],
+                                history=scenario['history'],
+                                pot=scenario['pot'],
+                                bets=scenario['bets'],
+                                active_mask=scenario['active_mask'],
+                                street=scenario['street'],
+                                current_player=scenario['current_player'],
+                                reach_probabilities=scenario['reach_probabilities']
+                            )
+                        except Exception as e:
+                            logger.error(f"Exception in GPU-accelerated CFR iteration: {e}")
+                            continue
+        
+        except Exception as e:
+            logger.error(f"Error in GPU-accelerated training: {e}")
+            logger.warning("Falling back to standard CPU training")
+            return self.train(iterations)
+        
+        logger.info(f"GPU-accelerated training complete. Converting {len(self.nodes)} nodes to strategy format...")
+        return self._finalize_strategies()
+    
+    def _finalize_strategies(self):
+        """Convert trained nodes to strategy format and save."""
+        strategy_count = 0
+        for info_set, node in self.nodes.items():
+            avg_strategy = node.get_average_strategy()
+            if np.sum(avg_strategy) > 0:  # Only save non-zero strategies
+                actions = node.actions
+                strategy_dict = {action: float(prob) for action, prob in zip(actions, avg_strategy)}
+                self.strategy_lookup.save_strategy(info_set, strategy_dict)
+                strategy_count += 1
+        
+        logger.info(f"Saved {strategy_count} strategies to lookup table")
+        return strategy_count
 
-
+    # ...existing code...
 if __name__ == "__main__":
-    trainer = CFRTrainer(num_players=6)  # Reduced from 6 to 3 for simpler training
-    trainer.train(iterations=2)
+    trainer = CFRTrainer(num_players=6)  # 6 players for realistic training
+    trainer.train(iterations=50000)  # Increased to 50 iterations for meaningful learning

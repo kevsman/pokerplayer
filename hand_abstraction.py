@@ -29,12 +29,12 @@ class HandAbstraction:
             return self._bucket_cache[cache_key]
         
         logger.debug(f"Computing hand bucket for {player_hole_cards} with {len(community_cards)} community cards")
-        # Use a very low number of simulations for debugging
+        # Use reasonable number of simulations for training (balance between speed and accuracy)
         win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
             [player_hole_cards],
             community_cards,
             None,
-            5,   # Only 5 simulations for debugging
+            500,   # 500 simulations for good balance of speed vs accuracy in training
             num_opponents
         )
         logger.debug(f"Hand bucket calculation complete, win_prob={win_prob}")
