@@ -11,27 +11,38 @@ class HandAbstraction:
         self.equity_calculator = equity_calculator
         # Buckets based on equity ranges: 0-20%, 20-40%, 40-60%, 60-80%, 80-100%
         self.equity_buckets = [0.2, 0.4, 0.6, 0.8, 1.0]
+        self._bucket_cache = {}  # Add a cache for hand bucketing
 
     def bucket_hand(self, player_hole_cards, community_cards, stage, num_opponents=1):
         """
         Buckets the hand based on its equity (win probability) against the actual number of opponents.
         """
-        if not player_hole_cards:
-            return 0
+        import logging
+        logger = logging.getLogger(__name__)
         
-        # Use a fast Monte Carlo simulation to estimate equity
+        if not player_hole_cards or len(player_hole_cards) != 2:
+            return 0
+        # Use a tuple of all relevant info as the cache key
+        cache_key = (tuple(player_hole_cards), tuple(community_cards), stage, num_opponents)
+        if cache_key in self._bucket_cache:
+            logger.debug(f"Cache hit for hand bucketing")
+            return self._bucket_cache[cache_key]
+        
+        logger.debug(f"Computing hand bucket for {player_hole_cards} with {len(community_cards)} community cards")
+        # Use a very low number of simulations for debugging
         win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
             [player_hole_cards],
             community_cards,
-            None,  # opponent_range_str_list (None means random opponent)
-            500,   # num_simulations - Lower simulations for speed during real-time decision
-            num_opponents  # Use actual number of opponents
+            None,
+            5,   # Only 5 simulations for debugging
+            num_opponents
         )
-
-        # Find which bucket the win probability falls into
-        for i, bucket_threshold in enumerate(self.equity_buckets):
-            if win_prob <= bucket_threshold:
+        logger.debug(f"Hand bucket calculation complete, win_prob={win_prob}")
+        for i, bucket_ceiling in enumerate(self.equity_buckets):
+            if win_prob <= bucket_ceiling:
+                self._bucket_cache[cache_key] = i
                 return i
+        self._bucket_cache[cache_key] = len(self.equity_buckets) - 1
         return len(self.equity_buckets) - 1
 
     def bucket_board(self, community_cards, stage):

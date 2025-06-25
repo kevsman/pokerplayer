@@ -2,6 +2,7 @@ import random
 from itertools import combinations
 from hand_evaluator import HandEvaluator
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -59,13 +60,7 @@ class EquityCalculator:
         """Get cards that are not in the known cards list"""
         return [card for card in self.all_cards if card not in known_cards]
     
-    def calculate_equity_monte_carlo(self, hole_cards_str_list, community_cards_str_list, opponent_range_str_list=None, num_simulations=1000, num_opponents=1):
-        logger.debug(
-            f"Enter calculate_equity_monte_carlo. Hole Cards: {hole_cards_str_list}, "
-            f"Community Cards: {community_cards_str_list}, Opponent Range: {opponent_range_str_list}, "
-            f"Simulations: {num_simulations}, Num Opponents: {num_opponents}"
-        )
-
+    def calculate_equity_monte_carlo(self, hole_cards_str_list, community_cards_str_list, opponent_range_str_list=None, num_simulations=500, num_opponents=1):
         if not hole_cards_str_list or not hole_cards_str_list[0]:
             logger.error("Player hole cards are missing. Cannot calculate equity.")
             return 0.0, 0.0, 0.0 # Win, Tie, Equity
@@ -115,6 +110,7 @@ class EquityCalculator:
             return 0.0, 0.0, 0.0
 
         for i in range(num_simulations):
+            
             current_deck_sim_strings = list(deck_strings) # Use the correctly pre-filtered string deck
             
             try:
@@ -122,39 +118,20 @@ class EquityCalculator:
                 
                 # Check if enough cards for all opponents + board
                 required_cards_for_sim = (2 * num_opponents) + max(0, num_board_cards_needed)
-                if len(current_deck_sim_strings) < required_cards_for_sim:
-                    logger.debug(f"Sim {i}: Not enough cards in deck ({len(current_deck_sim_strings)}) for simulation. Need {required_cards_for_sim}. Skipping.")
+                if len(deck_strings) < required_cards_for_sim:
+                    logger.debug(f"Sim {i}: Not enough cards in deck ({len(deck_strings)}) for simulation. Need {required_cards_for_sim}. Skipping.")
                     continue
                 
-                # Deal opponent hands (strings) - use random.sample without modifying deck
-                import random
-                if len(current_deck_sim_strings) < (2 * num_opponents):
-                    logger.debug(f"Sim {i}: Not enough cards for {num_opponents} opponent hands. Deck: {len(current_deck_sim_strings)}. Skipping.")
-                    continue
+                # Efficiently deal cards for opponents and board
+                simulation_cards = random.sample(deck_strings, required_cards_for_sim)
                 
-                # Deal cards for all opponents
                 opponent_hands = []
-                remaining_deck = list(current_deck_sim_strings)
+                card_idx = 0
+                for _ in range(num_opponents):
+                    opponent_hands.append(simulation_cards[card_idx:card_idx+2])
+                    card_idx += 2
                 
-                for opp_idx in range(num_opponents):
-                    if len(remaining_deck) < 2:
-                        break
-                    opponent_hand = random.sample(remaining_deck, 2)
-                    opponent_hands.append(opponent_hand)
-                    # Remove dealt cards from remaining deck
-                    remaining_deck = [c for c in remaining_deck if c not in opponent_hand]
-                
-                if len(opponent_hands) != num_opponents:
-                    logger.debug(f"Sim {i}: Could not deal cards for all {num_opponents} opponents. Got {len(opponent_hands)}. Skipping.")
-                    continue
-                
-                # Deal remaining board cards (strings)
-                additional_board_cards_strings = []
-                if num_board_cards_needed > 0:
-                    if len(remaining_deck) < num_board_cards_needed:
-                        logger.debug(f"Sim {i}: Not enough cards for additional board. Deck: {len(remaining_deck)}, Need: {num_board_cards_needed}. Skipping.")
-                        continue
-                    additional_board_cards_strings = random.sample(remaining_deck, num_board_cards_needed)
+                additional_board_cards_strings = simulation_cards[card_idx:]
                 
                 # Evaluate player hand
                 current_board_sim_strings = community_cards_str_list + additional_board_cards_strings
@@ -172,12 +149,6 @@ class EquityCalculator:
                 
                 # Compare player vs best opponent
                 comparison_result_for_log = self._compare_hands(player_eval, best_opponent_eval)
-
-                if i < 5: # Log details for the first 5 simulations for debugging
-                    logger.debug(f"SIM_DEBUG #{i}: PlayerHole: {player_hole_cards_str_list_for_conversion}, BestOpponentHole: {best_opponent_hand}, Board: {current_board_sim_strings}")
-                    logger.debug(f"SIM_DEBUG #{i}: PlayerEval Rank: {player_eval.get('rank_value')}, Desc: {player_eval.get('description')}")
-                    logger.debug(f"SIM_DEBUG #{i}: BestOpponentEval Rank: {best_opponent_eval.get('rank_value')}, Desc: {best_opponent_eval.get('description')}")
-                    logger.debug(f"SIM_DEBUG #{i}: ComparisonResult: {comparison_result_for_log}")
 
                 if comparison_result_for_log > 0:
                     player_wins += 1
@@ -205,11 +176,6 @@ class EquityCalculator:
         # Equity is typically win_prob + (tie_prob / 2) if splitting pot on tie.
         equity = win_probability + (tie_probability / 2) # Corrected equity calculation
 
-        logger.debug(
-            f"Equity calculation complete for {player_hole_cards_str_list_for_conversion} vs random. "
-            f"Win: {win_probability*100:.2f}%, Tie: {tie_probability*100:.2f}%, Equity: {equity*100:.2f}% "
-            f"({total_simulations_count} simulations)"
-        )
         return win_probability, tie_probability, equity
     
     def _compare_hands(self, hand1_eval, hand2_eval):
