@@ -3,15 +3,19 @@ CFR solver module for PokerBotV2.
 Implements a simple Counterfactual Regret Minimization solver using abstraction.
 """
 import random
+import logging
 from hand_evaluator import HandEvaluator
 from equity_calculator import EquityCalculator
 from hand_abstraction import HandAbstraction
 
+logger = logging.getLogger(__name__)
+
 class CFRSolver:
-    def __init__(self, abstraction: 'HandAbstraction', hand_evaluator: HandEvaluator, equity_calculator: EquityCalculator):
+    def __init__(self, abstraction: 'HandAbstraction', hand_evaluator: HandEvaluator, equity_calculator: EquityCalculator, logger_instance=None):
         self.abstraction = abstraction
         self.hand_evaluator = hand_evaluator
         self.equity_calculator = equity_calculator
+        self.logger = logger_instance if logger_instance else logger
 
     def solve(self, player_hole_cards, community_cards, pot_size, actions, stage, num_opponents=2, iterations=100):
         """
@@ -49,14 +53,29 @@ class CFRSolver:
                 )
                 action_values['call'] += win_prob * pot_size
 
+            if 'check' in actions:
+                win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
+                    [player_hole_cards], community_cards, None, num_simulations=50, num_opponents=len(opponent_hands)
+                )
+                action_values['check'] += win_prob * pot_size
+
             # Fold has an EV of 0, so we don't add to it.
 
         # Normalize values to get a strategy distribution
         total_value = sum(action_values.values())
         if total_value == 0:
             # If all actions have 0 value (e.g., only fold is possible or all sims lose),
-            # return a uniform strategy.
-            return {a: 1.0 / len(actions) for a in actions}
+            # prefer checking over folding. If we can't check and have no equity, fold.
+            strategy = {action: 0.0 for action in actions}
+            if 'check' in actions:
+                strategy['check'] = 1.0
+            elif 'fold' in actions:
+                strategy['fold'] = 1.0
+            else: # Should not happen if fold is always an option
+                strategy[actions[0]] = 1.0
+            self.logger.debug(f"CFR Solver calculated strategy (zero total value): {strategy}")
+            return strategy
 
         strategy = {action: value / total_value for action, value in action_values.items()}
+        self.logger.debug(f"CFR Solver calculated strategy: {strategy}")
         return strategy

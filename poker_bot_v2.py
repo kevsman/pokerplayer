@@ -62,7 +62,7 @@ class PokerBotV2:
         self.equity_calculator = EquityCalculator()
         self.abstraction = HandAbstraction(self.hand_evaluator, self.equity_calculator)
         self.strategy_lookup = StrategyLookup()
-        self.cfr_solver = CFRSolver(self.abstraction, self.hand_evaluator, self.equity_calculator)
+        self.cfr_solver = CFRSolver(self.abstraction, self.hand_evaluator, self.equity_calculator, logger_instance=self.logger)
 
         self.table_data = {}
         self.player_data = []
