@@ -1,0 +1,7 @@
+{
+  "use_gpu": true,
+  "monte_carlo_simulations": 1000,
+  "cfr_iterations": 1000,
+  "batch_size": 50,
+  "training_iterations": 2000
+}
