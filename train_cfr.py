@@ -80,7 +80,9 @@ class CFRTrainer:
             self.equity_calculator = EquityCalculator()
             self.gpu_trainer = None
         
-        self.abstraction = HandAbstraction(self.hand_evaluator, self.equity_calculator)
+        # Always use CPU equity calculator for hand abstraction (more compatible)
+        self.cpu_equity_calculator = EquityCalculator()
+        self.abstraction = HandAbstraction(self.hand_evaluator, self.cpu_equity_calculator)
         self.strategy_lookup = StrategyLookup()
         self.nodes = {}
         # Add a cache for hand evaluation at showdown
@@ -325,7 +327,11 @@ class CFRTrainer:
             
             if i > 0 and i % 100 == 0:
                 logger.info(f"Iteration {i}/{iterations}")
-            deck = self.equity_calculator._generate_deck()
+            
+            # Generate standard deck - compatible with both GPU and CPU calculators
+            suits = ['h', 'd', 'c', 's']
+            ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+            deck = [rank + suit for rank in ranks for suit in suits]
             random.shuffle(deck)
             pot = self.sb + self.bb
             bets = np.zeros(self.num_players)
@@ -382,7 +388,10 @@ class CFRTrainer:
                 # Generate batch of initial game states
                 batch_scenarios = []
                 for _ in range(current_batch_size):
-                    deck = self.equity_calculator._generate_deck()
+                    # Generate standard deck - compatible with both GPU and CPU calculators
+                    suits = ['h', 'd', 'c', 's']
+                    ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+                    deck = [rank + suit for rank in ranks for suit in suits]
                     random.shuffle(deck)
                     pot = self.sb + self.bb
                     bets = np.zeros(self.num_players)
@@ -449,4 +458,4 @@ class CFRTrainer:
     # ...existing code...
 if __name__ == "__main__":
     trainer = CFRTrainer(num_players=6)  # 6 players for realistic training
-    trainer.train(iterations=50000)  # Increased to 50 iterations for meaningful learning
+    trainer.train(iterations=50000)  # Start with smaller number for testing
