@@ -100,7 +100,12 @@ class CFRTrainer:
 
         # Start of a new betting round if history indicates it
         if history.endswith('|'):
-            return self.cfr_betting_round(cards, history, pot, bets, active_mask, street, current_player, reach_probabilities)
+            # A new betting round begins. Find the first player to act.
+            # Post-flop, action starts from the Small Blind (player 1).
+            player_to_act = 1
+            while not active_mask[player_to_act]:
+                player_to_act = (player_to_act + 1) % self.num_players
+            current_player = player_to_act
 
         # --- Main recursive step ---
         # Find next active player
@@ -211,4 +216,4 @@ class CFRTrainer:
 
 if __name__ == "__main__":
     trainer = CFRTrainer(num_players=6)
-    trainer.train(iterations=1000) # A small number for demonstration
+    trainer.train(iterations=50000)
