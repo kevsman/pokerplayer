@@ -1,0 +1,13 @@
+{
+  "use_gpu": false,
+  "monte_carlo_simulations": 100,
+  "cfr_iterations": 1000,
+  "batch_size": 1,
+  "training_iterations": 2000,
+  "optimization_focus": "cpu_throughput",
+  "performance_notes": [
+    "GPU acceleration provides minimal benefit on this system",
+    "Optimal CPU simulation count: 100",
+    "Focus on algorithmic improvements rather than GPU acceleration"
+  ]
+}
