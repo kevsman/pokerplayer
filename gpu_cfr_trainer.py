@@ -652,16 +652,41 @@ class GPUCFRTrainer:
                 avg_strategy = node.get_average_strategy()
                 strategy_dict = {act: p for act, p in zip(actions, avg_strategy)}
                 
-                # Add to strategy lookup (using simplified keys)
-                street = "0"  # Default to preflop for batch training
-                hand_bucket = "0"
-                board_bucket = "0"
-                
-                self.strategy_lookup.add_strategy(
-                    street, hand_bucket, board_bucket, 
-                    list(strategy_dict.keys()), strategy_dict
-                )
-                strategy_count += 1
+                # Extract meaningful keys from info_set for unique strategies
+                try:
+                    # Parse the info_set to create unique keys
+                    if "mega_batch_" in info_set:
+                        # Format: mega_batch_{scenario_id}_player_{player_idx}
+                        parts = info_set.split("_")
+                        scenario_id = parts[2] if len(parts) > 2 else "0"
+                        player_id = parts[-1] if len(parts) > 3 else "0"
+                        
+                        street = "0"  # Default to preflop for batch training
+                        hand_bucket = scenario_id  # Use scenario ID as hand bucket
+                        board_bucket = player_id   # Use player ID as board bucket
+                    else:
+                        # Fallback for other info_set formats
+                        street = "0"
+                        hand_bucket = str(hash(info_set) % 1000)  # Create unique bucket from hash
+                        board_bucket = str(len(strategy_dict))     # Use number of actions as board bucket
+                    
+                    self.strategy_lookup.add_strategy(
+                        street, hand_bucket, board_bucket, 
+                        list(strategy_dict.keys()), strategy_dict
+                    )
+                    strategy_count += 1
+                    
+                except Exception as parse_error:
+                    # If parsing fails, create a unique key based on the full info_set
+                    street = "0"
+                    hand_bucket = str(hash(info_set) % 10000)
+                    board_bucket = str(strategy_count)
+                    
+                    self.strategy_lookup.add_strategy(
+                        street, hand_bucket, board_bucket, 
+                        list(strategy_dict.keys()), strategy_dict
+                    )
+                    strategy_count += 1
                 
             except Exception as e:
                 logger.warning(f"Could not finalize strategy for {info_set}: {e}")
