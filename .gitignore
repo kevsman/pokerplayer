@@ -35,3 +35,14 @@ _ReSharper*/
 .vs/
 #Nuget packages folder
 packages/
+
+# Large strategy database files (too big for GitHub)
+strategy_table.json
+opponent_analysis_data.json
+*.json.bak
+
+# GPU configuration files that may contain system-specific paths
+
+# Log files
+*.log
+debug_*.log
