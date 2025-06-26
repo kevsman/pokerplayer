@@ -638,8 +638,8 @@ if __name__ == "__main__":
     print("   • GPU batch processing: 1000+ hands simultaneously")
     print("=" * 70)
     
-    # Use the proven GPU-enhanced trainer
-    trainer = CFRTrainer(num_players=6, use_gpu=True)
+    # Use the proven GPU-enhanced trainer with optimal 6-player configuration
+    trainer = CFRTrainer(num_players=6, use_gpu=True)  # Keep at 6 players (standard poker)
     
     # Use the massively improved GPU batch training with MAXIMUM MEMORY
     if trainer.use_gpu and trainer.gpu_trainer:
@@ -648,10 +648,10 @@ if __name__ == "__main__":
         print("💾 Using MAXIMUM GPU MEMORY: 175K+ scenarios per batch")
         print("")
         
-        # Use ultra-batch training for maximum performance
-        logger.info("🚀 Starting ULTRA-BATCH GPU training with maximum memory utilization")
+        # Use ultra-batch training for MASSIVE strategy generation
+        logger.info("🚀 Starting ULTRA-BATCH GPU training with MASSIVE DIVERSE strategy generation")
         trainer.gpu_trainer.train_ultra_batch_gpu(
-            iterations=50000,  # Large-scale training
+            iterations=500000,  # 500K iterations for MASSIVE strategy database
             use_max_memory=True  # Use all available GPU memory
         )
     else:
