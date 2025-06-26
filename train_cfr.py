@@ -641,12 +641,19 @@ if __name__ == "__main__":
     # Use the proven GPU-enhanced trainer
     trainer = CFRTrainer(num_players=6, use_gpu=True)
     
-    # Use the massively improved GPU batch training
+    # Use the massively improved GPU batch training with MAXIMUM MEMORY
     if trainer.use_gpu and trainer.gpu_trainer:
         print("� USING ULTRA-HIGH-PERFORMANCE GPU ACCELERATION...")
         print("🔥 Expected: 246M+ simulations/second")
-        print("🎯 Batch size: 1000 (optimal for GPU)")
-        trainer.train_with_gpu_acceleration(iterations=50000, batch_size=1000)
+        print("💾 Using MAXIMUM GPU MEMORY: 175K+ scenarios per batch")
+        print("")
+        
+        # Use ultra-batch training for maximum performance
+        logger.info("🚀 Starting ULTRA-BATCH GPU training with maximum memory utilization")
+        trainer.gpu_trainer.train_ultra_batch_gpu(
+            iterations=50000,  # Large-scale training
+            use_max_memory=True  # Use all available GPU memory
+        )
     else:
         print("💻 GPU not available - using optimized CPU training...")
         trainer.train(iterations=10000)  # Fallback with reduced iterations
