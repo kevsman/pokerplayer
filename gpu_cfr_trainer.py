@@ -570,72 +570,45 @@ class GPUCFRTrainer:
             num_hands = len(player_hands)
             logger.debug(f"Calculating equity for {num_hands} hands using GPU vectorization...")
             
-            # Validate input
-            if num_hands == 0:
-                logger.warning("No hands to process in equity calculation")
-                return []
-            
             # Generate random equities on GPU for speed
             gpu_equities = self.gpu_random_state.uniform(0.1, 0.9, size=num_hands, dtype=cp.float32)
             
-            # Vectorized hand strength calculation with error handling
+            # Vectorized hand strength calculation
             hand_strengths = cp.zeros(num_hands, dtype=cp.float32)
             
             for i, hand in enumerate(player_hands):
-                try:
-                    # Validate hand before processing
-                    if not hand or len(hand) < 2:
-                        logger.debug(f"Invalid hand at index {i}: {hand}")
-                        continue
-                        
-                    # Calculate hand strength modifier
-                    strength_modifier = self._estimate_hand_strength_simple(hand)
-                    hand_strengths[i] = strength_modifier
-                except Exception as hand_error:
-                    logger.debug(f"Error processing hand {i}: {hand_error}")
-                    hand_strengths[i] = 0.0  # Default strength
+                # Calculate hand strength modifier
+                strength_modifier = self._estimate_hand_strength_simple(hand)
+                hand_strengths[i] = strength_modifier
             
             # Apply hand strength modifiers
             gpu_equities = cp.clip(gpu_equities + hand_strengths - 0.5, 0.0, 1.0)
             
             # Convert to CPU
-            result = cp.asnumpy(gpu_equities).tolist()
-            logger.debug(f"Successfully calculated {len(result)} equity values")
-            return result
+            return cp.asnumpy(gpu_equities).tolist()
             
         except Exception as e:
             logger.error(f"Massive batch equity calculation failed: {e}")
-            # Return safe fallback values
-            fallback_equities = [random.uniform(0.1, 0.9) for _ in player_hands]
-            logger.debug(f"Returning {len(fallback_equities)} fallback equity values")
-            return fallback_equities
+            return [random.uniform(0.1, 0.9) for _ in player_hands]
     
     def _estimate_hand_strength_simple(self, hand: List[str]) -> float:
         """Simple hand strength estimation for GPU processing."""
-        if not hand or len(hand) < 2:
-            return 0.0  # Invalid hand
-            
         strength = 0.0
         
         # High card bonus
         high_cards = {'A': 0.3, 'K': 0.25, 'Q': 0.2, 'J': 0.15}
         for card in hand:
-            if not card or len(card) < 2:
-                continue  # Skip invalid cards
             rank = card[:-1]
             if rank in high_cards:
                 strength += high_cards[rank]
         
-        # Pair bonus (ensure we have at least 2 cards)
-        if len(hand) >= 2 and hand[0] and hand[1]:
-            if hand[0][:-1] == hand[1][:-1]:
-                strength += 0.3
+        # Pair bonus
+        if hand[0][:-1] == hand[1][:-1]:
+            strength += 0.3
         
-        # Suited bonus (ensure we have at least 2 cards)
-        if len(hand) >= 2 and hand[0] and hand[1]:
-            if len(hand[0]) > 0 and len(hand[1]) > 0:
-                if hand[0][-1] == hand[1][-1]:
-                    strength += 0.1
+        # Suited bonus
+        if hand[0][-1] == hand[1][-1]:
+            strength += 0.1
         
         return min(strength, 0.5)  # Cap at 0.5 modifier
     
@@ -654,13 +627,7 @@ class GPUCFRTrainer:
         utilities = np.zeros(self.num_players)
         
         for player_idx in range(num_active):  # Only process active players
-            # Safe equity access with bounds checking
-            if player_idx < len(equity_estimates):
-                equity = equity_estimates[player_idx]
-            else:
-                # Fallback equity if estimates are insufficient
-                equity = random.uniform(0.3, 0.7)
-                logger.debug(f"Using fallback equity for player {player_idx} (estimates: {len(equity_estimates)}, active: {num_active})")
+            equity = equity_estimates[player_idx] if player_idx < len(equity_estimates) else 0.5
             
             # Generate MUCH MORE DIVERSE strategies based on multiple factors
             
