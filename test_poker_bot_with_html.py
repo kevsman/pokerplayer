@@ -37,7 +37,7 @@ def test_poker_bot_with_real_scenario():
             },
             {
                 "name": "Preflop scenario",
-                "file": "examples/preflop_my_turn.html",
+                "file": "examples/flop_my_turn_raised.html",
                 "expected_action": "CALL or FOLD"
             }
         ]

@@ -31,7 +31,7 @@ except ImportError:
 class GPUCFRTrainer:
     """GPU-accelerated CFR trainer with batch processing and parallel simulations."""
     
-    def __init__(self, num_players=6, big_blind=2, small_blind=1, use_gpu=True):
+    def __init__(self, num_players=6, big_blind=0.04, small_blind=0.02, use_gpu=True):
         self.num_players = num_players
         self.bb = big_blind
         self.sb = small_blind

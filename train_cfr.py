@@ -62,7 +62,7 @@ class CFRNode:
             return np.full(self.num_actions, 1.0 / self.num_actions)
 
 class CFRTrainer:
-    def __init__(self, num_players=6, big_blind=2, small_blind=1, use_gpu=True):
+    def __init__(self, num_players=6, big_blind=0.04, small_blind=0.02, use_gpu=True):
         self.num_players = num_players
         self.bb = big_blind
         self.sb = small_blind
@@ -636,10 +636,11 @@ if __name__ == "__main__":
     print("   • 89,282x speedup vs baseline")
     print("   • Optimized for 50,000+ iterations")
     print("   • GPU batch processing: 1000+ hands simultaneously")
+    print("   • Training with BB=€0.04, SB=€0.02")
     print("=" * 70)
     
-    # Use the proven GPU-enhanced trainer with optimal 6-player configuration
-    trainer = CFRTrainer(num_players=6, use_gpu=True)  # Keep at 6 players (standard poker)
+    # Use the proven GPU-enhanced trainer with optimal 6-player configuration and specified blinds
+    trainer = CFRTrainer(num_players=6, big_blind=0.04, small_blind=0.02, use_gpu=True)  # BB=0.04, SB=0.02
     
     # Use the massively improved GPU batch training with MAXIMUM MEMORY
     if trainer.use_gpu and trainer.gpu_trainer:
