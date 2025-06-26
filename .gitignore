@@ -46,3 +46,10 @@ opponent_analysis_data.json
 # Log files
 *.log
 debug_*.log
+
+# SSH keys (should never be committed)
+gitssh
+gitssh.pub
+id_rsa
+id_rsa.pub
+*.pem
