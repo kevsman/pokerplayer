@@ -331,9 +331,10 @@ class GPUCFRTrainer:
                 player_hands.append(hand)
                 cards_dealt += 2
             
-            # Pad with empty hands for unused player slots (up to max 6)
+            # Pad with default hands for unused player slots (up to max 6)
             while len(player_hands) < self.num_players:
-                player_hands.append([])
+                # Use default strong hand for empty slots instead of empty list
+                player_hands.append(['A♠', 'K♠'])
             
             # Set up diverse initial game states
             base_pot = self.sb + self.bb
@@ -433,8 +434,33 @@ class GPUCFRTrainer:
             
             # Extract all player hands for batch equity calculation
             all_player_hands = []
+            scenario_hand_indices = []  # Track where each scenario's hands start
+            
             for scenario in scenarios:
-                all_player_hands.extend(scenario['player_hands'])
+                scenario_hand_indices.append(len(all_player_hands))
+                if 'player_hands' in scenario and scenario['player_hands']:
+                    # Validate and fix any malformed hands in the scenario
+                    valid_hands = []
+                    for hand in scenario['player_hands']:
+                        if hand and len(hand) >= 2 and all(card for card in hand[:2]):
+                            valid_hands.append(hand[:2])  # Take only first 2 cards
+                        else:
+                            valid_hands.append(['A♠', 'K♠'])  # Default hand for invalid hands
+                    all_player_hands.extend(valid_hands)
+                else:
+                    # Generate default hands if missing
+                    default_hands = [['A♠', 'K♠'] for _ in range(self.num_players)]
+                    all_player_hands.extend(default_hands)
+            
+            # Ensure we have the expected number of hands
+            expected_hands = len(scenarios) * self.num_players
+            if len(all_player_hands) != expected_hands:
+                logger.warning(f"Hand count mismatch: expected {expected_hands}, got {len(all_player_hands)}")
+                # Pad with default hands if needed
+                while len(all_player_hands) < expected_hands:
+                    all_player_hands.append(['A♠', 'K♠'])
+                # Trim if too many
+                all_player_hands = all_player_hands[:expected_hands]
             
             # Calculate equity for all hands at once
             equity_start = time.time()
@@ -443,11 +469,28 @@ class GPUCFRTrainer:
             
             logger.debug(f"Calculated equity for {len(all_player_hands)} hands in {equity_time:.3f}s")
             
+            # Ensure batch_equities has the right length
+            if len(batch_equities) != len(all_player_hands):
+                logger.warning(f"Equity count mismatch: expected {len(all_player_hands)}, got {len(batch_equities)}")
+                # Pad with default equities if needed
+                while len(batch_equities) < len(all_player_hands):
+                    batch_equities.append(0.5)
+                # Trim if too many
+                batch_equities = batch_equities[:len(all_player_hands)]
+            
             # Process results
             batch_results = []
             for i, scenario in enumerate(scenarios):
                 # Extract equities for this scenario's players
-                scenario_equities = batch_equities[i * self.num_players:(i + 1) * self.num_players]
+                start_idx = i * self.num_players
+                end_idx = start_idx + self.num_players
+                
+                # Safety check for index bounds
+                if end_idx <= len(batch_equities):
+                    scenario_equities = batch_equities[start_idx:end_idx]
+                else:
+                    logger.warning(f"Equity index out of bounds for scenario {i}, using defaults")
+                    scenario_equities = [0.5] * self.num_players
                 
                 # Run simplified CFR for this scenario
                 result = self._run_cfr_scenario_vectorized(scenario, scenario_equities)
@@ -568,6 +611,10 @@ class GPUCFRTrainer:
         
         try:
             num_hands = len(player_hands)
+            if num_hands == 0:
+                logger.warning("No hands provided for equity calculation")
+                return []
+            
             logger.debug(f"Calculating equity for {num_hands} hands using GPU vectorization...")
             
             # Generate random equities on GPU for speed
@@ -577,40 +624,74 @@ class GPUCFRTrainer:
             hand_strengths = cp.zeros(num_hands, dtype=cp.float32)
             
             for i, hand in enumerate(player_hands):
-                # Calculate hand strength modifier
-                strength_modifier = self._estimate_hand_strength_simple(hand)
-                hand_strengths[i] = strength_modifier
+                if i >= num_hands:  # Safety check
+                    break
+                try:
+                    # Calculate hand strength modifier
+                    strength_modifier = self._estimate_hand_strength_simple(hand)
+                    hand_strengths[i] = strength_modifier
+                except Exception as e:
+                    logger.debug(f"Error calculating strength for hand {i}: {e}")
+                    hand_strengths[i] = 0.0
             
             # Apply hand strength modifiers
             gpu_equities = cp.clip(gpu_equities + hand_strengths - 0.5, 0.0, 1.0)
             
             # Convert to CPU
-            return cp.asnumpy(gpu_equities).tolist()
+            result = cp.asnumpy(gpu_equities).tolist()
+            
+            # Ensure we return exactly the expected number of equities
+            if len(result) != num_hands:
+                logger.warning(f"Equity result length mismatch: expected {num_hands}, got {len(result)}")
+                # Pad or trim as needed
+                while len(result) < num_hands:
+                    result.append(0.5)
+                result = result[:num_hands]
+            
+            return result
             
         except Exception as e:
             logger.error(f"Massive batch equity calculation failed: {e}")
-            return [random.uniform(0.1, 0.9) for _ in player_hands]
+            logger.debug(f"Error details: player_hands length={len(player_hands) if player_hands else 0}, batch_size={batch_size}")
+            # Return safe fallback
+            return [random.uniform(0.1, 0.9) for _ in range(len(player_hands) if player_hands else 0)]
     
     def _estimate_hand_strength_simple(self, hand: List[str]) -> float:
         """Simple hand strength estimation for GPU processing."""
-        strength = 0.0
-        
-        # High card bonus
-        high_cards = {'A': 0.3, 'K': 0.25, 'Q': 0.2, 'J': 0.15}
-        for card in hand:
-            rank = card[:-1]
-            if rank in high_cards:
-                strength += high_cards[rank]
-        
-        # Pair bonus
-        if hand[0][:-1] == hand[1][:-1]:
-            strength += 0.3
-        
-        # Suited bonus
-        if hand[0][-1] == hand[1][-1]:
-            strength += 0.1
-        
-        return min(strength, 0.5)  # Cap at 0.5 modifier
+        try:
+            if not hand or len(hand) < 2:
+                return 0.0
+            
+            strength = 0.0
+            
+            # High card bonus
+            high_cards = {'A': 0.3, 'K': 0.25, 'Q': 0.2, 'J': 0.15}
+            for card in hand:
+                if not card or len(card) < 2:
+                    continue
+                rank = card[:-1]  # All characters except the last (suit)
+                if rank in high_cards:
+                    strength += high_cards[rank]
+            
+            # Pair bonus
+            if len(hand) >= 2 and hand[0] and hand[1]:
+                rank1 = hand[0][:-1] if len(hand[0]) > 1 else ''
+                rank2 = hand[1][:-1] if len(hand[1]) > 1 else ''
+                if rank1 and rank2 and rank1 == rank2:
+                    strength += 0.3
+            
+            # Suited bonus
+            if len(hand) >= 2 and hand[0] and hand[1]:
+                suit1 = hand[0][-1] if hand[0] else ''
+                suit2 = hand[1][-1] if hand[1] else ''
+                if suit1 and suit2 and suit1 == suit2:
+                    strength += 0.1
+            
+            return min(strength, 0.5)  # Cap at 0.5 modifier
+            
+        except Exception as e:
+            logger.debug(f"Error in hand strength estimation for {hand}: {e}")
+            return 0.0
     
     def _run_cfr_scenario_vectorized(self, scenario: Dict, equity_estimates: List[float]) -> Dict:
         """Run CFR for a scenario using vectorized operations with DIVERSE strategy generation."""

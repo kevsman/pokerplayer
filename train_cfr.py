@@ -652,7 +652,7 @@ if __name__ == "__main__":
         # Use ultra-batch training for MASSIVE strategy generation
         logger.info("🚀 Starting ULTRA-BATCH GPU training with MASSIVE DIVERSE strategy generation")
         trainer.gpu_trainer.train_ultra_batch_gpu(
-            iterations=1500000,  # 500K iterations for MASSIVE strategy database
+            iterations=2000000,  # 500K iterations for MASSIVE strategy database
             use_max_memory=True  # Use all available GPU memory
         )
     else:

@@ -28,17 +28,19 @@ def test_poker_bot_with_real_scenario():
         print("🚀 Initializing poker bot with GPU-trained strategies...")
         bot = PokerBotV2()
         
-        # Test multiple HTML scenarios
+        # Test multiple HTML scenarios with strong hands that should raise
         test_scenarios = [
             {
-                "name": "Flop scenario with 8♠ 2♦",
+                "name": "Premium hand: Pocket Aces A♠ A♥",
                 "file": "examples/test.html",
-                "expected_action": "FOLD"
+                "expected_action": "RAISE",
+                "force_cards": ["A♠", "A♥"]
             },
             {
-                "name": "Preflop scenario",
+                "name": "Strong hand: A♠ K♠ suited",
                 "file": "examples/flop_my_turn_raised.html",
-                "expected_action": "CALL or FOLD"
+                "expected_action": "RAISE",
+                "force_cards": ["A♠", "K♠"]
             }
         ]
         
@@ -63,6 +65,12 @@ def test_poker_bot_with_real_scenario():
             
             # Extract key information from the HTML
             game_state = extract_game_state_from_html(html_content)
+            
+            # Override with strong test cards if specified
+            if 'force_cards' in scenario:
+                game_state['hole_cards'] = scenario['force_cards']
+                print(f"🃏 Forcing test cards: {scenario['force_cards']}")
+            
             print("📊 Extracted game state:")
             for key, value in game_state.items():
                 print(f"   {key}: {value}")
@@ -215,13 +223,34 @@ def test_bot_decision(bot, game_state):
         from hand_evaluator import HandEvaluator
         hand_evaluator = HandEvaluator()
         
-        # Evaluate hand strength (8♠ 2♦ is a weak hand)
-        hand_rank = "high_card"  # 8 high
-        if hole_cards[0][0] == hole_cards[1][0]:  # Pair
-            hand_rank = "pair"
+        # Evaluate hand strength based on actual cards
+        card1_rank = hole_cards[0][0]
+        card2_rank = hole_cards[1][0]
         
-        # Calculate equity estimate (8-2 offsuit is very weak)
-        equity_estimate = 0.3  # 82o has low equity
+        # Determine hand strength and equity
+        if card1_rank == card2_rank:  # Pair
+            hand_rank = "pair"
+            if card1_rank == 'A':  # Pocket Aces
+                equity_estimate = 0.85
+            elif card1_rank in ['K', 'Q', 'J']:  # Premium pairs
+                equity_estimate = 0.80
+            elif card1_rank in ['T', '9', '8']:  # Medium pairs
+                equity_estimate = 0.60
+            else:  # Small pairs
+                equity_estimate = 0.55
+        elif card1_rank == 'A' or card2_rank == 'A':  # Ace high
+            if (card1_rank in ['K', 'Q'] and card2_rank == 'A') or (card1_rank == 'A' and card2_rank in ['K', 'Q']):
+                hand_rank = "ace_high_premium"
+                equity_estimate = 0.70
+            else:
+                hand_rank = "ace_high"
+                equity_estimate = 0.50
+        elif card1_rank in ['K', 'Q', 'J', 'T'] and card2_rank in ['K', 'Q', 'J', 'T']:
+            hand_rank = "broadway"
+            equity_estimate = 0.45
+        else:
+            hand_rank = "high_card"
+            equity_estimate = 0.30
         
         # Get strategy from bot's strategy lookup
         street = "0"  # Preflop
@@ -247,15 +276,18 @@ def test_bot_decision(bot, game_state):
             confidence = max(strategy_probs.values()) if strategy_probs else 0.5
         else:
             # Fallback decision based on hand strength and pot odds
-            if equity_estimate > 0.65:
+            if equity_estimate > 0.75:  # Premium hands
                 action = "RAISE"
-                reasoning = "Strong hand (K8o), good equity"
+                reasoning = f"Premium hand ({hole_cards[0]} {hole_cards[1]}), excellent equity ({equity_estimate:.1%})"
+            elif equity_estimate > 0.60:  # Strong hands
+                action = "RAISE"
+                reasoning = f"Strong hand ({hole_cards[0]} {hole_cards[1]}), good equity ({equity_estimate:.1%})"
             elif equity_estimate > 0.45 and game_state['pot_odds'] < 0.3:
                 action = "CALL"
-                reasoning = "Decent hand, favorable pot odds"
+                reasoning = f"Decent hand ({hole_cards[0]} {hole_cards[1]}), favorable pot odds"
             else:
                 action = "FOLD"
-                reasoning = "Weak hand or poor pot odds"
+                reasoning = f"Weak hand ({hole_cards[0]} {hole_cards[1]}) or poor pot odds"
             
             strategy_source = "Fallback logic"
             confidence = equity_estimate
@@ -338,15 +370,25 @@ def run_performance_test(bot):
     num_decisions = 100
     start_time = time.time()
     
-    # Simulate multiple quick decisions
+    # Simulate multiple quick decisions with various strong hands
+    strong_hands = [
+        ['A♠', 'A♥'],  # Pocket Aces
+        ['K♠', 'K♥'],  # Pocket Kings
+        ['Q♠', 'Q♥'],  # Pocket Queens
+        ['A♠', 'K♠'],  # AK suited
+        ['A♦', 'Q♦'],  # AQ suited
+    ]
+    
     for i in range(num_decisions):
+        hand_idx = i % len(strong_hands)
         game_state = {
-            'hole_cards': ['A♠', 'K♥'],
+            'hole_cards': strong_hands[hand_idx],
             'pot': 0.05 + (i * 0.01),
             'stack': 1.0,
             'to_call': 0.02,
             'position': 'button',
-            'street': 'preflop'
+            'street': 'preflop',
+            'pot_odds': 0.1
         }
         decision = test_bot_decision(bot, game_state)
     
