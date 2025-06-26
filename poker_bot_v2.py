@@ -61,7 +61,22 @@ class PokerBotV2:
         self.hand_evaluator = HandEvaluator()
         self.equity_calculator = EquityCalculator()
         self.abstraction = HandAbstraction(self.hand_evaluator, self.equity_calculator)
+        
+        # Load the newly generated GPU-trained strategies
+        self.logger.info("🚀 Loading GPU-trained strategies...")
         self.strategy_lookup = StrategyLookup()
+        strategy_count = len(self.strategy_lookup.strategy_table)
+        self.logger.info(f"✅ Loaded {strategy_count:,} GPU-generated strategies for optimal play!")
+        
+        if strategy_count > 100000:
+            self.logger.info("🎯 MASSIVE STRATEGY DATABASE: Ultra-high-performance poker bot ready!")
+        elif strategy_count > 10000:
+            self.logger.info("🔥 HIGH-PERFORMANCE STRATEGY DATABASE: Advanced poker bot ready!")
+        elif strategy_count > 1000:
+            self.logger.info("⚡ GOOD STRATEGY DATABASE: Enhanced poker bot ready!")
+        else:
+            self.logger.warning(f"⚠️  Limited strategies ({strategy_count}). Consider running train_cfr.py for better performance.")
+        
         self.cfr_solver = CFRSolver(self.abstraction, self.hand_evaluator, self.equity_calculator, logger_instance=self.logger)
 
         self.table_data = {}
@@ -69,6 +84,13 @@ class PokerBotV2:
         self.running = False
         self.last_html_content = None
         self.starting_stack = 6
+        
+        # Strategy utilization tracking
+        self.strategy_stats = {
+            'gpu_strategies_used': 0,
+            'cfr_fallbacks_used': 0,
+            'total_decisions': 0
+        }
 
     def close_logger(self):
         if hasattr(self, 'logger') and self.logger and self.logger.hasHandlers():
@@ -143,14 +165,31 @@ class PokerBotV2:
         hand_bucket = self.abstraction.bucket_hand(player_hole_cards, community_cards, stage, num_opponents)
         board_bucket = self.abstraction.bucket_board(community_cards, stage)
         
-        # 2. Try to get a precomputed strategy
+        # 2. Try to get a precomputed strategy from GPU-trained database
         strategy = self.strategy_lookup.get_strategy(stage, hand_bucket, board_bucket, actions)
         if strategy:
-            self.logger.info(f"Using precomputed strategy for {stage}, hand bucket {hand_bucket}, board bucket {board_bucket}")
+            self.logger.info(f"🎯 Using GPU-trained strategy for {stage}, hand bucket {hand_bucket}, board bucket {board_bucket}")
+            self.logger.info(f"📊 Strategy: {strategy}")
+            self.strategy_stats['gpu_strategies_used'] += 1
         else:
             # 3. If not found, run a quick CFR solve for this spot
-            self.logger.info("No precomputed strategy found. Running real-time CFR solve.")
+            self.logger.info(f"🔍 No precomputed strategy found for {stage}/bucket_{hand_bucket}_{board_bucket}. Running real-time CFR solve.")
             strategy = self.cfr_solver.solve(player_hole_cards, community_cards, pot_size, actions, stage, num_opponents)
+            self.logger.info(f"🧠 CFR computed strategy: {strategy}")
+            self.strategy_stats['cfr_fallbacks_used'] += 1
+            
+            # Optionally add this new strategy to our database for future use
+            try:
+                self.strategy_lookup.add_strategy(stage, str(hand_bucket), str(board_bucket), actions, strategy)
+                self.logger.debug("📝 Added new strategy to database for future use")
+            except Exception as e:
+                self.logger.debug(f"Could not add strategy to database: {e}")
+        
+        # Update total decisions and log stats periodically
+        self.strategy_stats['total_decisions'] += 1
+        if self.strategy_stats['total_decisions'] % 10 == 0:  # Every 10 decisions
+            gpu_usage_rate = (self.strategy_stats['gpu_strategies_used'] / self.strategy_stats['total_decisions']) * 100
+            self.logger.info(f"📈 Strategy Usage: {gpu_usage_rate:.1f}% GPU-trained, {100-gpu_usage_rate:.1f}% CFR fallback ({self.strategy_stats['total_decisions']} total decisions)")
 
         # 4. Pick the action with the highest probability
         best_action = max(strategy.items(), key=lambda x: x[1])[0]
@@ -182,7 +221,15 @@ class PokerBotV2:
     def main_loop(self):
         self.running = True
         self.start_kill_switch_listener()
-        self.logger.info("PokerBotV2 started. Press Ctrl+Q to stop.")
+        
+        # Display enhanced startup message
+        strategy_count = len(self.strategy_lookup.strategies)
+        self.logger.info("🚀 PokerBotV2 ULTRA-PERFORMANCE EDITION started!")
+        self.logger.info(f"🎯 Armed with {strategy_count:,} GPU-trained strategies")
+        self.logger.info("⚡ Ready for optimal poker play. Press Ctrl+Q to stop.")
+        
+        if strategy_count > 100000:
+            self.logger.info("🔥 ULTRA-HIGH-PERFORMANCE MODE: Massive strategy database loaded!")
         
         if not self.ui_controller.positions:
             self.logger.warning("UI positions not calibrated. Please run calibration first.")
