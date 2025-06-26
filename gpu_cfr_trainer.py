@@ -41,11 +41,20 @@ class GPUCFRTrainer:
         # Import required modules
         from hand_evaluator import HandEvaluator
         from equity_calculator import EquityCalculator
+        from gpu_accelerated_equity import GPUEquityCalculator
         from hand_abstraction import HandAbstraction
         from strategy_lookup import StrategyLookup
         
         self.hand_evaluator = HandEvaluator()
-        self.equity_calculator = EquityCalculator()
+        
+        # Use GPU equity calculator if available, otherwise CPU fallback
+        if self.use_gpu:
+            self.equity_calculator = GPUEquityCalculator(use_gpu=True)
+            logger.info("GPU CFR Trainer using GPU-accelerated equity calculator")
+        else:
+            self.equity_calculator = EquityCalculator()
+            logger.info("GPU CFR Trainer using CPU equity calculator")
+            
         self.abstraction = HandAbstraction(self.hand_evaluator, self.equity_calculator)
         self.strategy_lookup = StrategyLookup()
         

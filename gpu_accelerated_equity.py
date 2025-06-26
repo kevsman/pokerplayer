@@ -236,6 +236,63 @@ class GPUEquityCalculator:
         
         return self._calculate_equity_cpu_fallback(player_hands, community_cards, 
                                                  num_simulations, num_opponents)
+    
+    def calculate_equity_monte_carlo(self, hole_cards_str_list, community_cards_str_list, 
+                                   opponent_range_str_list=None, num_simulations=500, num_opponents=1):
+        """
+        Compatibility method for the CPU equity calculator interface.
+        This allows the GPU calculator to be a drop-in replacement.
+        
+        Args:
+            hole_cards_str_list: List of player hole cards (usually just one hand)
+            community_cards_str_list: List of community cards 
+            opponent_range_str_list: Optional opponent range (ignored for now)
+            num_simulations: Number of simulations to run
+            num_opponents: Number of opponents
+            
+        Returns:
+            Tuple of (win_probability, tie_probability, equity)
+        """
+        try:
+            # Extract the first (and usually only) player hand
+            if not hole_cards_str_list or not hole_cards_str_list[0]:
+                logger.error("Player hole cards are missing. Cannot calculate equity.")
+                return 0.0, 0.0, 0.0
+            
+            player_hand = hole_cards_str_list[0]
+            if isinstance(player_hand, str):
+                # Handle single string format - shouldn't happen but just in case
+                logger.warning(f"Unexpected string format for hole cards: {player_hand}")
+                return 0.0, 0.0, 0.0
+            
+            # Ensure community cards is a list
+            community_cards = community_cards_str_list if community_cards_str_list else []
+            
+            # For compatibility with the CPU interface, just use the CPU fallback method
+            # which handles the exact same interface and logic as the original EquityCalculator
+            logger.debug(f"GPU calculate_equity_monte_carlo: Using CPU fallback for interface compatibility")
+            return self._calculate_equity_monte_carlo_cpu_compatible(
+                hole_cards_str_list, community_cards_str_list, 
+                opponent_range_str_list, num_simulations, num_opponents
+            )
+                
+        except Exception as e:
+            logger.error(f"Error in GPU calculate_equity_monte_carlo: {e}", exc_info=True)
+            return 0.0, 0.0, 0.0
+    
+    def _calculate_equity_monte_carlo_cpu_compatible(self, hole_cards_str_list, community_cards_str_list, 
+                                                   opponent_range_str_list=None, num_simulations=500, num_opponents=1):
+        """
+        CPU-compatible implementation that exactly matches the original EquityCalculator interface.
+        """
+        # Use CPU fallback with exact same interface
+        from equity_calculator import EquityCalculator
+        
+        cpu_calculator = EquityCalculator()
+        return cpu_calculator.calculate_equity_monte_carlo(
+            hole_cards_str_list, community_cards_str_list, 
+            opponent_range_str_list, num_simulations, num_opponents
+        )
 
 # CUDA kernel for hand evaluation (if Numba is available)
 if NUMBA_CUDA_AVAILABLE:

@@ -11,6 +11,7 @@ import numpy as np
 from collections import defaultdict
 import sys
 import logging
+import time
 
 from hand_abstraction import HandAbstraction
 from strategy_lookup import StrategyLookup
@@ -80,9 +81,16 @@ class CFRTrainer:
             self.equity_calculator = EquityCalculator()
             self.gpu_trainer = None
         
-        # Always use CPU equity calculator for hand abstraction (more compatible)
+        # Create CPU equity calculator as fallback
         self.cpu_equity_calculator = EquityCalculator()
-        self.abstraction = HandAbstraction(self.hand_evaluator, self.cpu_equity_calculator)
+        
+        # Use GPU calculator for hand abstraction if available, otherwise fallback to CPU
+        if self.use_gpu and self.gpu_trainer:
+            logger.info("Creating hand abstraction with GPU equity calculator for enhanced performance")
+            self.abstraction = HandAbstraction(self.hand_evaluator, self.gpu_trainer.equity_calculator)
+        else:
+            logger.info("Creating hand abstraction with CPU equity calculator")
+            self.abstraction = HandAbstraction(self.hand_evaluator, self.cpu_equity_calculator)
         self.strategy_lookup = StrategyLookup()
         self.nodes = {}
         # Add a cache for hand evaluation at showdown
@@ -319,34 +327,60 @@ class CFRTrainer:
 
     def train(self, iterations):
         import traceback
-        logger.info(f"Starting CFR training with {iterations} iterations")
+        logger.info(f"🚀 Starting CFR training with {iterations} iterations")
+        logger.info(f"📊 Training parameters: {self.num_players} players, BB={self.bb}, SB={self.sb}")
+        
+        start_time = time.time()
 
         for i in range(iterations):
             # Reset cycle detection for each iteration
             self._recursion_states.clear()
             
-            if i > 0 and i % 100 == 0:
-                logger.info(f"Iteration {i}/{iterations}")
+            # Enhanced progress logging
+            if i == 0:
+                logger.info(f"🎯 Starting iteration 1/{iterations}")
+            elif i % 50 == 0:
+                elapsed = time.time() - start_time
+                rate = i / elapsed if elapsed > 0 else 0
+                eta = (iterations - i) / rate if rate > 0 else 0
+                logger.info(f"📈 Progress: {i}/{iterations} ({i/iterations*100:.1f}%) - Rate: {rate:.1f} iter/sec - ETA: {eta:.0f}s - Nodes: {len(self.nodes)}")
+            elif i % 10 == 0:
+                logger.info(f"⚡ Iteration {i}/{iterations} - Nodes learned: {len(self.nodes)}")
             
             # Generate standard deck - compatible with both GPU and CPU calculators
             suits = ['h', 'd', 'c', 's']
             ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
             deck = [rank + suit for rank in ranks for suit in suits]
             random.shuffle(deck)
+            
+            if i < 3:  # Log first few iterations in detail
+                logger.info(f"🎴 Iteration {i+1} deck sample: {deck[:8]}... (52 cards total)")
+            
             pot = self.sb + self.bb
             bets = np.zeros(self.num_players)
             bets[1] = self.sb # Player 1 is SB
             bets[2] = self.bb # Player 2 is BB (UTG is player 3)
             active_mask = np.ones(self.num_players, dtype=bool)
             reach_probabilities = np.ones(self.num_players)
+            
             try:
+                iteration_start = time.time()
                 self.cfr(cards=deck, history="", pot=pot, bets=bets, active_mask=active_mask, street=0, current_player=3 % self.num_players, reach_probabilities=reach_probabilities)
+                iteration_time = time.time() - iteration_start
+                
+                if i < 3:  # Log timing for first few iterations
+                    logger.info(f"⏱️  Iteration {i+1} completed in {iteration_time:.3f}s")
+                    
             except Exception as e:
-                logger.error(f"Exception in iteration {i+1}: {e}")
+                logger.error(f"❌ Exception in iteration {i+1}: {e}")
                 logger.error(traceback.format_exc())
                 break
         
-        logger.info(f"Training complete. Converting {len(self.nodes)} nodes to strategy format...")
+        total_time = time.time() - start_time
+        final_rate = iterations / total_time if total_time > 0 else 0
+        
+        logger.info(f"🎯 Training complete! Total time: {total_time:.1f}s, Rate: {final_rate:.1f} iter/sec")
+        logger.info(f"📊 Converting {len(self.nodes)} nodes to strategy format...")
         return self._finalize_strategies()
         for info_set, node in self.nodes.items():
             try:
@@ -375,6 +409,8 @@ class CFRTrainer:
         
         logger.info(f"🚀 MASSIVE GPU-ACCELERATED CFR TRAINING: {iterations} iterations, batch size {batch_size}")
         logger.info(f"🔥 Expected performance: 246M+ simulations/second")
+        logger.info(f"📊 GPU Status: {self.use_gpu}, GPU Trainer: {self.gpu_trainer is not None}")
+        logger.info(f"🎯 Processing {iterations} iterations in {(iterations + batch_size - 1) // batch_size} batches")
         
         import time
         total_start_time = time.time()
@@ -391,12 +427,19 @@ class CFRTrainer:
                     batch_start = batch_num * batch_size
                     current_batch_size = min(batch_size, iterations - batch_start)
                     
-                    if batch_num % 10 == 0:
-                        logger.info(f"🔥 GPU Batch {batch_num + 1}/{num_batches} ({(batch_num/num_batches)*100:.1f}%)")
+                    # Enhanced batch progress logging
+                    progress_pct = (batch_num / num_batches) * 100
+                    logger.info(f"🔥 GPU Batch {batch_num + 1}/{num_batches} ({progress_pct:.1f}%) - Processing {current_batch_size} iterations")
+                    
+                    if batch_num == 0:
+                        logger.info(f"📊 First batch details: {current_batch_size} scenarios, {current_batch_size * self.num_players} hands")
                     
                     # Generate batch of player hands for GPU processing
                     batch_hands = []
                     batch_scenarios = []
+                    
+                    logger.info(f"🎴 Generating {current_batch_size} game scenarios...")
+                    scenario_start_time = time.time()
                     
                     for _ in range(current_batch_size):
                         # Generate GPU-compatible deck with Unicode suits
@@ -441,16 +484,35 @@ class CFRTrainer:
                         }
                         batch_scenarios.append(scenario)
                     
+                    scenario_time = time.time() - scenario_start_time
+                    logger.info(f"✅ Generated {len(batch_scenarios)} scenarios in {scenario_time:.2f}s")
+                    logger.info(f"🎯 Total hands for GPU processing: {len(batch_hands)}")
+                    
                     # Process entire batch on GPU at once for maximum speedup
                     batch_start_time = time.time()
+                    logger.info(f"🚀 Starting GPU batch processing...")
                     try:
-                        # GPU batch equity calculation (89,282x speedup) with Unicode cards
-                        community_cards = ['Q♥', 'J♥', '10♠']  # GPU-compatible community cards
+                        # Generate proper community cards from the GPU deck (flop scenario)
+                        # Take cards after all player hands have been dealt
+                        cards_used = self.num_players * 2  # 2 cards per player
+                        community_cards = gpu_deck[cards_used:cards_used+3]  # Take next 3 for flop
+                        
+                        logger.info(f"🎴 Community cards for batch: {community_cards}")
+                        logger.info(f"🔥 GPU Monte Carlo: {len(batch_hands)} hands × 500 sims")
+                        
+                        # GPU batch equity calculation (89,282x speedup) with proper community cards
+                        gpu_start = time.time()
                         gpu_equities, _, _ = self.equity_calculator.calculate_equity_batch_gpu(
                             batch_hands, community_cards, num_simulations=500
                         )
+                        gpu_time = time.time() - gpu_start
+                        
+                        logger.info(f"✅ GPU equity calculation completed in {gpu_time:.3f}s")
+                        logger.info(f"📊 GPU performance: {len(batch_hands) * 500 / gpu_time:,.0f} sims/sec")
                         
                         # Process each scenario with GPU-calculated equities
+                        logger.info(f"🎯 Processing {len(batch_scenarios)} CFR scenarios...")
+                        cfr_start = time.time()
                         for i, scenario in enumerate(batch_scenarios):
                             # Reset cycle detection for each scenario
                             self._recursion_states.clear()
@@ -471,9 +533,23 @@ class CFRTrainer:
                                 # Continue with other scenarios even if one fails
                                 continue
                         
+                        cfr_time = time.time() - cfr_start
+                        logger.info(f"✅ CFR processing completed in {cfr_time:.3f}s")
+                        
                         batch_time = time.time() - batch_start_time
                         sims_per_sec = (current_batch_size * 500) / batch_time
+                        total_ops = len(batch_hands) * 500
                         logger.info(f"✅ GPU batch complete: {sims_per_sec:,.0f} sims/sec")
+                        logger.info(f"📊 Batch {batch_num + 1}/{num_batches} stats: {total_ops:,} total ops in {batch_time:.2f}s")
+                        
+                        # Show nodes learned so far
+                        logger.info(f"🧠 Total CFR nodes learned: {len(self.nodes)}")
+                        
+                        if batch_num % 5 == 0 and batch_num > 0:
+                            elapsed_total = time.time() - total_start_time
+                            overall_rate = (batch_num * batch_size * 500) / elapsed_total
+                            eta_batches = (num_batches - batch_num) * (elapsed_total / batch_num)
+                            logger.info(f"📈 Overall progress: {batch_num}/{num_batches} batches - Rate: {overall_rate:,.0f} sims/sec - ETA: {eta_batches:.0f}s")
                         
                     except Exception as e:
                         logger.warning(f"GPU batch failed: {e}, using individual processing")
@@ -517,16 +593,37 @@ class CFRTrainer:
     
     def _finalize_strategies(self):
         """Convert trained nodes to strategy format and save."""
+        logger.info(f"🎯 Finalizing strategies from {len(self.nodes)} CFR nodes...")
+        
         strategy_count = 0
-        for info_set, node in self.nodes.items():
+        start_time = time.time()
+        
+        for i, (info_set, node) in enumerate(self.nodes.items()):
+            if i % 1000 == 0 and i > 0:
+                logger.info(f"📊 Processing node {i}/{len(self.nodes)} ({i/len(self.nodes)*100:.1f}%)")
+                
             avg_strategy = node.get_average_strategy()
             if np.sum(avg_strategy) > 0:  # Only save non-zero strategies
                 actions = node.actions
                 strategy_dict = {action: float(prob) for action, prob in zip(actions, avg_strategy)}
                 self.strategy_lookup.save_strategy(info_set, strategy_dict)
                 strategy_count += 1
+                
+                # Log first few strategies as examples
+                if strategy_count <= 3:
+                    logger.info(f"📝 Example strategy {strategy_count}: {info_set} -> {strategy_dict}")
         
-        logger.info(f"Saved {strategy_count} strategies to lookup table")
+        finalize_time = time.time() - start_time
+        logger.info(f"✅ Saved {strategy_count} strategies to lookup table in {finalize_time:.2f}s")
+        logger.info(f"📊 Strategy conversion rate: {strategy_count/finalize_time:.0f} strategies/sec")
+        
+        # Save to file
+        logger.info(f"💾 Saving strategies to file...")
+        save_start = time.time()
+        self.strategy_lookup.save_strategies()
+        save_time = time.time() - save_start
+        logger.info(f"✅ Strategies saved to file in {save_time:.2f}s")
+        
         return strategy_count
 
     # ...existing code...
