@@ -92,8 +92,14 @@ class GPUCFRTrainer:
             active_players = np.ones(self.num_players, dtype=bool)
             reach_probs = np.ones(self.num_players)
             
-            # Start recursive CFR from pre-flop
-            self._cfr_recursive(player_hands, history="", board=[], pot=0, bets=np.zeros(self.num_players), reach_probs=reach_probs, active_players=active_players, street=0, last_aggressor=1)
+            # Post blinds for pre-flop state
+            bets = np.zeros(self.num_players)
+            bets[0] = self.small_blind
+            bets[1] = self.big_blind
+            pot = self.small_blind + self.big_blind
+            
+            # Start recursive CFR from pre-flop. Last aggressor is the Big Blind.
+            self._cfr_recursive(player_hands, history="", board=[], pot=pot, bets=bets, reach_probs=reach_probs, active_players=active_players, street=0, last_aggressor=1)
 
         logger.info("✅ Training complete. Finalizing strategies...")
         self._finalize_strategies()
@@ -101,6 +107,10 @@ class GPUCFRTrainer:
     def _cfr_recursive(self, player_hands, history, board, pot, bets, reach_probs, active_players, street, last_aggressor) -> np.ndarray:
         """The core recursive function for Counter-Factual Regret Minimization for NLHE."""
         
+        # Safeguard against infinite recursion by ensuring the game progresses past the river.
+        if street > 3:
+            return self._get_terminal_utility(player_hands, board, pot, bets, active_players)
+
         if self._is_terminal(active_players):
             return self._get_terminal_utility(player_hands, board, pot, bets, active_players)
 
@@ -219,7 +229,6 @@ class GPUCFRTrainer:
         """Applies an action and returns the new game state."""
         new_active = active_players.copy()
         new_bets = bets.copy()
-        new_pot = pot
         new_aggressor = last_aggressor
 
         if action == 'f':
@@ -229,11 +238,15 @@ class GPUCFRTrainer:
             new_bets[player] += to_call
         elif action == 'r':
             to_call = np.max(new_bets) - new_bets[player]
-            raise_amount = new_pot + to_call # Pot-sized raise
+            # A pot-sized raise is the size of the pot after you call.
+            # The pot includes previous streets (pot) and current street bets (bets).
+            current_pot_size = pot + np.sum(bets)
+            raise_amount = current_pot_size + to_call
             new_bets[player] += to_call + raise_amount
             new_aggressor = player
             
-        return history + action, new_pot, new_bets, new_active, new_aggressor
+        # The pot from previous streets does not change during a betting round.
+        return history + action, pot, new_bets, new_active, new_aggressor
 
     def _finalize_strategies(self):
         """Convert average strategies to the format expected by StrategyLookup."""
