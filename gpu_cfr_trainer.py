@@ -28,6 +28,31 @@ except ImportError:
     NUMBA_AVAILABLE = False
     logger.info("Numba not available")
 
+class CFRNode:
+    """A node in the CFR game tree."""
+    def __init__(self, num_actions):
+        self.num_actions = num_actions
+        self.regret_sum = np.zeros(num_actions)
+        self.strategy_sum = np.zeros(num_actions)
+        self.strategy = np.repeat(1/num_actions, num_actions)
+
+    def get_strategy(self):
+        """Get the current strategy from the regret sums."""
+        self.strategy = np.maximum(0, self.regret_sum)
+        normalizing_sum = np.sum(self.strategy)
+        if normalizing_sum > 0:
+            self.strategy /= normalizing_sum
+        else:
+            self.strategy = np.repeat(1/self.num_actions, self.num_actions)
+        return self.strategy
+
+    def get_average_strategy(self):
+        """Get the average strategy over all iterations."""
+        normalizing_sum = np.sum(self.strategy_sum)
+        if normalizing_sum > 0:
+            return self.strategy_sum / normalizing_sum
+        return np.repeat(1/self.num_actions, self.num_actions)
+
 class GPUCFRTrainer:
     """GPU-accelerated CFR trainer with batch processing and parallel simulations."""
     
@@ -964,6 +989,107 @@ class GPUCFRTrainer:
             logger.info(f"    {i+1}. {info_set[:60]}... -> {strategy_dict}")
         
         logger.info(f"📈 DIVERSITY SUCCESS: Created strategies for multiple player counts, positions, streets, and equity ranges!")
+
+    def get_node(self, info_set, num_actions):
+        """Get a node from the nodes dictionary, creating it if it doesn't exist."""
+        if info_set not in self.nodes:
+            self.nodes[info_set] = CFRNode(num_actions)
+        return self.nodes[info_set]
+
+    def train_like_fixed_cfr(self, iterations):
+        """Train the CFR model for a given number of iterations."""
+        logger.info(f"🎯 Starting FixedCFR-style training for {iterations} iterations...")
+        deck = [r+s for r in '23456789TJQKA' for s in 'shdc']
+        
+        for i in range(iterations):
+            if i % 1000 == 0:
+                logger.info(f"  Iteration {i}/{iterations}...")
+            
+            random.shuffle(deck)
+            player_cards = [deck[j*2:j*2+2] for j in range(self.num_players)]
+            community_cards = []
+            
+            # For simplicity, we'll run a single street (pre-flop)
+            self.cfr(player_cards, community_cards, history="", pot=self.sb + self.bb, reach_probabilities=np.ones(self.num_players))
+
+        self._finalize_strategies_fixed()
+
+    def cfr(self, player_cards, community_cards, history, pot, reach_probabilities):
+        """The main CFR recursion."""
+        # This implementation is simplified for a single pre-flop decision for one player.
+        player = 0  # First player to act
+
+        # If terminal node, return payoff
+        if len(history) > 0:  # Simplified terminal condition: game ends after one action
+            action = history[0]
+            if action == 'f':
+                return -self.sb  # Folded, lose small blind
+
+            # For call/raise, we determine a simplified payoff.
+            # A real implementation would continue the game through betting rounds.
+            # Here, we'll just estimate equity against random hands as a proxy for payoff.
+            win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
+                [player_cards[player]], [], num_opponents=self.num_players - 1
+            )
+            hand_strength = win_prob
+            
+            # Simplified payoff: win or lose the initial pot based on hand strength.
+            if hand_strength > 0.6: # Threshold for a 'strong' hand
+                return pot
+            elif hand_strength < 0.4: # Threshold for a 'weak' hand
+                return -self.bb
+            else:
+                return 0 # Tie or marginal hand
+
+        info_set = self.get_info_set(player_cards[player], community_cards, history)
+
+        actions = ['fold', 'call', 'raise']
+        num_actions = len(actions)
+        node = self.get_node(info_set, num_actions)
+        strategy = node.get_strategy()
+
+        # Recursively call CFR for each action to get counterfactual values (utilities)
+        action_utilities = np.zeros(num_actions)
+        for i, action in enumerate(actions):
+            new_history = history + action[0]
+            action_utilities[i] = self.cfr(player_cards, community_cards, new_history, pot, reach_probabilities)
+
+        # Calculate node utility (expected value of the current state)
+        node_utility = np.sum(strategy * action_utilities)
+
+        # Update regrets. Regret is the difference between the utility of an action and the expected utility of the node.
+        regrets = action_utilities - node_utility
+        node.regret_sum += regrets
+
+        # Update the strategy sum, which is used to compute the average strategy
+        node.strategy_sum += strategy
+
+        return node_utility
+
+    def get_info_set(self, player_cards, community_cards, history):
+        """Get the information set for the current game state."""
+        # The current training is simplified and only handles the pre-flop stage.
+        stage = 'preflop'
+        # We subtract 1 from num_players to get the number of opponents.
+        num_opponents = self.num_players - 1
+        hand_bucket = self.abstraction.bucket_hand(player_cards, community_cards, stage, num_opponents)
+        board_bucket = self.abstraction.bucket_board(community_cards, stage)
+        return f"{hand_bucket}-{board_bucket}-{history}"
+
+    def _finalize_strategies_fixed(self):
+        """Save the learned strategies to the strategy lookup table."""
+        logger.info("Finalizing and saving strategies...")
+        for info_set, node in self.nodes.items():
+            parts = info_set.split('-')
+            hand_bucket, board_bucket, history = parts[0], parts[1], parts[2]
+            avg_strategy = node.get_average_strategy()
+            strategy_dict = {action: prob for action, prob in zip(['fold', 'call', 'raise'], avg_strategy)}
+            
+            # For simplicity, we assume pre-flop (street 0)
+            self.strategy_lookup.add_strategy("0", hand_bucket, board_bucket, ['fold', 'call', 'raise'], strategy_dict)
+        
+        self.strategy_lookup.save_strategies()
+        logger.info(f"✅ Saved {len(self.nodes)} strategies.")
 
 # Numba-accelerated functions (if available)
 if NUMBA_AVAILABLE:

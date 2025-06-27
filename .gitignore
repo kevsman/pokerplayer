@@ -53,3 +53,4 @@ gitssh.pub
 id_rsa
 id_rsa.pub
 *.pem
+strategy_table_fixed.json
