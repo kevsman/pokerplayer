@@ -1,13 +1,16 @@
 """
 GPU-accelerated CFR trainer for poker bot.
-Uses GPU parallelization to speed up Monte Carlo simulations and batch processing.
+This version implements a recursive CFR algorithm for No-Limit Hold'em,
+supporting up to 6 players and configurable blinds. It's based on the principles
+from the article: https://medium.com/@olegostroumov/worlds-first-poker-solver-6b1dbe80d0ee
+but adapted for the more complex game of No-Limit Hold'em.
 """
 import numpy as np
 import logging
-import time
-from typing import Dict, List, Tuple
 import random
+from typing import Dict, List, Tuple
 
+# Setup logger
 logger = logging.getLogger(__name__)
 
 # Try to import GPU libraries
@@ -20,24 +23,17 @@ except ImportError:
     GPU_AVAILABLE = False
     logger.info("CuPy not available - using CPU for CFR training")
 
-try:
-    from numba import jit, prange
-    NUMBA_AVAILABLE = True
-    logger.info("Numba JIT compilation available")
-except ImportError:
-    NUMBA_AVAILABLE = False
-    logger.info("Numba not available")
-
 class CFRNode:
-    """A node in the CFR game tree."""
-    def __init__(self, num_actions):
+    """A node in the CFR game tree, representing an information set."""
+    def __init__(self, num_actions: int, actions: List[str]):
         self.num_actions = num_actions
+        self.actions = actions
         self.regret_sum = np.zeros(num_actions)
         self.strategy_sum = np.zeros(num_actions)
         self.strategy = np.repeat(1/num_actions, num_actions)
 
-    def get_strategy(self):
-        """Get the current strategy from the regret sums."""
+    def get_strategy(self) -> np.ndarray:
+        """Get the current strategy from the regret sums using regret matching."""
         self.strategy = np.maximum(0, self.regret_sum)
         normalizing_sum = np.sum(self.strategy)
         if normalizing_sum > 0:
@@ -46,1113 +42,216 @@ class CFRNode:
             self.strategy = np.repeat(1/self.num_actions, self.num_actions)
         return self.strategy
 
-    def get_average_strategy(self):
+    def get_average_strategy(self) -> Dict[str, float]:
         """Get the average strategy over all iterations."""
         normalizing_sum = np.sum(self.strategy_sum)
         if normalizing_sum > 0:
-            return self.strategy_sum / normalizing_sum
-        return np.repeat(1/self.num_actions, self.num_actions)
+            avg_strategy = self.strategy_sum / normalizing_sum
+        else:
+            avg_strategy = np.repeat(1/self.num_actions, self.num_actions)
+        return {self.actions[i]: avg_strategy[i] for i in range(self.num_actions)}
 
 class GPUCFRTrainer:
-    """GPU-accelerated CFR trainer with batch processing and parallel simulations."""
-    
-    def __init__(self, num_players=6, big_blind=0.04, small_blind=0.02, use_gpu=True):
+    """A CFR trainer for No-Limit Hold'em."""
+    def __init__(self, use_gpu=True, num_players=6, small_blind=0.02, big_blind=0.04):
         self.num_players = num_players
-        self.bb = big_blind
-        self.sb = small_blind
         self.use_gpu = use_gpu and GPU_AVAILABLE
-        self.use_numba = NUMBA_AVAILABLE
+        self.small_blind = small_blind
+        self.big_blind = big_blind
         
-        # Import required modules
-        from hand_evaluator import HandEvaluator
-        from equity_calculator import EquityCalculator
         from gpu_accelerated_equity import GPUEquityCalculator
-        from hand_abstraction import HandAbstraction
+        from hand_evaluator import HandEvaluator
         from strategy_lookup import StrategyLookup
-        
+
         self.hand_evaluator = HandEvaluator()
-        
-        # Use GPU equity calculator if available, otherwise CPU fallback
-        if self.use_gpu:
-            self.equity_calculator = GPUEquityCalculator(use_gpu=True)
-            logger.info("GPU CFR Trainer using GPU-accelerated equity calculator")
-        else:
-            self.equity_calculator = EquityCalculator()
-            logger.info("GPU CFR Trainer using CPU equity calculator")
-            
-        self.abstraction = HandAbstraction(self.hand_evaluator, self.equity_calculator)
+        self.equity_calculator = GPUEquityCalculator(use_gpu=self.use_gpu)
         self.strategy_lookup = StrategyLookup()
         
-        # CFR-specific data structures
-        self.nodes = {}
-        self._showdown_eval_cache = {}
-        self._recursion_states = set()
+        self.nodes: Dict[str, CFRNode] = {}
+        self.deck = self.equity_calculator.all_cards[:]
         
-        # MASSIVE MEMORY OPTIMIZATION - Using full GPU capacity
-        # Memory analysis shows we can handle 199,000 scenarios using 8.67GB
-        # Each scenario uses 46,776 bytes
-        if self.use_gpu:
-            self.max_batch_size = 199000  # Maximum tested capacity
-            self.optimal_batch_size = 175000  # 90% of max for optimal performance
-            self.safe_batch_size = 150000  # 75% of max for safety margin
-            self.simulation_batch_size = 100000  # Large GPU simulation batches
-            self.memory_efficient_batch_size = 50000  # For memory-constrained operations
-            
-            # Use optimal batch size by default for maximum throughput
-            self.batch_size = self.optimal_batch_size
-            logger.info(f"🚀 ULTRA-HIGH-MEMORY MODE: Using {self.batch_size:,} scenarios per batch")
-            logger.info(f"💾 Estimated memory usage: {(self.batch_size * 46776) / (1024**3):.2f}GB")
-        else:
-            self.batch_size = 1000  # Conservative CPU batch size
-            self.simulation_batch_size = 5000  # CPU simulation batch
-        
-        # GPU-specific optimizations (after batch sizes are defined)
-        if self.use_gpu:
-            self._initialize_gpu_resources()
-        
-        logger.info(f"GPU CFR Trainer initialized - GPU: {self.use_gpu}, Numba: {self.use_numba}")
-    
-    def _initialize_gpu_resources(self):
-        """Initialize GPU memory and resources for CFR training with maximum capacity."""
-        if not self.use_gpu:
-            return
-        
-        try:
-            logger.info("🔥 INITIALIZING ULTRA-HIGH-MEMORY GPU RESOURCES")
-            
-            # Pre-allocate GPU arrays for common operations
-            self.gpu_regrets = {}
-            self.gpu_strategies = {}
-            self.gpu_random_state = cp.random.RandomState()
-            
-            # Pre-allocate memory for MASSIVE batch operations
-            max_nodes_per_batch = 10000  # 10x increase
-            max_actions_per_node = 4  # fold, call/check, raise, all-in
-            max_scenarios = self.optimal_batch_size
-            
-            # Massive GPU memory pre-allocation
-            logger.info(f"🧠 Pre-allocating {max_scenarios:,} scenario slots...")
-            
-            self.gpu_batch_regrets = cp.zeros((max_nodes_per_batch, max_actions_per_node), dtype=cp.float32)
-            self.gpu_batch_strategies = cp.zeros((max_nodes_per_batch, max_actions_per_node), dtype=cp.float32)
-            self.gpu_batch_utilities = cp.zeros((max_nodes_per_batch, self.num_players), dtype=cp.float32)
-            
-            # Pre-allocate arrays for scenario processing
-            self.gpu_scenario_data = cp.zeros((max_scenarios, 52), dtype=cp.int32)  # Card data
-            self.gpu_equity_results = cp.zeros((max_scenarios, self.num_players), dtype=cp.float32)
-            self.gpu_hand_strengths = cp.zeros((max_scenarios, self.num_players), dtype=cp.float32)
-            
-            # Pre-allocate working memory for computations
-            self.gpu_temp_arrays = {
-                'random_values': cp.zeros(max_scenarios * 1000, dtype=cp.float32),
-                'computation_buffer': cp.zeros(max_scenarios * 100, dtype=cp.float32),
-                'index_buffer': cp.zeros(max_scenarios * 10, dtype=cp.int32)
-            }
-            
-            # Memory stats
-            allocated_mb = (self.gpu_scenario_data.nbytes + self.gpu_equity_results.nbytes + 
-                          self.gpu_hand_strengths.nbytes + 
-                          sum(arr.nbytes for arr in self.gpu_temp_arrays.values())) / (1024**2)
-            
-            logger.info(f"✅ GPU ULTRA-MEMORY initialized successfully!")
-            logger.info(f"💾 Pre-allocated: {allocated_mb:.1f}MB of GPU memory")
-            logger.info(f"🎯 Ready for {max_scenarios:,} scenarios per batch")
-            
-        except Exception as e:
-            logger.warning(f"Failed to initialize ultra-memory GPU resources: {e}")
-            logger.info("Falling back to standard GPU configuration...")
-            self.batch_size = 50000  # Fallback to smaller batch size
-            self.use_gpu = False
-    
-    def train_batch_gpu(self, iterations: int = 1000, batch_size: int = None):
-        """
-        Train CFR using GPU-accelerated batch processing.
-        
-        Args:
-            iterations: Number of CFR iterations
-            batch_size: Number of game trees to process simultaneously
-        """
-        if batch_size is None:
-            batch_size = self.batch_size
-        
-        logger.info(f"Starting GPU-accelerated CFR training: {iterations} iterations, batch size {batch_size}")
-        
-        total_start_time = time.time()
-        
-        # Process iterations in batches for GPU efficiency
-        num_batches = (iterations + batch_size - 1) // batch_size
-        
-        for batch_idx in range(num_batches):
-            batch_start_time = time.time()
-            current_batch_size = min(batch_size, iterations - batch_idx * batch_size)
-            
-            # Generate batch of game scenarios
-            batch_scenarios = self._generate_batch_scenarios(current_batch_size)
-            
-            # Process batch on GPU if available
-            if self.use_gpu:
-                batch_results = self._process_batch_gpu(batch_scenarios)
-            else:
-                batch_results = self._process_batch_cpu(batch_scenarios)
-            
-            # Update CFR nodes with batch results
-            self._update_cfr_nodes_batch(batch_results)
-            
-            batch_time = time.time() - batch_start_time
-            logger.info(f"Batch {batch_idx + 1}/{num_batches} completed in {batch_time:.2f}s "
-                       f"({current_batch_size} iterations)")
-        
-        total_time = time.time() - total_start_time
-        logger.info(f"GPU CFR training completed in {total_time:.2f}s ({iterations/total_time:.1f} iter/s)")
-        
-        # Convert results to strategy format
-        self._finalize_strategies()
-    
-    def train_ultra_batch_gpu(self, iterations: int = 50000, use_max_memory: bool = True):
-        """
-        Ultra-high-performance training using maximum GPU memory capacity.
-        
-        Args:
-            iterations: Number of CFR iterations (default 50K for large-scale training)
-            use_max_memory: Whether to use maximum available memory (175K+ scenarios per batch)
-        """
-        if not self.use_gpu:
-            logger.warning("GPU not available, falling back to standard training")
-            return self.train_batch_gpu(iterations, batch_size=1000)
-        
-        # Select batch size based on memory preference
-        if use_max_memory:
-            batch_size = self.optimal_batch_size  # 175,000 scenarios
-            logger.info(f"🔥 ULTRA-BATCH TRAINING: {iterations:,} iterations with {batch_size:,} scenarios per batch")
-        else:
-            batch_size = self.safe_batch_size  # 150,000 scenarios
-            logger.info(f"🚀 HIGH-BATCH TRAINING: {iterations:,} iterations with {batch_size:,} scenarios per batch")
-        
-        total_start_time = time.time()
-        
-        # Calculate number of batches needed
-        num_batches = max(1, (iterations + batch_size - 1) // batch_size)
-        
-        logger.info(f"📊 Training plan: {num_batches} mega-batches processing {iterations:,} total iterations")
-        logger.info(f"💾 Memory per batch: ~{(batch_size * 46776) / (1024**3):.2f}GB")
-        
-        for batch_idx in range(num_batches):
-            batch_start_time = time.time()
-            current_batch_size = min(batch_size, iterations - batch_idx * batch_size)
-            
-            logger.info(f"🔄 Processing mega-batch {batch_idx + 1}/{num_batches} ({current_batch_size:,} scenarios)...")
-            
-            # Generate massive batch of scenarios
-            batch_scenarios = self._generate_mega_batch_scenarios(current_batch_size)
-            
-            # Process on GPU with vectorized operations
-            batch_results = self._process_mega_batch_gpu(batch_scenarios)
-            
-            # Update CFR nodes with batch results
-            self._update_cfr_nodes_mega_batch(batch_results)
-            
-            batch_time = time.time() - batch_start_time
-            scenarios_per_second = current_batch_size / batch_time
-            
-            logger.info(f"✅ Mega-batch {batch_idx + 1} completed in {batch_time:.2f}s")
-            logger.info(f"⚡ Performance: {scenarios_per_second:,.0f} scenarios/second")
-        
-        total_time = time.time() - total_start_time
-        total_scenarios_per_second = iterations / total_time
-        
-        logger.info(f"🎯 ULTRA-BATCH TRAINING COMPLETED!")
-        logger.info(f"⏱️  Total time: {total_time:.2f}s")
-        logger.info(f"⚡ Average performance: {total_scenarios_per_second:,.0f} scenarios/second")
-        logger.info(f"🔥 Total scenarios processed: {iterations:,}")
-        
-        # Finalize strategies
-        self._finalize_strategies()
-    
-    def _generate_batch_scenarios(self, batch_size: int) -> List[Dict]:
-        """Generate a batch of poker game scenarios for parallel processing."""
-        scenarios = []
-        
-        for _ in range(batch_size):
-            # Generate random deck and deal hands
-            deck = self.equity_calculator.all_cards[:]
-            random.shuffle(deck)
-            
-            # Deal cards to players
-            player_hands = []
-            cards_dealt = 0
-            for _ in range(self.num_players):
-                hand = deck[cards_dealt:cards_dealt + 2]
-                player_hands.append(hand)
-                cards_dealt += 2
-            
-            # Set up initial game state
-            pot = self.sb + self.bb
-            bets = np.zeros(self.num_players)
-            bets[0] = self.sb  # Small blind
-            bets[1] = self.bb  # Big blind
-            
-            scenario = {
-                'deck': deck,
-                'player_hands': player_hands,
-                'pot': pot,
-                'bets': bets.copy(),
-                'active_mask': np.ones(self.num_players, dtype=bool),
-                'street': 0,
-                'current_player': 2,  # UTG (after SB and BB)
-                'reach_probabilities': np.ones(self.num_players)
-            }
-            scenarios.append(scenario)
-        
-        return scenarios
-    
-    def _generate_mega_batch_scenarios(self, batch_size: int) -> List[Dict]:
-        """Generate a massive batch of DIVERSE poker scenarios covering all player counts and situations."""
-        logger.debug(f"Generating {batch_size:,} DIVERSE scenarios for mega-batch processing...")
-        
-        scenarios = []
-        
-        # Use vectorized operations for faster scenario generation
-        if self.use_gpu and hasattr(self, 'gpu_random_state'):
-            # Generate all random data at once using GPU
-            # Note: CuPy permutation doesn't support size parameter, so we generate one at a time
-            random_cards_list = []
-            for _ in range(batch_size):
-                random_cards_list.append(self.gpu_random_state.permutation(52))
-            
-            random_cards = cp.stack(random_cards_list, axis=0)
-            # Generate diverse player counts (2-6 players)
-            random_player_counts = self.gpu_random_state.randint(2, 7, size=batch_size)  # 2-6 players
-            # Generate different starting positions and situations
-            random_streets = self.gpu_random_state.randint(0, 4, size=batch_size)  # 0=preflop, 1=flop, 2=turn, 3=river
-            random_pot_sizes = self.gpu_random_state.uniform(0.5, 3.0, size=batch_size)  # Pot size multipliers
-            
-            # Convert to CPU for scenario creation
-            random_cards_cpu = cp.asnumpy(random_cards)
-            random_player_counts_cpu = cp.asnumpy(random_player_counts)
-            random_streets_cpu = cp.asnumpy(random_streets)
-            random_pot_sizes_cpu = cp.asnumpy(random_pot_sizes)
-        else:
-            # CPU fallback
-            random_cards_cpu = np.array([np.random.permutation(52) for _ in range(batch_size)])
-            random_player_counts_cpu = np.random.randint(2, 7, batch_size)
-            random_streets_cpu = np.random.randint(0, 4, batch_size)
-            random_pot_sizes_cpu = np.random.uniform(0.5, 3.0, batch_size)
-        
-        for i in range(batch_size):
-            # Use variable player count for this scenario
-            scenario_players = int(random_player_counts_cpu[i])
-            starting_street = int(random_streets_cpu[i])
-            pot_multiplier = float(random_pot_sizes_cpu[i])
-            
-            # Use pre-generated random data
-            deck_indices = random_cards_cpu[i]
-            deck = [self.equity_calculator.all_cards[idx] for idx in deck_indices]
-            
-            # Deal cards to the variable number of players
-            player_hands = []
-            cards_dealt = 0
-            for player_idx in range(scenario_players):
-                hand = deck[cards_dealt:cards_dealt + 2]
-                player_hands.append(hand)
-                cards_dealt += 2
-            
-            # Pad with default hands for unused player slots (up to max 6)
-            while len(player_hands) < self.num_players:
-                # Use default strong hand for empty slots instead of empty list
-                player_hands.append(['A♠', 'K♠'])
-            
-            # Set up diverse initial game states
-            base_pot = self.sb + self.bb
-            pot = int(base_pot * pot_multiplier)
-            
-            bets = np.zeros(self.num_players)
-            active_mask = np.zeros(self.num_players, dtype=bool)
-            
-            # Only make the actual players active
-            for player_idx in range(scenario_players):
-                active_mask[player_idx] = True
-                
-            # Set up diverse betting situations
-            if scenario_players >= 2:
-                bets[0] = self.sb  # Small blind (if player 0 is active)
-                if scenario_players >= 3:
-                    bets[1] = self.bb  # Big blind (if player 1 is active)
-                else:
-                    bets[1] = self.bb  # In heads-up, player 1 gets big blind
-            
-            # Generate diverse game histories based on street
-            history = ""
-            if starting_street == 0:  # Preflop
-                history = ""
-            elif starting_street == 1:  # Flop
-                history = "x|"  # Check to flop
-                pot = int(pot * 1.2)  # Slightly bigger pot
-            elif starting_street == 2:  # Turn  
-                history = "x|x|"  # Check-check to turn
-                pot = int(pot * 1.5)  # Bigger pot
-            elif starting_street == 3:  # River
-                history = "x|r|"  # Check-raise action to river
-                pot = int(pot * 2.0)  # Much bigger pot
-                bets[1] = self.bb * 2  # Represent the raise
-            
-            # Vary starting position based on scenario
-            starting_player = (2 if scenario_players >= 3 else 0) % scenario_players
-            
-            scenario = {
-                'deck': deck,
-                'player_hands': player_hands,
-                'pot': pot,
-                'bets': bets.copy(),
-                'active_mask': active_mask.copy(),
-                'street': starting_street,
-                'current_player': starting_player,
-                'reach_probabilities': np.ones(self.num_players),
-                'scenario_id': i,  # Add ID for tracking
-                'num_active_players': scenario_players,  # Track actual player count
-                'scenario_type': f"{scenario_players}p_street{starting_street}_pot{pot_multiplier:.1f}"
-            }
-            scenarios.append(scenario)
-        
-        # Log diversity statistics
-        player_counts = [s['num_active_players'] for s in scenarios]
-        streets = [s['street'] for s in scenarios]
-        logger.debug(f"Generated {len(scenarios):,} DIVERSE scenarios:")
-        logger.debug(f"  Player counts: {dict(zip(*np.unique(player_counts, return_counts=True)))}")
-        logger.debug(f"  Starting streets: {dict(zip(*np.unique(streets, return_counts=True)))}")
-        
-        return scenarios
-    
-    def _process_batch_gpu(self, scenarios: List[Dict]) -> List[Dict]:
-        """Process a batch of scenarios using GPU acceleration."""
-        if not self.use_gpu:
-            return self._process_batch_cpu(scenarios)
-        
-        try:
-            # Convert scenario data to GPU arrays
-            batch_size = len(scenarios)
-            
-            # Vectorized equity calculations for all scenarios
-            batch_results = []
-            
-            for scenario in scenarios:
-                # Run CFR for this scenario (simplified for GPU efficiency)
-                result = self._run_cfr_scenario_gpu(scenario)
-                batch_results.append(result)
-            
-            return batch_results
-            
-        except Exception as e:
-            logger.error(f"GPU batch processing failed: {e}, falling back to CPU")
-            return self._process_batch_cpu(scenarios)
-    
-    def _process_mega_batch_gpu(self, scenarios: List[Dict]) -> List[Dict]:
-        """Process a massive batch of scenarios using full GPU vectorization."""
-        if not self.use_gpu:
-            return self._process_batch_cpu(scenarios)
-        
-        try:
-            batch_size = len(scenarios)
-            logger.debug(f"Processing {batch_size:,} scenarios on GPU...")
-            
-            # Vectorized processing using pre-allocated GPU memory
-            start_time = time.time()
-            
-            # Extract all player hands for batch equity calculation
-            all_player_hands = []
-            scenario_hand_indices = []  # Track where each scenario's hands start
-            
-            for scenario in scenarios:
-                scenario_hand_indices.append(len(all_player_hands))
-                if 'player_hands' in scenario and scenario['player_hands']:
-                    # Validate and fix any malformed hands in the scenario
-                    valid_hands = []
-                    for hand in scenario['player_hands']:
-                        if hand and len(hand) >= 2 and all(card for card in hand[:2]):
-                            valid_hands.append(hand[:2])  # Take only first 2 cards
-                        else:
-                            valid_hands.append(['A♠', 'K♠'])  # Default hand for invalid hands
-                    all_player_hands.extend(valid_hands)
-                else:
-                    # Generate default hands if missing
-                    default_hands = [['A♠', 'K♠'] for _ in range(self.num_players)]
-                    all_player_hands.extend(default_hands)
-            
-            # Ensure we have the expected number of hands
-            expected_hands = len(scenarios) * self.num_players
-            if len(all_player_hands) != expected_hands:
-                logger.warning(f"Hand count mismatch: expected {expected_hands}, got {len(all_player_hands)}")
-                # Pad with default hands if needed
-                while len(all_player_hands) < expected_hands:
-                    all_player_hands.append(['A♠', 'K♠'])
-                # Trim if too many
-                all_player_hands = all_player_hands[:expected_hands]
-            
-            # Calculate equity for all hands at once
-            equity_start = time.time()
-            batch_equities = self._calculate_massive_batch_equity_gpu(all_player_hands, batch_size)
-            equity_time = time.time() - equity_start
-            
-            logger.debug(f"Calculated equity for {len(all_player_hands)} hands in {equity_time:.3f}s")
-            
-            # Ensure batch_equities has the right length
-            if len(batch_equities) != len(all_player_hands):
-                logger.warning(f"Equity count mismatch: expected {len(all_player_hands)}, got {len(batch_equities)}")
-                # Pad with default equities if needed
-                while len(batch_equities) < len(all_player_hands):
-                    batch_equities.append(0.5)
-                # Trim if too many
-                batch_equities = batch_equities[:len(all_player_hands)]
-            
-            # Process results
-            batch_results = []
-            for i, scenario in enumerate(scenarios):
-                # Extract equities for this scenario's players
-                start_idx = i * self.num_players
-                end_idx = start_idx + self.num_players
-                
-                # Safety check for index bounds
-                if end_idx <= len(batch_equities):
-                    scenario_equities = batch_equities[start_idx:end_idx]
-                else:
-                    logger.warning(f"Equity index out of bounds for scenario {i}, using defaults")
-                    scenario_equities = [0.5] * self.num_players
-                
-                # Run simplified CFR for this scenario
-                result = self._run_cfr_scenario_vectorized(scenario, scenario_equities)
-                batch_results.append(result)
-            
-            process_time = time.time() - start_time
-            logger.debug(f"Processed {batch_size:,} scenarios in {process_time:.3f}s ({batch_size/process_time:,.0f} scenarios/s)")
-            
-            return batch_results
-            
-        except Exception as e:
-            logger.error(f"Mega-batch GPU processing failed: {e}, falling back to CPU")
-            return self._process_batch_cpu(scenarios)
-    
-    def _process_batch_cpu(self, scenarios: List[Dict]) -> List[Dict]:
-        """CPU fallback for batch processing."""
-        batch_results = []
-        
-        for scenario in scenarios:
-            # Run simplified CFR for this scenario
-            result = self._run_cfr_scenario_cpu(scenario)
-            batch_results.append(result)
-        
-        return batch_results
-    
-    def _run_cfr_scenario_gpu(self, scenario: Dict) -> Dict:
-        """Run CFR for a single scenario using GPU acceleration."""
-        # Simplified CFR implementation optimized for GPU
-        
-        # Extract scenario data
-        player_hands = scenario['player_hands']
-        pot = scenario['pot']
-        bets = scenario['bets']
-        
-        # Quick equity estimation using GPU
-        equity_estimates = self._calculate_batch_equity_gpu(player_hands)
-        
-        # Simplified strategy calculation
-        strategies = {}
-        utilities = np.zeros(self.num_players)
-        
-        for player_idx in range(self.num_players):
-            hand = player_hands[player_idx]
-            equity = equity_estimates[player_idx] if player_idx < len(equity_estimates) else 0.5
-            
-            # Simple strategy based on equity
-            if equity > 0.7:
-                strategy = {'raise': 0.6, 'call': 0.3, 'fold': 0.1}
-            elif equity > 0.4:
-                strategy = {'call': 0.5, 'raise': 0.2, 'fold': 0.3}
-            else:
-                strategy = {'fold': 0.7, 'call': 0.2, 'raise': 0.1}
-            
-            strategies[f"player_{player_idx}"] = strategy
-            utilities[player_idx] = equity * pot - bets[player_idx]
-        
-        return {
-            'strategies': strategies,
-            'utilities': utilities,
-            'scenario_id': id(scenario)
-        }
-    
-    def _run_cfr_scenario_cpu(self, scenario: Dict) -> Dict:
-        """CPU version of CFR scenario processing."""
-        # Simplified CPU implementation
-        player_hands = scenario['player_hands']
-        pot = scenario['pot']
-        bets = scenario['bets']
-        
-        strategies = {}
-        utilities = np.zeros(self.num_players)
-        
-        for player_idx in range(self.num_players):
-            # Quick equity estimation
-            equity = random.uniform(0.1, 0.9)  # Simplified for speed
-            
-            # Simple strategy
-            if equity > 0.6:
-                strategy = {'raise': 0.5, 'call': 0.4, 'fold': 0.1}
-            else:
-                strategy = {'fold': 0.5, 'call': 0.4, 'raise': 0.1}
-            
-            strategies[f"player_{player_idx}"] = strategy
-            utilities[player_idx] = equity * pot - bets[player_idx]
-        
-        return {
-            'strategies': strategies,
-            'utilities': utilities,
-            'scenario_id': id(scenario)
-        }
-    
-    def _calculate_batch_equity_gpu(self, player_hands: List[List[str]]) -> List[float]:
-        """Calculate equity for multiple hands using GPU acceleration."""
-        if not self.use_gpu:
-            return [random.uniform(0.1, 0.9) for _ in player_hands]
-        
-        try:
-            # Simplified GPU equity calculation
-            batch_size = len(player_hands)
-            gpu_equities = cp.random.uniform(0.1, 0.9, size=batch_size, dtype=cp.float32)
-            
-            # Add hand strength modifiers
-            for i, hand in enumerate(player_hands):
-                # Simple hand strength based on high cards
-                hand_strength = self._estimate_hand_strength_simple(hand)
-                gpu_equities[i] = cp.clip(gpu_equities[i] + hand_strength - 0.5, 0.0, 1.0)
-            
-            return cp.asnumpy(gpu_equities).tolist()
-            
-        except Exception as e:
-            logger.error(f"GPU equity calculation failed: {e}")
-            return [random.uniform(0.1, 0.9) for _ in player_hands]
-    
-    def _calculate_massive_batch_equity_gpu(self, player_hands: List[List[str]], batch_size: int) -> List[float]:
-        """Calculate equity for massive batches using full GPU vectorization."""
-        if not self.use_gpu:
-            return [random.uniform(0.1, 0.9) for _ in player_hands]
-        
-        try:
-            num_hands = len(player_hands)
-            if num_hands == 0:
-                logger.warning("No hands provided for equity calculation")
-                return []
-            
-            logger.debug(f"Calculating equity for {num_hands} hands using GPU vectorization...")
-            
-            # Generate random equities on GPU for speed
-            gpu_equities = self.gpu_random_state.uniform(0.1, 0.9, size=num_hands, dtype=cp.float32)
-            
-            # Vectorized hand strength calculation
-            hand_strengths = cp.zeros(num_hands, dtype=cp.float32)
-            
-            for i, hand in enumerate(player_hands):
-                if i >= num_hands:  # Safety check
-                    break
-                try:
-                    # Calculate hand strength modifier
-                    strength_modifier = self._estimate_hand_strength_simple(hand)
-                    hand_strengths[i] = strength_modifier
-                except Exception as e:
-                    logger.debug(f"Error calculating strength for hand {i}: {e}")
-                    hand_strengths[i] = 0.0
-            
-            # Apply hand strength modifiers
-            gpu_equities = cp.clip(gpu_equities + hand_strengths - 0.5, 0.0, 1.0)
-            
-            # Convert to CPU
-            result = cp.asnumpy(gpu_equities).tolist()
-            
-            # Ensure we return exactly the expected number of equities
-            if len(result) != num_hands:
-                logger.warning(f"Equity result length mismatch: expected {num_hands}, got {len(result)}")
-                # Pad or trim as needed
-                while len(result) < num_hands:
-                    result.append(0.5)
-                result = result[:num_hands]
-            
-            return result
-            
-        except Exception as e:
-            logger.error(f"Massive batch equity calculation failed: {e}")
-            logger.debug(f"Error details: player_hands length={len(player_hands) if player_hands else 0}, batch_size={batch_size}")
-            # Return safe fallback
-            return [random.uniform(0.1, 0.9) for _ in range(len(player_hands) if player_hands else 0)]
-    
-    def _estimate_hand_strength_simple(self, hand: List[str]) -> float:
-        """Simple hand strength estimation for GPU processing."""
-        try:
-            if not hand or len(hand) < 2:
-                return 0.0
-            
-            strength = 0.0
-            
-            # High card bonus
-            high_cards = {'A': 0.3, 'K': 0.25, 'Q': 0.2, 'J': 0.15}
-            for card in hand:
-                if not card or len(card) < 2:
-                    continue
-                rank = card[:-1]  # All characters except the last (suit)
-                if rank in high_cards:
-                    strength += high_cards[rank]
-            
-            # Pair bonus
-            if len(hand) >= 2 and hand[0] and hand[1]:
-                rank1 = hand[0][:-1] if len(hand[0]) > 1 else ''
-                rank2 = hand[1][:-1] if len(hand[1]) > 1 else ''
-                if rank1 and rank2 and rank1 == rank2:
-                    strength += 0.3
-            
-            # Suited bonus
-            if len(hand) >= 2 and hand[0] and hand[1]:
-                suit1 = hand[0][-1] if hand[0] else ''
-                suit2 = hand[1][-1] if hand[1] else ''
-                if suit1 and suit2 and suit1 == suit2:
-                    strength += 0.1
-            
-            return min(strength, 0.5)  # Cap at 0.5 modifier
-            
-        except Exception as e:
-            logger.debug(f"Error in hand strength estimation for {hand}: {e}")
-            return 0.0
-    
-    def _run_cfr_scenario_vectorized(self, scenario: Dict, equity_estimates: List[float]) -> Dict:
-        """Run CFR for a scenario using vectorized operations with DIVERSE strategy generation."""
-        # Extract scenario data
-        player_hands = scenario['player_hands']
-        pot = scenario['pot']
-        bets = scenario['bets']
-        num_active = scenario.get('num_active_players', self.num_players)
-        scenario_type = scenario.get('scenario_type', 'standard')
-        street = scenario.get('street', 0)
-        
-        # Vectorized strategy calculation with MORE DIVERSITY
-        strategies = {}
-        utilities = np.zeros(self.num_players)
-        
-        for player_idx in range(num_active):  # Only process active players
-            equity = equity_estimates[player_idx] if player_idx < len(equity_estimates) else 0.5
-            
-            # Generate MUCH MORE DIVERSE strategies based on multiple factors
-            
-            # Factor 1: Equity-based strategy (primary)
-            if equity > 0.8:  # Very strong hands
-                base_strategy = {'raise': 0.8, 'call': 0.15, 'fold': 0.05}
-            elif equity > 0.65:  # Strong hands
-                base_strategy = {'raise': 0.6, 'call': 0.35, 'fold': 0.05}
-            elif equity > 0.5:  # Medium-strong hands
-                base_strategy = {'raise': 0.4, 'call': 0.5, 'fold': 0.1}
-            elif equity > 0.35:  # Medium hands
-                base_strategy = {'call': 0.6, 'raise': 0.2, 'fold': 0.2}
-            elif equity > 0.2:  # Weak hands
-                base_strategy = {'fold': 0.5, 'call': 0.3, 'raise': 0.2}
-            else:  # Very weak hands
-                base_strategy = {'fold': 0.8, 'call': 0.1, 'raise': 0.1}
-            
-            # Factor 2: Position-based adjustments
-            position_factor = player_idx / max(1, num_active - 1)  # 0 = early, 1 = late
-            if position_factor > 0.7:  # Late position - more aggressive
-                base_strategy['raise'] = min(1.0, base_strategy.get('raise', 0) * 1.3)
-                base_strategy['call'] = max(0.0, base_strategy.get('call', 0) * 0.9)
-            elif position_factor < 0.3:  # Early position - more conservative
-                base_strategy['fold'] = min(1.0, base_strategy.get('fold', 0) * 1.2)
-                base_strategy['raise'] = max(0.0, base_strategy.get('raise', 0) * 0.8)
-            
-            # Factor 3: Street-based adjustments
-            if street == 0:  # Preflop - tighter
-                base_strategy['fold'] = min(1.0, base_strategy.get('fold', 0) * 1.1)
-            elif street >= 2:  # Turn/River - more polarized
-                if equity > 0.6:
-                    base_strategy['raise'] = min(1.0, base_strategy.get('raise', 0) * 1.4)
-                else:
-                    base_strategy['fold'] = min(1.0, base_strategy.get('fold', 0) * 1.3)
-            
-            # Factor 4: Number of players adjustment
-            if num_active <= 3:  # Short-handed - more aggressive
-                base_strategy['raise'] = min(1.0, base_strategy.get('raise', 0) * 1.2)
-                base_strategy['call'] = min(1.0, base_strategy.get('call', 0) * 1.1)
-            elif num_active >= 5:  # Full table - more conservative
-                base_strategy['fold'] = min(1.0, base_strategy.get('fold', 0) * 1.1)
-                base_strategy['raise'] = max(0.0, base_strategy.get('raise', 0) * 0.9)
-            
-            # Factor 5: Pot size adjustment
-            pot_bb_ratio = pot / (self.bb * 2)  # Pot size in big blinds
-            if pot_bb_ratio > 5:  # Large pot - more committed
-                base_strategy['call'] = min(1.0, base_strategy.get('call', 0) * 1.2)
-                base_strategy['fold'] = max(0.0, base_strategy.get('fold', 0) * 0.8)
-            
-            # Normalize probabilities
-            total = sum(base_strategy.values())
-            if total > 0:
-                strategy = {action: prob/total for action, prob in base_strategy.items()}
-            else:
-                strategy = {'fold': 0.5, 'call': 0.3, 'raise': 0.2}
-            
-            strategies[f"player_{player_idx}"] = strategy
-            utilities[player_idx] = equity * pot - bets[player_idx]
-        
-        return {
-            'strategies': strategies,
-            'utilities': utilities,
-            'scenario_id': scenario.get('scenario_id', id(scenario)),
-            'equity_estimates': equity_estimates,
-            'scenario_type': scenario_type,
-            'num_active_players': num_active,
-            'street': street
-        }
-    
-    def _update_cfr_nodes_batch(self, batch_results: List[Dict]):
-        """Update CFR nodes with results from batch processing."""
-        for result in batch_results:
-            strategies = result['strategies']
-            utilities = result['utilities']
-            
-            # Update nodes (simplified for batch processing)
-            for player_strategy_key, strategy in strategies.items():
-                info_set = f"batch_{result['scenario_id']}_{player_strategy_key}"
-                
-                if info_set not in self.nodes:
-                    from train_cfr import CFRNode
-                    actions = list(strategy.keys())
-                    self.nodes[info_set] = CFRNode(len(actions), actions)
-                
-                node = self.nodes[info_set]
-                # Simple regret update (in practice, this would be more sophisticated)
-                for i, action in enumerate(node.actions):
-                    if action in strategy:
-                        node.strategy_sum[i] += strategy[action]
-    
-    def _update_cfr_nodes_mega_batch(self, batch_results: List[Dict]):
-        """Update CFR nodes with results from mega-batch processing using DIVERSE scenario information."""
-        logger.debug(f"Updating CFR nodes with {len(batch_results):,} DIVERSE results...")
-        
-        update_count = 0
-        unique_info_sets = set()
-        
-        for result in batch_results:
-            strategies = result['strategies']
-            utilities = result['utilities']
-            scenario_id = result['scenario_id']
-            
-            # Get additional diversity information if available
-            equity_estimates = result.get('equity_estimates', [])
-            scenario_type = result.get('scenario_type', 'unknown')
-            
-            # Update nodes with diverse info sets
-            for player_strategy_key, strategy in strategies.items():
-                # Extract player index from key
-                player_idx = player_strategy_key.split('_')[-1] if '_' in player_strategy_key else '0'
-                
-                # Create more diverse info sets using scenario information
-                equity_bucket = "low"
-                if len(equity_estimates) > int(player_idx) if player_idx.isdigit() else False:
-                    equity = equity_estimates[int(player_idx)]
-                    if equity > 0.7:
-                        equity_bucket = "high"
-                    elif equity > 0.4:
-                        equity_bucket = "medium"
-                    else:
-                        equity_bucket = "low"
-                
-                # Create unique info_set incorporating scenario diversity
-                info_set = f"mega_batch_{scenario_id}_{player_strategy_key}_{equity_bucket}_{scenario_type}"
-                unique_info_sets.add(info_set)
-                
-                if info_set not in self.nodes:
-                    from train_cfr import CFRNode
-                    actions = list(strategy.keys())
-                    self.nodes[info_set] = CFRNode(len(actions), actions)
-                
-                node = self.nodes[info_set]
-                # Vectorized regret update with diversity weighting
-                for i, action in enumerate(node.actions):
-                    if action in strategy:
-                        # Weight strategies based on equity for more realistic play
-                        weight = 1.0
-                        if equity_bucket == "high":
-                            weight = 1.5  # Emphasize strong hands
-                        elif equity_bucket == "low":
-                            weight = 0.8  # De-emphasize weak hands
-                            
-                        node.strategy_sum[i] += strategy[action] * weight
-                        update_count += 1
-        
-        logger.debug(f"Updated {update_count} strategy values across {len(self.nodes)} nodes")
-        logger.debug(f"Created {len(unique_info_sets)} unique info sets in this batch")
-    
-    def _finalize_strategies(self):
-        """Convert CFR results to final strategy format and save."""
-        logger.info(f"Finalizing {len(self.nodes)} strategies...")
-        
-        strategy_count = 0
-        for info_set, node in self.nodes.items():
-            try:
-                # Parse info set (simplified format for batch processing)
-                actions = node.actions
-                avg_strategy = node.get_average_strategy()
-                strategy_dict = {act: p for act, p in zip(actions, avg_strategy)}
-                
-                # Extract meaningful keys from info_set for unique strategies
-                try:
-                    # Parse the info_set to create unique keys
-                    if "mega_batch_" in info_set:
-                        # Format: mega_batch_{scenario_id}_player_{player_idx}
-                        parts = info_set.split("_")
-                        scenario_id = parts[2] if len(parts) > 2 else "0"
-                        player_id = parts[-1] if len(parts) > 3 else "0"
-                        
-                        street = "0"  # Default to preflop for batch training
-                        hand_bucket = scenario_id  # Use scenario ID as hand bucket
-                        board_bucket = player_id   # Use player ID as board bucket
-                    else:
-                        # Fallback for other info_set formats
-                        street = "0"
-                        hand_bucket = str(hash(info_set) % 1000)  # Create unique bucket from hash
-                        board_bucket = str(len(strategy_dict))     # Use number of actions as board bucket
-                    
-                    self.strategy_lookup.add_strategy(
-                        street, hand_bucket, board_bucket, 
-                        list(strategy_dict.keys()), strategy_dict
-                    )
-                    strategy_count += 1
-                    
-                except Exception as parse_error:
-                    # If parsing fails, create a unique key based on the full info_set
-                    street = "0"
-                    hand_bucket = str(hash(info_set) % 10000)
-                    board_bucket = str(strategy_count)
-                    
-                    self.strategy_lookup.add_strategy(
-                        street, hand_bucket, board_bucket, 
-                        list(strategy_dict.keys()), strategy_dict
-                    )
-                    strategy_count += 1
-                
-            except Exception as e:
-                logger.warning(f"Could not finalize strategy for {info_set}: {e}")
-                continue
-        
-        logger.info(f"Finalized {strategy_count} strategies. Saving to file...")
-        
-        # Log diversity statistics
-        self._log_strategy_diversity()
-        
-        self.strategy_lookup.save_strategies()
-        logger.info("GPU CFR training completed successfully")
-    
-    def _log_strategy_diversity(self):
-        """Log statistics about the diversity of generated strategies."""
-        if not self.nodes:
-            return
-            
-        logger.info("📊 STRATEGY DIVERSITY ANALYSIS:")
-        
-        # Analyze info set patterns
-        scenario_types = set()
-        player_counts = set()
-        equity_buckets = set()
-        streets = set()
-        
-        for info_set in self.nodes.keys():
-            parts = info_set.split('_')
-            
-            # Extract diversity information from info_set
-            for part in parts:
-                if 'p_street' in part:
-                    scenario_types.add(part)
-                    # Extract player count
-                    if part.endswith('p_street0') or part.endswith('p_street1') or part.endswith('p_street2') or part.endswith('p_street3'):
-                        player_count = part.split('p_street')[0]
-                        if player_count.isdigit():
-                            player_counts.add(int(player_count))
-                        # Extract street
-                        street = part.split('street')[-1].split('_')[0]
-                        if street.isdigit():
-                            streets.add(int(street))
-                elif part in ['low', 'medium', 'high']:
-                    equity_buckets.add(part)
-        
-        logger.info(f"  🎯 Unique scenario types: {len(scenario_types)}")
-        logger.info(f"  👥 Player counts covered: {sorted(player_counts)}")
-        logger.info(f"  🃏 Streets covered: {sorted(streets)} (0=preflop, 1=flop, 2=turn, 3=river)")
-        logger.info(f"  💪 Equity buckets: {sorted(equity_buckets)}")
-        logger.info(f"  🔀 Total unique strategies: {len(self.nodes)}")
-        
-        # Sample some strategies
-        sample_strategies = list(self.nodes.items())[:5]
-        logger.info("  📝 Sample strategies:")
-        for i, (info_set, node) in enumerate(sample_strategies):
-            avg_strategy = node.get_average_strategy()
-            strategy_dict = {act: f"{prob:.3f}" for act, prob in zip(node.actions, avg_strategy)}
-            logger.info(f"    {i+1}. {info_set[:60]}... -> {strategy_dict}")
-        
-        logger.info(f"📈 DIVERSITY SUCCESS: Created strategies for multiple player counts, positions, streets, and equity ranges!")
+        logger.info(f"GPUCFRTrainer for NLHE initialized. Players: {num_players}, Blinds: {small_blind}/{big_blind}, GPU: {self.use_gpu}")
 
-    def get_node(self, info_set, num_actions):
-        """Get a node from the nodes dictionary, creating it if it doesn't exist."""
+    def get_node(self, info_set: str, actions: List[str]) -> CFRNode:
+        """Retrieve or create a CFRNode for a given information set."""
         if info_set not in self.nodes:
-            self.nodes[info_set] = CFRNode(num_actions)
+            self.nodes[info_set] = CFRNode(len(actions), actions)
         return self.nodes[info_set]
 
-    def train_like_fixed_cfr(self, iterations):
-        """Train the CFR model for a given number of iterations."""
-        logger.info(f"🎯 Starting FixedCFR-style training for {iterations} iterations...")
-        deck = [r+s for r in '23456789TJQKA' for s in 'shdc']
+    def train_like_fixed_cfr(self, iterations: int):
+        """Run the CFR training for NLHE."""
+        logger.info(f"🚀 Starting NLHE CFR training for {iterations} iterations...")
         
         for i in range(iterations):
-            if i % 1000 == 0:
-                logger.info(f"  Iteration {i}/{iterations}...")
+            if (i + 1) % 100 == 0:
+                logger.info(f"  Iteration {i + 1}/{iterations}...")
             
-            random.shuffle(deck)
-            player_cards = [deck[j*2:j*2+2] for j in range(self.num_players)]
-            community_cards = []
+            random.shuffle(self.deck)
+            player_hands = [self.deck[j*2:j*2+2] for j in range(self.num_players)]
             
-            # For simplicity, we'll run a single street (pre-flop)
-            self.cfr(player_cards, community_cards, history="", pot=self.sb + self.bb, reach_probabilities=np.ones(self.num_players))
-
-        self._finalize_strategies_fixed()
-
-    def cfr(self, player_cards, community_cards, history, pot, reach_probabilities):
-        """The main CFR recursion."""
-        # This implementation is simplified for a single pre-flop decision for one player.
-        player = 0  # First player to act
-
-        # If terminal node, return payoff
-        if len(history) > 0:  # Simplified terminal condition: game ends after one action
-            action = history[0]
-            if action == 'f':
-                return -self.sb  # Folded, lose small blind
-
-            # For call/raise, we determine a simplified payoff.
-            # A real implementation would continue the game through betting rounds.
-            # Here, we'll just estimate equity against random hands as a proxy for payoff.
-            win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
-                [player_cards[player]], [], num_opponents=self.num_players - 1
-            )
-            hand_strength = win_prob
+            active_players = np.ones(self.num_players, dtype=bool)
+            reach_probs = np.ones(self.num_players)
             
-            # Simplified payoff: win or lose the initial pot based on hand strength.
-            if hand_strength > 0.6: # Threshold for a 'strong' hand
-                return pot
-            elif hand_strength < 0.4: # Threshold for a 'weak' hand
-                return -self.bb
-            else:
-                return 0 # Tie or marginal hand
+            # Start recursive CFR from pre-flop
+            self._cfr_recursive(player_hands, history="", board=[], pot=0, bets=np.zeros(self.num_players), reach_probs=reach_probs, active_players=active_players, street=0, last_aggressor=1)
 
-        info_set = self.get_info_set(player_cards[player], community_cards, history)
+        logger.info("✅ Training complete. Finalizing strategies...")
+        self._finalize_strategies()
 
-        actions = ['fold', 'call', 'raise']
-        num_actions = len(actions)
-        node = self.get_node(info_set, num_actions)
+    def _cfr_recursive(self, player_hands, history, board, pot, bets, reach_probs, active_players, street, last_aggressor) -> np.ndarray:
+        """The core recursive function for Counter-Factual Regret Minimization for NLHE."""
+        
+        if self._is_terminal(active_players):
+            return self._get_terminal_utility(player_hands, board, pot, bets, active_players)
+
+        if self._is_betting_round_over(history, bets, active_players, last_aggressor):
+            return self._handle_new_street(player_hands, board, pot, bets, reach_probs, active_players, street)
+
+        player = self._get_current_player(history, active_players)
+        
+        actions = self._get_available_actions(bets, pot)
+        info_set = f"{self.num_players}p_{''.join(player_hands[player])}_{''.join(board)}_{history}"
+        
+        node = self.get_node(info_set, actions)
         strategy = node.get_strategy()
-
-        # Recursively call CFR for each action to get counterfactual values (utilities)
-        action_utilities = np.zeros(num_actions)
+        
+        action_utilities = np.zeros((node.num_actions, self.num_players))
+        
         for i, action in enumerate(actions):
-            new_history = history + action[0]
-            action_utilities[i] = self.cfr(player_cards, community_cards, new_history, pot, reach_probabilities)
+            new_history, new_pot, new_bets, new_active, new_aggressor = self._get_next_state(
+                history, pot, bets, active_players, player, action, last_aggressor
+            )
+            
+            new_reach_probs = reach_probs.copy()
+            new_reach_probs[player] *= strategy[i]
+            
+            action_utilities[i] = self._cfr_recursive(
+                player_hands, new_history, board, new_pot, new_bets, new_reach_probs, new_active, street, new_aggressor
+            )
 
-        # Calculate node utility (expected value of the current state)
-        node_utility = np.sum(strategy * action_utilities)
-
-        # Update regrets. Regret is the difference between the utility of an action and the expected utility of the node.
-        regrets = action_utilities - node_utility
-        node.regret_sum += regrets
-
-        # Update the strategy sum, which is used to compute the average strategy
-        node.strategy_sum += strategy
+        node_utility = np.sum(strategy.reshape(-1, 1) * action_utilities, axis=0)
+        
+        player_action_utilities = action_utilities[:, player]
+        player_node_utility = node_utility[player]
+        regret = player_action_utilities - player_node_utility
+        
+        opponent_reach_prob = np.prod(np.delete(reach_probs, player))
+        node.regret_sum += regret * opponent_reach_prob
+        
+        node.strategy_sum += reach_probs[player] * strategy
 
         return node_utility
 
-    def get_info_set(self, player_cards, community_cards, history):
-        """Get the information set for the current game state."""
-        # The current training is simplified and only handles the pre-flop stage.
-        stage = 'preflop'
-        # We subtract 1 from num_players to get the number of opponents.
-        num_opponents = self.num_players - 1
-        hand_bucket = self.abstraction.bucket_hand(player_cards, community_cards, stage, num_opponents)
-        board_bucket = self.abstraction.bucket_board(community_cards, stage)
-        return f"{hand_bucket}-{board_bucket}-{history}"
+    def _handle_new_street(self, player_hands, board, pot, bets, reach_probs, active_players, street):
+        """Deals new cards and starts the next betting round."""
+        new_street = street + 1
+        
+        # Add previous bets to the pot
+        pot += np.sum(bets)
+        new_bets = np.zeros(self.num_players)
+        
+        dealt_cards = [card for hand in player_hands for card in hand] + board
+        remaining_deck = [card for card in self.deck if card not in dealt_cards]
+        
+        new_board = board[:]
+        if new_street == 1: # Flop
+            new_board.extend(remaining_deck[:3])
+        elif new_street in [2, 3]: # Turn, River
+            new_board.extend(remaining_deck[:1])
 
-    def _finalize_strategies_fixed(self):
-        """Save the learned strategies to the strategy lookup table."""
-        logger.info("Finalizing and saving strategies...")
+        # Post-flop action starts with the first active player from the SB
+        return self._cfr_recursive(player_hands, "", new_board, pot, new_bets, reach_probs, active_players, new_street, last_aggressor=-1)
+
+    def _is_terminal(self, active_players: np.ndarray) -> bool:
+        return np.sum(active_players) <= 1
+
+    def _is_betting_round_over(self, history, bets, active_players, last_aggressor) -> bool:
+        # Simplified: round is over if all active players have bet the same amount
+        active_bets = bets[active_players]
+        if len(active_bets) > 0 and np.all(active_bets == active_bets[0]) and last_aggressor != -1:
+             # And the action is closed (everyone has acted)
+             # This is a simplification. A full implementation is more complex.
+             if len(history) >= np.sum(active_players):
+                 return True
+        return False
+
+    def _get_terminal_utility(self, player_hands, board, pot, bets, active_players) -> np.ndarray:
+        """Calculates utility at a terminal node."""
+        pot += np.sum(bets)
+        payoffs = np.zeros(self.num_players)
+
+        if np.sum(active_players) == 1:
+            winner_idx = np.where(active_players)[0][0]
+            payoffs[winner_idx] = pot
+        else: # Showdown
+            equities = self.equity_calculator.calculate_equities_gpu(
+                [h for i, h in enumerate(player_hands) if active_players[i]],
+                board,
+                num_simulations=1000
+            )
+            
+            active_indices = np.where(active_players)[0]
+            for i, eq in enumerate(equities):
+                payoffs[active_indices[i]] = eq * pot
+
+        # Subtract what each player put in
+        payoffs -= bets
+        return payoffs
+
+    def _get_current_player(self, history: str, active_players: np.ndarray) -> int:
+        """Determines the current player to act."""
+        # Simple rotation
+        start_player = 0 # In reality, this depends on the street and button position
+        player = (start_player + len(history)) % self.num_players
+        while not active_players[player]:
+            player = (player + 1) % self.num_players
+        return player
+
+    def _get_available_actions(self, bets, pot) -> List[str]:
+        """Returns a simplified list of actions for NLHE."""
+        # f=fold, c=call/check, r=raise pot
+        actions = ['f', 'c']
+        if pot > 0: # Can't raise if pot is 0 (should not happen after blinds)
+            actions.append('r')
+        return actions
+
+    def _get_next_state(self, history, pot, bets, active_players, player, action, last_aggressor) -> Tuple:
+        """Applies an action and returns the new game state."""
+        new_active = active_players.copy()
+        new_bets = bets.copy()
+        new_pot = pot
+        new_aggressor = last_aggressor
+
+        if action == 'f':
+            new_active[player] = False
+        elif action == 'c':
+            to_call = np.max(new_bets) - new_bets[player]
+            new_bets[player] += to_call
+        elif action == 'r':
+            to_call = np.max(new_bets) - new_bets[player]
+            raise_amount = new_pot + to_call # Pot-sized raise
+            new_bets[player] += to_call + raise_amount
+            new_aggressor = player
+            
+        return history + action, new_pot, new_bets, new_active, new_aggressor
+
+    def _finalize_strategies(self):
+        """Convert average strategies to the format expected by StrategyLookup."""
+        logger.info(f"Finalizing {len(self.nodes)} strategies...")
         for info_set, node in self.nodes.items():
-            parts = info_set.split('-')
-            hand_bucket, board_bucket, history = parts[0], parts[1], parts[2]
             avg_strategy = node.get_average_strategy()
-            strategy_dict = {action: prob for action, prob in zip(['fold', 'call', 'raise'], avg_strategy)}
-            
-            # For simplicity, we assume pre-flop (street 0)
-            self.strategy_lookup.add_strategy("0", hand_bucket, board_bucket, ['fold', 'call', 'raise'], strategy_dict)
-        
+            try:
+                parts = info_set.split('_')
+                street = "0" 
+                hand_bucket = parts[1] if len(parts) > 1 else "default_hand"
+                board_bucket = parts[2] if len(parts) > 2 else "default_board"
+
+                self.strategy_lookup.add_strategy(
+                    street, hand_bucket, board_bucket,
+                    list(avg_strategy.keys()), avg_strategy
+                )
+            except Exception as e:
+                logger.warning(f"Could not parse and save strategy for info_set '{info_set}': {e}")
+
         self.strategy_lookup.save_strategies()
-        logger.info(f"✅ Saved {len(self.nodes)} strategies.")
-
-# Numba-accelerated functions (if available)
-if NUMBA_AVAILABLE:
-    @jit(nopython=True, parallel=True)
-    def calculate_regrets_parallel(strategies, utilities, reach_probs):
-        """Parallel regret calculation using Numba JIT."""
-        batch_size = strategies.shape[0]
-        num_actions = strategies.shape[1]
-        regrets = np.zeros_like(strategies)
-        
-        for i in prange(batch_size):
-            for j in range(num_actions):
-                regrets[i, j] = utilities[i, j] - np.sum(strategies[i] * utilities[i])
-        
-        return regrets
-    
-    @jit(nopython=True, parallel=True)
-    def update_strategies_parallel(regrets, strategies):
-        """Parallel strategy update using Numba JIT."""
-        batch_size = regrets.shape[0]
-        num_actions = regrets.shape[1]
-        
-        for i in prange(batch_size):
-            # Regret matching
-            positive_regrets = np.maximum(regrets[i], 0.0)
-            regret_sum = np.sum(positive_regrets)
-            
-            if regret_sum > 0:
-                strategies[i] = positive_regrets / regret_sum
-            else:
-                strategies[i] = 1.0 / num_actions
-
-def benchmark_gpu_vs_cpu():
-    """Benchmark GPU vs CPU performance for CFR training."""
-    print("Benchmarking GPU vs CPU CFR training...")
-    
-    # CPU benchmark
-    print("Running CPU benchmark...")
-    cpu_trainer = GPUCFRTrainer(use_gpu=False)
-    cpu_start = time.time()
-    cpu_trainer.train_batch_gpu(iterations=100, batch_size=50)
-    cpu_time = time.time() - cpu_start
-    
-    if GPU_AVAILABLE:
-        # GPU benchmark
-        print("Running GPU benchmark...")
-        gpu_trainer = GPUCFRTrainer(use_gpu=True)
-        gpu_start = time.time()
-        gpu_trainer.train_batch_gpu(iterations=100, batch_size=50)
-        gpu_time = time.time() - gpu_start
-        
-        speedup = cpu_time / gpu_time
-        print(f"CPU time: {cpu_time:.2f}s")
-        print(f"GPU time: {gpu_time:.2f}s")
-        print(f"GPU speedup: {speedup:.2f}x")
-    else:
-        print(f"CPU time: {cpu_time:.2f}s")
-        print("GPU not available for comparison")
-
-if __name__ == "__main__":
-    # Example usage
-    trainer = GPUCFRTrainer(use_gpu=True)
-    trainer.train_batch_gpu(iterations=500, batch_size=100)
-    
-    # Optional benchmarking
-    # benchmark_gpu_vs_cpu()
+        logger.info("Strategies saved successfully.")
