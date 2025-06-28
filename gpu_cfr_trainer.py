@@ -408,4 +408,17 @@ class GPUCFRTrainer:
         print(f"Total nodes created: {len(self.nodes)}")
         return len(self.nodes)
 
-# Test removed for production use
+    def save_strategies_to_file(self, filename: str = "strategy_table.json"):
+        """Save the learned strategies to a JSON file."""
+        strategies = {}
+        
+        for info_set, node in self.nodes.items():
+            avg_strategy = node.get_average_strategy()
+            strategies[info_set] = avg_strategy
+        
+        try:
+            with open(filename, 'w') as f:
+                json.dump(strategies, f, indent=2)
+            print(f"Successfully saved {len(strategies)} strategies to {filename}")
+        except Exception as e:
+            print(f"Error saving strategies to {filename}: {e}")
