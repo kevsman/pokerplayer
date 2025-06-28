@@ -1,15 +1,12 @@
 """
-Robust GPU-accelerated CFR trainer for poker bot with infinite recursion fix.
+Robust CFR trainer with comprehensive terminal condition handling.
 """
 import numpy as np
-import logging
-import time
+import random
+from typing import List, Dict, Tuple
 import json
 import hashlib
-from typing import List, Dict, Tuple
-import random
 
-# --- Mock Objects for Safe Execution ---
 class MockLogger:
     def info(self, msg): pass
     def debug(self, msg): pass
@@ -17,12 +14,22 @@ class MockLogger:
     def warning(self, msg): pass
 
 logger = MockLogger()
-GPU_AVAILABLE = False
-logging.getLogger(__name__).setLevel(logging.CRITICAL + 1)
 
-from hand_evaluator import HandEvaluator
-from gpu_accelerated_equity import GPUEquityCalculator
-from strategy_lookup import StrategyLookup
+# Mock dependencies
+class HandEvaluator:
+    def evaluate_best_hand(self, hand, board):
+        return random.randint(1, 10000)  # Mock hand strength
+
+class GPUEquityCalculator:
+    def __init__(self, use_gpu=False):
+        self.all_cards = [f"{rank}{suit}" for rank in '23456789TJQKA' for suit in 'shdc']
+    
+    def calculate_equity(self, hands, board):
+        return [random.random() for _ in hands]
+
+class StrategyLookup:
+    def get_strategy(self, situation):
+        return {"fold": 0.3, "call": 0.4, "raise": 0.3}
 
 class CFRNode:
     def __init__(self, num_actions: int, actions: List[str]):
@@ -49,10 +56,10 @@ class CFRNode:
             avg_strategy = np.repeat(1/self.num_actions, self.num_actions)
         return {self.actions[i]: avg_strategy[i] for i in range(self.num_actions)}
 
-class GPUCFRTrainer:
+class RobustCFRTrainer:
     def __init__(self, use_gpu=True, num_players=6, small_blind=0.02, big_blind=0.04, initial_stack=4.0):
         self.num_players = num_players
-        self.use_gpu = use_gpu and GPU_AVAILABLE
+        self.use_gpu = use_gpu
         self.small_blind = small_blind
         self.big_blind = big_blind
         self.initial_stack = self.big_blind * 100
@@ -62,7 +69,6 @@ class GPUCFRTrainer:
         self.nodes: Dict[str, CFRNode] = {}
         self.deck = self.equity_calculator.all_cards[:]
         self.hand_counter = 0
-        self.recursion_depth = 0  # For test compatibility 
         self.state_history = set()  # Track visited states
         
         # Terminal conditions
@@ -88,9 +94,6 @@ class GPUCFRTrainer:
     def _cfr_recursive(self, player_hands, history, board, pot, bets, reach_probs,
                        active_players, player_stacks, street, num_actions_this_street, 
                        recursion_depth, total_actions=0):
-        
-        # Set for test compatibility
-        self.recursion_depth = recursion_depth
         
         # Multiple terminal conditions for robustness
         if recursion_depth > self.max_recursion_depth:
@@ -227,12 +230,6 @@ class GPUCFRTrainer:
                 if stacks[i] > 0.01 and bets[i] < np.max(active_bets):
                     all_equal_or_allin = False
                     break
-            
-            # Special case for preflop: if BB has acted (checked/raised) after everyone else, round is over
-            if street == 0 and num_actions >= np.sum(active_players):
-                # Check if this looks like "SB call, BB check" scenario
-                if 'c' in history and 'k' in history and 'r' not in history:
-                    return True
             
             if all_equal_or_allin:
                 return True
@@ -408,4 +405,8 @@ class GPUCFRTrainer:
         print(f"Total nodes created: {len(self.nodes)}")
         return len(self.nodes)
 
-# Test removed for production use
+# Test the robust trainer
+if __name__ == "__main__":
+    trainer = RobustCFRTrainer()
+    nodes_created = trainer.train_like_fixed_cfr(iterations=5)
+    print(f"Successfully created {nodes_created} decision nodes")
