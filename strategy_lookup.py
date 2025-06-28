@@ -185,8 +185,7 @@ class StrategyLookup:
         self.add_strategy(stage, hand_bucket, board_bucket, actions, strategy)
 
     def save_strategies(self):
-        """Save all strategies to file"""
-        logger.info(f"save_strategies called - saving {len(self.strategy_table)} strategies")
+        """Saves the current strategy table to the file."""
         self._save_strategy_table()
 
     def save_strategy(self, info_set, strategy_dict):

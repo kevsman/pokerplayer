@@ -15,8 +15,16 @@ from hand_evaluator import HandEvaluator
 from gpu_accelerated_equity import GPUEquityCalculator
 from strategy_lookup import StrategyLookup
 
-# Setup logger
+# Set up a logger for this module
 logger = logging.getLogger(__name__)
+
+class ASCIIFormatter(logging.Formatter):
+    """A custom formatter to create ASCII-safe log messages for the console."""
+    def format(self, record):
+        # Get the original formatted message
+        message = super().format(record)
+        # Replace Unicode suits with ASCII equivalents
+        return message.replace('♥', 'h').replace('♦', 'd').replace('♣', 'c').replace('♠', 's')
 
 # Try to import GPU libraries
 try:
@@ -57,8 +65,8 @@ class CFRNode:
         return {self.actions[i]: avg_strategy[i] for i in range(self.num_actions)}
 
 class GPUCFRTrainer:
-    """A CFR trainer for No-Limit Hold'em."""
-    def __init__(self, use_gpu=True, num_players=6, small_blind=0.02, big_blind=0.04):
+    """A GPU-accelerated CFR trainer for No-Limit Hold'em."""
+    def __init__(self, use_gpu=True, num_players=6, small_blind=0.02, big_blind=0.04, initial_stack=4.0):
         self.num_players = num_players
         self.use_gpu = use_gpu and GPU_AVAILABLE
         self.small_blind = small_blind
@@ -73,7 +81,42 @@ class GPUCFRTrainer:
         self.nodes: Dict[str, CFRNode] = {}
         self.deck = self.equity_calculator.all_cards[:]
         
+        self._setup_logging() # Call setup before logging
         logger.info(f"GPUCFRTrainer for NLHE initialized. Players: {num_players}, Blinds: {small_blind}/{big_blind}, Stacks: {self.initial_stack}, GPU: {self.use_gpu}")
+        self.hand_counter = 0
+
+    def _ascii_safe_str(self, obj: any) -> str:
+        """Converts an object to its string representation and replaces unicode card suits with ASCII."""
+        s = str(obj)
+        s = s.replace('♥', 'h').replace('♦', 'd').replace('♣', 'c').replace('♠', 's')
+        return s
+
+    def _setup_logging(self):
+        """Configure file and console logging."""
+        # Forcefully reconfigure the root logger
+        # This will remove all existing handlers and apply a new basic configuration.
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
+        
+        logging.basicConfig(level=logging.DEBUG,
+                            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                            filename='cfr_debug.log',
+                            filemode='w')
+
+        # Add a console handler with ASCII formatting
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.INFO)
+        console_formatter = ASCIIFormatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        console_handler.setFormatter(console_formatter)
+        logging.getLogger('').addHandler(console_handler)
+
+        # Test the logger immediately after configuration
+        logger.info("--- LOGGING INITIALIZED (NEW SETUP) ---")
+        logger.debug("--- This is a debug test message (NEW SETUP). ---")
+        
+        # Explicitly flush handlers
+        for handler in logging.getLogger('').handlers:
+            handler.flush()
 
     def get_node(self, info_set: str, actions: List[str]) -> CFRNode:
         """Retrieve or create a CFRNode for a given information set."""
@@ -115,10 +158,10 @@ class GPUCFRTrainer:
     def train_like_fixed_cfr(self, iterations: int):
         """Run the CFR training for NLHE."""
         logger.info(f"🚀 Starting NLHE CFR training for {iterations} iterations...")
-        
+
         for i in range(iterations):
-            if (i + 1) % 100 == 0:
-                logger.info(f"  Iteration {i + 1}/{iterations}...")
+            self.hand_counter += 1
+            logger.info(f"--- Iteration {i + 1}/{iterations} (Hand #{self.hand_counter}) ---")
             
             deck = self._initialize_deck()
             random.shuffle(deck)
@@ -130,33 +173,35 @@ class GPUCFRTrainer:
             
             reach_probs = np.ones(self.num_players)
             
-            # Start recursive CFR from pre-flop. Last aggressor is the Big Blind.
-            self._cfr_recursive(player_hands, history="", board=[], pot=pot, bets=bets, reach_probs=reach_probs, active_players=active_players, player_stacks=player_stacks, street=0, last_aggressor=1, num_actions_this_street=0, recursion_depth=0)
+            # Start recursive CFR from pre-flop.
+            self._cfr_recursive(player_hands, history="", board=[], pot=pot, bets=bets, reach_probs=reach_probs, active_players=active_players, player_stacks=player_stacks, street=0, num_actions_this_street=0, recursion_depth=0)
 
         logger.info("✅ Training complete. Finalizing strategies...")
         self._finalize_strategies()
+        logging.shutdown() # Ensure all logs are flushed and handlers closed.
 
-    def _cfr_recursive(self, player_hands, history, board, pot, bets, reach_probs, active_players, player_stacks, street, last_aggressor, num_actions_this_street, recursion_depth):
+    def _cfr_recursive(self, player_hands, history, board, pot, bets, reach_probs, active_players, player_stacks, street, num_actions_this_street, recursion_depth):
         """The core recursive function for Counter-Factual Regret Minimization for NLHE."""
         
-        if recursion_depth > 150: # A poker hand should not go this deep
-            logger.error(f"Max recursion depth exceeded ({recursion_depth}). This indicates a loop in game logic.")
-            logger.error(f"State: street={street}, hist='{history}', bets={bets}, stacks={player_stacks}, active={active_players}")
+        if len(history) > 60: # Safeguard against pathologically long histories
+            logger.error(f"[HAND #{self.hand_counter}] HISTORY TOO LONG! Bailing out.")
+            logger.error(f"State: street={street}, hist='{history}', board={board}, pot={pot}, bets={bets}, stacks={player_stacks}, active={active_players}")
             return self._get_terminal_utility(player_hands, board, pot, bets, active_players, player_stacks)
 
-        # Safeguard against infinite recursion by ensuring the game progresses past the river.
-        if street > 3:
-            return self._get_terminal_utility(player_hands, board, pot, bets, active_players, player_stacks)
+        is_over = self._is_betting_round_over(history, bets, active_players, street, num_actions_this_street, player_stacks)
+        if is_over:
+            if street == 3:  # River betting round is over, go to showdown
+                logger.debug("River betting round is over. Proceeding to showdown.")
+                return self._get_terminal_utility(player_hands, board, pot, bets, active_players, player_stacks)
+            else:
+                logger.debug(f"Street {street} betting round is over. Proceeding to next street.")
+                return self._handle_new_street(player_hands, board, pot, bets, reach_probs, active_players, player_stacks, street, recursion_depth)
 
-        if np.sum(active_players) <= 1:
-            return self._get_terminal_utility(player_hands, board, pot, bets, active_players, player_stacks)
-
-        if self._is_betting_round_over(history, bets, active_players, last_aggressor, street, num_actions_this_street, player_stacks):
-            return self._handle_new_street(player_hands, board, pot, bets, reach_probs, active_players, player_stacks, street, recursion_depth)
-
+        # Determine the current player to act
         player = self._get_current_player(history, active_players, street, pot, num_actions_this_street, player_stacks)
         
         if player == -1: # All remaining players are all-in
+            logger.debug("All remaining players are all-in, but round not over. Handling new street.")
             return self._handle_new_street(player_hands, board, pot, bets, reach_probs, active_players, player_stacks, street, recursion_depth)
 
         actions = self._get_available_actions(player, bets, player_stacks)
@@ -171,22 +216,27 @@ class GPUCFRTrainer:
         actions_str = "".join(sorted(actions))
 
         info_set = f"{self.num_players}p_{''.join(player_hands[player])}_{''.join(board)}_{history}_{'_'.join(map(lambda x: f'{x:.2f}', bets))}_{spr_bucket}_{actions_str}"
+        logger.debug(f"Player {player}: InfoSet='{info_set}'")
         
         # Get strategy from the CFR node
         strategy = self._get_strategy(info_set, actions)
+        logger.debug(f"Player {player}: Strategy for InfoSet: {list(zip(actions, strategy))}")
 
         # The return value of _cfr_recursive is a numpy array of utilities for each player.
         node_utility_vector = np.zeros(self.num_players)
         cf_values_for_player = np.zeros(len(actions))
-        full_utility_vectors = []
 
+        # Explore each action
         for i, action in enumerate(actions):
-            new_history = history + action
+            logger.debug(self._ascii_safe_str(f"  Player {player} exploring action '{action}'"))
+
+            # Create a new history string for the next state
+            new_history = f"{history}{action}"
             new_bets = bets.copy()
             new_pot = pot
             new_active_players = active_players.copy()
-            new_last_aggressor = last_aggressor
             new_stacks = player_stacks.copy()
+            new_num_actions_this_street = num_actions_this_street + 1
 
             if action == 'f':
                 new_active_players[player] = False
@@ -219,26 +269,39 @@ class GPUCFRTrainer:
                 if amount_to_add > to_call:
                     new_bets[player] += amount_to_add
                     new_stacks[player] -= amount_to_add
-                    new_last_aggressor = player
                 else: # Not enough to raise, so just go all-in
                     amount_to_add = new_stacks[player]
                     new_bets[player] += amount_to_add
                     new_stacks[player] -= amount_to_add
-                    if new_bets[player] > max_bet:
-                        new_last_aggressor = player
 
             new_reach_probs = reach_probs.copy()
+            # Update reach probabilities for the next state
             new_reach_probs[player] *= strategy[i]
 
+            logger.debug(self._ascii_safe_str(f"  Player {player} exploring action '{action}' with prob {strategy[i]:.4f}"))
+
+
+            # Recursively call _cfr_recursive for the next state
             utility_vector = self._cfr_recursive(
-                player_hands, new_history, board, new_pot, new_bets, 
-                new_reach_probs, new_active_players, new_stacks, street, new_last_aggressor, num_actions_this_street + 1,
+                player_hands,
+                new_history,
+                board,
+                new_pot,
+                new_bets,
+                new_reach_probs,
+                new_active_players,
+                new_stacks,
+                street,
+                new_num_actions_this_street,
                 recursion_depth + 1
             )
-            
-            full_utility_vectors.append(utility_vector)
+
+            # Update the node utility vector
+            node_utility_vector += strategy[i] * utility_vector
             cf_values_for_player[i] = utility_vector[player]
 
+
+        # After iterating through all actions, calculate regret and update strategy
         # Node utility for the current player
         node_utility_for_player = np.sum(strategy * cf_values_for_player)
         
@@ -254,6 +317,8 @@ class GPUCFRTrainer:
     def _handle_new_street(self, player_hands, board, pot, bets, reach_probs, active_players, player_stacks, street, recursion_depth):
         """Deals new cards and starts the next betting round."""
         new_street = street + 1
+        
+        logger.debug(f"--- Handling New Street: {new_street} ---")
         
         # Add previous bets to the pot
         pot += np.sum(bets)
@@ -278,56 +343,84 @@ class GPUCFRTrainer:
         elif new_street in [2, 3]: # Turn, River
             new_board.extend(remaining_deck[:1])
 
+        logger.debug(self._ascii_safe_str(f"New Board: {new_board}, New Pot: {pot:.2f}"))
+
         # Post-flop action starts with the first active player from the SB
-        return self._cfr_recursive(player_hands, "", new_board, pot, new_bets, reach_probs, active_players, player_stacks, new_street, last_aggressor=-1, num_actions_this_street=0, recursion_depth=recursion_depth + 1)
+        return self._cfr_recursive(player_hands, "", new_board, pot, new_bets, reach_probs, active_players, player_stacks, new_street, num_actions_this_street=0, recursion_depth=recursion_depth + 1)
 
     def _is_terminal(self, active_players: np.ndarray) -> bool:
         return np.sum(active_players) <= 1
 
-    def _is_betting_round_over(self, history: str, bets: np.ndarray, active_players: np.ndarray, last_aggressor: int, street: int, num_actions_this_street: int, player_stacks: np.ndarray) -> bool:
-        """Checks if the betting round is over."""
+    def _is_betting_round_over(self, history: str, bets: np.ndarray, active_players: np.ndarray, street: int, num_actions_this_street: int, player_stacks: np.ndarray) -> bool:
+        """Checks if the betting round is over with a more robust logic."""
         num_active = np.sum(active_players)
         if num_active <= 1:
+            logger.debug(f"Betting round over: {num_active} active players.")
             return True
 
-        # Players who are active and not all-in
+        # Players who are still in the hand and have chips to act
         can_act_mask = active_players & (player_stacks > 0)
+        num_can_act = np.sum(can_act_mask)
+
+        # If 0 or 1 players can act, the betting round is over.
+        if num_can_act <= 1:
+            logger.debug(f"Betting round over: {num_can_act} players can act.")
+            return True
+
+        # Check if all players who can act have contributed the same amount.
+        bets_of_actors = bets[can_act_mask]
+        bets_are_equal = len(np.unique(bets_of_actors)) == 1
         
-        # If 1 or 0 players can act, betting is over.
-        if np.sum(can_act_mask) <= 1:
-            return True
+        # The first action on any street cannot end the round unless it's an all-in.
+        if num_actions_this_street == 0:
+            return False
 
-        # All players who can act have contributed the same amount
-        active_bets = bets[can_act_mask]
-        if len(np.unique(active_bets)) > 1:
-            return False # Betting continues, someone needs to call a raise.
+        if bets_are_equal:
+            # Pre-flop: The round is over if everyone has acted, or if the BB had the option and checked.
+            if street == 0:
+                # The round can't be over until at least `num_active` players have acted (limpers + blinds)
+                # or the big blind checks/raises on their option.
+                is_bb_option_case = (bets[1] == self.big_blind and np.max(bets) == self.big_blind)
+                if is_bb_option_case:
+                    # If it's the BB's option, the round ends if they check (history ends in 'k')
+                    # or if everyone else folded to the BB.
+                    if history.endswith('k') and num_actions_this_street >= num_active:
+                         return True
+                    return False # BB must act
+                
+                # Standard case: everyone called or folded to the initial bet.
+                if num_actions_this_street >= num_active:
+                    return True
 
-        # If all bets are equal, check if the action is closed.
-        # A simple check is that enough actions have been taken for everyone to have acted.
-        if num_actions_this_street >= num_active:
-            # Special pre-flop case: BB must have option to raise if not raised.
-            if street == 0 and np.max(bets) == self.big_blind:
-                # If history contains no raise, and it's BB's turn, not over.
-                # This is complex, but the num_actions check is a good proxy.
-                # If BB checks, num_actions_this_street increases and this will pass.
-                pass
-            return True
-
+            # Post-flop: The round is over if everyone has checked or called a bet.
+            else:
+                # If bets are equal (e.g., all zero from checks), and everyone has had a turn, the round is over.
+                if num_actions_this_street >= num_can_act:
+                    logger.debug(f"Betting round over: Post-flop, {num_actions_this_street} actions, {num_can_act} can act, bets equal.")
+                    return True
+        
+        logger.debug(f"Betting round continues: street={street}, num_actions={num_actions_this_street}, num_can_act={num_can_act}, bets_equal={bets_are_equal}, hist='{history}'")
         return False
 
     def _get_terminal_utility(self, player_hands, board, pot, bets, active_players, player_stacks) -> np.ndarray:
         """Calculates the utility at a terminal node (showdown or last man standing)."""
         
+        logger.debug(f"--- Terminal Node Reached ---")
+        logger.debug(self._ascii_safe_str(f"Board: {board}, Pot: {pot}, Bets sum: {np.sum(bets)}, Active: {active_players}"))
+
         # Investment is the total amount each player put into the pot during the hand.
         investment = self.initial_stack - player_stacks
         payoffs = np.zeros(self.num_players)
         total_pot = pot + np.sum(bets)
+
+        logger.debug(self._ascii_safe_str(f"TERMINAL. Active: {active_players}, Pot: {total_pot:.2f}, Board: {board}"))
 
         if np.sum(active_players) == 1:
             winner_idx = np.where(active_players)[0][0]
             winnings = np.zeros(self.num_players)
             winnings[winner_idx] = total_pot
             payoffs = winnings - investment
+            logger.debug(f"Winner by fold: Player {winner_idx}. Payoffs: {payoffs}")
             # The sum of payoffs should be zero.
             if not np.isclose(np.sum(payoffs), 0):
                 logger.warning(f"Payoffs do not sum to zero in non-showdown. Sum: {np.sum(payoffs)}")
@@ -337,7 +430,7 @@ class GPUCFRTrainer:
         active_player_indices = np.where(active_players)[0]
         hands_to_evaluate = [player_hands[i] for i in active_player_indices]
         
-        logger.debug(f"DEBUG: Terminal Node. Board: {board}, Hands: {hands_to_evaluate}")
+        logger.debug(self._ascii_safe_str(f"Showdown. Board: {board}, Hands: {hands_to_evaluate}, Players: {active_player_indices}"))
 
         known_cards = [card for hand in hands_to_evaluate for card in hand] + board
         
@@ -383,6 +476,7 @@ class GPUCFRTrainer:
             winnings[player_idx] = equities[i] * total_pot
 
         payoffs = winnings - investment
+        logger.debug(f"Showdown equities shape: {equities.shape}, Winnings sum: {np.sum(winnings)}, Investment sum: {np.sum(investment)}, Payoffs sum: {np.sum(payoffs)}")
         
         # The sum of payoffs must be zero for a zero-sum game.
         if not np.isclose(np.sum(payoffs), 0.0, atol=1e-6):
@@ -390,32 +484,35 @@ class GPUCFRTrainer:
 
         return payoffs
 
-    def _get_current_player(self, history: str, active_players: np.ndarray, street: int, pot: np.ndarray, num_actions_this_street: int, player_stacks: np.ndarray) -> int:
+    def _get_current_player(self, history: str, active_players: np.ndarray, street: int, pot: float, num_actions_this_street: int, player_stacks: np.ndarray) -> int:
         """Determines the current player to act, skipping folded and all-in players."""
         if street == 0:  # Pre-flop
             # Action starts UTG (player 2 in a 6-max game, left of BB)
-            start_player = 2 % self.num_players
+            start_player_initial = 2 % self.num_players
         else:  # Post-flop
             # Action starts with the first active player from the SB (player 0)
-            start_player = 0
+            start_player_initial = 0
 
-        # Find the first active, non-all-in player to start counting from
-        search_pos = start_player
-        while not active_players[search_pos] or player_stacks[search_pos] <= 0:
-            search_pos = (search_pos + 1) % self.num_players
-            if search_pos == start_player: # All remaining players are all-in or folded
-                return -1 
-        start_player = search_pos
-
-        player = (start_player + num_actions_this_street) % self.num_players
-        
-        # Find the next player who is active and has chips to act
-        search_start_player = player
+        # Find the first active, non-all-in player to start the round's action
+        player = start_player_initial
+        start_search = start_player_initial
         while not active_players[player] or player_stacks[player] <= 0:
             player = (player + 1) % self.num_players
-            if player == search_start_player: # Cycled through all players
-                return -1 # No player can act
+            if player == start_search:
+                logger.debug("Get current player: No player can act.")
+                return -1 # No one can act
 
+        # Advance the turn `num_actions_this_street` times, properly skipping inactive players.
+        for _ in range(num_actions_this_street):
+            player = (player + 1) % self.num_players
+            search_start = player
+            while not active_players[player] or player_stacks[player] <= 0:
+                player = (player + 1) % self.num_players
+                if player == search_start: # Cycled through all players
+                    logger.debug("Get current player: No player can act after advancing turn.")
+                    return -1 # No player can act
+
+        logger.debug(f"Current player is {player}")
         return player
 
     def _get_available_actions(self, player: int, bets: np.ndarray, player_stacks: np.ndarray) -> List[str]:
@@ -424,6 +521,7 @@ class GPUCFRTrainer:
         stack = player_stacks[player]
         
         if stack <= 0:
+            logger.debug(f"Player {player} has no actions, stack is {stack}.")
             return []
 
         max_bet = np.max(bets)
@@ -443,6 +541,7 @@ class GPUCFRTrainer:
         if can_raise:
             actions.append('r')
             
+        logger.debug(f"Player {player} available actions: {actions}. Stack: {stack}, Bet: {player_bet}, Max Bet: {max_bet}")
         return actions
 
     def _finalize_strategies(self):
@@ -457,7 +556,6 @@ class GPUCFRTrainer:
              logger.info(f"Saved {len(final_strategies)} information sets.")
         else:
              logger.warning("StrategyLookup does not have a `save_strategies` method. Final strategy not saved.")
-
 
     def get_final_strategy(self) -> Dict[str, Dict[str, float]]:
         """Returns the computed strategy."""

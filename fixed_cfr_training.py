@@ -18,5 +18,5 @@ if __name__ == '__main__':
     
     # Start the training process. For a robust strategy, a high number of iterations is recommended.
     logger.info("🚀 Starting NLHE CFR training for 6 players...")
-    trainer.train_like_fixed_cfr(iterations=10000) # Using 10,000 for demonstration
+    trainer.train_like_fixed_cfr(iterations=2) # Using 2 for debugging
     logger.info("✅ Training complete. Strategies have been saved.")
