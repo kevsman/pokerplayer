@@ -106,6 +106,8 @@ class GPUCFRTrainer:
             "player_stacks": cp.full((batch_size, self.num_players), self.initial_stack, dtype=cp.float32),
             "reach_probs": cp.ones((batch_size, self.num_players), dtype=cp.float32),
             "current_player": cp.zeros(batch_size, dtype=cp.int32), # Player 0 starts pre-flop
+            "last_aggressor": cp.full(batch_size, 1, dtype=cp.int32), # Player 1 (Big Blind) is the initial aggressor
+            "has_acted_this_round": cp.zeros((batch_size, self.num_players), dtype=cp.bool_), # Tracks who has acted
             "history_count": cp.zeros(batch_size, dtype=cp.int32), # Track how many decisions per game
             "max_history": 100, # Maximum decisions per game
             "history_nodes": [[] for _ in range(batch_size)], # Store node references (CPU-side)
@@ -119,13 +121,13 @@ class GPUCFRTrainer:
         """
         # Pre-flop
         game_states, terminal_utilities = self._process_street_vectorized(game_states, street=0)
-        
+
         # Flop
         game_states, terminal_utilities = self._process_street_vectorized(game_states, street=1, terminal_utilities=terminal_utilities)
-        
+
         # Turn
         game_states, terminal_utilities = self._process_street_vectorized(game_states, street=2, terminal_utilities=terminal_utilities)
-        
+
         # River
         game_states, terminal_utilities = self._process_street_vectorized(game_states, street=3, terminal_utilities=terminal_utilities)
         
@@ -142,9 +144,22 @@ class GPUCFRTrainer:
         if terminal_utilities is None:
             terminal_utilities = cp.zeros((batch_size, self.num_players), dtype=cp.float32)
 
-        # Reset bets for the new street. Pre-flop starts with blinds, so no reset needed.
+        # Reset state for new street (flop, turn, river)
         if street > 0:
-            game_states['bets'] = cp.zeros((batch_size, self.num_players), dtype=cp.float32)
+            # Only reset for games that are still active
+            active_for_street_mask = cp.sum(game_states['active_players'], axis=1) > 1
+            if cp.any(active_for_street_mask):
+                reset_indices = cp.where(active_for_street_mask)[0]
+
+                # Reset bets, has_acted, and last_aggressor for these games
+                game_states['bets'][reset_indices] = 0
+                game_states['has_acted_this_round'][reset_indices] = False
+                game_states['last_aggressor'][reset_indices] = -1  # No aggressor yet
+
+                # Find the first player to act post-flop (first active player from SB position)
+                active_players_to_reset = game_states['active_players'][reset_indices]
+                first_to_act = cp.argmax(active_players_to_reset, axis=1).astype(cp.int32)
+                game_states['current_player'][reset_indices] = first_to_act
 
         # Loop until the betting round is over for all games in the batch
         betting_open = cp.ones(batch_size, dtype=cp.bool_)
@@ -179,8 +194,8 @@ class GPUCFRTrainer:
             game_states = self._update_states_vectorized(game_states, action_indices, betting_open)
 
             # 4. Check which games have finished the betting round
-            betting_open = self._check_betting_round_status(game_states, betting_open)
-        
+            betting_open = self._check_betting_round_status(game_states, betting_open, street)
+
         if action_count == max_actions_per_street - 1 and cp.any(betting_open):
             logger.warning(f"Street {street} reached max actions limit. {cp.sum(betting_open)} games did not conclude.")
 
@@ -201,39 +216,54 @@ class GPUCFRTrainer:
                 active_states[key] = value # Carry over non-batch-aligned data
         return active_states
 
-    def _check_betting_round_status(self, game_states: Dict, betting_open: cp.ndarray) -> cp.ndarray:
+    def _check_betting_round_status(self, game_states: Dict, betting_open: cp.ndarray, street: int) -> cp.ndarray:
         """
-        Checks which games have completed their betting round.
-        A round is over if:
+        Checks which games have completed their betting round. A round is over if:
         1. Only one player is left active in the whole game.
-        2. All active players with chips have contributed the same amount to the pot for this street OR are all-in.
+        2. All active players who are not all-in have bet the same amount AND had a chance to act since the last raise.
         """
         still_open = cp.copy(betting_open)
         if not cp.any(still_open):
             return still_open
-        
+
         active_game_indices = cp.where(still_open)[0]
 
         # Filter states for only the games we're checking
         active_players = game_states['active_players'][active_game_indices]
         bets = game_states['bets'][active_game_indices]
         stacks = game_states['player_stacks'][active_game_indices]
+        has_acted = game_states['has_acted_this_round'][active_game_indices]
 
-        # Condition 1: Only one player left
+        # Condition 1: Only one player left in the hand
         num_active_players = cp.sum(active_players, axis=1)
         one_player_left = (num_active_players <= 1)
-        
-        # Condition 2: All active players have matched the highest bet or are all-in
-        max_bet = cp.max(bets, axis=1, keepdims=True)
+
+        # Condition 2: Betting is settled among remaining players
+        # A player can act if they are active and not all-in
         can_act_mask = active_players & (stacks > 0.01)
         
-        unmatched_bets = (bets < max_bet) & can_act_mask
-        any_unmatched = cp.any(unmatched_bets, axis=1)
+        # Everyone who can act must have had their turn
+        all_acted = cp.all(has_acted | ~can_act_mask, axis=1)
+
+        # All players who can act must have the same bet amount
+        # Workaround for older CuPy versions that don't support `where` in `cp.max`
+        masked_bets = cp.where(can_act_mask, bets, -1.0)
+        max_bet = cp.max(masked_bets, axis=1, keepdims=True)
+        bets_equal = cp.all((bets == max_bet) | ~can_act_mask, axis=1)
+
+        # Pre-flop special case: The round isn't over until the BB has acted, unless someone raised.
+        # A raise is indicated by the max bet being greater than the big blind.
+        bb_has_option = (street == 0) & (cp.max(bets, axis=1) <= self.big_blind)
+        bb_has_acted = has_acted[:, 1]
         
-        round_is_closed = ~any_unmatched
+        # The round can close if it's not the BB's option, or if it is and the BB has acted.
+        bb_action_is_closed = ~bb_has_option | bb_has_acted
+
+        # The round is closed if betting is settled AND the BB option is resolved.
+        betting_settled = all_acted & bets_equal & bb_action_is_closed
 
         # Update the original `still_open` mask for games that are now closed
-        indices_to_close = active_game_indices[one_player_left | round_is_closed]
+        indices_to_close = active_game_indices[one_player_left | betting_settled]
         still_open[indices_to_close] = False
 
         return still_open
@@ -320,7 +350,7 @@ class GPUCFRTrainer:
         This version is optimized to perform all heavy computation on the GPU at once,
         then apply the results in a CPU loop.
         """
-        logger.info("Updating regrets and strategies (hybrid GPU/CPU)...")
+        logger.info("Updating regrets and strategies...")
         batch_size = final_utilities.shape[0]
         max_history = game_states['history_actions'].shape[1]
 
@@ -373,7 +403,6 @@ class GPUCFRTrainer:
         nodes_list = game_states['history_nodes']
 
         # --- CPU Loop for Updates ---
-        logger.info("Applying updates to CPU node objects...")
         for i in range(batch_size):
             history_len = history_counts_cpu[i]
             if history_len == 0:
@@ -471,6 +500,18 @@ class GPUCFRTrainer:
         stacks = game_states['player_stacks'][active_game_indices]
         bets = game_states['bets'][active_game_indices]
 
+        # --- Handle pre-action state changes (e.g., for raises) ---
+        raise_mask = (action_indices == 2)
+        if cp.any(raise_mask):
+            game_indices_to_raise = active_game_indices[raise_mask]
+            # Reset the has_acted_this_round tracker for all players in games with a raise.
+            # The current player will be marked as having acted *after* this reset.
+            game_states['has_acted_this_round'][game_indices_to_raise] = False
+
+        # --- Mark current player as having acted ---
+        # We use advanced indexing to set the flag for the current player in each active game.
+        game_states['has_acted_this_round'][active_game_indices, current_players] = True
+
         # --- Apply actions ---
         # Action 0: Fold
         fold_mask = (action_indices == 0)
@@ -494,24 +535,29 @@ class GPUCFRTrainer:
             game_states['player_stacks'][game_indices_to_call, player_indices_to_call] -= amount_to_call
 
         # Action 2: Raise
-        raise_mask = (action_indices == 2)
+        # The raise_mask is already computed
         if cp.any(raise_mask):
-            # Simplified raise logic: raise by the size of the pot
-            pot_size = game_states['pot'][active_game_indices[raise_mask]]
-            max_bet = cp.max(bets[raise_mask], axis=1)
-            current_bet = bets[raise_mask, current_players[raise_mask]]
-            to_call = max_bet - current_bet
-            
-            # Raise amount is pot size, but must call first.
-            raise_amount = pot_size
-            total_bet = current_bet + to_call + raise_amount
-            
-            # Ensure player has enough stack
-            amount_to_bet = cp.minimum(total_bet - current_bet, stacks[raise_mask, current_players[raise_mask]])
-            
             game_indices_to_raise = active_game_indices[raise_mask]
             player_indices_to_raise = current_players[raise_mask]
 
+            # The player making the raise becomes the new last aggressor
+            game_states['last_aggressor'][game_indices_to_raise] = player_indices_to_raise
+            # Note: The reset of `has_acted_this_round` is now handled before actions are applied.
+
+            # Simplified raise logic: raise by the size of the pot
+            pot_size = game_states['pot'][game_indices_to_raise]
+            bets_to_raise = bets[raise_mask]
+            max_bet = cp.max(bets_to_raise, axis=1)
+            current_bet = bets_to_raise[cp.arange(len(player_indices_to_raise)), player_indices_to_raise]
+            to_call = max_bet - current_bet
+            
+            # Raise amount is pot size, but must call first.
+            total_bet = current_bet + to_call + pot_size
+            
+            # Ensure player has enough stack
+            stacks_to_raise = stacks[raise_mask]
+            amount_to_bet = cp.minimum(total_bet - current_bet, stacks_to_raise[cp.arange(len(player_indices_to_raise)), player_indices_to_raise])
+            
             game_states['bets'][game_indices_to_raise, player_indices_to_raise] += amount_to_bet
             game_states['player_stacks'][game_indices_to_raise, player_indices_to_raise] -= amount_to_bet
 
