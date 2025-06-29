@@ -32,9 +32,18 @@ except ImportError:
 class GPUEquityCalculator:
     """GPU-accelerated equity calculator for massive parallel simulations."""
     
-    def __init__(self, use_gpu=True):
-        self.use_gpu = use_gpu and GPU_AVAILABLE
-        self.use_numba_cuda = NUMBA_CUDA_AVAILABLE
+    def __init__(self, use_gpu: bool = True, force_cpu: bool = False):
+        # Explicitly handle the GPU flag to prevent accidental CPU fallback
+        if force_cpu:
+            self.use_gpu = False
+            logger.info("GPU is explicitly disabled by force_cpu=True.")
+        elif not GPU_AVAILABLE:
+            self.use_gpu = False
+            logger.warning("GPU is not available, falling back to CPU.")
+        else:
+            self.use_gpu = use_gpu
+
+        self.use_numba_cuda = self.use_gpu and NUMBA_CUDA_AVAILABLE and not force_cpu
         
         # Pre-compute card mappings for faster lookups
         self.ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']

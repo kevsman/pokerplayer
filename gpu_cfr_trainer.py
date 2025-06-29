@@ -9,16 +9,16 @@ import hashlib
 from typing import List, Dict, Tuple
 import random
 
-# --- Mock Objects for Safe Execution ---
-class MockLogger:
-    def info(self, msg): pass
-    def debug(self, msg): pass
-    def error(self, msg): pass
-    def warning(self, msg): pass
-
-logger = MockLogger()
-GPU_AVAILABLE = False
-logging.getLogger(__name__).setLevel(logging.CRITICAL + 1)
+# --- GPU Detection ---
+try:
+    import cupy as cp
+    GPU_AVAILABLE = True
+    logger = logging.getLogger(__name__)
+    logger.info("GPU acceleration available in GPUCFRTrainer")
+except ImportError:
+    GPU_AVAILABLE = False
+    logger = logging.getLogger(__name__)
+    logger.warning("GPU not available in GPUCFRTrainer, falling back to CPU")
 
 from hand_evaluator import HandEvaluator
 from gpu_accelerated_equity import GPUEquityCalculator
@@ -50,7 +50,7 @@ class CFRNode:
         return {self.actions[i]: avg_strategy[i] for i in range(self.num_actions)}
 
 class GPUCFRTrainer:
-    def __init__(self, use_gpu=True, num_players=6, small_blind=0.02, big_blind=0.04, initial_stack=4.0):
+    def __init__(self, num_players: int = 6, small_blind: float = 0.02, big_blind: float = 0.04, use_gpu: bool = True, initial_stack: float = 4.0):
         self.num_players = num_players
         self.use_gpu = use_gpu and GPU_AVAILABLE
         self.small_blind = small_blind
