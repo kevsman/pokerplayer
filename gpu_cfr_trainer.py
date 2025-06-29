@@ -98,21 +98,28 @@ class GPUCFRTrainer:
 
     def _sample_initial_states_gpu(self, batch_size: int) -> Dict:
         """Sample a batch of initial game states for training, directly on the GPU."""
-        # In a real implementation, hands would be dealt, but for now, we focus on the financial state
+        
+        # Deal hands and boards for the entire batch on the GPU
+        hands, boards = self.equity_calculator.deal_hands_and_boards_vectorized(
+            num_players=self.num_players, num_games=batch_size
+        )
+
         return {
             "pot": cp.full(batch_size, self.small_blind + self.big_blind, dtype=cp.float32),
             "bets": cp.tile(cp.array([self.small_blind, self.big_blind] + [0] * (self.num_players - 2), dtype=cp.float32), (batch_size, 1)),
             "active_players": cp.ones((batch_size, self.num_players), dtype=cp.bool_),
             "player_stacks": cp.full((batch_size, self.num_players), self.initial_stack, dtype=cp.float32),
             "reach_probs": cp.ones((batch_size, self.num_players), dtype=cp.float32),
-            "current_player": cp.zeros(batch_size, dtype=cp.int32), # Player 0 starts pre-flop
-            "last_aggressor": cp.full(batch_size, 1, dtype=cp.int32), # Player 1 (Big Blind) is the initial aggressor
-            "has_acted_this_round": cp.zeros((batch_size, self.num_players), dtype=cp.bool_), # Tracks who has acted
-            "history_count": cp.zeros(batch_size, dtype=cp.int32), # Track how many decisions per game
-            "max_history": 100, # Maximum decisions per game
-            "history_nodes": [[] for _ in range(batch_size)], # Store node references (CPU-side)
-            "history_actions": cp.zeros((batch_size, 100), dtype=cp.int32), # Store actions (GPU-side)
-            "history_strategies": cp.zeros((batch_size, 100, 3), dtype=cp.float32) # Store strategies (GPU-side)
+            "current_player": cp.zeros(batch_size, dtype=cp.int32),
+            "last_aggressor": cp.full(batch_size, 1, dtype=cp.int32),
+            "has_acted_this_round": cp.zeros((batch_size, self.num_players), dtype=cp.bool_),
+            "history_count": cp.zeros(batch_size, dtype=cp.int32),
+            "max_history": 100,
+            "history_nodes": [[] for _ in range(batch_size)],
+            "history_actions": cp.zeros((batch_size, 100), dtype=cp.int32),
+            "history_strategies": cp.zeros((batch_size, 100, 3), dtype=cp.float32),
+            "hands": hands, # Add hands to game state
+            "board": boards # Add board to game state
         }
 
     def _cfr_vectorized_iteration(self, game_states: Dict):
@@ -300,45 +307,49 @@ class GPUCFRTrainer:
 
 
     def _calculate_showdown_utilities(self, game_states: Dict) -> cp.ndarray:
-        """Calculates utilities for all games that go to showdown."""
-        logger.info("Calculating showdown utilities...")
+        """Calculates utilities for all games that go to showdown using the GPUEquityCalculator."""
+        logger.info("Calculating showdown utilities with real equity...")
         batch_size = game_states['pot'].shape[0]
         utilities = cp.zeros((batch_size, self.num_players), dtype=cp.float32)
 
-        # Identify games that are at showdown (more than one player active)
+        # 1. Identify games that are at showdown (more than one player active)
         num_active_players = cp.sum(game_states['active_players'], axis=1)
         showdown_mask = num_active_players > 1
 
-        if not cp.any(showdown_mask):
-            return utilities
+        if cp.any(showdown_mask):
+            # Filter for games at showdown
+            showdown_hands = game_states['hands'][showdown_mask]
+            showdown_board = game_states['board'][showdown_mask]
+            showdown_active_players = game_states['active_players'][showdown_mask]
+            showdown_pots = game_states['pot'][showdown_mask]
 
-        # For now, we'll just split the pot evenly among the active players in a showdown
-        # A real implementation would use the GPUEquityCalculator here.
-        showdown_pots = game_states['pot'][showdown_mask]
-        showdown_active_players = game_states['active_players'][showdown_mask]
-        num_showdown_players = cp.sum(showdown_active_players, axis=1)
+            # 2. Use the GPUEquityCalculator to find the winners
+            win_counts = self.equity_calculator.calculate_equity_vectorized(
+                showdown_hands, showdown_board, showdown_active_players
+            )
 
-        # Calculate winnings for each player in the showdown
-        winnings = showdown_pots / num_showdown_players
+            # 3. Distribute pots based on win counts
+            # For simplicity, we'll give the entire pot to the winner.
+            # A more complex implementation would handle split pots.
+            winners = cp.argmax(win_counts, axis=1)
+            
+            # Create an array of winnings
+            winnings = cp.zeros_like(showdown_active_players, dtype=cp.float32)
+            
+            # Use advanced indexing to assign the pot to the winner of each game
+            winnings[cp.arange(winners.size), winners] = showdown_pots
+            
+            # Update the main utilities tensor
+            utilities[showdown_mask] = winnings
 
-        # Distribute winnings to the active players using broadcasting
-        winnings_reshaped = winnings.reshape(-1, 1)
-        showdown_utilities = cp.where(showdown_active_players, winnings_reshaped, 0)
-
-        utilities[showdown_mask] = showdown_utilities
-        
-        # Also calculate utilities for games that ended before showdown (one player left)
-        one_player_left_mask = num_active_players == 1
+        # 4. Calculate utilities for games that ended before showdown (one player left)
+        one_player_left_mask = (num_active_players == 1)
         if cp.any(one_player_left_mask):
-            # The player who is still active wins the whole pot
             pot_for_winners = game_states['pot'][one_player_left_mask]
             active_for_winners = game_states['active_players'][one_player_left_mask]
             
-            # Winner gets pot, others get 0. The amount they put in is their loss.
+            # Winner gets the pot
             winnings = pot_for_winners.reshape(-1, 1) * active_for_winners
-            
-            # To get true utility, we subtract what they put in.
-            # For now, returning winnings is simpler and still works for regret.
             utilities[one_player_left_mask] = winnings
 
         return utilities

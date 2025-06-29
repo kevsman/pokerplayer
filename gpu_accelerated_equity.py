@@ -5,8 +5,12 @@ This module provides significant speedup for equity calculations by leveraging G
 import numpy as np
 import logging
 import time
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, TYPE_CHECKING
 import random
+
+# Import cupy for type hinting purposes only if type checking is being performed.
+if TYPE_CHECKING:
+    import cupy as cp
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +79,73 @@ class GPUEquityCalculator:
             logger.warning(f"Failed to pre-allocate GPU memory: {e}")
             self.use_gpu = False
     
+    def deal_hands_and_boards_vectorized(self, num_players: int, num_games: int) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        Deals hands and boards for a batch of games in a fully vectorized manner on the GPU.
+
+        Args:
+            num_players: The number of players in each game.
+            num_games: The number of games to simulate (batch size).
+
+        Returns:
+            A tuple containing:
+            - hands (cp.ndarray): A CuPy array of shape (num_games, num_players, 2) with card indices.
+            - board (cp.ndarray): A CuPy array of shape (num_games, 5) with board card indices.
+        """
+        if not self.use_gpu:
+            raise RuntimeError("Vectorized dealing requires GPU. Initialize with use_gpu=True.")
+
+        num_cards_per_game = num_players * 2 + 5
+        if num_cards_per_game > 52:
+            raise ValueError("Too many players for a standard deck.")
+
+        # Create a stack of decks
+        decks = cp.tile(cp.arange(52, dtype=cp.int32), (num_games, 1))
+
+        # Generate random permutations for each deck in the stack
+        shuffled_indices = cp.random.rand(num_games, 52).argsort(axis=1)
+        shuffled_decks = cp.take_along_axis(decks, shuffled_indices, axis=1)
+
+        # Slice the shuffled decks to get hands and boards
+        dealt_cards = shuffled_decks[:, :num_cards_per_game]
+
+        # First num_players * 2 cards are for hands
+        hands_flat = dealt_cards[:, :num_players * 2]
+        hands = hands_flat.reshape(num_games, num_players, 2)
+
+        # Next 5 cards are for the board
+        board = dealt_cards[:, num_players * 2:num_players * 2 + 5]
+
+        return hands, board
+
+    def calculate_equity_vectorized(self, hands: np.ndarray, board: np.ndarray, active_players_mask: np.ndarray) -> np.ndarray:
+        """
+        Calculates win counts for a batch of games that have gone to showdown.
+        This is a simplified placeholder and would need a real hand evaluator kernel.
+        """
+        if not self.use_gpu:
+            raise RuntimeError("Vectorized equity calculation requires a GPU.")
+
+        num_games, num_players, _ = hands.shape
+        
+        # Simplified logic: highest card wins. A real implementation needs a poker hand evaluator.
+        # For this placeholder, we'll sum the card indices as a proxy for hand strength.
+        hand_values = cp.sum(hands, axis=2)
+        
+        # Mask out inactive players so they can't win
+        hand_values[~active_players_mask] = -1
+        
+        # Find the winner in each game
+        winners = cp.argmax(hand_values, axis=1)
+        
+        # Create win_counts array
+        win_counts = cp.zeros((num_games, num_players), dtype=cp.int32)
+        
+        # Mark the winner
+        win_counts[cp.arange(num_games), winners] = 1
+        
+        return win_counts
+
     def calculate_equity_batch_gpu(self, player_hands: List[List[str]], 
                                  community_cards: List[str], 
                                  num_simulations: int = 10000,
