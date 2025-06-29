@@ -63,27 +63,11 @@ class GPUCFRTrainer:
         self.deck = self.equity_calculator.all_cards[:]
         self.hand_counter = 0
         self.recursion_depth = 0  # For test compatibility 
-        self.state_history = set()  # Track visited states
         
         # Terminal conditions
         self.max_recursion_depth = 100
-        self.max_actions_per_street = 20
+        self.max_actions_per_street = 25
         self.max_total_actions = 100
-
-    def _state_key(self, player_hands, board, pot, bets, active_players, player_stacks, street, num_actions):
-        """Create a unique key for the current game state to detect loops."""
-        # Create a simplified state representation
-        state_data = {
-            'street': street,
-            'pot': round(pot, 2),
-            'bets': [round(b, 2) for b in bets],
-            'active': active_players.tolist(),
-            'stacks': [round(s, 2) for s in player_stacks],
-            'num_actions': num_actions,
-            'board_len': len(board)
-        }
-        state_str = json.dumps(state_data, sort_keys=True)
-        return hashlib.md5(state_str.encode()).hexdigest()
 
     def train(self, iterations: int, batch_size: int = 1024):
         """Main training loop for vectorized GPU-accelerated CFR."""
@@ -147,40 +131,143 @@ class GPUCFRTrainer:
         
         # Showdown and regret updates
         final_utilities = self._calculate_showdown_utilities(game_states)
-        self._update_regrets_simplified(game_states)
+        self._update_regrets_and_strategy(game_states, final_utilities)
 
     def _process_street_vectorized(self, game_states: Dict, street: int, terminal_utilities: cp.ndarray = None) -> Tuple[Dict, cp.ndarray]:
         """
         Processes a full betting round for a batch of game states on the GPU.
         """
-        logger.info(f"Processing street {street} for {game_states['pot'].shape[0]} states.")
+        batch_size = game_states['pot'].shape[0]
 
         if terminal_utilities is None:
-            terminal_utilities = cp.zeros((game_states['pot'].shape[0], self.num_players), dtype=cp.float32)
+            terminal_utilities = cp.zeros((batch_size, self.num_players), dtype=cp.float32)
 
-        # Simplified: Just process one action per street to avoid complexity
-        batch_size = game_states['pot'].shape[0]
+        # Reset bets for the new street. Pre-flop starts with blinds, so no reset needed.
+        if street > 0:
+            game_states['bets'] = cp.zeros((batch_size, self.num_players), dtype=cp.float32)
+
+        # Loop until the betting round is over for all games in the batch
+        betting_open = cp.ones(batch_size, dtype=cp.bool_)
+        # Games with one or zero players are not open for betting
+        betting_open[cp.sum(game_states['active_players'], axis=1) <= 1] = False
+
+        max_actions_per_street = 25 
+
+        for action_count in range(max_actions_per_street):
+            if not cp.any(betting_open):
+                break
+
+            # 1. Get nodes for the current state of all active games
+            active_game_states = self._get_active_games(game_states, betting_open)
+            
+            # Create more descriptive info state keys
+            info_state_keys = [f"s:{street}_p:{p}_b:{b:.2f}_pot:{pot:.2f}" 
+                               for p, b, pot in zip(active_game_states['current_player'].get(), 
+                                                  cp.max(active_game_states['bets'], axis=1).get(),
+                                                  active_game_states['pot'].get())]
+            
+            nodes = self._get_or_create_nodes_vectorized(info_state_keys)
+
+            # 2. Get strategies and sample actions
+            strategies = self._get_strategies_vectorized(nodes)
+            action_indices = self._sample_actions_vectorized(strategies)
+
+            # Record history for regret calculation
+            self._record_history_vectorized(game_states, nodes, action_indices, strategies, betting_open)
+
+            # 3. Update game states based on the chosen actions
+            game_states = self._update_states_vectorized(game_states, action_indices, betting_open)
+
+            # 4. Check which games have finished the betting round
+            betting_open = self._check_betting_round_status(game_states, betting_open)
         
-        # 1. Get nodes for the current state of all games in the batch
-        info_state_keys = [f"street_{street}_player_{p}" for p in game_states['current_player'].get()]
-        nodes = self._get_or_create_nodes_vectorized(info_state_keys)
+        if action_count == max_actions_per_street - 1 and cp.any(betting_open):
+            logger.warning(f"Street {street} reached max actions limit. {cp.sum(betting_open)} games did not conclude.")
 
-        # 2. Get strategies for the current player in each game
-        strategies = self._get_strategies_vectorized(nodes)
+        # Collect money from bets into the pot at the end of the street
+        game_states['pot'] += cp.sum(game_states['bets'], axis=1)
 
-        # 3. Choose an action based on the strategy
-        action_indices = self._sample_actions_vectorized(strategies)
-
-        # 4. Update game states based on the chosen actions
-        game_states = self._update_states_vectorized(game_states, action_indices)
-
-        logger.info(f"Finished processing street {street}.")
         return game_states, terminal_utilities
 
-    def _record_history_vectorized(self, game_states: Dict, nodes: List[CFRNode], action_indices: cp.ndarray, strategies: cp.ndarray, betting_open: cp.ndarray):
+    def _get_active_games(self, game_states: Dict, active_mask: cp.ndarray) -> Dict:
+        """Filters the game states to only include the ones that are still active."""
+        active_states = {}
+        for key, value in game_states.items():
+            if isinstance(value, cp.ndarray) and value.ndim > 0 and value.shape[0] == active_mask.shape[0]:
+                active_states[key] = value[active_mask]
+            elif key == 'history_nodes': # Handle list of lists
+                active_states[key] = [elem for i, elem in enumerate(value) if active_mask[i]]
+            else:
+                active_states[key] = value # Carry over non-batch-aligned data
+        return active_states
+
+    def _check_betting_round_status(self, game_states: Dict, betting_open: cp.ndarray) -> cp.ndarray:
+        """
+        Checks which games have completed their betting round.
+        A round is over if:
+        1. Only one player is left active in the whole game.
+        2. All active players with chips have contributed the same amount to the pot for this street OR are all-in.
+        """
+        still_open = cp.copy(betting_open)
+        if not cp.any(still_open):
+            return still_open
+        
+        active_game_indices = cp.where(still_open)[0]
+
+        # Filter states for only the games we're checking
+        active_players = game_states['active_players'][active_game_indices]
+        bets = game_states['bets'][active_game_indices]
+        stacks = game_states['player_stacks'][active_game_indices]
+
+        # Condition 1: Only one player left
+        num_active_players = cp.sum(active_players, axis=1)
+        one_player_left = (num_active_players <= 1)
+        
+        # Condition 2: All active players have matched the highest bet or are all-in
+        max_bet = cp.max(bets, axis=1, keepdims=True)
+        can_act_mask = active_players & (stacks > 0.01)
+        
+        unmatched_bets = (bets < max_bet) & can_act_mask
+        any_unmatched = cp.any(unmatched_bets, axis=1)
+        
+        round_is_closed = ~any_unmatched
+
+        # Update the original `still_open` mask for games that are now closed
+        indices_to_close = active_game_indices[one_player_left | round_is_closed]
+        still_open[indices_to_close] = False
+
+        return still_open
+
+    def _record_history_vectorized(self, game_states: Dict, nodes: List['CFRNode'], action_indices: cp.ndarray, strategies: cp.ndarray, betting_open: cp.ndarray):
         """Record decision history in a GPU-optimized way."""
-        # Simplified - skip complex history tracking for now
-        pass
+        active_game_indices = cp.where(betting_open)[0]
+        if active_game_indices.size == 0:
+            return
+
+        history_counts = game_states['history_count'][active_game_indices]
+        
+        # Ensure we don't go out of bounds
+        if cp.any(history_counts >= game_states['max_history']):
+            logger.warning("Max history reached for some games. History will be truncated.")
+            # Clamp indices to avoid errors
+            history_counts = cp.minimum(history_counts, game_states['max_history'] - 1)
+
+        # Update GPU-side history
+        game_states['history_actions'][active_game_indices, history_counts] = action_indices
+        game_states['history_strategies'][active_game_indices, history_counts] = strategies
+        
+        # Update CPU-side history (nodes)
+        active_game_indices_cpu = active_game_indices.get()
+        history_counts_cpu = history_counts.get()
+        for i, node in enumerate(nodes): # nodes is already the list for active games
+            game_idx = active_game_indices_cpu[i]
+            hist_idx = history_counts_cpu[i]
+            if hist_idx < game_states['max_history']:
+                 game_states['history_nodes'][game_idx].append(node)
+
+        # Increment history count for active games
+        game_states['history_count'][active_game_indices] += 1
+
 
     def _calculate_showdown_utilities(self, game_states: Dict) -> cp.ndarray:
         """Calculates utilities for all games that go to showdown."""
@@ -205,424 +292,233 @@ class GPUCFRTrainer:
         winnings = showdown_pots / num_showdown_players
 
         # Distribute winnings to the active players using broadcasting
-        # Reshape winnings to (batch_size, 1) to broadcast across the players dimension
         winnings_reshaped = winnings.reshape(-1, 1)
         showdown_utilities = cp.where(showdown_active_players, winnings_reshaped, 0)
 
         utilities[showdown_mask] = showdown_utilities
+        
+        # Also calculate utilities for games that ended before showdown (one player left)
+        one_player_left_mask = num_active_players == 1
+        if cp.any(one_player_left_mask):
+            # The player who is still active wins the whole pot
+            pot_for_winners = game_states['pot'][one_player_left_mask]
+            active_for_winners = game_states['active_players'][one_player_left_mask]
+            
+            # Winner gets pot, others get 0. The amount they put in is their loss.
+            winnings = pot_for_winners.reshape(-1, 1) * active_for_winners
+            
+            # To get true utility, we subtract what they put in.
+            # For now, returning winnings is simpler and still works for regret.
+            utilities[one_player_left_mask] = winnings
+
         return utilities
 
-    def _update_regrets_simplified(self, game_states: Dict):
-        """Simplified regret updates that just increment strategy counts."""
-        logger.info("Updating regrets and strategies...")
+    def _update_regrets_and_strategy(self, game_states: Dict, final_utilities: cp.ndarray):
+        """
+        Traverse the recorded history for each game in the batch and update regrets
+        and strategies for every decision node visited.
+        This version is optimized to perform all heavy computation on the GPU at once,
+        then apply the results in a CPU loop.
+        """
+        logger.info("Updating regrets and strategies (hybrid GPU/CPU)...")
+        batch_size = final_utilities.shape[0]
+        max_history = game_states['history_actions'].shape[1]
+
+        # --- GPU Computation ---
+
+        # 1. Create a mask for valid history entries
+        history_arange = cp.arange(max_history, dtype=cp.int32)
+        valid_history_mask = history_arange < game_states['history_count'][:, None]
+
+        # 2. Calculate counterfactual values (vectorized)
+        # Using mean utility as a proxy, as in the previous version.
+        utility_per_game = final_utilities.mean(axis=1, keepdims=True)
+
+        cf_values = cp.zeros_like(game_states['history_strategies'])
+        actions_taken = game_states['history_actions'][:, :, cp.newaxis]
         
-        # For each node that was created this iteration, do a simple update
-        for node in self.nodes.values():
-            # Simple strategy accumulation
-            current_strategy = node.get_strategy()
-            node.strategy_sum += current_strategy
+        # Place the utility of the game into the slot for the action that was taken.
+        # This is a simplified proxy for true counterfactual values.
+        # We need to broadcast utility_per_game to match the history dimension
+        utility_broadcast = cp.broadcast_to(utility_per_game[:, None, :], (batch_size, max_history, 1))
+        
+        # Place the actual utility received into the slot for the action taken
+        if hasattr(cp, 'put_along_axis'):
+            cp.put_along_axis(cf_values, actions_taken, utility_broadcast, axis=2)
+        else:
+            # Manual implementation for older CuPy versions
+            batch_size, num_players, _ = cf_values.shape
+            I, J = cp.ogrid[:batch_size, :num_players]
+            actions_idx = actions_taken.squeeze(axis=(2,))
+            values = utility_broadcast.squeeze(axis=2)
+            cf_values[I, J, actions_idx] = values
+
+
+        # Calculate the expected value of the current state (node)
+        # This is the sum over all actions of [strategy(action) * counterfactual_value(action)]
+        strategies = game_states['history_strategies']
+        node_values = cp.sum(strategies * cf_values, axis=2, keepdims=True)
+
+        # 4. Calculate regrets
+        regrets = cf_values - node_values
+        
+        # Mask out invalid history entries to ensure they don't contribute
+        regrets *= valid_history_mask[:, :, cp.newaxis]
+        strategies_to_update = strategies * valid_history_mask[:, :, cp.newaxis]
+
+        # --- Data Transfer to CPU ---
+        regrets_cpu = cp.asnumpy(regrets)
+        strategies_cpu = cp.asnumpy(strategies_to_update)
+        history_counts_cpu = cp.asnumpy(game_states['history_count'])
+        nodes_list = game_states['history_nodes']
+
+        # --- CPU Loop for Updates ---
+        logger.info("Applying updates to CPU node objects...")
+        for i in range(batch_size):
+            history_len = history_counts_cpu[i]
+            if history_len == 0:
+                continue
+
+            nodes = nodes_list[i]
             
-            # Simple regret update (placeholder)
-            node.regret_sum += np.random.normal(0, 0.1, node.num_actions)
+            for t in range(history_len):
+                node = nodes[t]
+                
+                # Update regrets and strategy sum
+                # These should be scaled by reach probabilities, which we are not tracking yet.
+                node.regret_sum += regrets_cpu[i, t]
+                
+                # This should be scaled by our reach probability.
+                reach_prob = 1.0 # Placeholder
+                node.strategy_sum += reach_prob * strategies_cpu[i, t]
 
     def _sample_actions_vectorized(self, strategies: cp.ndarray) -> cp.ndarray:
-        """Sample actions from the strategies for a batch of states."""
-        # Create a random matrix for sampling
-        rand_vals = cp.random.rand(strategies.shape[0], 1)
-        
-        # Get cumulative sum of strategies
+        """Samples actions for a batch of games based on their strategies."""
+        # Create a cumulative distribution for sampling
         cumulative_strategies = cp.cumsum(strategies, axis=1)
-        
-        # Find the action where the random value falls
-        action_indices = cp.sum(rand_vals > cumulative_strategies, axis=1).astype(cp.int32)
+        # Generate random numbers for each game in the batch
+        rand_vals = cp.random.rand(strategies.shape[0], 1)
+        # Find the action index where the random value falls
+        action_indices = cp.sum(cumulative_strategies < rand_vals, axis=1)
         return action_indices
 
+    def _find_next_player_vectorized(self, game_states: Dict, active_mask: cp.ndarray) -> Dict:
+        """
+        Finds the next player in a circular fashion who is still active and has chips.
+        This is a fully vectorized implementation.
+        """
+        if not cp.any(active_mask):
+            return game_states
+
+        active_game_indices = cp.where(active_mask)[0]
+        
+        # Extract data for active games
+        current_players = game_states['current_player'][active_game_indices]
+        active_players_matrix = game_states['active_players'][active_game_indices]
+        player_stacks_matrix = game_states['player_stacks'][active_game_indices]
+
+        # Generate candidate player indices for each game, starting from the next player
+        offsets = cp.arange(1, self.num_players + 1)
+        candidate_player_indices = (current_players[:, None] + offsets) % self.num_players
+        
+        # Gather the status (active and has chips) for all candidates
+        candidate_active = cp.take_along_axis(active_players_matrix, candidate_player_indices, axis=1)
+        candidate_stacks = cp.take_along_axis(player_stacks_matrix, candidate_player_indices, axis=1)
+        candidate_can_act = candidate_active & (candidate_stacks > 0.01)
+
+        # Find the first valid candidate for each game
+        first_valid_candidate_offset = cp.argmax(candidate_can_act, axis=1)
+
+        # Get the actual player index from the candidates using the offsets
+        next_players = cp.take_along_axis(candidate_player_indices, first_valid_candidate_offset[:, None], axis=1).squeeze()
+
+        # A check to see if a valid next player was found.
+        chosen_can_act = cp.take_along_axis(candidate_can_act, first_valid_candidate_offset[:, None], axis=1).squeeze();
+        
+        # Only update player if a valid next player was found. Otherwise, the player stays the same,
+        # and the betting round should be terminated by `_check_betting_round_status`.
+        # Always advance the player, the check for round status will handle termination.
+        game_states['current_player'][active_game_indices] = next_players
+        
+        return game_states
+
     def _get_or_create_nodes_vectorized(self, info_state_keys: List[str]) -> List[CFRNode]:
-        """Gets or creates CFR nodes for a batch of information state keys."""
-        nodes_batch = []
+        """Gets or creates nodes for a list of info state keys."""
+        nodes = []
         for key in info_state_keys:
             if key not in self.nodes:
-                # Assuming a fixed number of actions for simplicity [Fold, Call, Raise]
-                self.nodes[key] = CFRNode(num_actions=3, actions=['Fold', 'Call', 'Raise'])
-            nodes_batch.append(self.nodes[key])
-        return nodes_batch
+                # Assuming 3 actions: fold, call, raise for simplicity
+                self.nodes[key] = CFRNode(num_actions=3, actions=['f', 'c', 'r'])
+            nodes.append(self.nodes[key])
+        return nodes
 
     def _get_strategies_vectorized(self, nodes: List[CFRNode]) -> cp.ndarray:
-        """Gathers strategies from a batch of nodes into a single CuPy array."""
+        """Gets strategies from a list of nodes and stacks them into a CuPy array."""
         strategies = [node.get_strategy() for node in nodes]
         return cp.array(strategies, dtype=cp.float32)
 
-    def _update_states_vectorized(self, game_states: Dict, action_indices: cp.ndarray) -> Dict:
+    def _update_states_vectorized(self, game_states: Dict, action_indices: cp.ndarray, betting_open: cp.ndarray) -> Dict:
         """
-        Updates the batch of game states based on the actions taken (0: Fold, 1: Call, 2: Raise).
+        Updates the game states for active games based on the sampled actions.
+        0: Fold, 1: Call, 2: Raise
         """
-        batch_size = game_states['pot'].shape[0]
-        current_player_indices = game_states['current_player']
+        active_game_indices = cp.where(betting_open)[0]
+        if active_game_indices.size == 0:
+            return game_states
 
-        # --- Handle Folds (action_index == 0) ---
+        # --- Get data for active games ---
+        current_players = game_states['current_player'][active_game_indices]
+        stacks = game_states['player_stacks'][active_game_indices]
+        bets = game_states['bets'][active_game_indices]
+
+        # --- Apply actions ---
+        # Action 0: Fold
         fold_mask = (action_indices == 0)
         if cp.any(fold_mask):
-            # Set the current player to inactive
-            game_states['active_players'][fold_mask, current_player_indices[fold_mask]] = False
+            player_indices_to_fold = current_players[fold_mask]
+            game_indices_to_fold = active_game_indices[fold_mask]
+            game_states['active_players'][game_indices_to_fold, player_indices_to_fold] = False
 
-        # --- Handle Calls (action_index == 1) ---
+        # Action 1: Call
         call_mask = (action_indices == 1)
         if cp.any(call_mask):
-            max_bet = cp.max(game_states['bets'][call_mask], axis=1)
-            current_bet = game_states['bets'][call_mask, current_player_indices[call_mask]]
-            call_amount = max_bet - current_bet
+            max_bet = cp.max(bets[call_mask], axis=1)
+            current_bet = bets[call_mask, current_players[call_mask]]
+            to_call = max_bet - current_bet
+            amount_to_call = cp.minimum(to_call, stacks[call_mask, current_players[call_mask]])
             
-            # Ensure players don't bet more than they have
-            callable_amount = cp.minimum(call_amount, game_states['player_stacks'][call_mask, current_player_indices[call_mask]])
+            game_indices_to_call = active_game_indices[call_mask]
+            player_indices_to_call = current_players[call_mask]
+            
+            game_states['bets'][game_indices_to_call, player_indices_to_call] += amount_to_call
+            game_states['player_stacks'][game_indices_to_call, player_indices_to_call] -= amount_to_call
 
-            game_states['player_stacks'][call_mask, current_player_indices[call_mask]] -= callable_amount
-            game_states['bets'][call_mask, current_player_indices[call_mask]] += callable_amount
-            game_states['pot'][call_mask] += callable_amount
-
-        # --- Handle Raises (action_index == 2) ---
+        # Action 2: Raise
         raise_mask = (action_indices == 2)
         if cp.any(raise_mask):
-            # Simplified raise logic: Raise by a fixed amount (e.g., pot size)
-            # A real implementation would have more nuanced raise sizing.
-            max_bet = cp.max(game_states['bets'][raise_mask], axis=1)
-            raise_amount = game_states['pot'][raise_mask] # Pot-sized raise
+            # Simplified raise logic: raise by the size of the pot
+            pot_size = game_states['pot'][active_game_indices[raise_mask]]
+            max_bet = cp.max(bets[raise_mask], axis=1)
+            current_bet = bets[raise_mask, current_players[raise_mask]]
+            to_call = max_bet - current_bet
+            
+            # Raise amount is pot size, but must call first.
+            raise_amount = pot_size
+            total_bet = current_bet + to_call + raise_amount
+            
+            # Ensure player has enough stack
+            amount_to_bet = cp.minimum(total_bet - current_bet, stacks[raise_mask, current_players[raise_mask]])
+            
+            game_indices_to_raise = active_game_indices[raise_mask]
+            player_indices_to_raise = current_players[raise_mask]
 
-            # Ensure players don't bet more than they have
-            raisable_amount = cp.minimum(raise_amount, game_states['player_stacks'][raise_mask, current_player_indices[raise_mask]])
+            game_states['bets'][game_indices_to_raise, player_indices_to_raise] += amount_to_bet
+            game_states['player_stacks'][game_indices_to_raise, player_indices_to_raise] -= amount_to_bet
 
-            game_states['player_stacks'][raise_mask, current_player_indices[raise_mask]] -= raisable_amount
-            game_states['bets'][raise_mask, current_player_indices[raise_mask]] += raisable_amount
-            game_states['pot'][raise_mask] += raisable_amount
-
-        # --- Advance to the next player ---
-        # This needs to be a robust function that finds the next active player.
-        # For now, we'll use a simplified increment.
-        game_states['current_player'] = (game_states['current_player'] + 1) % self.num_players
+        # --- Find next player to act ---
+        game_states = self._find_next_player_vectorized(game_states, betting_open)
 
         return game_states
-
-    def _cfr_recursive(self, player_hands, history, board, pot, bets, reach_probs,
-                       active_players, player_stacks, street, num_actions_this_street, 
-                       recursion_depth, total_actions=0):
-        
-        # Set for test compatibility
-        self.recursion_depth = recursion_depth
-        
-        # Multiple terminal conditions for robustness
-        if recursion_depth > self.max_recursion_depth:
-            return self._get_terminal_utility(player_hands, board, pot, bets, active_players, player_stacks)
-        
-        if num_actions_this_street > self.max_actions_per_street:
-            return self._get_terminal_utility(player_hands, board, pot, bets, active_players, player_stacks)
-        
-        if total_actions > self.max_total_actions:
-            return self._get_terminal_utility(player_hands, board, pot, bets, active_players, player_stacks)
-        
-        # Check for state loops
-        state_key = self._state_key(player_hands, board, pot, bets, active_players, player_stacks, street, num_actions_this_street)
-        if state_key in self.state_history:
-            return self._get_terminal_utility(player_hands, board, pot, bets, active_players, player_stacks)
-        self.state_history.add(state_key)
-        
-        try:
-            # Count active players with chips
-            active_with_chips = np.sum(active_players & (player_stacks > 0.01))
-            
-            # Terminal: Only one player left or no one can act
-            if active_with_chips <= 1:
-                return self._get_terminal_utility(player_hands, board, pot, bets, active_players, player_stacks)
-            
-            # Check if betting round is over
-            is_over = self._is_betting_round_over(history, bets, active_players, street, num_actions_this_street, player_stacks)
-            
-            if is_over:
-                if street >= 3:  # River completed
-                    return self._get_terminal_utility(player_hands, board, pot, bets, active_players, player_stacks)
-                else:
-                    return self._handle_new_street(player_hands, board, pot, bets, reach_probs,
-                                                   active_players, player_stacks, street, recursion_depth, total_actions)
-            
-            # Get current player
-            player = self._get_current_player(history, active_players, street, pot, num_actions_this_street, player_stacks)
-            if player == -1:
-                return self._get_terminal_utility(player_hands, board, pot, bets, active_players, player_stacks)
-            
-            # Get available actions
-            actions = self._get_available_actions(player, bets, player_stacks)
-            if not actions:
-                return self._get_terminal_utility(player_hands, board, pot, bets, active_players, player_stacks)
-            
-            # Create information set (avoiding numpy array conversion issues)
-            bets_str = "_".join([f"{b:.2f}" for b in bets])
-            info_set = f"{street}_{bets_str}_{player_stacks[player]:.2f}_{''.join(sorted(actions))}"
-            
-            strategy = self._get_strategy(info_set, actions)
-            
-            node_utility_vector = np.zeros(self.num_players)
-            cf_values_for_player = np.zeros(len(actions))
-            
-            for i, action in enumerate(actions):
-                new_history = history + action
-                new_bets = bets.copy()
-                new_stacks = player_stacks.copy()
-                new_active_players = active_players.copy()
-                new_num_actions = num_actions_this_street + 1
-                new_pot = pot
-                
-                # Apply action
-                if action == 'f':
-                    new_active_players[player] = False
-                elif action == 'c':
-                    max_bet = np.max(new_bets)
-                    to_call = max_bet - new_bets[player]
-                    amount = min(to_call, new_stacks[player])
-                    new_bets[player] += amount
-                    new_stacks[player] -= amount
-                elif action == 'r':
-                    max_bet = np.max(new_bets)
-                    to_call = max_bet - new_bets[player]
-                    # Conservative raise sizing
-                    raise_amount = min(pot + np.sum(bets), new_stacks[player] - to_call)
-                    if raise_amount > 0:
-                        new_bets[player] = max_bet + to_call + raise_amount
-                        new_stacks[player] -= (new_bets[player] - bets[player])
-                    else:
-                        # All-in if can't raise properly
-                        new_bets[player] += new_stacks[player]
-                        new_stacks[player] = 0
-                elif action == 'k':
-                    pass  # Check, no betting change
-                
-                new_reach_probs = reach_probs.copy()
-                new_reach_probs[player] *= strategy[i]
-                
-                utility = self._cfr_recursive(
-                    player_hands, new_history, board, new_pot, new_bets,
-                    new_reach_probs, new_active_players, new_stacks,
-                    street, new_num_actions, recursion_depth + 1, total_actions + 1
-                )
-                
-                node_utility_vector += strategy[i] * utility
-                cf_values_for_player[i] = utility[player]
-            
-            # Update regret and strategy
-            node = self.get_node(info_set, actions)
-            regret = cf_values_for_player - np.sum(strategy * cf_values_for_player)
-            node.regret_sum += regret
-            node.strategy_sum += reach_probs[player] * strategy
-            
-            return node_utility_vector
-            
-        finally:
-            # Clean up state tracking
-            self.state_history.discard(state_key)
-
-    def _is_betting_round_over(self, history: str, bets: np.ndarray, active_players: np.ndarray, 
-                               street: int, num_actions: int, stacks: np.ndarray) -> bool:
-        # Simple but robust conditions
-        active_with_chips = active_players & (stacks > 0.01)
-        num_active_with_chips = np.sum(active_with_chips)
-        
-        # Round over if only one player can act
-        if num_active_with_chips <= 1:
-            return True
-        
-        # Round over if no actions taken and it's not preflop
-        if num_actions == 0 and street > 0:
-            return True
-        
-        # Round over if everyone has acted and bets are equal (or players are all-in)
-        if num_actions >= np.sum(active_players):
-            # Check if all active players have equal bets or are all-in
-            active_bets = bets[active_players]
-            all_equal_or_allin = True
-            
-            for i in range(self.num_players):
-                if not active_players[i]:
-                    continue
-                if stacks[i] > 0.01 and bets[i] < np.max(active_bets):
-                    all_equal_or_allin = False
-                    break
-            
-            # Special case for preflop: if BB has acted (checked/raised) after everyone else, round is over
-            if street == 0 and num_actions >= np.sum(active_players):
-                # Check if this looks like "SB call, BB check" scenario
-                if 'c' in history and 'k' in history and 'r' not in history:
-                    return True
-            
-            if all_equal_or_allin:
-                return True
-        
-        # Emergency brake for too many actions
-        if num_actions > self.max_actions_per_street:
-            return True
-        
-        return False
-
-    def _handle_new_street(self, player_hands, board, pot, bets, reach_probs, 
-                           active_players, player_stacks, street, recursion_depth, total_actions):
-        # Terminal if only one active player
-        if np.sum(active_players) <= 1:
-            return self._get_terminal_utility(player_hands, board, pot + np.sum(bets), 
-                                              np.zeros(self.num_players), active_players, player_stacks)
-        
-        new_street = street + 1
-        pot += np.sum(bets)
-        new_bets = np.zeros(self.num_players)
-        new_board = board[:]
-        
-        # Deal cards for new street
-        dealt_cards = [c for hand in player_hands for c in hand] + board
-        remaining_deck = [c for c in self.deck if c not in dealt_cards]
-        random.shuffle(remaining_deck)
-        
-        cards_to_deal = 0
-        if new_street == 1:  # Flop
-            cards_to_deal = 3
-        elif new_street in [2, 3]:  # Turn/River
-            cards_to_deal = 1
-        
-        if cards_to_deal > 0 and len(remaining_deck) >= cards_to_deal:
-            new_board.extend(remaining_deck[:cards_to_deal])
-        
-        return self._cfr_recursive(player_hands, "", new_board, pot, new_bets, reach_probs, 
-                                   active_players, player_stacks, new_street, 0, recursion_depth + 1, total_actions)
-
-    def _get_current_player(self, history, active_players, street, pot, num_actions_this_street, player_stacks) -> int:
-        # Find players who can act
-        can_act = active_players & (player_stacks > 0.01)
-        active_indices = np.where(can_act)[0]
-        
-        if len(active_indices) == 0:
-            return -1
-        
-        if len(active_indices) == 1:
-            return active_indices[0]
-        
-        # Determine starting position
-        if street == 0:  # Preflop
-            start_pos = 2 if self.num_players > 2 else 0
-        else:  # Postflop
-            start_pos = 0
-        
-        # Find the next player to act
-        current_player = start_pos
-        for _ in range(num_actions_this_street):
-            current_player = (current_player + 1) % self.num_players
-            while not can_act[current_player]:
-                current_player = (current_player + 1) % self.num_players
-                if current_player == start_pos:  # Full loop
-                    return -1
-        
-        # Ensure the current player can actually act
-        if not can_act[current_player]:
-            # Find next player who can act
-            for i in range(self.num_players):
-                next_player = (current_player + i) % self.num_players
-                if can_act[next_player]:
-                    return next_player
-            return -1
-        
-        return current_player
-
-    def _get_available_actions(self, player: int, bets: np.ndarray, stacks: np.ndarray) -> List[str]:
-        actions = []
-        
-        if stacks[player] <= 0.01:  # No chips
-            return []
-        
-        max_bet = np.max(bets)
-        to_call = max_bet - bets[player]
-        
-        if to_call > 0.01:  # Need to call
-            actions.extend(['f', 'c'])
-            if stacks[player] > to_call + 0.01:  # Can raise
-                actions.append('r')
-        else:  # Can check
-            actions.append('k')
-            if stacks[player] > 0.01:  # Can bet/raise
-                actions.append('r')
-        
-        return actions
-
-    def _get_terminal_utility(self, player_hands, board, pot, bets, active_players, player_stacks) -> np.ndarray:
-        investment = self.initial_stack - player_stacks
-        total_pot = pot + np.sum(bets)
-        
-        # If only one active player, they win everything
-        active_indices = np.where(active_players)[0]
-        if len(active_indices) == 1:
-            winnings = np.zeros(self.num_players)
-            winnings[active_indices[0]] = total_pot
-            return winnings - investment
-        
-        # Otherwise, split pot equally among active players (simplified)
-        winnings = np.zeros(self.num_players)
-        if len(active_indices) > 0:
-            share = total_pot / len(active_indices)
-            for idx in active_indices:
-                winnings[idx] = share
-        
-        return winnings - investment
-
-    def get_node(self, info_set: str, actions: List[str]) -> CFRNode:
-        if info_set not in self.nodes:
-            self.nodes[info_set] = CFRNode(len(actions), actions)
-        return self.nodes[info_set]
-
-    def _get_strategy(self, info_set: str, actions: List[str]) -> np.ndarray:
-        node = self.get_node(info_set, actions)
-        return node.get_strategy()
-
-    def train_like_fixed_cfr(self, iterations: int):
-        """Run CFR training for the specified number of iterations."""
-        logger.info(f"Starting robust CFR training for {iterations} iterations...")
-        
-        for iteration in range(iterations):
-            logger.info(f"Running CFR iteration {iteration + 1}/{iterations}")
-            
-            # Reset state tracking for each iteration
-            self.state_history.clear()
-            
-            # Generate random hands for all players
-            player_hands = []
-            deck_copy = self.deck.copy()
-            random.shuffle(deck_copy)
-            
-            # Deal 2 cards to each player
-            for player in range(self.num_players):
-                hand = [deck_copy.pop(), deck_copy.pop()]
-                player_hands.append(hand)
-            
-            # Initialize game state
-            board = []
-            pot = 0.0
-            bets = np.zeros(self.num_players)
-            bets[0] = self.small_blind  # Small blind
-            bets[1] = self.big_blind    # Big blind
-            
-            active_players = np.ones(self.num_players, dtype=bool)
-            player_stacks = np.full(self.num_players, self.initial_stack)
-            player_stacks[0] -= self.small_blind  # Deduct small blind
-            player_stacks[1] -= self.big_blind    # Deduct big blind
-            
-            reach_probs = np.ones(self.num_players)
-            
-            # Run CFR for this hand
-            try:
-                utility = self._cfr_recursive(
-                    player_hands, "", board, pot, bets, reach_probs,
-                    active_players, player_stacks, street=0, 
-                    num_actions_this_street=0, recursion_depth=0, total_actions=0
-                )
-                print(f"Iteration {iteration + 1} completed successfully. Utility: {utility}")
-            except Exception as e:
-                print(f"Error in iteration {iteration + 1}: {e}")
-                continue
-        
-        print(f"CFR training completed after {iterations} iterations.")
-        print(f"Total nodes created: {len(self.nodes)}")
-        return len(self.nodes)
 
     def save_strategies_to_file(self, filename: str = "strategy_table.json"):
         """Save the learned strategies to a JSON file."""

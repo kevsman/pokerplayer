@@ -74,14 +74,19 @@ class StrategyLookup:
 
     def _save_strategy_table(self):
         logger.info(f"Saving {len(self.strategy_table)} strategies to {self.strategy_file}")
+        temp_file = self.strategy_file + '.tmp'
         try:
-            with open(self.strategy_file, 'w') as f:
+            with open(temp_file, 'w') as f:
                 # JSON keys must be strings, so we convert tuples to strings
                 string_keys_table = {str(k): v for k, v in self.strategy_table.items()}
                 json.dump(string_keys_table, f, indent=4)
+            # Atomically move the file
+            os.replace(temp_file, self.strategy_file)
             logger.info(f"Successfully saved strategies to {self.strategy_file}")
-        except IOError as e:
+        except (IOError, TypeError, json.JSONDecodeError) as e:
             logger.error(f"Error saving strategy file {self.strategy_file}: {e}")
+            if os.path.exists(temp_file):
+                os.remove(temp_file) # Clean up temp file on error
             pass # Handle file write errors if necessary
 
     def get_strategy(self, stage, hand_bucket, board_bucket, actions):

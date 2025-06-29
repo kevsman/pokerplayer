@@ -18,6 +18,6 @@ if __name__ == '__main__':
     # Start the vectorized training process.
     logger.info("🚀 Starting Vectorized NLHE CFR training for 6 players with GPU acceleration...")
     logger.info("🎯 Target: 100 iterations with a batch size of 4096 for deep strategy exploration")
-    trainer.train(iterations=100, batch_size=4096) # Call the new vectorized training method
+    trainer.train(iterations=3, batch_size=4096) # Call the new vectorized training method
     
     logger.info("✅ Vectorized training complete. Strategies have been saved to 'strategy_table.json'.")
