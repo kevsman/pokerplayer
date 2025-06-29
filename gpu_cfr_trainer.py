@@ -85,6 +85,242 @@ class GPUCFRTrainer:
         state_str = json.dumps(state_data, sort_keys=True)
         return hashlib.md5(state_str.encode()).hexdigest()
 
+    def train(self, iterations: int, batch_size: int = 1024):
+        """Main training loop for vectorized GPU-accelerated CFR."""
+        if not self.use_gpu:
+            logger.error("GPU is not available. Vectorized training requires a GPU.")
+            return
+
+        logger.info(f"Starting vectorized training for {iterations} iterations with batch size {batch_size}.")
+
+        for i in range(iterations):
+            start_time = time.time()
+            
+            # 1. Sample a batch of root game states on the GPU
+            game_states = self._sample_initial_states_gpu(batch_size)
+            
+            # 2. Process the batch through the game tree on the GPU
+            self._cfr_vectorized_iteration(game_states)
+
+            end_time = time.time()
+            logger.info(f"Iteration {i+1}/{iterations} completed in {end_time - start_time:.2f}s")
+
+            if (i + 1) % 10 == 0:
+                self.strategy_lookup.update_and_save_strategy_table(self.nodes)
+                logger.info(f"Strategy table saved at iteration {i+1}")
+
+        self.strategy_lookup.update_and_save_strategy_table(self.nodes)
+        logger.info("Final strategy table saved.")
+
+    def _sample_initial_states_gpu(self, batch_size: int) -> Dict:
+        """Sample a batch of initial game states for training, directly on the GPU."""
+        # In a real implementation, hands would be dealt, but for now, we focus on the financial state
+        return {
+            "pot": cp.full(batch_size, self.small_blind + self.big_blind, dtype=cp.float32),
+            "bets": cp.tile(cp.array([self.small_blind, self.big_blind] + [0] * (self.num_players - 2), dtype=cp.float32), (batch_size, 1)),
+            "active_players": cp.ones((batch_size, self.num_players), dtype=cp.bool_),
+            "player_stacks": cp.full((batch_size, self.num_players), self.initial_stack, dtype=cp.float32),
+            "reach_probs": cp.ones((batch_size, self.num_players), dtype=cp.float32),
+            "current_player": cp.zeros(batch_size, dtype=cp.int32), # Player 0 starts pre-flop
+            "history": [[] for _ in range(batch_size)] # To track nodes and actions
+        }
+
+    def _cfr_vectorized_iteration(self, game_states: Dict):
+        """
+        Performs one iteration of vectorized CFR by processing a batch of game states through each street.
+        """
+        # Pre-flop
+        game_states, terminal_utilities = self._process_street_vectorized(game_states, street=0)
+        
+        # Flop
+        game_states, terminal_utilities = self._process_street_vectorized(game_states, street=1, terminal_utilities=terminal_utilities)
+        
+        # Turn
+        game_states, terminal_utilities = self._process_street_vectorized(game_states, street=2, terminal_utilities=terminal_utilities)
+        
+        # River
+        game_states, terminal_utilities = self._process_street_vectorized(game_states, street=3, terminal_utilities=terminal_utilities)
+        
+        # Showdown and regret updates
+        final_utilities = self._calculate_showdown_utilities(game_states)
+        self._update_regrets_and_strategies(game_states, final_utilities)
+
+    def _process_street_vectorized(self, game_states: Dict, street: int, terminal_utilities: cp.ndarray = None) -> Tuple[Dict, cp.ndarray]:
+        """
+        Processes a full betting round for a batch of game states on the GPU.
+        """
+        logger.info(f"Processing street {street} for {game_states['pot'].shape[0]} states.")
+
+        if terminal_utilities is None:
+            terminal_utilities = cp.zeros((game_states['pot'].shape[0], self.num_players), dtype=cp.float32)
+
+        # Loop until the betting round is over for all games in the batch
+        max_actions_this_street = 10 # Safety break
+        for _ in range(max_actions_this_street):
+            batch_size = game_states['pot'].shape[0]
+            active_mask = cp.ones(batch_size, dtype=cp.bool_)
+
+            # Check which games in the batch still need action
+            # (e.g., more than one player is active and not all-in)
+            # This is a simplified check
+            num_active_players = cp.sum(game_states['active_players'], axis=1)
+            betting_open = num_active_players > 1
+
+            if not cp.any(betting_open):
+                break # End of street for all games
+
+            # 1. Get nodes for the current state of all games in the batch
+            info_state_keys = [f"street_{street}_player_{p}" for p in game_states['current_player'].get()]
+            nodes = self._get_or_create_nodes_vectorized(info_state_keys)
+
+            # 2. Get strategies for the current player in each game
+            strategies = self._get_strategies_vectorized(nodes)
+
+            # 3. Choose an action based on the strategy
+            action_indices = self._sample_actions_vectorized(strategies)
+
+            # 4. Update game states based on the chosen actions
+            game_states = self._update_states_vectorized(game_states, action_indices)
+
+            # 5. Record the history for this decision point
+            for i in range(batch_size):
+                if betting_open[i]:
+                    game_states['history'][i].append((nodes[i], action_indices[i].item(), strategies[i].get()))
+
+        logger.info(f"Finished processing street {street}.")
+        return game_states, terminal_utilities
+
+    def _calculate_showdown_utilities(self, game_states: Dict) -> cp.ndarray:
+        """Calculates utilities for all games that go to showdown."""
+        logger.info("Calculating showdown utilities...")
+        batch_size = game_states['pot'].shape[0]
+        utilities = cp.zeros((batch_size, self.num_players), dtype=cp.float32)
+
+        # Identify games that are at showdown (more than one player active)
+        num_active_players = cp.sum(game_states['active_players'], axis=1)
+        showdown_mask = num_active_players > 1
+
+        if not cp.any(showdown_mask):
+            return utilities
+
+        # For now, we'll just split the pot evenly among the active players in a showdown
+        # A real implementation would use the GPUEquityCalculator here.
+        showdown_pots = game_states['pot'][showdown_mask]
+        showdown_active_players = game_states['active_players'][showdown_mask]
+        num_showdown_players = cp.sum(showdown_active_players, axis=1)
+
+        # Calculate winnings for each player in the showdown
+        winnings = showdown_pots / num_showdown_players
+
+        # Distribute winnings to the active players using broadcasting
+        # Reshape winnings to (batch_size, 1) to broadcast across the players dimension
+        winnings_reshaped = winnings.reshape(-1, 1)
+        showdown_utilities = cp.where(showdown_active_players, winnings_reshaped, 0)
+
+        utilities[showdown_mask] = showdown_utilities
+        return utilities
+
+    def _update_regrets_and_strategies(self, game_states: Dict, final_utilities: cp.ndarray):
+        """Updates regrets and strategies based on the final utilities by backpropagating through the history."""
+        logger.info("Updating regrets and strategies...")
+
+        for i in range(len(game_states['history'])):
+            player_history = game_states['history'][i]
+            if not player_history:
+                continue
+
+            # The utility for the current player
+            player_utility = final_utilities[i, game_states['current_player'][i]]
+
+            for node, action_taken, strategy in reversed(player_history):
+                # Calculate counterfactual values for all actions
+                # This is a simplified calculation. A real implementation would be more complex.
+                action_utilities = np.zeros(node.num_actions)
+                action_utilities[action_taken] = player_utility.get()
+
+                # Update regrets
+                regret = action_utilities - np.sum(strategy * action_utilities)
+                node.regret_sum += regret
+
+                # Update strategy sum
+                node.strategy_sum += strategy
+
+    def _sample_actions_vectorized(self, strategies: cp.ndarray) -> cp.ndarray:
+        """Sample actions from the strategies for a batch of states."""
+        # Create a random matrix for sampling
+        rand_vals = cp.random.rand(strategies.shape[0], 1)
+        
+        # Get cumulative sum of strategies
+        cumulative_strategies = cp.cumsum(strategies, axis=1)
+        
+        # Find the action where the random value falls
+        action_indices = cp.sum(rand_vals > cumulative_strategies, axis=1).astype(cp.int32)
+        return action_indices
+
+    def _get_or_create_nodes_vectorized(self, info_state_keys: List[str]) -> List[CFRNode]:
+        """Gets or creates CFR nodes for a batch of information state keys."""
+        nodes_batch = []
+        for key in info_state_keys:
+            if key not in self.nodes:
+                # Assuming a fixed number of actions for simplicity [Fold, Call, Raise]
+                self.nodes[key] = CFRNode(num_actions=3, actions=['Fold', 'Call', 'Raise'])
+            nodes_batch.append(self.nodes[key])
+        return nodes_batch
+
+    def _get_strategies_vectorized(self, nodes: List[CFRNode]) -> cp.ndarray:
+        """Gathers strategies from a batch of nodes into a single CuPy array."""
+        strategies = [node.get_strategy() for node in nodes]
+        return cp.array(strategies, dtype=cp.float32)
+
+    def _update_states_vectorized(self, game_states: Dict, action_indices: cp.ndarray) -> Dict:
+        """
+        Updates the batch of game states based on the actions taken (0: Fold, 1: Call, 2: Raise).
+        """
+        batch_size = game_states['pot'].shape[0]
+        current_player_indices = game_states['current_player']
+
+        # --- Handle Folds (action_index == 0) ---
+        fold_mask = (action_indices == 0)
+        if cp.any(fold_mask):
+            # Set the current player to inactive
+            game_states['active_players'][fold_mask, current_player_indices[fold_mask]] = False
+
+        # --- Handle Calls (action_index == 1) ---
+        call_mask = (action_indices == 1)
+        if cp.any(call_mask):
+            max_bet = cp.max(game_states['bets'][call_mask], axis=1)
+            current_bet = game_states['bets'][call_mask, current_player_indices[call_mask]]
+            call_amount = max_bet - current_bet
+            
+            # Ensure players don't bet more than they have
+            callable_amount = cp.minimum(call_amount, game_states['player_stacks'][call_mask, current_player_indices[call_mask]])
+
+            game_states['player_stacks'][call_mask, current_player_indices[call_mask]] -= callable_amount
+            game_states['bets'][call_mask, current_player_indices[call_mask]] += callable_amount
+            game_states['pot'][call_mask] += callable_amount
+
+        # --- Handle Raises (action_index == 2) ---
+        raise_mask = (action_indices == 2)
+        if cp.any(raise_mask):
+            # Simplified raise logic: Raise by a fixed amount (e.g., pot size)
+            # A real implementation would have more nuanced raise sizing.
+            max_bet = cp.max(game_states['bets'][raise_mask], axis=1)
+            raise_amount = game_states['pot'][raise_mask] # Pot-sized raise
+
+            # Ensure players don't bet more than they have
+            raisable_amount = cp.minimum(raise_amount, game_states['player_stacks'][raise_mask, current_player_indices[raise_mask]])
+
+            game_states['player_stacks'][raise_mask, current_player_indices[raise_mask]] -= raisable_amount
+            game_states['bets'][raise_mask, current_player_indices[raise_mask]] += raisable_amount
+            game_states['pot'][raise_mask] += raisable_amount
+
+        # --- Advance to the next player ---
+        # This needs to be a robust function that finds the next active player.
+        # For now, we'll use a simplified increment.
+        game_states['current_player'] = (game_states['current_player'] + 1) % self.num_players
+
+        return game_states
+
     def _cfr_recursive(self, player_hands, history, board, pot, bets, reach_probs,
                        active_players, player_stacks, street, num_actions_this_street, 
                        recursion_depth, total_actions=0):

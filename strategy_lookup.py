@@ -45,6 +45,17 @@ class StrategyLookup:
         
         logger.info(f"Built index: {len(self.stage_index)} stages, {len(self.hand_buckets)} hand buckets, {len(self.board_buckets)} board buckets")
 
+    def update_and_save_strategy_table(self, nodes):
+        """Updates the strategy table from CFR nodes and saves to file."""
+        # Convert CFR nodes to a strategy dictionary
+        new_strategies = {key: node.get_average_strategy() for key, node in nodes.items()}
+        
+        # Merge new strategies into the main table
+        self.strategy_table.update(new_strategies)
+        
+        # Save the updated table
+        self._save_strategy_table()
+
     def _load_strategy_table(self):
         if not os.path.exists(self.strategy_file):
             logger.info(f"Strategy file {self.strategy_file} does not exist, starting with empty table")
