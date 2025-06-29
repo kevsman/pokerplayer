@@ -20,6 +20,6 @@ if __name__ == '__main__':
     # With the optimized GPU performance (62,559 strategies/sec), we can now train much more extensively.
     logger.info("🚀 Starting INTENSIVE NLHE CFR training for 6 players with ULTRA-GPU acceleration...")
     logger.info("🎯 Target: 1000 iterations for comprehensive strategy development")
-    trainer.train(iterations=1000)  # Massive increase for robust strategy learning
+    trainer.train_with_gpu_acceleration(iterations=1000) # Call the GPU-accelerated training method
     
     logger.info("✅ INTENSIVE training complete. Comprehensive strategies have been saved to 'strategy_table.json'.")
