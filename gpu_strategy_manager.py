@@ -56,8 +56,8 @@ class GPUStrategyManager:
 
     def update_regrets_and_strategies(self, node_indices: cp.ndarray, regrets: cp.ndarray, strategies: cp.ndarray, reach_probs: cp.ndarray):
         reach_probs_b = reach_probs[:, None]
-        self.regret_sum.scatter_add(node_indices[:, None], regrets)
-        self.strategy_sum.scatter_add(node_indices[:, None], reach_probs_b * strategies)
+        self.regret_sum.scatter_add(node_indices, regrets)
+        self.strategy_sum.scatter_add(node_indices, reach_probs_b * strategies)
 
     def get_average_strategies(self):
         strategy_sum_cpu = cp.asnumpy(self.strategy_sum[:self.next_node_index])
