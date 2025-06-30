@@ -2,6 +2,7 @@ import cupy as cp
 import numpy as np
 import logging
 import json
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +76,13 @@ class GPUStrategyManager:
         index_to_hash = {v: k for k, v in self.node_map.items()}
         
         strategy_dict = {}
+        if os.path.exists(filename):
+            try:
+                with open(filename, 'r') as f:
+                    strategy_dict = json.load(f)
+            except (FileNotFoundError, json.JSONDecodeError):
+                strategy_dict = {}
+
         for i in range(self.next_node_index):
             info_hash = index_to_hash.get(i, f"unknown_hash_{i}")
             strategy = {f"action_{j}": float(prob) for j, prob in enumerate(avg_strategies[i])}
@@ -83,6 +91,6 @@ class GPUStrategyManager:
         try:
             with open(filename, 'w') as f:
                 json.dump(strategy_dict, f)
-            logger.info(f"Successfully saved strategy table.")
+            logger.info(f"Successfully saved strategy table with {len(strategy_dict)} total strategies.")
         except Exception as e:
             logger.error(f"Error saving strategy table: {e}")

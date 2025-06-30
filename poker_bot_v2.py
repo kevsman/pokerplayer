@@ -205,6 +205,37 @@ class PokerBotV2:
 
         return best_action, amount
 
+    def test_from_file(self, file_path):
+        self.logger.info(f"--- Running Test from File: {file_path} ---")
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                current_html = f.read()
+            
+            self.last_html_content = current_html
+            parsed_state = self.parser.parse_html(current_html)
+            
+            if not parsed_state or parsed_state.get('error'):
+                self.logger.error(f"Failed to parse HTML from {file_path}: {parsed_state.get('error', 'Unknown') if parsed_state else 'None'}")
+                return
+
+            self.analyze()
+            my_player = self.get_my_player()
+
+            if my_player and my_player.get('has_turn'):
+                self.logger.info("My turn to act.")
+                action, amount = self.decide_action()
+                if action:
+                    self.logger.info(f"Decision: {action}, Amount: {amount}")
+                else:
+                    self.logger.warning("Could not determine an action.")
+            else:
+                self.logger.info("Not my turn or no active player found in test file.")
+
+        except FileNotFoundError:
+            self.logger.error(f"Test file not found: {file_path}")
+        except Exception as e:
+            self.logger.error(f"An error occurred during test_from_file: {e}", exc_info=True)
+
     def start_kill_switch_listener(self):
         try:
             import keyboard
@@ -288,10 +319,19 @@ if __name__ == "__main__":
     bot = None
     try:
         bot = PokerBotV2()
-        if not bot.ui_controller.positions:
-            logger.critical("UI positions not calibrated. Run the original poker_bot.py with 'calibrate' argument first.")
-            sys.exit()
-        bot.main_loop()
+        
+        # --- TESTING FROM FILE ---
+        # To run a test, uncomment the following lines and provide the path to your HTML file.
+        # Make sure to comment out or skip the main_loop if you are just testing.
+        test_file_path = 'examples/preflop_my_turn.html'
+        bot.test_from_file(test_file_path)
+        
+        # --- NORMAL EXECUTION ---
+        # if not bot.ui_controller.positions:
+        #     logger.critical("UI positions not calibrated. Run the original poker_bot.py with 'calibrate' argument first.")
+        #     sys.exit()
+        # bot.main_loop()
+
     except Exception as e:
         logger.error(f"An error occurred in __main__: {e}", exc_info=True)
     finally:
