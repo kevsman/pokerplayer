@@ -7,28 +7,29 @@ import os
 logger = logging.getLogger(__name__)
 
 class GPUStrategyManager:
-    def __init__(self, num_actions=3, initial_capacity=1_000_000):
+    def __init__(self, num_actions=3, initial_capacity=1_000_000, dtype=cp.float32):
         self.num_actions = num_actions
         self.capacity = initial_capacity
+        self.dtype = dtype # Store dtype
         
         self.node_map = {}
         self.next_node_index = 0
         
-        self.regret_sum = cp.zeros((self.capacity, self.num_actions), dtype=cp.float32)
-        self.strategy_sum = cp.zeros((self.capacity, self.num_actions), dtype=cp.float32)
+        self.regret_sum = cp.zeros((self.capacity, self.num_actions), dtype=self.dtype)
+        self.strategy_sum = cp.zeros((self.capacity, self.num_actions), dtype=self.dtype)
         
-        logger.info(f"GPUStrategyManager initialized with capacity for {self.capacity} nodes.")
+        logger.info(f"GPUStrategyManager initialized with capacity for {self.capacity} nodes and dtype {self.dtype}.")
 
     def _resize_if_needed(self):
         if self.next_node_index >= self.capacity:
             new_capacity = self.capacity * 2
             logger.info(f"Resizing strategy arrays from {self.capacity} to {new_capacity}")
             
-            new_regret_sum = cp.zeros((new_capacity, self.num_actions), dtype=cp.float32)
+            new_regret_sum = cp.zeros((new_capacity, self.num_actions), dtype=self.dtype)
             new_regret_sum[:self.capacity] = self.regret_sum
             self.regret_sum = new_regret_sum
             
-            new_strategy_sum = cp.zeros((new_capacity, self.num_actions), dtype=cp.float32)
+            new_strategy_sum = cp.zeros((new_capacity, self.num_actions), dtype=self.dtype)
             new_strategy_sum[:self.capacity] = self.strategy_sum
             self.strategy_sum = new_strategy_sum
             
@@ -51,22 +52,27 @@ class GPUStrategyManager:
         regrets = self.regret_sum[node_indices]
         strategies = cp.maximum(0, regrets)
         normalizing_sum = cp.sum(strategies, axis=1, keepdims=True)
-        default_strategy = cp.full((1, self.num_actions), 1.0 / self.num_actions, dtype=cp.float32)
+        default_strategy = cp.full((1, self.num_actions), 1.0 / self.num_actions, dtype=self.dtype)
         strategies = cp.where(normalizing_sum > 0, strategies / normalizing_sum, default_strategy)
         return strategies
 
     def update_regrets_and_strategies(self, node_indices: cp.ndarray, regrets: cp.ndarray, strategies: cp.ndarray, reach_probs: cp.ndarray):
         reach_probs_b = reach_probs[:, None]
-        self.regret_sum.scatter_add(node_indices, regrets)
-        self.strategy_sum.scatter_add(node_indices, reach_probs_b * strategies)
+        # Ensure dtypes match for in-place operations
+        self.regret_sum.scatter_add(node_indices, regrets.astype(self.dtype))
+        self.strategy_sum.scatter_add(node_indices, (reach_probs_b * strategies).astype(self.dtype))
 
     def get_average_strategies(self):
         strategy_sum_cpu = cp.asnumpy(self.strategy_sum[:self.next_node_index])
         normalizing_sum = np.sum(strategy_sum_cpu, axis=1, keepdims=True)
+        
+        # Determine numpy dtype from cupy dtype
+        numpy_dtype = np.float16 if self.dtype == cp.float16 else np.float32
+
         avg_strategies = np.where(
             normalizing_sum > 0,
             strategy_sum_cpu / normalizing_sum,
-            np.full((1, self.num_actions), 1.0 / self.num_actions, dtype=np.float32)
+            np.full((1, self.num_actions), 1.0 / self.num_actions, dtype=numpy_dtype)
         )
         return avg_strategies
 

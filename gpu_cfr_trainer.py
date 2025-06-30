@@ -25,7 +25,7 @@ from gpu_accelerated_equity import GPUEquityCalculator
 from gpu_strategy_manager import GPUStrategyManager # Import the new manager
 
 class GPUCFRTrainer:
-    def __init__(self, num_players: int = 6, small_blind: float = 0.02, big_blind: float = 0.04, use_gpu: bool = True, initial_stack: float = 4.0):
+    def __init__(self, num_players: int = 6, small_blind: float = 0.02, big_blind: float = 0.04, use_gpu: bool = True, initial_stack: float = 4.0, dtype=cp.float16):
         self.num_players = num_players
         self.use_gpu = use_gpu and GPU_AVAILABLE
         self.small_blind = small_blind
@@ -33,10 +33,11 @@ class GPUCFRTrainer:
         self.initial_stack = self.big_blind * 100
         self.hand_evaluator = HandEvaluator()
         self.equity_calculator = GPUEquityCalculator(use_gpu=self.use_gpu)
-        self.strategy_manager = GPUStrategyManager() # Use the new manager
+        self.strategy_manager = GPUStrategyManager(dtype=dtype) # Pass dtype
         self.deck = self.equity_calculator.all_cards[:]
         self.hand_counter = 0
         self.recursion_depth = 0
+        self.dtype = dtype # Store dtype
         
         # Terminal conditions
         self.max_recursion_depth = 100
@@ -75,11 +76,11 @@ class GPUCFRTrainer:
         )
 
         return {
-            "pot": cp.full(batch_size, self.small_blind + self.big_blind, dtype=cp.float32),
-            "bets": cp.tile(cp.array([self.small_blind, self.big_blind] + [0] * (self.num_players - 2), dtype=cp.float32), (batch_size, 1)),
+            "pot": cp.full(batch_size, self.small_blind + self.big_blind, dtype=self.dtype),
+            "bets": cp.tile(cp.array([self.small_blind, self.big_blind] + [0] * (self.num_players - 2), dtype=self.dtype), (batch_size, 1)),
             "active_players": cp.ones((batch_size, self.num_players), dtype=cp.bool_),
-            "player_stacks": cp.full((batch_size, self.num_players), self.initial_stack, dtype=cp.float32),
-            "reach_probs": cp.ones((batch_size, self.num_players), dtype=cp.float32),
+            "player_stacks": cp.full((batch_size, self.num_players), self.initial_stack, dtype=self.dtype),
+            "reach_probs": cp.ones((batch_size, self.num_players), dtype=cp.float32), # Keep reach_probs at float32 for stability
             "current_player": cp.zeros(batch_size, dtype=cp.int32),
             "last_aggressor": cp.full(batch_size, 1, dtype=cp.int32),
             "has_acted_this_round": cp.zeros((batch_size, self.num_players), dtype=cp.bool_),
@@ -87,7 +88,7 @@ class GPUCFRTrainer:
             "max_history": 100,
             "history_indices": cp.zeros((batch_size, 100), dtype=cp.int32),
             "history_actions": cp.zeros((batch_size, 100), dtype=cp.int32),
-            "history_strategies": cp.zeros((batch_size, 100, 3), dtype=cp.float32),
+            "history_strategies": cp.zeros((batch_size, 100, 3), dtype=self.dtype),
             "hands": hands,
             "board": boards
         }
@@ -227,7 +228,7 @@ class GPUCFRTrainer:
     def _calculate_showdown_utilities(self, game_states: Dict) -> cp.ndarray:
         """Calculates utilities for all games that go to showdown using the GPUEquityCalculator."""
         batch_size = game_states['pot'].shape[0]
-        utilities = cp.zeros((batch_size, self.num_players), dtype=cp.float32)
+        utilities = cp.zeros((batch_size, self.num_players), dtype=self.dtype)
 
         num_active_players = cp.sum(game_states['active_players'], axis=1)
         showdown_mask = num_active_players > 1
@@ -243,7 +244,7 @@ class GPUCFRTrainer:
             )
             
             winners = cp.argmax(win_counts, axis=1)
-            winnings = cp.zeros_like(showdown_active_players, dtype=cp.float32)
+            winnings = cp.zeros_like(showdown_active_players, dtype=self.dtype)
             winnings[cp.arange(winners.size), winners] = showdown_pots
             utilities[showdown_mask] = winnings
 
@@ -254,7 +255,7 @@ class GPUCFRTrainer:
             winnings = pot_for_winners.reshape(-1, 1) * active_for_winners
             utilities[one_player_left_mask] = winnings
 
-        return utilities
+        return utilities.astype(cp.float32) # Cast to float32 before returning for regret calculation
 
     def _update_regrets_and_strategy(self, game_states: Dict, final_utilities: cp.ndarray):
         """
@@ -367,8 +368,8 @@ class GPUCFRTrainer:
             game_indices_to_call = active_game_indices[call_mask]
             player_indices_to_call = current_players[call_mask]
             
-            game_states['bets'][game_indices_to_call, player_indices_to_call] += amount_to_call
-            game_states['player_stacks'][game_indices_to_call, player_indices_to_call] -= amount_to_call
+            game_states['bets'][game_indices_to_call, player_indices_to_call] += amount_to_call.astype(self.dtype)
+            game_states['player_stacks'][game_indices_to_call, player_indices_to_call] -= amount_to_call.astype(self.dtype)
 
         if cp.any(raise_mask):
             game_indices_to_raise = active_game_indices[raise_mask]
@@ -387,8 +388,8 @@ class GPUCFRTrainer:
             stacks_to_raise = stacks[raise_mask]
             amount_to_bet = cp.minimum(total_bet - current_bet, stacks_to_raise[cp.arange(len(player_indices_to_raise)), player_indices_to_raise])
             
-            game_states['bets'][game_indices_to_raise, player_indices_to_raise] += amount_to_bet
-            game_states['player_stacks'][game_indices_to_raise, player_indices_to_raise] -= amount_to_bet
+            game_states['bets'][game_indices_to_raise, player_indices_to_raise] += amount_to_bet.astype(self.dtype)
+            game_states['player_stacks'][game_indices_to_raise, player_indices_to_raise] -= amount_to_bet.astype(self.dtype)
 
         game_states = self._find_next_player_vectorized(game_states, betting_open)
 
