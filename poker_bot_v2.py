@@ -6,6 +6,8 @@ import sys
 import time
 import logging
 import threading
+import json
+import hashlib
 
 from hand_abstraction import HandAbstraction
 from cfr_solver import CFRSolver
@@ -143,63 +145,158 @@ class PokerBotV2:
         if not my_player or not my_player.get('has_turn'):
             return None, None
 
-        player_hole_cards = my_player.get('cards', [])
-        if not player_hole_cards:
-            self.logger.warning("Cannot decide action without hole cards.")
+        # --- State Extraction for Hashing ---
+        stage_map = {'preflop': 0, 'flop': 1, 'turn': 2, 'river': 3}
+        stage_name = self.table_data.get('game_stage', 'preflop').lower()
+        street = stage_map.get(stage_name, 0)
+
+        # --- RELATIVE TURN INDEX CALCULATION (Critical for hash matching) ---
+        # The strategy is stored based on the order of action, not the seat number.
+        # We must calculate our index (0, 1, 2...) in the current round's betting order.
+
+        active_players = [p for p in self.player_data if not p.get('is_empty') and 'Fold' not in p.get('status', '')]
+        is_heads_up = len(active_players) == 2
+        
+        # Get the dealer seat directly from the parsed table data, using the correct key 'dealer_position'.
+        dealer_position_str = self.table_data.get('dealer_position')
+
+        if dealer_position_str is None or dealer_position_str == "N/A":
+            self.logger.error("Cannot determine turn order without dealer position from table_data. Folding.")
             return ACTION_FOLD, 0
 
-        community_cards = self.table_data.get('community_cards', [])
+        try:
+            dealer_seat = int(dealer_position_str)
+        except (ValueError, TypeError):
+            self.logger.error(f"Could not parse dealer position '{dealer_position_str}' to an integer. Folding.")
+            return ACTION_FOLD, 0
+
+        # Sort players by action order. This is the critical fix.
+        if street == 0 and is_heads_up:
+            # Preflop Heads-Up: The dealer (button) acts FIRST.
+            # We sort so the dealer has index 0 and the other player has index 1.
+            self.logger.debug("Applying preflop heads-up turn order logic.")
+            ordered_players = sorted(active_players, key=lambda p: 0 if int(p['seat']) == dealer_seat else 1)
+        else:
+            # Standard Order (Postflop OR 3+ players preflop): Action starts to the left of the dealer.
+            self.logger.debug("Applying standard turn order logic.")
+            num_seats = len(self.player_data)
+            # The key for sorting is `(seat - dealer_seat - 1 + num_seats) % num_seats`.
+            # This creates a sequence where the player after the dealer is first.
+            ordered_players = sorted(active_players, key=lambda p: (int(p['seat']) - dealer_seat - 1 + num_seats) % num_seats)
+
+        # Find the index of our player in this ordered list.
+        turn_index = -1
+        for i, p in enumerate(ordered_players):
+            if p.get('is_my_player', False):
+                turn_index = i
+                break
+
+        if turn_index == -1:
+            self.logger.error("Could not determine my turn index. The bot may have folded or is not in the hand. Folding.")
+            return ACTION_FOLD, 0
+
+        max_bet = 0.0
+        total_bets = 0.0
+        for p in self.player_data:
+            player_bet = parse_currency_string(p.get('bet', '0'))
+            total_bets += player_bet
+            if player_bet > max_bet:
+                max_bet = player_bet
+        
         pot_size = parse_currency_string(self.table_data.get('pot_size', '0'))
-        stage = self.table_data.get('game_stage', 'preflop').lower()
-        actions = my_player.get('available_actions', [ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE])
 
-        # Calculate the actual number of opponents from player data
-        num_opponents = 0
-        for player in self.player_data:
-            if not player.get('is_my_player', False) and not player.get('is_empty', False):
-                num_opponents += 1
-        
-        self.logger.debug(f"Detected {num_opponents} opponents in the game")
+        # CRITICAL: The hash must match the training environment.
+        # The trainer's view of the pot is the total amount of money committed,
+        # which is the pot displayed on the table PLUS all bets made in the current round.
+        effective_pot = pot_size + total_bets
 
-        # 1. Abstract the hand and board
-        hand_bucket = self.abstraction.bucket_hand(player_hole_cards, community_cards, stage, num_opponents)
-        board_bucket = self.abstraction.bucket_board(community_cards, stage)
+        # --- Hash Generation (must match gpu_cfr_trainer.py) ---
+        # Use a fast, deterministic hash function for performance
+        # This must match the trainer's vectorized hash computation exactly
+        street_component = street * 1000000000
+        player_component = turn_index * 100000000
+        bet_component = int(round(float(max_bet), 2) * 100) * 1000
+        pot_component = int(round(float(effective_pot), 2) * 100)
         
-        # 2. Try to get a precomputed strategy from GPU-trained database
-        strategy = self.strategy_lookup.get_strategy(stage, hand_bucket, board_bucket, actions)
+        # Combine all components into a single hash-like value
+        combined_hash = street_component + player_component + bet_component + pot_component
+        
+        # Apply the same mixing function as the trainer
+        combined_hash = combined_hash * 2654435761  # Large prime for mixing
+        combined_hash = combined_hash ^ (combined_hash >> 16)  # XOR folding
+        combined_hash = combined_hash & 0x7FFFFFFFFFFFFFFF  # Ensure positive
+        
+        info_hash = combined_hash
+        state_tuple = (street, turn_index, round(float(max_bet), 2), round(float(effective_pot), 2))
+        self.logger.info(f"Generated stable info hash: {info_hash} for state {state_tuple}")
+
+        # 1. Try to get a precomputed strategy from GPU-trained database using the direct hash
+        strategy = self.strategy_lookup.get_strategy_by_hash(info_hash)
+        
         if strategy:
-            self.logger.info(f"🎯 Using GPU-trained strategy for {stage}, hand bucket {hand_bucket}, board bucket {board_bucket}")
-            self.logger.info(f"📊 Strategy: {strategy}")
+            self.logger.info(f"🎯 Using GPU-trained strategy for hash {info_hash}")
             self.strategy_stats['gpu_strategies_used'] += 1
         else:
-            # 3. If not found, run a quick CFR solve for this spot
-            self.logger.info(f"🔍 No precomputed strategy found for {stage}/bucket_{hand_bucket}_{board_bucket}. Running real-time CFR solve.")
-            strategy = self.cfr_solver.solve(player_hole_cards, community_cards, pot_size, actions, stage, num_opponents)
+            # 2. If not found, run a quick CFR solve for this spot
+            self.logger.info(f"🔍 No precomputed strategy found for hash {info_hash}. Running real-time CFR solve.")
+            
+            player_hole_cards = my_player.get('cards', [])
+            if not player_hole_cards:
+                self.logger.warning("Cannot decide action without hole cards.")
+                return ACTION_FOLD, 0
+
+            community_cards = self.table_data.get('community_cards', [])
+            actions = my_player.get('available_actions', [ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE])
+            num_opponents = sum(1 for p in self.player_data if not p.get('is_my_player', False) and not p.get('is_empty', False))
+
+            strategy = self.cfr_solver.solve(player_hole_cards, community_cards, effective_pot, actions, stage_name, num_opponents)
             self.logger.info(f"🧠 CFR computed strategy: {strategy}")
             self.strategy_stats['cfr_fallbacks_used'] += 1
-            
-            # Optionally add this new strategy to our database for future use
-            try:
-                self.strategy_lookup.add_strategy(stage, str(hand_bucket), str(board_bucket), actions, strategy)
-                self.logger.debug("📝 Added new strategy to database for future use")
-            except Exception as e:
-                self.logger.debug(f"Could not add strategy to database: {e}")
         
         # Update total decisions and log stats periodically
         self.strategy_stats['total_decisions'] += 1
-        if self.strategy_stats['total_decisions'] % 10 == 0:  # Every 10 decisions
+        if self.strategy_stats['total_decisions'] > 0 and self.strategy_stats['total_decisions'] % 10 == 0:
             gpu_usage_rate = (self.strategy_stats['gpu_strategies_used'] / self.strategy_stats['total_decisions']) * 100
             self.logger.info(f"📈 Strategy Usage: {gpu_usage_rate:.1f}% GPU-trained, {100-gpu_usage_rate:.1f}% CFR fallback ({self.strategy_stats['total_decisions']} total decisions)")
 
-        # 4. Pick the action with the highest probability
-        best_action = max(strategy.items(), key=lambda x: x[1])[0]
-        self.logger.info(f"Bot decision: {best_action} (strategy: {strategy})")
+        if not strategy:
+            self.logger.error("Failed to determine a strategy. Folding as a fallback.")
+            return ACTION_FOLD, 0
 
-        # 5. Determine amount
+        # 3. Pick the action with the highest probability
+        # The strategy from the JSON file has keys like 'action_0', 'action_1', etc.
+        # We need to map these back to our action constants.
+        action_map = {
+            'action_0': ACTION_FOLD,
+            'action_1': ACTION_CALL, # Or Check
+            'action_2': ACTION_RAISE
+        }
+        
+        # Handle both strategy formats (from JSON and from CFR solver)
+        if any(k in action_map for k in strategy.keys()):
+             # Remap action names if they are in 'action_x' format
+            strategy = {action_map.get(k, k): v for k, v in strategy.items()}
+
+        # Ensure CHECK is handled correctly if CALL is not available
+        available_actions = my_player.get('available_actions', [])
+        if ACTION_CHECK in available_actions and ACTION_CALL not in available_actions:
+            if ACTION_CALL in strategy:
+                strategy[ACTION_CHECK] = strategy.pop(ACTION_CALL)
+
+        # Filter strategy to only include available actions
+        available_strategy = {a: p for a, p in strategy.items() if a in available_actions}
+        if not available_strategy:
+            self.logger.error(f"No valid actions from strategy {strategy} match available actions {available_actions}. Folding.")
+            return ACTION_FOLD, 0
+
+        best_action = max(available_strategy.items(), key=lambda x: x[1])[0]
+        self.logger.info(f"Bot decision: {best_action} (strategy: {available_strategy})")
+
+        # 4. Determine amount
         amount = 0
         if best_action == ACTION_RAISE:
             # Placeholder for raise sizing. A real implementation would have smarter sizing.
-            amount = pot_size * 0.75 
+            amount = effective_pot * 0.75 
         elif best_action == ACTION_CALL:
             amount = parse_currency_string(my_player.get('bet_to_call', '0'))
 

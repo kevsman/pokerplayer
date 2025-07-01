@@ -60,6 +60,14 @@ class GPUStrategyManager:
         reach_probs_b = reach_probs[:, None]
         # Ensure dtypes match for in-place operations
         self.regret_sum.scatter_add(node_indices, regrets.astype(self.dtype))
+
+        # --- CFR+ Enhancement ---
+        # After adding new regrets, clamp them to be non-negative.
+        # This is the core of the CFR+ algorithm.
+        # We apply this to the updated regrets in-place.
+        updated_regrets = self.regret_sum[node_indices]
+        self.regret_sum[node_indices] = cp.maximum(updated_regrets, 0)
+
         self.strategy_sum.scatter_add(node_indices, (reach_probs_b * strategies).astype(self.dtype))
 
     def get_average_strategies(self):
