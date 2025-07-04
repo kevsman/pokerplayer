@@ -17,8 +17,8 @@ if __name__ == '__main__':
     trainer = GPUCFRTrainer(use_gpu=True, num_players=6, small_blind=0.02, big_blind=0.04, dtype=cp.float16)
     
     # Start the vectorized training process.
-    logger.info("🚀 Starting STABLE Vectorized NLHE CFR training for 6 players with GPU acceleration...")
-    logger.info("🎯 Target: 10,000 iterations with a batch size of 1,000 for stability and strategy coverage")
-    trainer.train(iterations=10000, batch_size=1000) # Focus on stability over speed
+    logger.info("🚀 Starting ULTRA-DIVERSE 6-Action CFR Training for maximum strategy exploration...")
+    logger.info("🎯 Target: 1,000 iterations with a batch size of 5,000 for explosive strategy diversity")
+    trainer.train(iterations=1000, batch_size=5000) # Optimized for maximum diversity generation
     
     logger.info("✅ Vectorized training complete. Strategies have been saved to 'strategy_table.json'.")

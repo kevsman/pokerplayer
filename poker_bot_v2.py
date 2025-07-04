@@ -210,24 +210,31 @@ class PokerBotV2:
         # which is the pot displayed on the table PLUS all bets made in the current round.
         effective_pot = pot_size + total_bets
 
-        # --- Hash Generation (must match gpu_cfr_trainer.py) ---
-        # Use a fast, deterministic hash function for performance
-        # This must match the trainer's vectorized hash computation exactly
-        street_component = street * 1000000000
-        player_component = turn_index * 100000000
-        bet_component = int(round(float(max_bet), 2) * 100) * 1000
-        pot_component = int(round(float(effective_pot), 2) * 100)
+        # --- Hash Generation (must match gpu_cfr_trainer.py ENHANCED version) ---
+        # Enhanced hash to match the trainer's diverse hash computation
+        num_active = sum(1 for p in self.player_data if not p.get('is_empty') and 'Fold' not in p.get('status', ''))
+        avg_bet = total_bets / len(self.player_data) if len(self.player_data) > 0 else 0
         
-        # Combine all components into a single hash-like value
-        combined_hash = street_component + player_component + bet_component + pot_component
+        street_component = street * 10000000000
+        player_component = turn_index * 1000000000
+        maxbet_component = int(round(float(max_bet), 2) * 100) * 100000
+        pot_component = int(round(float(effective_pot), 2) * 100) * 10
+        active_component = num_active * 1000000
+        avgbet_component = int(round(float(avg_bet), 2) * 100)
         
-        # Apply the same mixing function as the trainer
-        combined_hash = combined_hash * 2654435761  # Large prime for mixing
+        # Enhanced hash combination matching the trainer
+        combined_hash = (street_component + player_component + maxbet_component + 
+                        pot_component + active_component + avgbet_component)
+        
+        # Apply the same enhanced mixing as the trainer
+        combined_hash = combined_hash * 2654435761  # Large prime
         combined_hash = combined_hash ^ (combined_hash >> 16)  # XOR folding
+        combined_hash = combined_hash * 1664525  # Another prime
+        combined_hash = combined_hash ^ (combined_hash >> 24)  # More folding
         combined_hash = combined_hash & 0x7FFFFFFFFFFFFFFF  # Ensure positive
         
         info_hash = combined_hash
-        state_tuple = (street, turn_index, round(float(max_bet), 2), round(float(effective_pot), 2))
+        state_tuple = (street, turn_index, round(float(max_bet), 2), round(float(effective_pot), 2), num_active, round(float(avg_bet), 2))
         self.logger.info(f"Generated stable info hash: {info_hash} for state {state_tuple}")
 
         # 1. Try to get a precomputed strategy from GPU-trained database using the direct hash
@@ -269,7 +276,10 @@ class PokerBotV2:
         action_map = {
             'action_0': ACTION_FOLD,
             'action_1': ACTION_CALL, # Or Check
-            'action_2': ACTION_RAISE
+            'action_2': ACTION_RAISE, # 33% pot raise
+            'action_3': ACTION_RAISE, # 66% pot raise
+            'action_4': ACTION_RAISE, # 100% pot raise
+            'action_5': ACTION_RAISE  # All-in
         }
         
         # Handle both strategy formats (from JSON and from CFR solver)
@@ -283,20 +293,64 @@ class PokerBotV2:
             if ACTION_CALL in strategy:
                 strategy[ACTION_CHECK] = strategy.pop(ACTION_CALL)
 
+        # For raise actions, combine all raise probabilities and choose sizing
+        total_raise_prob = 0
+        raise_size_probs = {}
+        
+        # Extract individual raise action probabilities
+        for action_key, prob in strategy.items():
+            if action_key.startswith('action_'):
+                action_num = int(action_key.split('_')[1])
+                if action_num >= 2:  # Raise actions (2, 3, 4, 5)
+                    if action_num == 2:
+                        raise_size_probs['small'] = prob  # 33% pot
+                    elif action_num == 3:
+                        raise_size_probs['medium'] = prob  # 66% pot
+                    elif action_num == 4:
+                        raise_size_probs['large'] = prob  # 100% pot
+                    elif action_num == 5:
+                        raise_size_probs['allin'] = prob  # All-in
+                    total_raise_prob += prob
+
+        # Create simplified strategy for action selection
+        simple_strategy = {}
+        if 'action_0' in strategy:
+            simple_strategy[ACTION_FOLD] = strategy['action_0']
+        if 'action_1' in strategy:
+            simple_strategy[ACTION_CALL] = strategy['action_1']
+        if total_raise_prob > 0:
+            simple_strategy[ACTION_RAISE] = total_raise_prob
+
         # Filter strategy to only include available actions
-        available_strategy = {a: p for a, p in strategy.items() if a in available_actions}
+        available_strategy = {a: p for a, p in simple_strategy.items() if a in available_actions}
         if not available_strategy:
-            self.logger.error(f"No valid actions from strategy {strategy} match available actions {available_actions}. Folding.")
+            self.logger.error(f"No valid actions from strategy {simple_strategy} match available actions {available_actions}. Folding.")
             return ACTION_FOLD, 0
 
         best_action = max(available_strategy.items(), key=lambda x: x[1])[0]
-        self.logger.info(f"Bot decision: {best_action} (strategy: {available_strategy})")
+        
+        # Choose raise size based on individual action probabilities
+        chosen_raise_size = "medium"  # default
+        if best_action == ACTION_RAISE and raise_size_probs:
+            chosen_raise_size = max(raise_size_probs.items(), key=lambda x: x[1])[0]
+        
+        self.logger.info(f"Bot decision: {best_action} (strategy: {available_strategy}, raise_size: {chosen_raise_size})")
 
         # 4. Determine amount
         amount = 0
         if best_action == ACTION_RAISE:
-            # Placeholder for raise sizing. A real implementation would have smarter sizing.
-            amount = effective_pot * 0.75 
+            # Choose raise amount based on the selected raise size
+            if chosen_raise_size == 'small':
+                amount = effective_pot * 0.33
+            elif chosen_raise_size == 'medium':
+                amount = effective_pot * 0.66
+            elif chosen_raise_size == 'large':
+                amount = effective_pot * 1.0
+            elif chosen_raise_size == 'allin':
+                my_stack = parse_currency_string(my_player.get('stack', '0'))
+                amount = my_stack
+            else:
+                amount = effective_pot * 0.75  # fallback
         elif best_action == ACTION_CALL:
             amount = parse_currency_string(my_player.get('bet_to_call', '0'))
 

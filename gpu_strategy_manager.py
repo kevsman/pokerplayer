@@ -7,7 +7,7 @@ import os
 logger = logging.getLogger(__name__)
 
 class GPUStrategyManager:
-    def __init__(self, num_actions=3, initial_capacity=1_000_000, dtype=cp.float32):
+    def __init__(self, num_actions=6, initial_capacity=1_000_000, dtype=cp.float32):
         self.num_actions = num_actions
         self.capacity = initial_capacity
         self.dtype = dtype # Store dtype
@@ -86,25 +86,69 @@ class GPUStrategyManager:
 
     def save_strategy_table(self, filename="strategy_table.json"):
         logger.info(f"Saving {self.next_node_index} strategies to {filename}...")
-        avg_strategies = self.get_average_strategies()
-        index_to_hash = {v: k for k, v in self.node_map.items()}
         
-        strategy_dict = {}
-        if os.path.exists(filename):
-            try:
-                with open(filename, 'r') as f:
-                    strategy_dict = json.load(f)
-            except (FileNotFoundError, json.JSONDecodeError):
-                strategy_dict = {}
-
-        for i in range(self.next_node_index):
-            info_hash = index_to_hash.get(i, f"unknown_hash_{i}")
-            strategy = {f"action_{j}": float(prob) for j, prob in enumerate(avg_strategies[i])}
-            strategy_dict[str(info_hash)] = strategy
-            
+        # Use atomic write with temporary file to prevent corruption
+        temp_filename = filename + ".tmp"
+        backup_filename = filename + ".backup"
+        
         try:
-            with open(filename, 'w') as f:
-                json.dump(strategy_dict, f)
+            # Create backup of existing file
+            if os.path.exists(filename):
+                import shutil
+                shutil.copy2(filename, backup_filename)
+                logger.info(f"Created backup: {backup_filename}")
+            
+            avg_strategies = self.get_average_strategies()
+            index_to_hash = {v: k for k, v in self.node_map.items()}
+            
+            # Load existing strategies if any
+            strategy_dict = {}
+            if os.path.exists(filename):
+                try:
+                    with open(filename, 'r') as f:
+                        strategy_dict = json.load(f)
+                        logger.info(f"Loaded {len(strategy_dict)} existing strategies")
+                except (FileNotFoundError, json.JSONDecodeError) as e:
+                    logger.warning(f"Could not load existing strategies: {e}")
+                    strategy_dict = {}
+
+            # Add new strategies with reduced precision to save space
+            new_strategies_count = 0
+            for i in range(self.next_node_index):
+                info_hash = index_to_hash.get(i, f"unknown_hash_{i}")
+                hash_key = str(info_hash)
+                
+                if hash_key not in strategy_dict:  # Only add new strategies
+                    # Round to 4 decimal places to reduce file size and prevent precision issues
+                    strategy = {f"action_{j}": round(float(prob), 4) for j, prob in enumerate(avg_strategies[i])}
+                    strategy_dict[hash_key] = strategy
+                    new_strategies_count += 1
+            
+            logger.info(f"Added {new_strategies_count} new strategies")
+            
+            # Write to temporary file first (atomic operation)
+            with open(temp_filename, 'w') as f:
+                json.dump(strategy_dict, f, separators=(',', ':'))  # Compact format
+            
+            # Only replace original if temp file was written successfully
+            import shutil
+            shutil.move(temp_filename, filename)
+            
             logger.info(f"Successfully saved strategy table with {len(strategy_dict)} total strategies.")
+            
+            # Clean up backup after successful save
+            if os.path.exists(backup_filename):
+                os.remove(backup_filename)
+                
         except Exception as e:
             logger.error(f"Error saving strategy table: {e}")
+            
+            # Restore from backup if something went wrong
+            if os.path.exists(backup_filename):
+                import shutil
+                shutil.move(backup_filename, filename)
+                logger.info("Restored from backup due to save error")
+            
+            # Clean up temp file
+            if os.path.exists(temp_filename):
+                os.remove(temp_filename)

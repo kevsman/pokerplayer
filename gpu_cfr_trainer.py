@@ -39,40 +39,50 @@ class GPUCFRTrainer:
         self.recursion_depth = 0
         self.dtype = dtype # Store dtype
         
-        # Terminal conditions - OPTIMIZED for stability
-        self.max_recursion_depth = 100
-        self.max_actions_per_street = 10  # FURTHER REDUCED: Force faster termination
-        self.max_total_actions = 40      # FURTHER REDUCED: Prevent infinite loops completely
+        # Terminal conditions - EXTREMELY AGGRESSIVE to prevent infinite loops
+        self.max_recursion_depth = 50
+        self.max_actions_per_street = 3   # ONLY 3 actions per street max - ultra aggressive
+        self.max_total_actions = 12       # ONLY 12 total actions - force very quick games
         
         # OPTIMIZATION: Pre-allocate reusable arrays to avoid repeated memory allocation
         self._temp_arrays = {}
 
     def _get_info_state_hashes(self, game_states: Dict, street: int) -> List[int]:
-        """Creates a fast, STABLE hash for the current information state using vectorized operations."""
-        # OPTIMIZATION: Minimize GPU-to-CPU transfers and use vectorized operations
+        """CARD-INDEPENDENT: Creates hashes that match the bot's live game hash generation."""
         current_players = game_states['current_player']
-        max_bets = cp.max(game_states['bets'], axis=1)
+        bets = game_states['bets']
+        active_players = game_states['active_players']
+        
+        # Core betting state (must match poker_bot_v2.py exactly)
+        max_bets = cp.max(bets, axis=1)
         pot_at_start_of_street = game_states['pot']
-        sum_of_current_bets = cp.sum(game_states['bets'], axis=1)
+        sum_of_current_bets = cp.sum(bets, axis=1)
         effective_pots = pot_at_start_of_street + sum_of_current_bets
         
-        # FAST HASH: Use a much simpler deterministic hash that's still stable
-        # Combine the state components into a single large number for hashing
-        # This avoids JSON serialization and string operations entirely
-        street_component = cp.full_like(current_players, street * 1000000000, dtype=cp.int64)
-        player_component = current_players.astype(cp.int64) * 100000000
-        bet_component = (max_bets * 100).astype(cp.int64) * 1000
-        pot_component = (effective_pots * 100).astype(cp.int64)
+        # Enhanced state diversity (card-independent, matches bot)
+        num_active = cp.sum(active_players, axis=1)
+        avg_bet = cp.mean(bets, axis=1)
         
-        # Combine all components into a single hash-like value
-        combined_hash = street_component + player_component + bet_component + pot_component
+        # EXACT MATCH to poker_bot_v2.py hash generation
+        street_component = street * 10000000000
+        player_component = current_players.astype(cp.int64) * 1000000000
+        maxbet_component = (max_bets * 100).astype(cp.int64) * 100000
+        pot_component = (effective_pots * 100).astype(cp.int64) * 10
+        active_component = num_active.astype(cp.int64) * 1000000
+        avgbet_component = (avg_bet * 100).astype(cp.int64)
         
-        # Apply a simple but effective mixing function to avoid collisions
-        combined_hash = combined_hash * 2654435761  # Large prime for mixing
+        # Enhanced hash combination matching the bot exactly
+        combined_hash = (street_component + player_component + maxbet_component + 
+                        pot_component + active_component + avgbet_component)
+        
+        # Apply the same enhanced mixing as the bot
+        combined_hash = combined_hash * 2654435761  # Large prime
         combined_hash = combined_hash ^ (combined_hash >> 16)  # XOR folding
+        combined_hash = combined_hash * 1664525  # Another prime
+        combined_hash = combined_hash ^ (combined_hash >> 24)  # More folding
         combined_hash = combined_hash & 0x7FFFFFFFFFFFFFFF  # Ensure positive
         
-        return combined_hash.get().tolist()  # Single GPU-to-CPU transfer
+        return combined_hash.get().tolist()
 
     def train(self, iterations: int, batch_size: int = 1024):
         """Main training loop for vectorized GPU-accelerated CFR."""
@@ -92,34 +102,105 @@ class GPUCFRTrainer:
             end_time = time.time()
             logger.info(f"Iteration {i+1}/{iterations} completed in {end_time - start_time:.2f}s")
 
-            # OPTIMIZATION: Save less frequently to reduce I/O overhead
-            if (i + 1) % 500 == 0:  # Save every 500 iterations instead of 100
+            # Save less frequently to prevent corruption with large files
+            if (i + 1) % 200 == 0:  # Save every 200 iterations to reduce I/O
                 self.strategy_manager.save_strategy_table()
-                logger.info(f"Strategy table saved at iteration {i+1}")
+                unique_states = len(self.strategy_manager.node_map)
+                logger.info(f"Strategy table saved at iteration {i+1} - {unique_states} unique states encountered so far")
 
         self.strategy_manager.save_strategy_table()
         logger.info("Final strategy table saved.")
 
     def _sample_initial_states_gpu(self, batch_size: int) -> Dict:
-        """Sample a batch of initial game states for training, directly on the GPU."""
+        """
+        ENHANCED: Sample diverse initial game states for maximum strategy exploration.
+        Creates varied stack sizes, positions, and betting patterns to force diversity.
+        """
         hands, boards = self.equity_calculator.deal_hands_and_boards_vectorized(
             num_players=self.num_players, num_games=batch_size
         )
 
+        # DIVERSITY 1: Randomize starting positions (not always UTG first)
+        random_first_player = cp.random.randint(0, self.num_players, size=batch_size, dtype=cp.int32)
+        
+        # DIVERSITY 2: Vary stack sizes dramatically (20BB to 200BB)
+        stack_multipliers = cp.random.uniform(0.5, 5.0, size=(batch_size, self.num_players)).astype(self.dtype)
+        varied_stacks = cp.full((batch_size, self.num_players), self.initial_stack, dtype=self.dtype) * stack_multipliers
+        
+        # DIVERSITY 3: Create different preflop scenarios
+        scenario_type = cp.random.randint(0, 4, size=batch_size)  # 4 different starting scenarios
+        
+        # Scenario 0: Standard UTG start
+        standard_bets = cp.tile(cp.array([self.small_blind, self.big_blind] + [0] * (self.num_players - 2), dtype=self.dtype), (batch_size, 1))
+        standard_pot = cp.full(batch_size, self.small_blind + self.big_blind, dtype=self.dtype)
+        
+        # Scenario 1: Someone already raised preflop (3-bet pot)
+        raised_bets = cp.copy(standard_bets)
+        raise_amount = self.big_blind * 3  # 3BB raise
+        raise_positions = cp.random.randint(2, self.num_players, size=batch_size)  # Random raiser
+        for i in range(batch_size):
+            if scenario_type[i] == 1:
+                raised_bets[i, raise_positions[i]] = raise_amount
+        raised_pot = cp.sum(raised_bets, axis=1)
+        
+        # Scenario 2: Multiple players limped in
+        limped_bets = cp.copy(standard_bets)
+        num_limpers = cp.random.randint(2, 5, size=batch_size)  # 2-4 limpers
+        for i in range(batch_size):
+            if scenario_type[i] == 2:
+                for j in range(2, min(2 + int(num_limpers[i]), self.num_players)):
+                    limped_bets[i, j] = self.big_blind  # Everyone calls
+        limped_pot = cp.sum(limped_bets, axis=1)
+        
+        # Scenario 3: 4-bet pot (very aggressive)
+        fourbet_bets = cp.copy(standard_bets)
+        fourbet_amount = self.big_blind * 12  # 12BB 4-bet
+        fourbet_positions = cp.random.randint(0, self.num_players, size=batch_size)
+        for i in range(batch_size):
+            if scenario_type[i] == 3:
+                fourbet_bets[i, fourbet_positions[i]] = fourbet_amount
+        fourbet_pot = cp.sum(fourbet_bets, axis=1)
+        
+        # Combine scenarios based on scenario_type
+        final_bets = cp.where(scenario_type[:, None] == 0, standard_bets, 
+                     cp.where(scenario_type[:, None] == 1, raised_bets,
+                     cp.where(scenario_type[:, None] == 2, limped_bets, fourbet_bets)))
+        
+        final_pot = cp.where(scenario_type == 0, standard_pot,
+                    cp.where(scenario_type == 1, raised_pot,
+                    cp.where(scenario_type == 2, limped_pot, fourbet_pot)))
+        
+        # DIVERSITY 4: Some players have already acted in complex scenarios
+        has_acted = cp.zeros((batch_size, self.num_players), dtype=cp.bool_)
+        for i in range(batch_size):
+            if scenario_type[i] > 0:  # In raised/limped/4-bet scenarios, mark some as acted
+                num_acted = min(int(scenario_type[i]) + 1, self.num_players - 1)
+                has_acted[i, :num_acted] = True
+        
+        # DIVERSITY 5: Occasionally remove some players (simulate folds)
+        active_players = cp.ones((batch_size, self.num_players), dtype=cp.bool_)
+        fold_probability = 0.2  # 20% chance someone folded
+        should_fold = cp.random.random((batch_size, self.num_players)) < fold_probability
+        # Don't fold SB/BB or current player
+        should_fold[:, 0] = False  # Keep SB
+        should_fold[:, 1] = False  # Keep BB
+        should_fold[cp.arange(batch_size), random_first_player] = False  # Keep current player
+        active_players = active_players & (~should_fold)
+
         return {
-            "pot": cp.full(batch_size, self.small_blind + self.big_blind, dtype=self.dtype),
-            "bets": cp.tile(cp.array([self.small_blind, self.big_blind] + [0] * (self.num_players - 2), dtype=self.dtype), (batch_size, 1)),
-            "active_players": cp.ones((batch_size, self.num_players), dtype=cp.bool_),
-            "player_stacks": cp.full((batch_size, self.num_players), self.initial_stack, dtype=self.dtype),
-            "reach_probs": cp.ones((batch_size, self.num_players), dtype=cp.float32), # Keep reach_probs at float32 for stability
-            "current_player": cp.zeros(batch_size, dtype=cp.int32),
+            "pot": final_pot,
+            "bets": final_bets,
+            "active_players": active_players,
+            "player_stacks": varied_stacks,
+            "reach_probs": cp.ones((batch_size, self.num_players), dtype=cp.float32),
+            "current_player": random_first_player,
             "last_aggressor": cp.full(batch_size, 1, dtype=cp.int32),
-            "has_acted_this_round": cp.zeros((batch_size, self.num_players), dtype=cp.bool_),
+            "has_acted_this_round": has_acted,
             "history_count": cp.zeros(batch_size, dtype=cp.int32),
             "max_history": 100,
             "history_indices": cp.zeros((batch_size, 100), dtype=cp.int32),
             "history_actions": cp.zeros((batch_size, 100), dtype=cp.int32),
-            "history_strategies": cp.zeros((batch_size, 100, 3), dtype=self.dtype),
+            "history_strategies": cp.zeros((batch_size, 100, 6), dtype=self.dtype),
             "hands": hands,
             "board": boards
         }
@@ -168,7 +249,10 @@ class GPUCFRTrainer:
         # Games with 1 or 0 players are not open for betting.
         betting_open[cp.sum(game_states['active_players'], axis=1) <= 1] = False
 
-        for action_count in range(self.max_actions_per_street):
+        # Allow more actions on post-flop streets for realistic play
+        max_actions_this_street = 3 if street == 0 else 6  # 3 for preflop, 6 for post-flop
+        
+        for action_count in range(max_actions_this_street):
             if not cp.any(betting_open):
                 break
 
@@ -188,7 +272,7 @@ class GPUCFRTrainer:
 
             betting_open = self._check_betting_round_status(game_states, betting_open, street)
 
-        if action_count == self.max_actions_per_street - 1 and cp.any(betting_open):
+        if action_count == max_actions_this_street - 1 and cp.any(betting_open):
             logger.warning(f"Street {street} reached max actions limit. {cp.sum(betting_open)} games did not conclude.")
 
         # The pot for the next street is the current pot plus all bets from this street.
@@ -218,7 +302,7 @@ class GPUCFRTrainer:
 
     def _check_betting_round_status(self, game_states: Dict, betting_open: cp.ndarray, street: int) -> cp.ndarray:
         """
-        COMPLETELY REWRITTEN: Simple, robust check for which games have completed their betting round.
+        ULTRA SIMPLE: Just close betting rounds aggressively to prevent infinite loops.
         """
         still_open = cp.copy(betting_open)
         if not cp.any(still_open):
@@ -233,47 +317,27 @@ class GPUCFRTrainer:
         has_acted = game_states['has_acted_this_round'][active_game_indices]
         stacks = game_states['player_stacks'][active_game_indices]
 
-        # CONDITION 1: Only one player left (everyone else folded)
+        # SIMPLE CONDITION 1: Only one player left
         num_active_players = cp.sum(active_players, axis=1)
         one_player_left = (num_active_players <= 1)
 
-        # CONDITION 2: Everyone is all-in (no more betting possible)
-        can_bet = active_players & (stacks > 0.01)  # Players who are active and have chips
-        no_one_can_bet = cp.sum(can_bet, axis=1) <= 1  # 0 or 1 player can bet
-
-        # CONDITION 3: Standard betting round complete
-        # - All players who can act have acted
-        # - All bets are equal among active players
-        all_acted = cp.all(has_acted | (~can_bet), axis=1)
+        # SIMPLE CONDITION 2: Everyone has acted at least once AND bets are reasonably close
+        # This is much more permissive - we don't require exact bet equality
+        all_acted = cp.all(has_acted | (~active_players), axis=1)
         
-        # For bet equality, only consider players who can bet
-        max_bet = cp.max(cp.where(can_bet, bets, -1), axis=1, keepdims=True)
-        bets_equal = cp.all((bets == max_bet) | (~can_bet), axis=1)
+        # SIMPLE CONDITION 3: All-in situation (no one has enough chips to bet)
+        can_bet = active_players & (stacks > self.big_blind * 0.5)
+        no_one_can_bet = cp.sum(can_bet, axis=1) <= 1
+
+        # ULTRA AGGRESSIVE: Close betting if ANY condition is met or if there's been any betting
+        any_betting = cp.sum(bets, axis=1) > 0
         
-        # CONDITION 4: Big blind option for preflop (only if no raises)
-        if street == 0:
-            # Check if there have been any raises above big blind
-            any_raises = cp.max(bets, axis=1) > self.big_blind
-            # If no raises and BB hasn't acted, keep betting open
-            bb_acted = has_acted[:, 1] if has_acted.shape[1] > 1 else cp.ones(len(active_game_indices), dtype=cp.bool_)
-            bb_option_done = any_raises | bb_acted
-        else:
-            bb_option_done = cp.ones(len(active_game_indices), dtype=cp.bool_)
-
-        # CONDITION 5: Force termination for stuck games (CRITICAL FIX)
-        # If total pot is much larger than starting stacks, force end
-        total_committed = cp.sum(bets, axis=1) + game_states['pot'][active_game_indices]
-        starting_stack = self.initial_stack
-        force_end = total_committed > (starting_stack * num_active_players * 0.8)  # 80% of all chips in play
-
-        # Close games that meet any termination condition
-        should_close = one_player_left | no_one_can_bet | (all_acted & bets_equal & bb_option_done) | force_end
+        # Close games that meet ANY condition
+        should_close = one_player_left | all_acted | no_one_can_bet | any_betting
         
         indices_to_close = active_game_indices[should_close]
         still_open[indices_to_close] = False
 
-        return still_open
-        
         return still_open
 
     def _record_history_vectorized(self, game_states: Dict, node_indices: cp.ndarray, action_indices: cp.ndarray, strategies: cp.ndarray, betting_open: cp.ndarray):
@@ -387,11 +451,29 @@ class GPUCFRTrainer:
             )
 
     def _sample_actions_vectorized(self, strategies: cp.ndarray) -> cp.ndarray:
-        """Samples actions for a batch of games based on their strategies."""
+        """
+        ENHANCED: Samples actions with exploration for maximum diversity.
+        Occasionally forces suboptimal actions to explore more game tree branches.
+        """
+        batch_size = strategies.shape[0]
+        
+        # 90% of the time, use normal strategy-based sampling
+        # 10% of the time, force random exploration
+        exploration_probability = 0.1
+        should_explore = cp.random.random(batch_size) < exploration_probability
+        
+        # Normal strategy-based sampling
         cumulative_strategies = cp.cumsum(strategies, axis=1)
-        rand_vals = cp.random.rand(strategies.shape[0], 1)
-        action_indices = cp.sum(cumulative_strategies < rand_vals, axis=1)
-        return action_indices
+        rand_vals = cp.random.rand(batch_size, 1)
+        strategic_actions = cp.sum(cumulative_strategies < rand_vals, axis=1)
+        
+        # Forced exploration: completely random actions
+        random_actions = cp.random.randint(0, strategies.shape[1], size=batch_size)
+        
+        # Choose between strategic and random actions
+        final_actions = cp.where(should_explore, random_actions, strategic_actions)
+        
+        return final_actions
 
     def _find_next_player_vectorized(self, game_states: Dict, active_mask: cp.ndarray) -> Dict:
         """
@@ -422,8 +504,8 @@ class GPUCFRTrainer:
 
     def _update_states_vectorized(self, game_states: Dict, action_indices: cp.ndarray, betting_open: cp.ndarray) -> Dict:
         """
-        FIXED: Updates the game states for active games based on the sampled actions.
-        0: Fold, 1: Call, 2: Raise
+        ENHANCED: Updates the game states for active games based on the sampled actions.
+        6-Action System: 0: Fold, 1: Call, 2: Raise 33% pot, 3: Raise 66% pot, 4: Raise 100% pot, 5: All-in
         """
         active_game_indices = cp.where(betting_open)[0]
         if active_game_indices.size == 0:
@@ -436,14 +518,14 @@ class GPUCFRTrainer:
         # Mark current player as having acted (for all actions)
         game_states['has_acted_this_round'][active_game_indices, current_players] = True
 
-        # HANDLE FOLDS
+        # HANDLE FOLDS (Action 0)
         fold_mask = (action_indices == 0)
         if cp.any(fold_mask):
             player_indices_to_fold = current_players[fold_mask]
             game_indices_to_fold = active_game_indices[fold_mask]
             game_states['active_players'][game_indices_to_fold, player_indices_to_fold] = False
 
-        # HANDLE CALLS
+        # HANDLE CALLS (Action 1)
         call_mask = (action_indices == 1)
         if cp.any(call_mask):
             call_indices = active_game_indices[call_mask]
@@ -451,42 +533,54 @@ class GPUCFRTrainer:
             
             max_bet = cp.max(bets[call_mask], axis=1)
             current_bet = bets[call_mask, call_players]
-            to_call = cp.maximum(0, max_bet - current_bet)  # Ensure non-negative
+            to_call = cp.maximum(0, max_bet - current_bet)
             amount_to_call = cp.minimum(to_call, stacks[call_mask, call_players])
             
             game_states['bets'][call_indices, call_players] += amount_to_call.astype(self.dtype)
             game_states['player_stacks'][call_indices, call_players] -= amount_to_call.astype(self.dtype)
 
-        # HANDLE RAISES - CRITICAL FIX
-        raise_mask = (action_indices == 2)
-        if cp.any(raise_mask):
+        # HANDLE RAISES (Actions 2, 3, 4, 5) - Multiple raise sizes for strategic depth
+        for action_idx in range(2, 6):
+            raise_mask = (action_indices == action_idx)
+            if not cp.any(raise_mask):
+                continue
+                
             raise_indices = active_game_indices[raise_mask]
             raise_players = current_players[raise_mask]
 
             # Update last aggressor
             game_states['last_aggressor'][raise_indices] = raise_players
 
-            # Calculate raise amounts - use a simpler, more stable formula
-            current_bets = bets[raise_mask]
-            max_bet = cp.max(current_bets, axis=1)
-            current_player_bet = current_bets[cp.arange(len(raise_players)), raise_players]
+            # Calculate pot-based raise amounts
+            current_pot = game_states['pot'][raise_indices] + cp.sum(bets[raise_mask], axis=1)
+            max_bet_in_round = cp.max(bets[raise_mask], axis=1)
+            current_player_bet = bets[raise_mask, raise_players]
             
-            # Simple raise: call + minimum raise (1 big blind)
-            to_call = cp.maximum(0, max_bet - current_player_bet)
-            min_raise = self.big_blind
-            total_raise_amount = to_call + min_raise
+            if action_idx == 2:  # 33% pot raise
+                target_bet = max_bet_in_round + (current_pot * 0.33)
+            elif action_idx == 3:  # 66% pot raise  
+                target_bet = max_bet_in_round + (current_pot * 0.66)
+            elif action_idx == 4:  # 100% pot raise
+                target_bet = max_bet_in_round + current_pot
+            else:  # action_idx == 5: All-in
+                target_bet = current_player_bet + stacks[raise_mask, raise_players]
+            
+            # Calculate actual raise amount (difference from current bet to target)
+            raise_amount = cp.maximum(0, target_bet - current_player_bet)
             
             # Don't let them bet more than their stack
             available_stack = stacks[raise_mask, raise_players]
-            actual_raise = cp.minimum(total_raise_amount, available_stack)
+            actual_raise = cp.minimum(raise_amount, available_stack)
+            
+            # Ensure minimum raise of at least 1 big blind
+            actual_raise = cp.maximum(actual_raise, self.big_blind)
+            actual_raise = cp.minimum(actual_raise, available_stack)
             
             game_states['bets'][raise_indices, raise_players] += actual_raise.astype(self.dtype)
             game_states['player_stacks'][raise_indices, raise_players] -= actual_raise.astype(self.dtype)
             
-            # CRITICAL: When someone raises, others need to act again (except the raiser)
-            # Reset has_acted for all players in these games
+            # When someone raises, others need to act again
             game_states['has_acted_this_round'][raise_indices] = False
-            # But keep the raiser marked as having acted
             game_states['has_acted_this_round'][raise_indices, raise_players] = True
 
         # Find next player to act
