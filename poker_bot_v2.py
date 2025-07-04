@@ -237,14 +237,31 @@ class PokerBotV2:
         state_tuple = (street, turn_index, round(float(max_bet), 2), round(float(effective_pot), 2), num_active, round(float(avg_bet), 2))
         self.logger.info(f"Generated stable info hash: {info_hash} for state {state_tuple}")
 
-        # 1. Try to get a precomputed strategy from GPU-trained database using the direct hash
-        strategy = self.strategy_lookup.get_strategy_by_hash(info_hash)
+        # Prepare state components for fuzzy matching fallback
+        state_components = {
+            'street': street,
+            'turn_index': turn_index,
+            'max_bet': round(float(max_bet), 2),
+            'effective_pot': round(float(effective_pot), 2),
+            'num_active': num_active,
+            'avg_bet': round(float(avg_bet), 2)
+        }
+
+        # 1. Try to get a strategy using exact match, then fuzzy matching if needed
+        strategy, match_type = self.strategy_lookup.get_strategy_with_fuzzy_fallback(info_hash, state_components)
         
         if strategy:
-            self.logger.info(f"🎯 Using GPU-trained strategy for hash {info_hash}")
-            self.strategy_stats['gpu_strategies_used'] += 1
+            if match_type == 'exact':
+                self.logger.info(f"🎯 Using exact GPU-trained strategy for hash {info_hash}")
+                self.strategy_stats['gpu_strategies_used'] += 1
+            elif match_type == 'fuzzy':
+                self.logger.info(f"🔍 Using fuzzy-matched GPU-trained strategy for hash {info_hash}")
+                self.strategy_stats['gpu_strategies_used'] += 1
+            elif match_type == 'component':
+                self.logger.info(f"🔧 Using component-matched GPU-trained strategy for hash {info_hash}")
+                self.strategy_stats['gpu_strategies_used'] += 1
         else:
-            # 2. If not found, run a quick CFR solve for this spot
+            # 2. If no match found (exact or fuzzy), run a quick CFR solve for this spot
             self.logger.info(f"🔍 No precomputed strategy found for hash {info_hash}. Running real-time CFR solve.")
             
             player_hole_cards = my_player.get('cards', [])
@@ -282,6 +299,9 @@ class PokerBotV2:
             'action_5': ACTION_RAISE  # All-in
         }
         
+        # Store original strategy for raise size analysis
+        original_strategy = strategy.copy()
+        
         # Handle both strategy formats (from JSON and from CFR solver)
         if any(k in action_map for k in strategy.keys()):
              # Remap action names if they are in 'action_x' format
@@ -297,8 +317,8 @@ class PokerBotV2:
         total_raise_prob = 0
         raise_size_probs = {}
         
-        # Extract individual raise action probabilities
-        for action_key, prob in strategy.items():
+        # Extract individual raise action probabilities from original strategy
+        for action_key, prob in original_strategy.items():
             if action_key.startswith('action_'):
                 action_num = int(action_key.split('_')[1])
                 if action_num >= 2:  # Raise actions (2, 3, 4, 5)
@@ -312,12 +332,12 @@ class PokerBotV2:
                         raise_size_probs['allin'] = prob  # All-in
                     total_raise_prob += prob
 
-        # Create simplified strategy for action selection
+        # Create simplified strategy for action selection using original keys
         simple_strategy = {}
-        if 'action_0' in strategy:
-            simple_strategy[ACTION_FOLD] = strategy['action_0']
-        if 'action_1' in strategy:
-            simple_strategy[ACTION_CALL] = strategy['action_1']
+        if 'action_0' in original_strategy:
+            simple_strategy[ACTION_FOLD] = original_strategy['action_0']
+        if 'action_1' in original_strategy:
+            simple_strategy[ACTION_CALL] = original_strategy['action_1']
         if total_raise_prob > 0:
             simple_strategy[ACTION_RAISE] = total_raise_prob
 
@@ -405,7 +425,7 @@ class PokerBotV2:
         self.start_kill_switch_listener()
         
         # Display enhanced startup message
-        strategy_count = len(self.strategy_lookup.strategies)
+        strategy_count = len(self.strategy_lookup.strategy_table)
         self.logger.info("🚀 PokerBotV2 ULTRA-PERFORMANCE EDITION started!")
         self.logger.info(f"🎯 Armed with {strategy_count:,} GPU-trained strategies")
         self.logger.info("⚡ Ready for optimal poker play. Press Ctrl+Q to stop.")
