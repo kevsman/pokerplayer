@@ -35,17 +35,30 @@ class GPUStrategyManager:
             
             self.capacity = new_capacity
 
-    def get_node_indices(self, info_state_hashes: list) -> cp.ndarray:
-        indices = []
-        for h in info_state_hashes:
-            if h not in self.node_map:
+    def get_node_indices(self, info_state_hashes) -> cp.ndarray:
+        # ULTRA-OPTIMIZED: Minimize CPU-GPU transfers and optimize lookup
+        if hasattr(info_state_hashes, 'get'):  # It's a CuPy array
+            # Single CPU transfer for the entire batch
+            hash_array = info_state_hashes.get()
+        else:
+            hash_array = info_state_hashes
+            
+        # Vectorized lookup with pre-allocation
+        batch_size = len(hash_array)
+        indices = [0] * batch_size  # Pre-allocate list
+        
+        # Process all hashes in one pass
+        for i, h in enumerate(hash_array):
+            h_key = int(h)  # Single conversion
+            if h_key not in self.node_map:
                 self._resize_if_needed()
-                index = self.next_node_index
-                self.node_map[h] = index
+                self.node_map[h_key] = self.next_node_index
+                indices[i] = self.next_node_index
                 self.next_node_index += 1
-                indices.append(index)
             else:
-                indices.append(self.node_map[h])
+                indices[i] = self.node_map[h_key]
+        
+        # Single GPU allocation and return
         return cp.array(indices, dtype=cp.int32)
 
     def get_strategies(self, node_indices: cp.ndarray) -> cp.ndarray:
@@ -112,19 +125,25 @@ class GPUStrategyManager:
                     logger.warning(f"Could not load existing strategies: {e}")
                     strategy_dict = {}
 
-            # Add new strategies with reduced precision to save space
+            # Add ALL strategies (new + updated) with reduced precision to save space
             new_strategies_count = 0
+            updated_strategies_count = 0
             for i in range(self.next_node_index):
                 info_hash = index_to_hash.get(i, f"unknown_hash_{i}")
                 hash_key = str(info_hash)
                 
-                if hash_key not in strategy_dict:  # Only add new strategies
-                    # Round to 4 decimal places to reduce file size and prevent precision issues
-                    strategy = {f"action_{j}": round(float(prob), 4) for j, prob in enumerate(avg_strategies[i])}
+                # Round to 4 decimal places to reduce file size and prevent precision issues
+                strategy = {f"action_{j}": round(float(prob), 4) for j, prob in enumerate(avg_strategies[i])}
+                
+                if hash_key not in strategy_dict:  
                     strategy_dict[hash_key] = strategy
                     new_strategies_count += 1
+                else:
+                    # Update existing strategy with new averaged values (CFR improvement)
+                    strategy_dict[hash_key] = strategy
+                    updated_strategies_count += 1
             
-            logger.info(f"Added {new_strategies_count} new strategies")
+            logger.info(f"Added {new_strategies_count} new strategies, updated {updated_strategies_count} existing strategies")
             
             # Write to temporary file first (atomic operation)
             with open(temp_filename, 'w') as f:

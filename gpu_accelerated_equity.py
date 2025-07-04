@@ -79,7 +79,7 @@ class GPUEquityCalculator:
             logger.warning(f"Failed to pre-allocate GPU memory: {e}")
             self.use_gpu = False
     
-    def deal_hands_and_boards_vectorized(self, num_players: int, num_games: int) -> Tuple[np.ndarray, np.ndarray]:
+    def deal_hands_and_boards_vectorized(self, num_players: int, num_games: int):
         """
         Deals hands and boards for a batch of games in a fully vectorized manner on the GPU.
 

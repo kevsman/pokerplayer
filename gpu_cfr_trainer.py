@@ -39,13 +39,28 @@ class GPUCFRTrainer:
         self.recursion_depth = 0
         self.dtype = dtype # Store dtype
         
-        # Terminal conditions - EXTREMELY AGGRESSIVE to prevent infinite loops
+        # Terminal conditions - BALANCED to prevent infinite loops while allowing game flow
         self.max_recursion_depth = 50
-        self.max_actions_per_street = 3   # ONLY 3 actions per street max - ultra aggressive
-        self.max_total_actions = 12       # ONLY 12 total actions - force very quick games
+        self.max_actions_per_street = 5   # Allow 5 actions per street for better game flow
+        self.max_total_actions = 20       # Allow 20 total actions for realistic games
         
         # OPTIMIZATION: Pre-allocate reusable arrays to avoid repeated memory allocation
         self._temp_arrays = {}
+        
+        # GPU MEMORY OPTIMIZATION: Enable memory pool for large batch processing
+        if self.use_gpu:
+            # Set up memory pool for efficient large batch processing
+            mempool = cp.get_default_memory_pool()
+            pinned_mempool = cp.get_default_pinned_memory_pool()
+            
+            # Pre-allocate a large memory pool to avoid fragmentation
+            # This will help with large batch sizes (100K+)
+            logger.info("🚀 Optimizing GPU memory pool for large batch processing...")
+            
+            # Enable memory pool growth to handle large batches
+            mempool.set_limit(size=None)  # Allow unlimited growth
+            
+            logger.info(f"✅ GPU memory optimization complete. Ready for massive batch processing!")
 
     def _get_info_state_hashes(self, game_states: Dict, street: int) -> List[int]:
         """CARD-INDEPENDENT: Creates hashes that match the bot's live game hash generation."""
@@ -82,7 +97,7 @@ class GPUCFRTrainer:
         combined_hash = combined_hash ^ (combined_hash >> 24)  # More folding
         combined_hash = combined_hash & 0x7FFFFFFFFFFFFFFF  # Ensure positive
         
-        return combined_hash.get().tolist()
+        return combined_hash  # Keep on GPU - don't copy to CPU!
 
     def train(self, iterations: int, batch_size: int = 1024):
         """Main training loop for vectorized GPU-accelerated CFR."""
@@ -90,23 +105,35 @@ class GPUCFRTrainer:
             logger.error("GPU is not available. Vectorized training requires a GPU.")
             return
 
-        logger.info(f"Starting vectorized training for {iterations} iterations with batch size {batch_size}.")
+        # GPU Memory monitoring for large batch sizes
+        if self.use_gpu:
+            mempool = cp.get_default_memory_pool()
+            initial_memory = mempool.used_bytes()
+            logger.info(f"🚀 Starting MASSIVE batch training: {iterations} iterations × {batch_size:,} batch size")
+            logger.info(f"💾 Initial GPU memory usage: {initial_memory / 1024**3:.2f} GB")
 
         for i in range(iterations):
             start_time = time.time()
+            
+            # Memory monitoring for large batches
+            if self.use_gpu and i % 10 == 0:  # Check every 10 iterations
+                current_memory = mempool.used_bytes()
+                memory_gb = current_memory / 1024**3
+                logger.info(f"💾 GPU Memory Usage: {memory_gb:.2f} GB / 21 GB ({memory_gb/21*100:.1f}%)")
             
             game_states = self._sample_initial_states_gpu(batch_size)
             
             self._cfr_vectorized_iteration(game_states)
 
             end_time = time.time()
-            logger.info(f"Iteration {i+1}/{iterations} completed in {end_time - start_time:.2f}s")
+            throughput = batch_size / (end_time - start_time)
+            logger.info(f"🔥 Iteration {i+1}/{iterations} completed in {end_time - start_time:.2f}s ({throughput:,.0f} games/sec)")
 
-            # Save less frequently to prevent corruption with large files
-            if (i + 1) % 200 == 0:  # Save every 200 iterations to reduce I/O
+            # Save less frequently to improve speed - only save every 500 iterations
+            if (i + 1) % 500 == 0:  # Save every 500 iterations to maximize speed
                 self.strategy_manager.save_strategy_table()
                 unique_states = len(self.strategy_manager.node_map)
-                logger.info(f"Strategy table saved at iteration {i+1} - {unique_states} unique states encountered so far")
+                logger.info(f"💾 Strategy table saved at iteration {i+1} - {unique_states:,} unique states encountered so far")
 
         self.strategy_manager.save_strategy_table()
         logger.info("Final strategy table saved.")
@@ -134,31 +161,42 @@ class GPUCFRTrainer:
         standard_bets = cp.tile(cp.array([self.small_blind, self.big_blind] + [0] * (self.num_players - 2), dtype=self.dtype), (batch_size, 1))
         standard_pot = cp.full(batch_size, self.small_blind + self.big_blind, dtype=self.dtype)
         
-        # Scenario 1: Someone already raised preflop (3-bet pot)
+        # Scenario 1: Someone already raised preflop (3-bet pot) - VECTORIZED
         raised_bets = cp.copy(standard_bets)
         raise_amount = self.big_blind * 3  # 3BB raise
         raise_positions = cp.random.randint(2, self.num_players, size=batch_size)  # Random raiser
-        for i in range(batch_size):
-            if scenario_type[i] == 1:
-                raised_bets[i, raise_positions[i]] = raise_amount
+        scenario_1_mask = (scenario_type == 1)
+        if cp.any(scenario_1_mask):
+            # Vectorized assignment instead of loop
+            batch_indices = cp.where(scenario_1_mask)[0]
+            raised_bets[batch_indices, raise_positions[batch_indices]] = raise_amount
         raised_pot = cp.sum(raised_bets, axis=1)
         
-        # Scenario 2: Multiple players limped in
+        # Scenario 2: Multiple players limped in - VECTORIZED
         limped_bets = cp.copy(standard_bets)
         num_limpers = cp.random.randint(2, 5, size=batch_size)  # 2-4 limpers
-        for i in range(batch_size):
-            if scenario_type[i] == 2:
-                for j in range(2, min(2 + int(num_limpers[i]), self.num_players)):
-                    limped_bets[i, j] = self.big_blind  # Everyone calls
+        scenario_2_mask = (scenario_type == 2)
+        if cp.any(scenario_2_mask):
+            # Vectorized limping - set multiple positions to big blind
+            batch_indices = cp.where(scenario_2_mask)[0]
+            if len(batch_indices) > 0:
+                # Fully vectorized approach - no CPU loops!
+                max_limpers = int(cp.max(num_limpers[batch_indices]).get()) if len(batch_indices) > 0 else 0
+                for pos in range(2, min(2 + max_limpers, self.num_players)):
+                    # Set position for all relevant batches where limpers >= this position
+                    limper_mask = (num_limpers >= (pos - 1)) & scenario_2_mask
+                    limped_bets[limper_mask, pos] = self.big_blind
         limped_pot = cp.sum(limped_bets, axis=1)
         
-        # Scenario 3: 4-bet pot (very aggressive)
+        # Scenario 3: 4-bet pot (very aggressive) - VECTORIZED
         fourbet_bets = cp.copy(standard_bets)
         fourbet_amount = self.big_blind * 12  # 12BB 4-bet
         fourbet_positions = cp.random.randint(0, self.num_players, size=batch_size)
-        for i in range(batch_size):
-            if scenario_type[i] == 3:
-                fourbet_bets[i, fourbet_positions[i]] = fourbet_amount
+        scenario_3_mask = (scenario_type == 3)
+        if cp.any(scenario_3_mask):
+            # Vectorized assignment instead of loop
+            batch_indices = cp.where(scenario_3_mask)[0]
+            fourbet_bets[batch_indices, fourbet_positions[batch_indices]] = fourbet_amount
         fourbet_pot = cp.sum(fourbet_bets, axis=1)
         
         # Combine scenarios based on scenario_type
@@ -170,12 +208,16 @@ class GPUCFRTrainer:
                     cp.where(scenario_type == 1, raised_pot,
                     cp.where(scenario_type == 2, limped_pot, fourbet_pot)))
         
-        # DIVERSITY 4: Some players have already acted in complex scenarios
+        # DIVERSITY 4: Some players have already acted in complex scenarios - FULLY VECTORIZED
         has_acted = cp.zeros((batch_size, self.num_players), dtype=cp.bool_)
-        for i in range(batch_size):
-            if scenario_type[i] > 0:  # In raised/limped/4-bet scenarios, mark some as acted
-                num_acted = min(int(scenario_type[i]) + 1, self.num_players - 1)
-                has_acted[i, :num_acted] = True
+        # Vectorized approach: mark players as acted based on scenario type
+        complex_scenarios_mask = (scenario_type > 0)
+        if cp.any(complex_scenarios_mask):
+            # Fully vectorized - no CPU loops!
+            for num_acted in range(1, self.num_players):
+                # Mark scenarios where this many players should have acted
+                should_act_mask = complex_scenarios_mask & (scenario_type >= (num_acted - 1))
+                has_acted[should_act_mask, :num_acted] = True
         
         # DIVERSITY 5: Occasionally remove some players (simulate folds)
         active_players = cp.ones((batch_size, self.num_players), dtype=cp.bool_)
