@@ -11,7 +11,7 @@ import hashlib
 
 from hand_abstraction import HandAbstraction
 from monte_carlo_solver import MonteCarloSolver
-from improved_strategy_lookup import StrategyLookup
+from safe_strategy_lookup import SafeStrategyLookup
 from hand_evaluator import HandEvaluator
 from gpu_accelerated_equity import GPUEquityCalculator  # Use GPU equity calculator
 from html_parser import PokerPageParser
@@ -66,7 +66,7 @@ class PokerBotV2:
         
         # Load the newly generated GPU-trained strategies
         self.logger.info("🚀 Loading GPU-trained strategies...")
-        self.strategy_lookup = StrategyLookup()
+        self.strategy_lookup = SafeStrategyLookup()
         strategy_count = len(self.strategy_lookup.strategy_table)
         self.logger.info(f"✅ Loaded {strategy_count:,} GPU-generated strategies for optimal play!")
         
@@ -317,18 +317,16 @@ class PokerBotV2:
             'avg_bet': round(float(avg_bet), 2)
         }
 
-        # 1. Try to get a strategy using exact match, then fuzzy matching if needed
-        strategy, match_type = self.strategy_lookup.get_strategy_with_fuzzy_fallback(info_hash, state_components)
+        # 1. Try to get a strategy using exact match, then SAFE fuzzy matching if needed
+        strategy, match_type = self.strategy_lookup.get_strategy_with_conservative_fallback(
+            info_hash, state_components, player_hole_cards, community_cards)
         
         if strategy:
             if match_type == 'exact':
                 self.logger.info(f"🎯 Using exact GPU-trained strategy for hash {info_hash}")
                 self.strategy_stats['gpu_strategies_used'] += 1
-            elif match_type == 'fuzzy':
-                self.logger.info(f"🔍 Using fuzzy-matched GPU-trained strategy for hash {info_hash}")
-                self.strategy_stats['gpu_strategies_used'] += 1
-            elif match_type == 'component':
-                self.logger.info(f"🔧 Using component-matched GPU-trained strategy for hash {info_hash}")
+            elif match_type == 'safe_fuzzy':
+                self.logger.info(f"� Using SAFE fuzzy-matched GPU-trained strategy for hash {info_hash}")
                 self.strategy_stats['gpu_strategies_used'] += 1
         else:
             # 2. If no match found (exact or fuzzy), run a fast Monte Carlo solve for this spot
@@ -449,14 +447,35 @@ class PokerBotV2:
             self.logger.error(f"No valid actions from strategy {simple_strategy} match available actions {available_actions}. Folding.")
             return ACTION_FOLD, 0
 
-        best_action = max(available_strategy.items(), key=lambda x: x[1])[0]
+        # FIXED: Use probabilistic action selection instead of always picking max
+        # This allows the bot to raise when the strategy suggests it, even if not the highest probability
+        import random
+        
+        # Normalize probabilities to ensure they sum to 1.0
+        total_prob = sum(available_strategy.values())
+        if total_prob > 0:
+            normalized_strategy = {a: p/total_prob for a, p in available_strategy.items()}
+        else:
+            # Fallback to equal probabilities
+            normalized_strategy = {a: 1.0/len(available_strategy) for a in available_strategy}
+        
+        # Sample action based on probabilities
+        rand_val = random.random()
+        cumulative_prob = 0.0
+        best_action = list(available_strategy.keys())[0]  # fallback
+        
+        for action, prob in normalized_strategy.items():
+            cumulative_prob += prob
+            if rand_val <= cumulative_prob:
+                best_action = action
+                break
         
         # Choose raise size based on individual action probabilities
         chosen_raise_size = "medium"  # default
         if best_action == ACTION_RAISE and raise_size_probs:
             chosen_raise_size = max(raise_size_probs.items(), key=lambda x: x[1])[0]
         
-        self.logger.info(f"Bot decision: {best_action} (strategy: {available_strategy}, raise_size: {chosen_raise_size})")
+        self.logger.info(f"Bot decision: {best_action} (probabilistic selection from strategy: {available_strategy}, raise_size: {chosen_raise_size})")
 
         # 4. Determine amount
         amount = 0

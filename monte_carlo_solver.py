@@ -35,10 +35,17 @@ class MonteCarloSolver:
         action_scores = {action: 0.0 for action in actions}
         
         # Calculate hand equity once for efficiency
-        win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
+        win_prob, tie_prob, lose_prob = self.equity_calculator.calculate_equity_monte_carlo(
             [player_hole_cards], community_cards, None, 
             num_simulations=50, num_opponents=num_opponents
         )
+        
+        # EMERGENCY FIX: Detect broken equity calculation and use fallback
+        total_prob = win_prob + tie_prob + lose_prob  # Check if probabilities sum properly
+        if total_prob < 0.8 or total_prob > 1.2 or win_prob < 0:
+            self.logger.warning(f"🚨 Detected broken equity calculation (total={total_prob:.3f}, win={win_prob:.3f}). Using fallback hand strength.")
+            win_prob = self._simple_hand_strength_estimate(player_hole_cards, community_cards, stage)
+            self.logger.info(f"🔧 Fallback hand strength: {win_prob:.3f}")
         
         # Hand strength categories for better decision making  
         # Adjust thresholds based on stage (river is more decisive)
@@ -255,3 +262,69 @@ class MonteCarloSolver:
             strategy[action] = max(score, 0.001)  # Lower minimum to preserve ratios
         
         return strategy
+
+    def _simple_hand_strength_estimate(self, hole_cards, community_cards, stage):
+        """
+        Simple hand strength estimate without complex equity calculations.
+        This is a fallback for when the main equity calculator is broken.
+        """
+        if not hole_cards or len(hole_cards) != 2:
+            return 0.3
+        
+        # Extract ranks and suits
+        def parse_card(card):
+            if len(card) >= 2:
+                if card.startswith('10'):
+                    return '10', card[-1]
+                else:
+                    return card[:-1], card[-1]
+            return card[0], card[1] if len(card) > 1 else ''
+        
+        rank1, suit1 = parse_card(hole_cards[0])
+        rank2, suit2 = parse_card(hole_cards[1])
+        
+        # Normalize ranks
+        rank_values = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, 
+                       '9': 9, '10': 10, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
+        
+        val1 = rank_values.get(rank1, 2)
+        val2 = rank_values.get(rank2, 2)
+        
+        # Pocket pairs
+        if val1 == val2:
+            if val1 >= 13:  # AA, KK
+                return 0.85 if stage == 'preflop' else 0.75
+            elif val1 >= 11:  # QQ, JJ  
+                return 0.80 if stage == 'preflop' else 0.70
+            elif val1 >= 8:   # TT, 99, 88
+                return 0.70 if stage == 'preflop' else 0.60
+            else:
+                return 0.55 if stage == 'preflop' else 0.45
+        
+        # High cards
+        max_val = max(val1, val2)
+        min_val = min(val1, val2)
+        
+        if max_val == 14:  # Ace
+            if min_val >= 13:  # AK
+                return 0.70 if stage == 'preflop' else 0.55
+            elif min_val >= 11:  # AQ, AJ
+                return 0.65 if stage == 'preflop' else 0.50
+            elif min_val >= 9:   # AT, A9
+                return 0.55 if stage == 'preflop' else 0.45
+            else:  # Weak ace
+                return 0.45 if stage == 'preflop' else 0.35
+        
+        if max_val >= 13:  # King high
+            if min_val >= 12:  # KQ
+                return 0.60 if stage == 'preflop' else 0.45
+            elif min_val >= 10:  # KJ, KT
+                return 0.55 if stage == 'preflop' else 0.40
+            else:
+                return 0.45 if stage == 'preflop' else 0.30
+        
+        # Lower cards
+        if max_val >= 11:  # Queen, Jack high
+            return 0.45 if stage == 'preflop' else 0.30
+        else:
+            return 0.30 if stage == 'preflop' else 0.20

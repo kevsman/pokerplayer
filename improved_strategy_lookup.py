@@ -144,14 +144,24 @@ class StrategyLookup:
             # Use the most similar strategy if it's reasonably similar
             best_hash, best_strategy, similarity_score = similar_strategies[0]
             
-            # IMPROVED: More reasonable threshold (≥ 65% bit match)
+            # IMPROVED: Adaptive threshold based on scenario context
             similarity_percentage = (similarity_score / 64) * 100
             
-            if similarity_score >= 42:  # At least 65% of 64 bits must match
+            # Higher threshold for river scenarios (need 75% similarity)
+            min_similarity = 48 if state_components and state_components.get('street') == 3 else 42  # 75% for river, 65% for others
+            
+            if similarity_score >= min_similarity:
+                # Additional sanity check: reject extremely aggressive strategies on river with low similarity
+                if (state_components and state_components.get('street') == 3 and 
+                    similarity_score < 48 and self._is_extremely_aggressive_strategy(best_strategy)):
+                    logger.warning(f"🚨 Rejecting aggressive fuzzy match on river: similarity {similarity_percentage:.1f}% too low for aggressive strategy")
+                    return None, None
+                
                 logger.info(f"🔄 Using fuzzy match: hash {best_hash} (similarity: {similarity_score}/64 bits = {similarity_percentage:.1f}%)")
                 return best_strategy, 'fuzzy'
             else:
-                logger.info(f"❌ Rejecting fuzzy match: similarity {similarity_score}/64 bits = {similarity_percentage:.1f}% too low (need ≥65%)")
+                required_pct = 75 if state_components and state_components.get('street') == 3 else 65
+                logger.info(f"❌ Rejecting fuzzy match: similarity {similarity_score}/64 bits = {similarity_percentage:.1f}% too low (need ≥{required_pct}%)")
         
         # Try component-wise fuzzy matching if we have state components
         if state_components:
@@ -240,3 +250,31 @@ class StrategyLookup:
                 logger.info(f"❌ Rejecting component match: score {score} too low (need ≥22)")
         
         return None
+
+    def _is_extremely_aggressive_strategy(self, strategy):
+        """
+        Detect extremely aggressive strategies that should be rejected on river with weak hands.
+        
+        Args:
+            strategy (dict): Strategy dictionary with action probabilities
+            
+        Returns:
+            bool: True if strategy is extremely aggressive (>90% all-in or >80% total raise)
+        """
+        if not strategy:
+            return False
+        
+        # Check for action_5 (all-in) probability
+        allin_prob = strategy.get('action_5', 0.0)
+        if allin_prob > 0.9:  # >90% all-in is extremely aggressive
+            return True
+        
+        # Check total raise probability (action_2 + action_3 + action_4 + action_5)
+        total_raise_prob = 0
+        for action_key in ['action_2', 'action_3', 'action_4', 'action_5']:
+            total_raise_prob += strategy.get(action_key, 0.0)
+        
+        if total_raise_prob > 0.8:  # >80% total raise is very aggressive
+            return True
+        
+        return False
