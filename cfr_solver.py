@@ -40,10 +40,10 @@ class CFRSolver:
 
             # Estimate equity for each action with proper poker logic
             if 'raise' in actions:
-                # Calculate win probability first
+                # Calculate win probability first - REDUCED for speed
                 win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
                     [player_hole_cards], community_cards, None, 
-                    num_simulations=500, num_opponents=len(opponent_hands)
+                    num_simulations=100, num_opponents=len(opponent_hands)  # Reduced from 500 to 100
                 )
                 
                 # Model opponent response based on hand strength and pot odds
@@ -67,13 +67,13 @@ class CFRSolver:
 
             if 'call' in actions:
                 win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
-                    [player_hole_cards], community_cards, None, num_simulations=500, num_opponents=len(opponent_hands)
+                    [player_hole_cards], community_cards, None, num_simulations=100, num_opponents=len(opponent_hands)  # Reduced from 500
                 )
                 action_values['call'] += win_prob * pot_size
 
             if 'check' in actions:
                 win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
-                    [player_hole_cards], community_cards, None, num_simulations=500, num_opponents=len(opponent_hands)
+                    [player_hole_cards], community_cards, None, num_simulations=100, num_opponents=len(opponent_hands)  # Reduced from 500
                 )
                 action_values['check'] += win_prob * pot_size
 

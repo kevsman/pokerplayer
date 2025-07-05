@@ -13,7 +13,7 @@ from hand_abstraction import HandAbstraction
 from cfr_solver import CFRSolver
 from strategy_lookup import StrategyLookup
 from hand_evaluator import HandEvaluator
-from equity_calculator import EquityCalculator
+from gpu_accelerated_equity import GPUEquityCalculator  # Use GPU equity calculator
 from html_parser import PokerPageParser
 from ui_controller import UIController
 from decision_engine import ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE
@@ -61,7 +61,7 @@ class PokerBotV2:
         self.parser = PokerPageParser()
         self.ui_controller = UIController()
         self.hand_evaluator = HandEvaluator()
-        self.equity_calculator = EquityCalculator()
+        self.equity_calculator = GPUEquityCalculator(use_gpu=True)  # Use GPU equity calculator
         self.abstraction = HandAbstraction(self.hand_evaluator, self.equity_calculator)
         
         # Load the newly generated GPU-trained strategies
@@ -181,12 +181,14 @@ class PokerBotV2:
         if community_cards:
             community_str = ', '.join(community_cards)
             self.logger.info(f"🃏 Community Cards: {community_str}")
-            self.logger.info(f"📊 Game Stage: {stage_name.title()}")
 
         # --- State Extraction for Hashing ---
         stage_map = {'preflop': 0, 'flop': 1, 'turn': 2, 'river': 3}
         stage_name = self.table_data.get('game_stage', 'preflop').lower()
         street = stage_map.get(stage_name, 0)
+        
+        # Log game stage after defining stage_name
+        self.logger.info(f"📊 Game Stage: {stage_name.title()}")
 
         # --- RELATIVE TURN INDEX CALCULATION (Critical for hash matching) ---
         # The strategy is stored based on the order of action, not the seat number.
@@ -300,7 +302,7 @@ class PokerBotV2:
                 self.strategy_stats['gpu_strategies_used'] += 1
         else:
             # 2. If no match found (exact or fuzzy), run a quick CFR solve for this spot
-            self.logger.info(f"🔍 No precomputed strategy found for hash {info_hash}. Running real-time CFR solve.")
+            self.logger.info(f"🔍 No precomputed strategy found for hash {info_hash}. Running FAST GPU-accelerated CFR solve.")
             
             player_hole_cards = my_player.get('cards', [])
             if not player_hole_cards:
@@ -311,8 +313,11 @@ class PokerBotV2:
             actions = my_player.get('available_actions', [ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE])
             num_opponents = sum(1 for p in self.player_data if not p.get('is_my_player', False) and not p.get('is_empty', False))
 
-            strategy = self.cfr_solver.solve(player_hole_cards, community_cards, effective_pot, actions, stage_name, num_opponents)
-            self.logger.info(f"🧠 CFR computed strategy: {strategy}")
+            # Use much fewer iterations for real-time performance with GPU acceleration
+            start_cfr_time = time.time()
+            strategy = self.cfr_solver.solve(player_hole_cards, community_cards, effective_pot, actions, stage_name, num_opponents, iterations=100)
+            cfr_time = time.time() - start_cfr_time
+            self.logger.info(f"🧠 CFR computed strategy in {cfr_time:.2f}s: {strategy}")
             self.strategy_stats['cfr_fallbacks_used'] += 1
         
         # Update total decisions and log stats periodically
@@ -342,14 +347,26 @@ class PokerBotV2:
         
         # Handle both strategy formats (from JSON and from CFR solver)
         if any(k in action_map for k in strategy.keys()):
-             # Remap action names if they are in 'action_x' format
+            # Remap action names if they are in 'action_x' format
             strategy = {action_map.get(k, k): v for k, v in strategy.items()}
-
-        # Ensure CHECK is handled correctly if CALL is not available
-        available_actions = my_player.get('available_actions', [])
-        if ACTION_CHECK in available_actions and ACTION_CALL not in available_actions:
-            if ACTION_CALL in strategy:
-                strategy[ACTION_CHECK] = strategy.pop(ACTION_CALL)
+        else:
+            # Handle CFR solver format - convert action names to our constants
+            cfr_action_map = {
+                'fold': ACTION_FOLD,
+                'check': ACTION_CHECK,
+                'call': ACTION_CALL,
+                'bet': ACTION_RAISE,
+                'raise': ACTION_RAISE
+            }
+            # Convert CFR format to our action constants
+            converted_strategy = {}
+            for action_name, prob in strategy.items():
+                mapped_action = cfr_action_map.get(action_name.lower(), action_name)
+                if mapped_action in converted_strategy:
+                    converted_strategy[mapped_action] += prob  # Combine probabilities for same action
+                else:
+                    converted_strategy[mapped_action] = prob
+            strategy = converted_strategy
 
         # For raise actions, combine all raise probabilities and choose sizing
         total_raise_prob = 0
@@ -370,14 +387,31 @@ class PokerBotV2:
                         raise_size_probs['allin'] = prob  # All-in
                     total_raise_prob += prob
 
-        # Create simplified strategy for action selection using original keys
+        # Create simplified strategy for action selection
         simple_strategy = {}
+        
+        # Handle precomputed strategy format (action_0, action_1, etc.)
         if 'action_0' in original_strategy:
-            simple_strategy[ACTION_FOLD] = original_strategy['action_0']
-        if 'action_1' in original_strategy:
-            simple_strategy[ACTION_CALL] = original_strategy['action_1']
-        if total_raise_prob > 0:
-            simple_strategy[ACTION_RAISE] = total_raise_prob
+            if 'action_0' in original_strategy:
+                simple_strategy[ACTION_FOLD] = original_strategy['action_0']
+            if 'action_1' in original_strategy:
+                simple_strategy[ACTION_CALL] = original_strategy['action_1']
+            if total_raise_prob > 0:
+                simple_strategy[ACTION_RAISE] = total_raise_prob
+        else:
+            # Handle CFR solver format (fold, check, call, bet, raise)
+            simple_strategy = strategy.copy()  # Use the converted strategy directly
+
+        # Ensure CHECK is handled correctly if CALL is not available
+        available_actions = my_player.get('available_actions', [])
+        if ACTION_CHECK in available_actions and ACTION_CALL not in available_actions:
+            if ACTION_CALL in simple_strategy:
+                simple_strategy[ACTION_CHECK] = simple_strategy.pop(ACTION_CALL)
+        
+        # Also handle the reverse case
+        if ACTION_CALL in available_actions and ACTION_CHECK not in available_actions:
+            if ACTION_CHECK in simple_strategy:
+                simple_strategy[ACTION_CALL] = simple_strategy.pop(ACTION_CHECK)
 
         # Filter strategy to only include available actions
         available_strategy = {a: p for a, p in simple_strategy.items() if a in available_actions}
@@ -529,11 +563,26 @@ if __name__ == "__main__":
     try:
         bot = PokerBotV2()
         
-        # --- TESTING FROM FILE ---
-        # To run a test, uncomment the following lines and provide the path to your HTML file.
-        # Make sure to comment out or skip the main_loop if you are just testing.
-        test_file_path = 'examples/preflop_my_turn.html'
-        bot.test_from_file(test_file_path)
+        # --- TESTING FROM MULTIPLE FILES ---
+        # Test different scenarios to verify decision-making
+        test_files = [
+            'examples/preflop_my_turn.html',
+            'examples/flop_my_turn_check.html',
+        ]
+        
+        for test_file in test_files:
+            try:
+                logger.info(f"\n{'='*60}")
+                logger.info(f"🎯 TESTING SCENARIO: {test_file}")
+                logger.info(f"{'='*60}")
+                bot.test_from_file(test_file)
+            except Exception as e:
+                logger.error(f"Error testing {test_file}: {e}")
+                continue  # Continue with next test
+        
+        logger.info(f"\n{'='*60}")
+        logger.info("🏁 ALL TESTS COMPLETED")
+        logger.info(f"{'='*60}")
         
         # --- NORMAL EXECUTION ---
         # if not bot.ui_controller.positions:

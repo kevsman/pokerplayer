@@ -139,13 +139,17 @@ class StrategyLookup:
         similar_strategies = self.get_similar_strategies(info_hash, max_candidates=20)
         
         if similar_strategies:
-            # Use the most similar strategy
+            # Use the most similar strategy only if it's very similar
             best_hash, best_strategy, similarity_score = similar_strategies[0]
             
-            # Only use fuzzy match if similarity is reasonably high (> 50% bit match)
-            if similarity_score > 32:  # More than 50% of 64 bits match
-                logger.info(f"🔄 Using fuzzy match: hash {best_hash} (similarity: {similarity_score}/64 bits)")
+            # MUCH STRICTER: Only use fuzzy match if similarity is very high (> 75% bit match)
+            similarity_percentage = (similarity_score / 64) * 100
+            
+            if similarity_score >= 48:  # At least 75% of 64 bits must match
+                logger.info(f"🔄 Using fuzzy match: hash {best_hash} (similarity: {similarity_score}/64 bits = {similarity_percentage:.1f}%)")
                 return best_strategy, 'fuzzy'
+            else:
+                logger.info(f"❌ Rejecting fuzzy match: similarity {similarity_score}/64 bits = {similarity_percentage:.1f}% too low (need ≥75%)")
         
         # Try component-wise fuzzy matching if we have state components
         if state_components:
@@ -157,7 +161,7 @@ class StrategyLookup:
     
     def _get_strategy_by_components(self, state_components: dict):
         """
-        Find strategies with similar state components (street, position, pot size ranges).
+        Find strategies with similar state components with STRICT matching for reliable decisions.
         
         Args:
             state_components (dict): Dictionary with 'street', 'turn_index', 'pot_range', etc.
@@ -173,40 +177,57 @@ class StrategyLookup:
         target_pot = state_components.get('effective_pot', 0)
         target_players = state_components.get('num_active', 6)
         
-        # Look for strategies from similar game states
+        # STRICT COMPONENT MATCHING: Only accept very similar game states
         candidates = []
         
-        for hash_key, strategy in list(self.strategy_table.items())[:5000]:  # Sample for performance
-            # Reverse engineer components from hash (approximate)
-            # This is a simplified reverse engineering - in practice you'd want to store components
+        # For preflop heads-up (most common case), be very strict
+        is_preflop_heads_up = (target_street == 0 and target_players == 2)
+        
+        for hash_key, strategy in list(self.strategy_table.items())[:10000]:  # Increased sample for better matches
             try:
-                # Extract street from hash (first component)
+                # Reverse engineer components from hash (enhanced precision)
                 estimated_street = (hash_key // 10000000000) % 10
                 estimated_position = (hash_key // 1000000000) % 10
+                estimated_players = ((hash_key // 1000000) % 1000) // 100  # Extract player count more precisely
                 
-                # Score based on component similarity
+                # STRICT SCORING: All critical components must match for heads-up preflop
                 score = 0
+                
+                # Street must match exactly for reliable strategy
                 if estimated_street == target_street:
-                    score += 10  # Street match is very important
-                elif abs(estimated_street - target_street) <= 1:
-                    score += 5   # Adjacent streets get partial credit
+                    score += 20  # Street match is CRITICAL
+                else:
+                    continue  # Skip if street doesn't match
                 
-                if estimated_position == target_position:
-                    score += 5   # Position match is important
-                elif abs(estimated_position - target_position) <= 1:
-                    score += 2   # Adjacent positions get partial credit
+                # For heads-up preflop, position must match exactly
+                if is_preflop_heads_up:
+                    if estimated_position == target_position and abs(estimated_players - target_players) <= 1:
+                        score += 15  # Exact position + player count match
+                    else:
+                        continue  # Skip if position/player count doesn't match in heads-up
+                else:
+                    # For other situations, allow some position flexibility
+                    if estimated_position == target_position:
+                        score += 10
+                    elif abs(estimated_position - target_position) <= 1:
+                        score += 5
                 
-                if score >= 10:  # Require at least exact street match
+                # Only accept high-scoring matches
+                if score >= 30:  # Much stricter threshold
                     candidates.append((hash_key, strategy, score))
                     
             except:
                 continue  # Skip if hash parsing fails
         
         if candidates:
-            # Sort by score and return best match
+            # Sort by score and return best match only if score is very high
             candidates.sort(key=lambda x: x[2], reverse=True)
             best_hash, best_strategy, score = candidates[0]
-            logger.info(f"🔄 Using component-wise match: hash {best_hash} (score: {score})")
-            return best_strategy
+            
+            if score >= 35:  # Very strict threshold for component matching
+                logger.info(f"� Using strict component match: hash {best_hash} (score: {score}/35+)")
+                return best_strategy
+            else:
+                logger.info(f"❌ Rejecting component match: score {score} too low (need ≥35)")
         
         return None
