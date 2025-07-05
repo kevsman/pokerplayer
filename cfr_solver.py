@@ -4,6 +4,7 @@ Implements simple Counterfactual Regret Minimization solver using abstraction.
 """
 import random
 import logging
+import time
 from hand_evaluator import HandEvaluator
 from equity_calculator import EquityCalculator
 from hand_abstraction import HandAbstraction
@@ -17,15 +18,21 @@ class CFRSolver:
         self.equity_calculator = equity_calculator
         self.logger = logger_instance if logger_instance else logger
 
-    def solve(self, player_hole_cards, community_cards, pot_size, actions, stage, num_opponents=2, iterations=500):
+    def solve(self, player_hole_cards, community_cards, pot_size, actions, stage, num_opponents=2, iterations=25, max_time_seconds=1.5):
         """
         A simplified solver that uses Monte Carlo simulation to estimate action values.
         This is not a full CFR implementation but a functional placeholder.
-        Enhanced with higher simulation counts for better accuracy.
+        Optimized for ultra-fast live play with reduced iterations, simulations, and time limit.
         """
+        start_time = time.time()
         action_values = {action: 0.0 for action in actions}
 
-        for _ in range(iterations):
+        for iteration in range(iterations):
+            # Check time limit every 10 iterations
+            if iteration % 10 == 0 and time.time() - start_time > max_time_seconds:
+                self.logger.debug(f"CFR solver hit time limit of {max_time_seconds}s after {iteration} iterations")
+                break
+                
             # Simulate multiple opponent hands
             opponent_hands = []
             deck = self.equity_calculator.all_cards[:]
@@ -38,14 +45,18 @@ class CFRSolver:
                     opponent_hands.append(opponent_hand)
                     deck = [c for c in deck if c not in opponent_hand]
 
-            # Estimate equity for each action with proper poker logic
+            # Calculate equity once per iteration for efficiency
+            win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
+                [player_hole_cards], community_cards, None, 
+                num_simulations=25, num_opponents=len(opponent_hands)  # Ultra-fast for live play
+            )
+            
+            # Estimate value for each action using the same equity calculation
             if 'raise' in actions:
-                # Calculate win probability first - REDUCED for speed
-                win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
-                    [player_hole_cards], community_cards, None, 
-                    num_simulations=100, num_opponents=len(opponent_hands)  # Reduced from 500 to 100
-                )
-                
+                # Model opponent response based on hand strength and pot odds
+                pot_odds = pot_size / (pot_size * 2)  # Simplified pot odds after raise
+            # Estimate value for each action using the same equity calculation
+            if 'raise' in actions:
                 # Model opponent response based on hand strength and pot odds
                 pot_odds = pot_size / (pot_size * 2)  # Simplified pot odds after raise
                 
@@ -66,15 +77,9 @@ class CFRSolver:
                     action_values['raise'] += win_prob * (pot_size * 2) - pot_size  # Account for our bet
 
             if 'call' in actions:
-                win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
-                    [player_hole_cards], community_cards, None, num_simulations=100, num_opponents=len(opponent_hands)  # Reduced from 500
-                )
                 action_values['call'] += win_prob * pot_size
 
             if 'check' in actions:
-                win_prob, _, _ = self.equity_calculator.calculate_equity_monte_carlo(
-                    [player_hole_cards], community_cards, None, num_simulations=100, num_opponents=len(opponent_hands)  # Reduced from 500
-                )
                 action_values['check'] += win_prob * pot_size
 
             # Fold has an EV of 0, so we don't add to it.

@@ -1,6 +1,6 @@
 """
 poker_bot_v2.py
-A next-generation PokerBot using abstraction, CFR-based solver, and strategy lookup.
+A next-generation PokerBot using abstraction, Monte Carlo solver, and strategy lookup.
 """
 import sys
 import time
@@ -10,8 +10,8 @@ import json
 import hashlib
 
 from hand_abstraction import HandAbstraction
-from cfr_solver import CFRSolver
-from strategy_lookup import StrategyLookup
+from monte_carlo_solver import MonteCarloSolver
+from improved_strategy_lookup import StrategyLookup
 from hand_evaluator import HandEvaluator
 from gpu_accelerated_equity import GPUEquityCalculator  # Use GPU equity calculator
 from html_parser import PokerPageParser
@@ -79,7 +79,7 @@ class PokerBotV2:
         else:
             self.logger.warning(f"⚠️  Limited strategies ({strategy_count}). Consider running train_cfr.py for better performance.")
         
-        self.cfr_solver = CFRSolver(self.abstraction, self.hand_evaluator, self.equity_calculator, logger_instance=self.logger)
+        self.monte_carlo_solver = MonteCarloSolver(self.abstraction, self.hand_evaluator, self.equity_calculator, logger_instance=self.logger)
 
         self.table_data = {}
         self.player_data = []
@@ -90,7 +90,7 @@ class PokerBotV2:
         # Strategy utilization tracking
         self.strategy_stats = {
             'gpu_strategies_used': 0,
-            'cfr_fallbacks_used': 0,
+            'monte_carlo_fallbacks_used': 0,
             'total_decisions': 0
         }
 
@@ -156,23 +156,53 @@ class PokerBotV2:
             # Add basic hand description for better understanding
             if len(player_hole_cards) == 2:
                 card1, card2 = player_hole_cards[0], player_hole_cards[1]
-                # Extract ranks and suits
-                rank1, suit1 = card1[:-1], card1[-1]
-                rank2, suit2 = card2[:-1], card2[-1]
+                # Extract ranks and suits - handle both single character and multi-character ranks
+                if len(card1) >= 2:
+                    if card1[-2:] in ['10']:  # Handle '10' specially
+                        rank1, suit1 = '10', card1[-1]
+                    else:
+                        rank1, suit1 = card1[:-1], card1[-1]
+                else:
+                    rank1, suit1 = card1[0], card1[1] if len(card1) > 1 else ''
+                
+                if len(card2) >= 2:
+                    if card2[-2:] in ['10']:  # Handle '10' specially
+                        rank2, suit2 = '10', card2[-1]
+                    else:
+                        rank2, suit2 = card2[:-1], card2[-1]
+                else:
+                    rank2, suit2 = card2[0], card2[1] if len(card2) > 1 else ''
+                
+                # Normalize ranks (convert '10' to 'T' for comparison)
+                def normalize_rank(rank):
+                    return 'T' if rank == '10' else rank
+                
+                norm_rank1 = normalize_rank(rank1)
+                norm_rank2 = normalize_rank(rank2)
                 
                 # Determine if suited or offsuit
                 suited = "suited" if suit1 == suit2 else "offsuit"
                 
                 # Check for pocket pair
-                if rank1 == rank2:
-                    hand_desc = f"Pocket {rank1}s"
+                if norm_rank1 == norm_rank2:
+                    display_rank = rank1 if rank1 != '10' else 'T'
+                    hand_desc = f"Pocket {display_rank}s"
                 else:
                     # Sort ranks by strength for consistent description
                     rank_order = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
-                    if rank_order.index(rank1) > rank_order.index(rank2):
-                        hand_desc = f"{rank1}{rank2} {suited}"
-                    else:
-                        hand_desc = f"{rank2}{rank1} {suited}"
+                    try:
+                        if rank_order.index(norm_rank1) > rank_order.index(norm_rank2):
+                            display_rank1 = rank1 if rank1 != '10' else 'T'
+                            display_rank2 = rank2 if rank2 != '10' else 'T'
+                            hand_desc = f"{display_rank1}{display_rank2} {suited}"
+                        else:
+                            display_rank1 = rank1 if rank1 != '10' else 'T'
+                            display_rank2 = rank2 if rank2 != '10' else 'T'
+                            hand_desc = f"{display_rank2}{display_rank1} {suited}"
+                    except ValueError as e:
+                        # Fallback if rank parsing fails
+                        self.logger.warning(f"Could not parse card ranks '{rank1}', '{rank2}': {e}")
+                        hand_desc = f"{card1} {card2} (raw)"
                 
                 self.logger.info(f"📝 Hand Type: {hand_desc}")
         else:
@@ -301,8 +331,8 @@ class PokerBotV2:
                 self.logger.info(f"🔧 Using component-matched GPU-trained strategy for hash {info_hash}")
                 self.strategy_stats['gpu_strategies_used'] += 1
         else:
-            # 2. If no match found (exact or fuzzy), run a quick CFR solve for this spot
-            self.logger.info(f"🔍 No precomputed strategy found for hash {info_hash}. Running FAST GPU-accelerated CFR solve.")
+            # 2. If no match found (exact or fuzzy), run a fast Monte Carlo solve for this spot
+            self.logger.info(f"🔍 No precomputed strategy found for hash {info_hash}. Running FAST Monte Carlo solve.")
             
             player_hole_cards = my_player.get('cards', [])
             if not player_hole_cards:
@@ -313,18 +343,18 @@ class PokerBotV2:
             actions = my_player.get('available_actions', [ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE])
             num_opponents = sum(1 for p in self.player_data if not p.get('is_my_player', False) and not p.get('is_empty', False))
 
-            # Use much fewer iterations for real-time performance with GPU acceleration
-            start_cfr_time = time.time()
-            strategy = self.cfr_solver.solve(player_hole_cards, community_cards, effective_pot, actions, stage_name, num_opponents, iterations=100)
-            cfr_time = time.time() - start_cfr_time
-            self.logger.info(f"🧠 CFR computed strategy in {cfr_time:.2f}s: {strategy}")
-            self.strategy_stats['cfr_fallbacks_used'] += 1
+            # Use Monte Carlo simulation for real-time performance
+            start_solve_time = time.time()
+            strategy = self.monte_carlo_solver.solve(player_hole_cards, community_cards, effective_pot, actions, stage_name, num_opponents, iterations=100)
+            solve_time = time.time() - start_solve_time
+            self.logger.info(f"🎲 Monte Carlo computed strategy in {solve_time:.2f}s: {strategy}")
+            self.strategy_stats['monte_carlo_fallbacks_used'] += 1
         
         # Update total decisions and log stats periodically
         self.strategy_stats['total_decisions'] += 1
         if self.strategy_stats['total_decisions'] > 0 and self.strategy_stats['total_decisions'] % 10 == 0:
             gpu_usage_rate = (self.strategy_stats['gpu_strategies_used'] / self.strategy_stats['total_decisions']) * 100
-            self.logger.info(f"📈 Strategy Usage: {gpu_usage_rate:.1f}% GPU-trained, {100-gpu_usage_rate:.1f}% CFR fallback ({self.strategy_stats['total_decisions']} total decisions)")
+            self.logger.info(f"📈 Strategy Usage: {gpu_usage_rate:.1f}% GPU-trained, {100-gpu_usage_rate:.1f}% Monte Carlo fallback ({self.strategy_stats['total_decisions']} total decisions)")
 
         if not strategy:
             self.logger.error("Failed to determine a strategy. Folding as a fallback.")
@@ -585,10 +615,15 @@ if __name__ == "__main__":
         logger.info(f"{'='*60}")
         
         # --- NORMAL EXECUTION ---
-        # if not bot.ui_controller.positions:
-        #     logger.critical("UI positions not calibrated. Run the original poker_bot.py with 'calibrate' argument first.")
-        #     sys.exit()
-        # bot.main_loop()
+        # Uncomment the lines below to run in live mode
+        if len(sys.argv) > 1 and sys.argv[1] == 'live':
+            logger.info("🎮 STARTING LIVE MODE - Bot will capture HTML from screen!")
+            if not bot.ui_controller.positions:
+                logger.critical("UI positions not calibrated. Run the original poker_bot.py with 'calibrate' argument first.")
+                sys.exit()
+            bot.main_loop()
+        else:
+            logger.info("🧪 Running in test mode. Use 'python poker_bot_v2.py live' for live screen capture mode.")
 
     except Exception as e:
         logger.error(f"An error occurred in __main__: {e}", exc_info=True)
