@@ -145,6 +145,44 @@ class PokerBotV2:
         if not my_player or not my_player.get('has_turn'):
             return None, None
 
+        # Log the hand we're holding
+        player_hole_cards = my_player.get('cards', [])
+        community_cards = self.table_data.get('community_cards', [])
+        
+        if player_hole_cards:
+            cards_str = ', '.join(player_hole_cards)
+            self.logger.info(f"🃏 My Hand: {cards_str}")
+            
+            # Add basic hand description for better understanding
+            if len(player_hole_cards) == 2:
+                card1, card2 = player_hole_cards[0], player_hole_cards[1]
+                # Extract ranks and suits
+                rank1, suit1 = card1[:-1], card1[-1]
+                rank2, suit2 = card2[:-1], card2[-1]
+                
+                # Determine if suited or offsuit
+                suited = "suited" if suit1 == suit2 else "offsuit"
+                
+                # Check for pocket pair
+                if rank1 == rank2:
+                    hand_desc = f"Pocket {rank1}s"
+                else:
+                    # Sort ranks by strength for consistent description
+                    rank_order = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
+                    if rank_order.index(rank1) > rank_order.index(rank2):
+                        hand_desc = f"{rank1}{rank2} {suited}"
+                    else:
+                        hand_desc = f"{rank2}{rank1} {suited}"
+                
+                self.logger.info(f"📝 Hand Type: {hand_desc}")
+        else:
+            self.logger.warning("⚠️  No hole cards detected!")
+            
+        if community_cards:
+            community_str = ', '.join(community_cards)
+            self.logger.info(f"🃏 Community Cards: {community_str}")
+            self.logger.info(f"📊 Game Stage: {stage_name.title()}")
+
         # --- State Extraction for Hashing ---
         stage_map = {'preflop': 0, 'flop': 1, 'turn': 2, 'river': 3}
         stage_name = self.table_data.get('game_stage', 'preflop').lower()
