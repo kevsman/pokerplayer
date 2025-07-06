@@ -265,8 +265,9 @@ class MonteCarloSolver:
 
     def _simple_hand_strength_estimate(self, hole_cards, community_cards, stage):
         """
-        Simple hand strength estimate without complex equity calculations.
+        IMPROVED: Simple hand strength estimate that considers made hands.
         This is a fallback for when the main equity calculator is broken.
+        CRITICAL: Now evaluates trips, pairs, etc. from hole cards + community cards.
         """
         if not hole_cards or len(hole_cards) != 2:
             return 0.3
@@ -280,51 +281,130 @@ class MonteCarloSolver:
                     return card[:-1], card[-1]
             return card[0], card[1] if len(card) > 1 else ''
         
-        rank1, suit1 = parse_card(hole_cards[0])
-        rank2, suit2 = parse_card(hole_cards[1])
+        # Parse all cards (hole + community)
+        all_cards = hole_cards + (community_cards if community_cards else [])
+        ranks = []
+        suits = []
         
-        # Normalize ranks
         rank_values = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, 
                        '9': 9, '10': 10, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
         
-        val1 = rank_values.get(rank1, 2)
-        val2 = rank_values.get(rank2, 2)
+        for card in all_cards:
+            rank, suit = parse_card(card)
+            rank_val = rank_values.get(rank, 2)
+            ranks.append(rank_val)
+            suits.append(suit)
         
-        # Pocket pairs
-        if val1 == val2:
-            if val1 >= 13:  # AA, KK
-                return 0.85 if stage == 'preflop' else 0.75
-            elif val1 >= 11:  # QQ, JJ  
-                return 0.80 if stage == 'preflop' else 0.70
-            elif val1 >= 8:   # TT, 99, 88
-                return 0.70 if stage == 'preflop' else 0.60
-            else:
-                return 0.55 if stage == 'preflop' else 0.45
+        # Count rank frequencies to detect pairs, trips, quads
+        from collections import Counter
+        rank_counts = Counter(ranks)
+        sorted_counts = sorted(rank_counts.values(), reverse=True)
         
-        # High cards
-        max_val = max(val1, val2)
-        min_val = min(val1, val2)
+        # PREFLOP: Only evaluate hole cards
+        if stage == 'preflop' or not community_cards:
+            hole_rank1 = rank_values.get(parse_card(hole_cards[0])[0], 2)
+            hole_rank2 = rank_values.get(parse_card(hole_cards[1])[0], 2)
+            
+            if hole_rank1 == hole_rank2:  # Pocket pair
+                if hole_rank1 >= 13:  # AA, KK
+                    return 0.85
+                elif hole_rank1 >= 11:  # QQ, JJ  
+                    return 0.80
+                elif hole_rank1 >= 8:   # TT, 99, 88
+                    return 0.70
+                else:
+                    return 0.55
+            else:  # Unpaired
+                max_val = max(hole_rank1, hole_rank2)
+                min_val = min(hole_rank1, hole_rank2)
+                if max_val == 14 and min_val >= 13:  # AK
+                    return 0.70
+                elif max_val >= 13:  # King high
+                    return 0.50
+                elif max_val >= 11:  # Queen high  
+                    return 0.45
+                else:
+                    return 0.35
         
-        if max_val == 14:  # Ace
-            if min_val >= 13:  # AK
-                return 0.70 if stage == 'preflop' else 0.55
-            elif min_val >= 11:  # AQ, AJ
-                return 0.65 if stage == 'preflop' else 0.50
-            elif min_val >= 9:   # AT, A9
-                return 0.55 if stage == 'preflop' else 0.45
-            else:  # Weak ace
-                return 0.45 if stage == 'preflop' else 0.35
-        
-        if max_val >= 13:  # King high
-            if min_val >= 12:  # KQ
-                return 0.60 if stage == 'preflop' else 0.45
-            elif min_val >= 10:  # KJ, KT
-                return 0.55 if stage == 'preflop' else 0.40
-            else:
-                return 0.45 if stage == 'preflop' else 0.30
-        
-        # Lower cards
-        if max_val >= 11:  # Queen, Jack high
-            return 0.45 if stage == 'preflop' else 0.30
+        # POSTFLOP: Evaluate made hands
         else:
-            return 0.30 if stage == 'preflop' else 0.20
+            # QUADS (Four of a kind)
+            if sorted_counts[0] == 4:
+                return 0.95  # Almost nuts
+            
+            # FULL HOUSE (Three of a kind + pair)
+            elif sorted_counts[0] == 3 and sorted_counts[1] == 2:
+                return 0.90  # Very strong
+            
+            # FLUSH (5+ cards of same suit)
+            elif len(suits) >= 5:
+                suit_counts = Counter(suits)
+                if max(suit_counts.values()) >= 5:
+                    return 0.85  # Strong flush
+            
+            # STRAIGHT (5 consecutive ranks) - simplified check
+            elif len(ranks) >= 5:
+                unique_ranks = sorted(set(ranks))
+                for i in range(len(unique_ranks) - 4):
+                    if unique_ranks[i+4] - unique_ranks[i] == 4:
+                        return 0.80  # Straight
+            
+            # TRIPS (Three of a kind)
+            elif sorted_counts[0] == 3:
+                # Check if we have a hole card in the trips
+                hole_rank1 = rank_values.get(parse_card(hole_cards[0])[0], 2)
+                hole_rank2 = rank_values.get(parse_card(hole_cards[1])[0], 2)
+                
+                for rank_val, count in rank_counts.items():
+                    if count == 3 and (rank_val == hole_rank1 or rank_val == hole_rank2):
+                        # We have trips with one of our hole cards - VERY STRONG!
+                        if stage == 'river':
+                            return 0.85  # Very strong on river
+                        else:
+                            return 0.75  # Strong but could improve
+                
+                # Set trips (trips on board, we just have kicker)
+                return 0.45  # Decent but vulnerable
+            
+            # TWO PAIR
+            elif sorted_counts[0] == 2 and sorted_counts[1] == 2:
+                return 0.65  # Good hand
+            
+            # ONE PAIR
+            elif sorted_counts[0] == 2:
+                # Check if it's our pocket pair or we paired a hole card
+                hole_rank1 = rank_values.get(parse_card(hole_cards[0])[0], 2)
+                hole_rank2 = rank_values.get(parse_card(hole_cards[1])[0], 2)
+                
+                for rank_val, count in rank_counts.items():
+                    if count == 2:
+                        if rank_val == hole_rank1 and rank_val == hole_rank2:
+                            # Our pocket pair
+                            if rank_val >= 11:  # JJ+
+                                return 0.70
+                            else:
+                                return 0.55
+                        elif rank_val == hole_rank1 or rank_val == hole_rank2:
+                            # We paired one hole card
+                            if rank_val >= 13:  # Ace or King
+                                return 0.60
+                            elif rank_val >= 10:  # Ten, Jack, Queen
+                                return 0.50
+                            else:
+                                return 0.40
+                
+                # Pair on board, we have overcards or nothing
+                return 0.30
+            
+            # HIGH CARD (no pair)
+            else:
+                hole_rank1 = rank_values.get(parse_card(hole_cards[0])[0], 2)
+                hole_rank2 = rank_values.get(parse_card(hole_cards[1])[0], 2)
+                max_hole = max(hole_rank1, hole_rank2)
+                
+                if max_hole == 14:  # Ace high
+                    return 0.35
+                elif max_hole >= 13:  # King high
+                    return 0.25
+                else:
+                    return 0.15  # Very weak

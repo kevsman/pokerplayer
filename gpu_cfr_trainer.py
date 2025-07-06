@@ -25,12 +25,13 @@ from gpu_accelerated_equity import GPUEquityCalculator
 from gpu_strategy_manager import GPUStrategyManager # Import the new manager
 
 class GPUCFRTrainer:
-    def __init__(self, num_players: int = 6, small_blind: float = 0.02, big_blind: float = 0.04, use_gpu: bool = True, initial_stack: float = 4.0, dtype=cp.float16):
+    def __init__(self, num_players: int = 6, small_blind: float = 0.02, big_blind: float = 0.04, use_gpu: bool = True, initial_stack: float = 4.0, dtype=cp.float16, save_strategies: bool = True):
         self.num_players = num_players
         self.use_gpu = use_gpu and GPU_AVAILABLE
         self.small_blind = small_blind
         self.big_blind = big_blind
         self.initial_stack = self.big_blind * 100
+        self.save_strategies = save_strategies  # Control strategy saving
         self.hand_evaluator = HandEvaluator()
         self.equity_calculator = GPUEquityCalculator(use_gpu=self.use_gpu)
         self.strategy_manager = GPUStrategyManager(dtype=dtype) # Pass dtype
@@ -130,13 +131,16 @@ class GPUCFRTrainer:
             logger.info(f"🔥 Iteration {i+1}/{iterations} completed in {end_time - start_time:.2f}s ({throughput:,.0f} games/sec)")
 
             # Save less frequently to improve speed - only save every 500 iterations
-            if (i + 1) % 500 == 0:  # Save every 500 iterations to maximize speed
+            if self.save_strategies and (i + 1) % 500 == 0:  # Save every 500 iterations to maximize speed
                 self.strategy_manager.save_strategy_table()
                 unique_states = len(self.strategy_manager.node_map)
                 logger.info(f"💾 Strategy table saved at iteration {i+1} - {unique_states:,} unique states encountered so far")
 
-        self.strategy_manager.save_strategy_table()
-        logger.info("Final strategy table saved.")
+        if self.save_strategies:
+            self.strategy_manager.save_strategy_table()
+            logger.info("Final strategy table saved.")
+        else:
+            logger.info("Training completed without saving (save_strategies=False)")
 
     def _sample_initial_states_gpu(self, batch_size: int) -> Dict:
         """

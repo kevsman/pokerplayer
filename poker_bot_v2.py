@@ -11,6 +11,7 @@ import hashlib
 
 from hand_abstraction import HandAbstraction
 from monte_carlo_solver import MonteCarloSolver
+from realtime_cfr_solver import RealTimeCFRSolver
 from safe_strategy_lookup import SafeStrategyLookup
 from hand_evaluator import HandEvaluator
 from gpu_accelerated_equity import GPUEquityCalculator  # Use GPU equity calculator
@@ -80,6 +81,11 @@ class PokerBotV2:
             self.logger.warning(f"⚠️  Limited strategies ({strategy_count}). Consider running train_cfr.py for better performance.")
         
         self.monte_carlo_solver = MonteCarloSolver(self.abstraction, self.hand_evaluator, self.equity_calculator, logger_instance=self.logger)
+        
+        # Initialize the real-time CFR solver for advanced fallback
+        self.logger.info("🚀 Initializing Real-Time CFR Solver...")
+        self.realtime_cfr_solver = RealTimeCFRSolver(use_gpu=True)
+        self.logger.info("✅ Real-Time CFR Solver ready for live play!")
 
         self.table_data = {}
         self.player_data = []
@@ -91,6 +97,7 @@ class PokerBotV2:
         self.strategy_stats = {
             'gpu_strategies_used': 0,
             'monte_carlo_fallbacks_used': 0,
+            'cfr_fallbacks_used': 0,
             'total_decisions': 0
         }
 
@@ -329,8 +336,8 @@ class PokerBotV2:
                 self.logger.info(f"� Using SAFE fuzzy-matched GPU-trained strategy for hash {info_hash}")
                 self.strategy_stats['gpu_strategies_used'] += 1
         else:
-            # 2. If no match found (exact or fuzzy), run a fast Monte Carlo solve for this spot
-            self.logger.info(f"🔍 No precomputed strategy found for hash {info_hash}. Running FAST Monte Carlo solve.")
+            # 2. If no match found (exact or fuzzy), run a fast Real-Time CFR solve for this spot
+            self.logger.info(f"🔍 No precomputed strategy found for hash {info_hash}. Running FAST Real-Time CFR solve.")
             
             player_hole_cards = my_player.get('cards', [])
             if not player_hole_cards:
@@ -341,18 +348,49 @@ class PokerBotV2:
             actions = my_player.get('available_actions', [ACTION_FOLD, ACTION_CHECK, ACTION_CALL, ACTION_RAISE])
             num_opponents = sum(1 for p in self.player_data if not p.get('is_my_player', False) and not p.get('is_empty', False))
 
-            # Use Monte Carlo simulation for real-time performance
+            # Use Real-Time CFR solver for high-quality live solving
             start_solve_time = time.time()
-            strategy = self.monte_carlo_solver.solve(player_hole_cards, community_cards, effective_pot, actions, stage_name, num_opponents, iterations=100)
-            solve_time = time.time() - start_solve_time
-            self.logger.info(f"🎲 Monte Carlo computed strategy in {solve_time:.2f}s: {strategy}")
-            self.strategy_stats['monte_carlo_fallbacks_used'] += 1
+            try:
+                # Determine quality level based on pot size and situation complexity
+                if effective_pot > 5.0:  # Large pot = use detailed solving
+                    quality_level = 'detailed'
+                elif num_opponents > 3:  # Multiway = use detailed solving
+                    quality_level = 'detailed'  
+                elif stage_name in ['turn', 'river']:  # Later streets = normal+ solving
+                    quality_level = 'normal'
+                else:  # Standard situations
+                    quality_level = 'normal'
+                
+                self.logger.info(f"🎯 Using CFR quality level: {quality_level} for pot=${effective_pot:.2f}")
+                
+                strategy = self.realtime_cfr_solver.solve_current_situation(
+                    hole_cards=player_hole_cards,
+                    community_cards=community_cards,
+                    pot_size=effective_pot,
+                    num_opponents=num_opponents,
+                    position=0,  # Simplified for now
+                    stage=stage_name,
+                    quality_level=quality_level  # Use adaptive quality
+                )
+                solve_time = time.time() - start_solve_time
+                self.logger.info(f"⚡ Real-Time CFR computed strategy in {solve_time:.2f}s: {strategy}")
+                self.strategy_stats['cfr_fallbacks_used'] += 1
+                
+            except Exception as e:
+                # Fallback to Monte Carlo if CFR fails
+                self.logger.warning(f"Real-Time CFR failed ({e}), falling back to Monte Carlo")
+                strategy = self.monte_carlo_solver.solve(player_hole_cards, community_cards, effective_pot, actions, stage_name, num_opponents, iterations=100)
+                solve_time = time.time() - start_solve_time
+                self.logger.info(f"🎲 Monte Carlo computed strategy in {solve_time:.2f}s: {strategy}")
+                self.strategy_stats['monte_carlo_fallbacks_used'] += 1
         
         # Update total decisions and log stats periodically
         self.strategy_stats['total_decisions'] += 1
         if self.strategy_stats['total_decisions'] > 0 and self.strategy_stats['total_decisions'] % 10 == 0:
             gpu_usage_rate = (self.strategy_stats['gpu_strategies_used'] / self.strategy_stats['total_decisions']) * 100
-            self.logger.info(f"📈 Strategy Usage: {gpu_usage_rate:.1f}% GPU-trained, {100-gpu_usage_rate:.1f}% Monte Carlo fallback ({self.strategy_stats['total_decisions']} total decisions)")
+            cfr_usage_rate = (self.strategy_stats['cfr_fallbacks_used'] / self.strategy_stats['total_decisions']) * 100
+            mc_usage_rate = (self.strategy_stats['monte_carlo_fallbacks_used'] / self.strategy_stats['total_decisions']) * 100
+            self.logger.info(f"📈 Strategy Usage: {gpu_usage_rate:.1f}% GPU-trained, {cfr_usage_rate:.1f}% Real-Time CFR, {mc_usage_rate:.1f}% Monte Carlo ({self.strategy_stats['total_decisions']} total decisions)")
 
         if not strategy:
             self.logger.error("Failed to determine a strategy. Folding as a fallback.")

@@ -28,15 +28,15 @@ if __name__ == '__main__':
     logger.info(f"🎲 Using random seed: {random_seed} for maximum diversity")
     
     # ENHANCED PARAMETERS for comprehensive strategy database building
-    # Target: 1M+ strategies for professional-level play
+    # Target: 5M+ strategies for professional-level play
     
     # DIVERSIFICATION STRATEGY: Randomize parameters for each run
-    base_batch_size = 60000
+    base_batch_size = 150000  # Increased from 60k to 150k
     batch_size_multiplier = random.uniform(0.8, 1.5)  # 80% to 150% of base
     optimal_batch_size = int(base_batch_size * batch_size_multiplier)
     
-    base_iterations = 5000
-    iteration_multiplier = random.uniform(0.8, 1.2)  # 80% to 120% of base
+    base_iterations = 12000  # Increased from 5k to 12k
+    iteration_multiplier = random.uniform(0.8, 1.3)  # 80% to 130% of base
     total_iterations = int(base_iterations * iteration_multiplier)
     
     # Randomize player count (4-9 players for different dynamics)
