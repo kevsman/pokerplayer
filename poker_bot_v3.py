@@ -147,19 +147,19 @@ class PokerBotV3:
         # TAG Strategy: Tight-Aggressive pre-flop charts
         raise_charts = {
             'early': ['AA', 'KK', 'QQ', 'JJ', 'TT', 'AKs', 'AKo', 'AQs', 'AQo'],
-            'middle': ['99', '88', 'AJs', 'ATs', 'KQs', 'AJo', 'ATo', 'KQo'],
-            'late': ['77', '66', '55', 'A9s', 'A8s', 'A7s', 'KTs', 'QJs', 'JTs', 'T9s', '98s'],
+            'middle': ['99', 'AJs', 'ATs', 'KQs', 'AJo', 'ATo', 'KQo'],  # Removed 88 from middle
+            'late': ['77', '66', '55', 'A9s', 'A8s', 'A7s', 'KTs', 'QJs', 'JTs', 'T9s', '98s'],  # Removed 88 from late
             'sb': ['AA', 'KK', 'QQ', 'JJ', 'TT', '99', 'AKs', 'AKo', 'AQs', 'AQo', 'AJs', 'ATs'],
-            'bb': ['AA', 'KK', 'QQ', 'JJ', 'TT', '99', '88', 'AKs', 'AKo', 'AQs', 'AQo', 'AJs', 'ATs', 'KQs']
+            'bb': ['AA', 'KK', 'QQ', 'JJ', 'TT', '99', 'AKs', 'AKo', 'AQs', 'AQo', 'AJs', 'ATs', 'KQs']  # Removed 88 from BB
         }
 
         # Calling ranges - hands good enough to call but not raise
         call_charts = {
             'early': ['99', '88'],
-            'middle': ['77', '66', 'A9s'],
-            'late': ['55', '44', '33', '22', 'A6s', 'A5s', 'A4s', 'A3s', 'A2s', 'K9s', 'Q9s', 'J9s', '87s', '76s', '65s'],
-            'sb': ['77', '66', '55', '44', '33', '22', 'A9s', 'A8s', 'A7s', 'A6s', 'A5s', 'A4s', 'A3s', 'A2s', 'K9s', 'KTs', 'KJs', 'Q9s', 'QTs', 'J9s', 'JTs', 'T8s', '98s', '87s', '76s', '65s', '54s'],
-            'bb': ['77', '66', '55', '44', '33', '22', 'A9s', 'A8s', 'A7s', 'A6s', 'A5s', 'A4s', 'A3s', 'A2s', 'K9s', 'K8s', 'K7s', 'K6s', 'Q9s', 'Q8s', 'J9s', 'J8s', 'T8s', '98s', '87s', '76s', '65s', '54s', 'K9o', 'KTo', 'QTo', 'JTo']
+            'middle': ['88', '77', '66', 'A9s'],  # Added 88 to calling range
+            'late': ['88', '55', '44', '33', '22', 'A6s', 'A5s', 'A4s', 'A3s', 'A2s', 'K9s', 'Q9s', 'J9s', '87s', '76s', '65s'],  # Added 88 to calling range
+            'sb': ['88', '77', '66', '55', '44', '33', '22', 'A9s', 'A8s', 'A7s', 'A6s', 'A5s', 'A4s', 'A3s', 'A2s', 'K9s', 'KTs', 'KJs', 'Q9s', 'QTs', 'J9s', 'JTs', 'T8s', '98s', '87s', '76s', '65s', '54s'],  # Added 88
+            'bb': ['88', '77', '66', '55', '44', '33', '22', 'A9s', 'A8s', 'A7s', 'A6s', 'A5s', 'A4s', 'A3s', 'A2s', 'K9s', 'K8s', 'K7s', 'K6s', 'Q9s', 'Q8s', 'J9s', 'J8s', 'T8s', '98s', '87s', '76s', '65s', '54s', 'K9o', 'KTo', 'QTo', 'JTo']  # Added 88
         }
 
         # Combine all raise charts (higher positions include lower position hands)
@@ -184,8 +184,33 @@ class PokerBotV3:
         
         # Check if we should raise with this hand
         if hand_str in raise_charts.get(pos_category, []):
+            # Check if this is an all-in situation where raising isn't possible
+            if self._is_all_in_situation(bet_to_call, pot_size):
+                logger.info(f"All-in situation detected - can only call or fold with {hand_str}")
+                max_call_size = self._calculate_max_preflop_call_size(hand_str, pot_size, position)
+                if bet_to_call <= max_call_size:
+                    logger.info(f"Calling all-in with {hand_str} for {bet_to_call} (max: {max_call_size})")
+                    return 'CALL', bet_to_call
+                else:
+                    logger.info(f"All-in bet {bet_to_call} too large for {hand_str} (max: {max_call_size}) - folding")
+                    return 'FOLD', 0
+            
+            # Special logic: Don't 4-bet+ with medium pairs unless premium
+            if bet_to_call > pot_size * 0.8:  # Facing a large bet (likely 3-bet+)
+                medium_pairs = ['99', 'TT', 'JJ']
+                if hand_str in medium_pairs:
+                    logger.info(f"Hand {hand_str} facing large bet {bet_to_call} - calling instead of 4-betting")
+                    max_call_size = self._calculate_max_preflop_call_size(hand_str, pot_size, position)
+                    if bet_to_call <= max_call_size:
+                        return 'CALL', bet_to_call
+                    else:
+                        logger.info(f"Bet {bet_to_call} too large even for calling (max: {max_call_size}) - folding")
+                        return 'FOLD', 0
+            
             # Calculate proper raise size based on action
             raise_amount = self._calculate_preflop_raise_size(bet_to_call, pot_size, hand_str)
+            # Round to avoid floating point precision issues
+            raise_amount = round(raise_amount, 2)
             logger.info(f"Hand {hand_str} is in raise range for {pos_category} - raising to {raise_amount}")
             return 'RAISE', raise_amount
         
@@ -399,7 +424,7 @@ class PokerBotV3:
             raise_size = bet_to_call + (pot_size * 0.7)  # Call + 70% pot raise
             logger.info(f"Standard postflop raise: calling {bet_to_call} + betting {pot_size * 0.7} = {raise_size}")
         
-        return raise_size
+        return round(raise_size, 2)
 
     def _calculate_postflop_bet_size(self, pot_size, hand_strength):
         """Calculate appropriate postflop bet size based on hand strength."""
@@ -421,7 +446,7 @@ class PokerBotV3:
             logger.info(f"Small hand bet: {bet_size} ({bet_size/pot_size:.1%} pot)")
         
         # Ensure minimum bet size
-        return max(bet_size, 0.02)  # Minimum 0.02 bet
+        return round(max(bet_size, 0.02), 2)  # Minimum 0.02 bet, rounded
 
     def _analyze_board_texture(self, board):
         """Analyze board texture for wetness, pairs, straight/flush possibilities."""
@@ -557,12 +582,12 @@ class PokerBotV3:
                 # Aggressive 3-bet sizing: 3-4x the original bet
                 raise_size = bet_to_call * 3.5
                 logger.info(f"Premium hand {hand_str}: 3-betting {bet_to_call} to {raise_size}")
-                return raise_size
+                return round(raise_size, 2)
             else:
                 # Standard 3-bet sizing: 3x the original bet
                 raise_size = bet_to_call * 3.0
                 logger.info(f"Standard 3-bet with {hand_str}: raising {bet_to_call} to {raise_size}")
-                return raise_size
+                return round(raise_size, 2)
 
     def _calculate_max_preflop_call_size(self, hand_str, pot_size, position):
         """Calculate maximum bet size we're willing to call preflop based on hand strength."""
@@ -608,6 +633,19 @@ class PokerBotV3:
         
         logger.debug(f"Max call size for {hand_str} in {position}: {max_call} ({base_pot_multiple}x pot of {pot_size})")
         return max_call
+
+    def _is_all_in_situation(self, bet_to_call, pot_size):
+        """Detect if this is likely an all-in situation where raising isn't possible."""
+        # Heuristics to detect all-in situations:
+        # 1. Very large bet relative to pot (usually indicates all-in)
+        # 2. Bet size suggests someone is all-in
+        
+        if bet_to_call > pot_size * 2.0:  # Bet is more than 2x pot - likely all-in
+            return True
+        
+        # Could add more sophisticated detection here if needed
+        # For now, use the large bet heuristic
+        return False
 
 class PokerBotV3Manager:
     """Manager class that handles the parsing and analysis like poker_bot_v2."""
